@@ -1028,7 +1028,10 @@ function Dashboard({
 
             <div className="mt-4 grid grid-cols-[1.15fr_.85fr] gap-4">
               <RecentActivity profile={profile} onViewAll={() => setPage('Progress')} />
-              <QuickActions />
+              <QuickActions
+                onOpenReadingBank={() => setPage('Question Bank Reading')}
+                onOpenMathBank={() => setPage('Question Bank Math')}
+              />
             </div>
           </section>
 
@@ -5029,18 +5032,20 @@ function RecentActivity({ profile, onViewAll }) {
   )
 }
 
-function QuickActions() {
+function QuickActions({ onOpenReadingBank, onOpenMathBank }) {
   const actions = [
-    ['Start Practice Test', ClipboardList, '#2f62d6', '#eef3ff'],
-    ['Mixed Practice', Shuffle, '#18a05e', '#edf8f2'],
+    ['Reading Question Bank', BookOpen, '#7a4ac8', '#f2ecfb', onOpenReadingBank],
+    ['Math Question Bank', Calculator, '#18a05e', '#edf8f2', onOpenMathBank],
   ]
   return (
     <div className="card">
       <h3 className="font-bold text-athena-navy">Quick Actions</h3>
       <div className="mt-4 grid grid-cols-2 gap-3">
-        {actions.map(([label, Icon, color, bg]) => (
+        {actions.map(([label, Icon, color, bg, onClick]) => (
           <button
             key={label}
+            type="button"
+            onClick={onClick}
             className="quick-action-btn rounded-2xl border border-[#e8ebf2] transition hover:-translate-y-1 hover:shadow-md"
             style={{ background: bg }}
           >
