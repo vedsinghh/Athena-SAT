@@ -5,7 +5,7 @@ import {
   AlertTriangle, BarChart3, BookOpen, Calculator, CalendarDays,
   ChevronDown, ChevronRight, ClipboardList, Clock, ExternalLink, Filter,
   Flame, FunctionSquare, Highlighter, Home, Import, Lightbulb, List, Pause, PenLine, Radical, Save,
-  Settings, Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, CheckCircle2, Check,
+  Settings, Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, XCircle, CheckCircle2, Check,
   FileText, Vault, Building2, ChevronUp, ListFilter
 } from 'lucide-react'
 import mathQuestions from './data/mathQuestions.json'
@@ -185,6 +185,115 @@ function localDayKey(value = new Date()) {
   return `${y}-${m}-${day}`
 }
 
+function startOfLocalDay(value = new Date()) {
+  const d = value instanceof Date ? new Date(value) : new Date(value)
+  if (Number.isNaN(d.getTime())) return null
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+function endOfLocalDay(value = new Date()) {
+  const d = value instanceof Date ? new Date(value) : new Date(value)
+  if (Number.isNaN(d.getTime())) return null
+  d.setHours(23, 59, 59, 999)
+  return d
+}
+
+function getProgressRangeBounds(mode, customFrom, customTo) {
+  const end = endOfLocalDay(new Date())
+  if (mode === 'all') {
+    return { start: null, end: null, dayCount: null, label: 'All time' }
+  }
+  if (mode === 'custom') {
+    const start = customFrom ? startOfLocalDay(`${customFrom}T12:00:00`) : null
+    const customEnd = customTo ? endOfLocalDay(`${customTo}T12:00:00`) : end
+    let dayCount = null
+    if (start && customEnd) {
+      dayCount = Math.max(1, Math.round((customEnd - start) / 86400000) + 1)
+    }
+    return { start, end: customEnd, dayCount, label: 'Custom range' }
+  }
+  const days = mode === '30d' ? 30 : mode === '3d' ? 3 : 7
+  const start = startOfLocalDay(new Date())
+  start.setDate(start.getDate() - (days - 1))
+  return {
+    start,
+    end,
+    dayCount: days,
+    label: days === 3 ? 'Past 3 days' : days === 30 ? 'Past 30 days' : 'Past 7 days',
+  }
+}
+
+function filterHistoryByRange(history, bounds) {
+  const list = Array.isArray(history) ? history : []
+  if (!bounds?.start && !bounds?.end) return list
+  return list.filter((item) => {
+    const t = new Date(item.createdAt).getTime()
+    if (Number.isNaN(t)) return false
+    if (bounds.start && t < bounds.start.getTime()) return false
+    if (bounds.end && t > bounds.end.getTime()) return false
+    return true
+  })
+}
+
+/** Per-day accuracy series for the Progress summary chart. */
+function buildDailyAccuracySeries(history, bounds, maxDays = 14) {
+  const list = Array.isArray(history) ? history : []
+  const byDay = new Map()
+
+  const bump = (createdAt, isCorrect) => {
+    if (isCorrect == null) return
+    const key = localDayKey(createdAt)
+    if (!key) return
+    const cur = byDay.get(key) || { correct: 0, total: 0 }
+    cur.total += 1
+    if (isCorrect) cur.correct += 1
+    byDay.set(key, cur)
+  }
+
+  list.forEach((entry) => {
+    if (entry.type === 'set') {
+      const items = entry.items || []
+      if (items.length) {
+        items.forEach((item) => bump(entry.createdAt, item.correct))
+      } else if (isValidStatNumber(entry.correct) && isValidStatNumber(entry.total)) {
+        const key = localDayKey(entry.createdAt)
+        if (!key) return
+        const cur = byDay.get(key) || { correct: 0, total: 0 }
+        cur.correct += entry.correct
+        cur.total += entry.total
+        byDay.set(key, cur)
+      }
+    } else if (entry.type === 'bank') {
+      bump(entry.createdAt, entry.correct)
+    }
+  })
+
+  const end = bounds?.end ? startOfLocalDay(bounds.end) : startOfLocalDay(new Date())
+  let dayCount = bounds?.dayCount
+  if (!dayCount) {
+    dayCount = Math.min(maxDays, Math.max(3, byDay.size || 3))
+  }
+  dayCount = Math.min(dayCount, maxDays)
+
+  const days = []
+  for (let i = dayCount - 1; i >= 0; i -= 1) {
+    const d = new Date(end)
+    d.setDate(end.getDate() - i)
+    const key = localDayKey(d)
+    const stats = byDay.get(key) || { correct: 0, total: 0 }
+    days.push({
+      key,
+      label: d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+      shortLabel: d.toLocaleDateString(undefined, { weekday: 'narrow' }),
+      correct: stats.correct,
+      total: stats.total,
+      pct: stats.total ? Math.round((stats.correct / stats.total) * 100) : null,
+    })
+  }
+  return days
+}
+
 function computeStreakFromHistory(history) {
   const days = [...new Set(
     (history || []).map((item) => localDayKey(item.createdAt)).filter(Boolean),
@@ -232,13 +341,15 @@ function historyToActivityItem(entry) {
       title: entry.title,
       sub: entry.sub,
       meta: entry.correct ? 'Correct' : 'Incorrect',
-      tone: entry.subject === 'math' ? 'green' : 'purple',
+      correct: Boolean(entry.correct),
+      tone: entry.correct ? 'green' : 'red',
     }
   }
   return {
     title: entry.title,
     sub: entry.sub,
     meta: entry.meta || (isValidStatNumber(entry.accuracy) ? `Score: ${entry.accuracy}%` : `Score: ${STAT_NA}`),
+    correct: null,
     tone: entry.subject === 'math' ? 'green' : 'purple',
   }
 }
@@ -1006,7 +1117,7 @@ function Dashboard({
 
             <div className="grid grid-cols-[1.55fr_.7fr] gap-4">
               <ScoreProgress profile={profile} />
-              <AccuracyCard profile={profile} />
+              <AccuracyCard profile={profile} onOpen={() => setPage('Analytics')} />
             </div>
 
             <div className="mt-4 relative grid grid-cols-2 gap-4">
@@ -1028,7 +1139,7 @@ function Dashboard({
             </div>
 
             <div className="mt-4 grid grid-cols-[1.15fr_.85fr] gap-4">
-              <RecentActivity profile={profile} onViewAll={() => setPage('Progress')} />
+              <RecentActivity profile={profile} onViewAll={() => setPage('Analytics')} />
               <QuickActions
                 onOpenReadingBank={() => setPage('Question Bank Reading')}
                 onOpenMathBank={() => setPage('Question Bank Math')}
@@ -1061,6 +1172,7 @@ function Dashboard({
             profile={profile}
             onOpenMath={() => setPage('Question Bank Math')}
             onOpenReading={() => setPage('Question Bank Reading')}
+            onViewAnalytics={() => setPage('Analytics')}
           />
         ) : page === 'Question Bank Math' ? (
           <QuestionBankMathPage
@@ -1074,7 +1186,7 @@ function Dashboard({
             onBack={() => setPage('Question Bank')}
             onCompleteQuestion={onCompleteQuestion}
           />
-        ) : page === 'Progress' ? (
+        ) : page === 'Analytics' ? (
           <ProgressPage profile={profile} />
         ) : (
           <PlaceholderPage title={page} onGoDashboard={goDashboard} />
@@ -1213,7 +1325,7 @@ function PlaceholderPage({ title, onGoDashboard }) {
   )
 }
 
-function QuestionBankPage({ profile, onOpenMath, onOpenReading }) {
+function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics }) {
   const progress = profile.qbankProgress || {}
   const readingTotal = readingQuestions.length
   const mathTotal = mathQuestions.length
@@ -1297,7 +1409,9 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading }) {
               <p>Track your overall performance and study consistency.</p>
             </div>
           </div>
-          <button type="button" className="qbank-view-all">View all analytics →</button>
+          <button type="button" className="qbank-view-all" onClick={onViewAnalytics}>
+            View all analytics →
+          </button>
         </div>
 
         <div className="qbank-metrics">
@@ -2226,7 +2340,7 @@ function ReadingPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQue
           {stats.map((s) => (
             <div key={s.label} className={`card math-stat math-stat-${s.tone}`}>
               <div className="math-stat-top">
-                <div className={`text-xs font-semibold ${s.tone === 'danger' ? 'text-[#14284f]' : 'text-[#6b7894]'}`}>{s.label}</div>
+                <div className={`text-xs font-semibold ${s.tone === 'danger' ? 'text-[#c0352b]' : 'text-[#6b7894]'}`}>{s.label}</div>
                 <div className="math-stat-icon">{s.icon}</div>
               </div>
               <div className={`math-stat-value ${s.compact ? 'compact' : ''}`}>{s.value}</div>
@@ -2507,7 +2621,7 @@ function MathPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuesti
           {stats.map((s) => (
             <div key={s.label} className={`card math-stat math-stat-${s.tone}`}>
               <div className="math-stat-top">
-                <div className={`text-xs font-semibold ${s.tone === 'danger' ? 'text-[#14284f]' : 'text-[#6b7894]'}`}>{s.label}</div>
+                <div className={`text-xs font-semibold ${s.tone === 'danger' ? 'text-[#c0352b]' : 'text-[#6b7894]'}`}>{s.label}</div>
                 <div className="math-stat-icon">{s.icon}</div>
               </div>
               <div className={`math-stat-value ${s.compact ? 'compact' : ''}`}>{s.value}</div>
@@ -4869,22 +4983,43 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
 }
 
 function ProgressPage({ profile }) {
-  const history = profile.progressHistory || []
+  const fullHistory = profile.progressHistory || []
+  const [rangeMode, setRangeMode] = useState('3d')
+  const [customFrom, setCustomFrom] = useState('')
+  const [customTo, setCustomTo] = useState('')
+  const rangeBounds = useMemo(
+    () => getProgressRangeBounds(rangeMode, customFrom, customTo),
+    [rangeMode, customFrom, customTo],
+  )
+  const history = useMemo(
+    () => filterHistoryByRange(fullHistory, rangeBounds),
+    [fullHistory, rangeBounds],
+  )
   const sets = history.filter((item) => item.type === 'set')
   const bankLines = history.filter((item) => item.type === 'bank')
-  const { streak, bestStreak } = computeStreakFromHistory(history)
+  const { streak, bestStreak } = computeStreakFromHistory(fullHistory)
   const displayBest = bestStreak
   const [expandedSetId, setExpandedSetId] = useState(null)
   const [review, setReview] = useState(null)
+  const heatDays = rangeBounds.dayCount
+    ? Math.min(30, rangeBounds.dayCount)
+    : 14
   const analytics = useMemo(
-    () => deriveProgressAnalytics(history, profile.qbankProgress || {}),
-    [history, profile.qbankProgress],
+    () => deriveProgressAnalytics(history, profile.qbankProgress || {}, {
+      heatDays,
+      allowQbankFallback: rangeMode === 'all',
+    }),
+    [history, profile.qbankProgress, heatDays, rangeMode],
+  )
+  const dailyAccuracy = useMemo(
+    () => buildDailyAccuracySeries(history, rangeBounds, 14),
+    [history, rangeBounds],
   )
 
   const weekDays = useMemo(() => {
     const labels = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
     const today = new Date()
-    const daySet = new Set(history.map((item) => localDayKey(item.createdAt)).filter(Boolean))
+    const daySet = new Set(fullHistory.map((item) => localDayKey(item.createdAt)).filter(Boolean))
     // Build Mon–Sun of current week
     const dow = (today.getDay() + 6) % 7 // Monday = 0
     return labels.map((label, i) => {
@@ -4893,7 +5028,15 @@ function ProgressPage({ profile }) {
       const key = localDayKey(d)
       return { label, key, active: daySet.has(key), isToday: key === localDayKey(today) }
     })
-  }, [history])
+  }, [fullHistory])
+
+  const rangeOptions = [
+    { id: '3d', label: '3d' },
+    { id: '7d', label: '7d' },
+    { id: '30d', label: '30d' },
+    { id: 'all', label: 'All time' },
+    { id: 'custom', label: 'Custom' },
+  ]
 
   const openQuestion = (subject, questionId, answer) => {
     if (!questionId) return
@@ -4916,9 +5059,46 @@ function ProgressPage({ profile }) {
             <Trophy size={22} strokeWidth={2.1} />
           </div>
           <div>
-            <h1>Progress</h1>
+            <h1>Analytics</h1>
             <p>Practice set reports, question bank activity, and your study streak.</p>
           </div>
+        </div>
+        <div className="progress-range" role="group" aria-label="Stats time frame">
+          <div className="progress-range-pills">
+            {rangeOptions.map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                className={`progress-range-pill ${rangeMode === opt.id ? 'on' : ''}`}
+                aria-pressed={rangeMode === opt.id}
+                onClick={() => setRangeMode(opt.id)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+          {rangeMode === 'custom' ? (
+            <div className="progress-range-custom">
+              <label>
+                From
+                <input
+                  type="date"
+                  value={customFrom}
+                  max={customTo || undefined}
+                  onChange={(e) => setCustomFrom(e.target.value)}
+                />
+              </label>
+              <label>
+                To
+                <input
+                  type="date"
+                  value={customTo}
+                  min={customFrom || undefined}
+                  onChange={(e) => setCustomTo(e.target.value)}
+                />
+              </label>
+            </div>
+          ) : null}
         </div>
       </header>
 
@@ -4940,50 +5120,34 @@ function ProgressPage({ profile }) {
         </div>
         <div className="card progress-summary-card progress-summary-accuracy">
           <div className="progress-summary-label">
-            <Target size={13} strokeWidth={2.2} />
-            Hit rate
+            <BarChart3 size={13} strokeWidth={2.2} />
+            Daily accuracy
           </div>
-          {analytics.totalGraded ? (
-            <div className="progress-summary-accuracy-body">
-              <ProgressHitRing correct={analytics.correct} incorrect={analytics.incorrect} size={86} />
-              <div className="progress-summary-accuracy-copy">
-                <div className="progress-summary-value">{formatStatPct(analytics.accuracy)}</div>
-                <div className="progress-summary-sub">
-                  {analytics.correct}/{analytics.totalGraded} correct across sets & bank
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="progress-summary-accuracy-empty">
-              <div className="progress-summary-accuracy-placeholder" aria-hidden="true" />
-              <div className="progress-summary-sub">Answer questions to unlock your hit rate.</div>
-            </div>
-          )}
+          <div className="progress-summary-sub progress-summary-range-note">{rangeBounds.label}</div>
+          <ProgressDailyAccuracyChart days={dailyAccuracy} />
         </div>
         <div className="progress-summary-corner">
-          <div className="progress-summary-stack-wrap">
+          <div className="progress-summary-stack">
+            <div className="card progress-summary-card">
+              <div className="progress-summary-label">Bank Questions</div>
+              <div className="progress-summary-value">{bankLines.length}</div>
+              <div className="progress-summary-sub">Answered from Question Bank</div>
+            </div>
+            <div className="card progress-summary-card">
+              <div className="progress-summary-label">Practice Sets</div>
+              <div className="progress-summary-value">{sets.length}</div>
+              <div className="progress-summary-sub">Finished from Math / Reading tabs</div>
+            </div>
+          </div>
+          <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
             <motion.div
               className="progress-athena-bubble"
-              initial={{ opacity: 0, y: 8, scale: 0.92 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, y: 8, scale: 0.92, x: '-50%' }}
+              animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
               transition={{ delay: 0.25, duration: 0.45, ease: 'easeOut' }}
             >
               {athenaCheer}
             </motion.div>
-            <div className="progress-summary-stack">
-              <div className="card progress-summary-card">
-                <div className="progress-summary-label">Bank Questions</div>
-                <div className="progress-summary-value">{bankLines.length}</div>
-                <div className="progress-summary-sub">Answered from Question Bank</div>
-              </div>
-              <div className="card progress-summary-card">
-                <div className="progress-summary-label">Practice Sets</div>
-                <div className="progress-summary-value">{sets.length}</div>
-                <div className="progress-summary-sub">Finished from Math / Reading tabs</div>
-              </div>
-            </div>
-          </div>
-          <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
             <motion.img
               src="/athena-progress.png"
               alt=""
@@ -5008,7 +5172,7 @@ function ProgressPage({ profile }) {
         </div>
       </div>
 
-      <ProgressAnalytics analytics={analytics} streak={streak} />
+      <ProgressAnalytics analytics={analytics} streak={streak} heatLabel={rangeBounds.label} />
 
       <section className="card progress-history-card">
         <div className="progress-history-head">
@@ -5018,7 +5182,9 @@ function ProgressPage({ profile }) {
 
         {!history.length ? (
           <div className="progress-empty">
-            Finish a Math or Reading practice set for a full report, or answer Question Bank items for compact activity lines.
+            {fullHistory.length
+              ? 'No activity in this time frame. Try a wider range.'
+              : 'Finish a Math or Reading practice set for a full report, or answer Question Bank items for compact activity lines.'}
           </div>
         ) : (
           <div className="progress-history-list">
@@ -5116,10 +5282,11 @@ function ProgressPage({ profile }) {
 }
 
 /** Aggregate charts for the Progress analytics tiles. */
-function deriveProgressAnalytics(history, qbankProgress) {
+function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   const list = Array.isArray(history) ? history : []
   const sets = list.filter((e) => e.type === 'set')
   const bank = list.filter((e) => e.type === 'bank')
+  const heatSpan = Math.max(1, options.heatDays || 14)
 
   let correct = 0
   let incorrect = 0
@@ -5172,8 +5339,8 @@ function deriveProgressAnalytics(history, qbankProgress) {
     if (isValidStatNumber(entry.elapsed) && entry.elapsed > 0) times.push(entry.elapsed)
   })
 
-  // Prefer live qbank domain stats when history has no domain labels yet.
-  if (!domainMap.size) {
+  // Prefer live qbank domain stats when history has no domain labels yet (all-time only).
+  if (!domainMap.size && options.allowQbankFallback) {
     Object.values(qbankProgress || {}).forEach((item) => {
       if (!item?.domain || item.correct == null) return
       bumpDomain(item.domain, Boolean(item.correct))
@@ -5202,7 +5369,7 @@ function deriveProgressAnalytics(history, qbankProgress) {
       pct: Math.round((d.correct / d.total) * 100),
     }))
 
-  // 14-day activity heatmap
+  // Activity heatmap for the selected span
   const dayCounts = new Map()
   list.forEach((e) => {
     const key = localDayKey(e.createdAt)
@@ -5211,7 +5378,7 @@ function deriveProgressAnalytics(history, qbankProgress) {
   })
   const heatDays = []
   const today = new Date()
-  for (let i = 13; i >= 0; i -= 1) {
+  for (let i = heatSpan - 1; i >= 0; i -= 1) {
     const d = new Date(today)
     d.setDate(today.getDate() - i)
     const key = localDayKey(d)
@@ -5240,7 +5407,7 @@ function deriveProgressAnalytics(history, qbankProgress) {
   }
 }
 
-function ProgressAnalytics({ analytics, streak }) {
+function ProgressAnalytics({ analytics, streak, heatLabel = 'Last 14 days' }) {
   const a = analytics || {}
   const charge = Math.round(
     Math.min(
@@ -5389,9 +5556,9 @@ function ProgressAnalytics({ analytics, streak }) {
       <div className="card progress-analytics-card progress-analytics-heat">
         <div className="progress-analytics-label">
           <CalendarDays size={15} strokeWidth={2.2} />
-          Last 14 days
+          Activity · {heatLabel}
         </div>
-        <div className="progress-heat" role="img" aria-label="Activity over the last 14 days">
+        <div className="progress-heat" role="img" aria-label={`Activity over ${heatLabel}`}>
           {a.heatDays?.map((d) => {
             const level = d.count === 0 ? 0 : Math.min(4, Math.ceil((d.count / a.heatMax) * 4))
             return (
@@ -5410,6 +5577,47 @@ function ProgressAnalytics({ analytics, streak }) {
         </div>
       </div>
     </section>
+  )
+}
+
+function ProgressDailyAccuracyChart({ days }) {
+  const series = Array.isArray(days) ? days : []
+  const answered = series.filter((d) => d.total > 0)
+  if (!answered.length) {
+    return (
+      <div className="progress-daily-empty">
+        Practice in this range to chart daily accuracy.
+      </div>
+    )
+  }
+
+  return (
+    <div className="progress-daily" role="img" aria-label="Daily accuracy">
+      <div className="progress-daily-bars">
+        {series.map((d) => {
+          const height = d.pct == null ? 0 : Math.max(8, d.pct)
+          const tone = d.pct == null ? 'empty' : d.pct >= 85 ? 'high' : d.pct >= 60 ? 'mid' : 'low'
+          return (
+            <div key={d.key} className="progress-daily-col" title={d.total ? `${d.label}: ${d.pct}% (${d.correct}/${d.total})` : `${d.label}: no answers`}>
+              <span className="progress-daily-pct">
+                {d.pct == null ? '—' : `${d.pct}%`}
+              </span>
+              <div className="progress-daily-track">
+                <motion.span
+                  className={`progress-daily-bar ${tone}`}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${height}%` }}
+                  transition={{ duration: 0.55, ease: 'easeOut' }}
+                />
+              </div>
+              <span className="progress-daily-label">
+                {series.length <= 7 ? d.label : d.key.slice(8)}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
@@ -5459,9 +5667,9 @@ function ProgressHitRing({ correct, incorrect, size = 96, stroke = 14 }) {
 
 function ScoreTrendChart({ points }) {
   const w = 320
-  const h = 110
-  const padX = 8
-  const padY = 12
+  const h = 168
+  const padX = 10
+  const padY = 16
   const vals = points.map((p) => p.accuracy)
   const min = Math.min(...vals, 0)
   const max = Math.max(...vals, 100)
@@ -5479,8 +5687,13 @@ function ScoreTrendChart({ points }) {
 
   return (
     <div className="progress-trend">
-      <svg viewBox={`0 0 ${w} ${h}`} className="progress-trend-svg" role="img" aria-label="Score trend">
-        <defs>
+      <svg
+        viewBox={`0 0 ${w} ${h}`}
+        preserveAspectRatio="none"
+        className="progress-trend-svg"
+        role="img"
+        aria-label="Score trend"
+      >        <defs>
           <linearGradient id="progressTrendFill" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#e07020" stopOpacity="0.28" />
             <stop offset="100%" stopColor="#e07020" stopOpacity="0.02" />
@@ -5612,7 +5825,7 @@ function Sidebar({
 }) {
   const items = [
     ['Dashboard', Home, 'dashboard'], ['Reading & Writing', BookOpen, 'Reading'], ['Math', Calculator, 'Math'], ['Question Bank', ClipboardList, 'Question Bank'],
-    ['Practice Tests', CalendarDays, 'Practice Tests'], ['Progress', Trophy, 'Progress'],
+    ['Practice Tests', CalendarDays, 'Practice Tests'], ['Analytics', Trophy, 'Analytics'],
     ['Profile Settings', Settings, 'profiles'],
   ]
   const [menuOpen, setMenuOpen] = useState(false)
@@ -5797,8 +6010,15 @@ function ScoreProgress({ profile }) {
   const spearRotate = (Math.atan2(end.y - start.y, end.x - start.x) * 180) / Math.PI - 5
 
   const [spear, setSpear] = useState(() => ({ ...start, opacity: 0, rotate: spearRotate }))
+  const busyRef = useRef(false)
+  const animRef = useRef([])
 
-  useEffect(() => {
+  const throwSpear = () => {
+    if (busyRef.current) return
+    busyRef.current = true
+    animRef.current.forEach((a) => a.stop())
+    animRef.current = []
+
     setSpear({ ...start, opacity: 0, rotate: spearRotate })
     const fade = animate(0, 1, {
       duration: 0.08,
@@ -5815,10 +6035,18 @@ function ScoreProgress({ profile }) {
           rotate: spearRotate,
         }))
       },
+      onComplete: () => {
+        busyRef.current = false
+      },
     })
+    animRef.current = [fade, flight]
+  }
+
+  useEffect(() => {
+    throwSpear()
     return () => {
-      fade.stop()
-      flight.stop()
+      animRef.current.forEach((a) => a.stop())
+      busyRef.current = false
     }
   }, [pct])
 
@@ -5841,7 +6069,14 @@ function ScoreProgress({ profile }) {
         </div>
 
         <div className="score-playfield">
-          <img src="/athena-throwing.png" alt="" className="score-athena" />
+          <button
+            type="button"
+            className="score-athena-btn"
+            onClick={throwSpear}
+            aria-label="Athena. Click to throw a spear."
+          >
+            <img src="/athena-throwing.png" alt="" className="score-athena" />
+          </button>
 
           <svg className="score-flight" viewBox="0 0 240 120" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
             <path
@@ -5957,7 +6192,7 @@ function AccuracyPie({ correct, incorrect }) {
   )
 }
 
-function AccuracyCard({ profile }) {
+function AccuracyCard({ profile, onOpen }) {
   const entries = Object.values(profile.qbankProgress || {})
   const correct = entries.filter((item) => item.correct).length
   const incorrect = Math.max(0, entries.length - correct)
@@ -5965,7 +6200,12 @@ function AccuracyCard({ profile }) {
   const hasData = isValidStatNumber(accuracy)
 
   return (
-    <div className="card accuracy-card">
+    <button
+      type="button"
+      className="card accuracy-card accuracy-card-link"
+      onClick={onOpen}
+      aria-label="Open analytics"
+    >
       <div className="accuracy-deco" aria-hidden="true">❧</div>
       <div className="text-sm font-bold text-athena-navy">Overall Accuracy</div>
       <div className="mt-1 text-[42px] font-bold leading-none text-athena-green">{formatStatPct(accuracy)}</div>
@@ -5977,7 +6217,7 @@ function AccuracyCard({ profile }) {
       ) : (
         <div className="mt-6 text-sm text-[#9aa4b7]">No practice data yet</div>
       )}
-    </div>
+    </button>
   )
 }
 
@@ -6065,21 +6305,27 @@ function RecentActivity({ profile, onViewAll }) {
       <div className="mt-3 divide-y divide-[#edf0f5]">
         {recent.length ? recent.map((a) => (
           <div key={a.id} className="flex items-center gap-3 py-3">
-            <CheckCircle2
-              size={24}
-              className={
-                a.tone === 'green'
-                  ? 'text-athena-green'
-                  : a.tone === 'purple'
-                    ? 'text-athena-purple'
-                    : 'text-athena-blue'
-              }
-            />
+            {a.correct === false ? (
+              <XCircle size={24} className="text-[#e14b4b] shrink-0" />
+            ) : (
+              <CheckCircle2
+                size={24}
+                className={
+                  a.tone === 'green' || a.correct === true
+                    ? 'text-athena-green shrink-0'
+                    : a.tone === 'purple'
+                      ? 'text-athena-purple shrink-0'
+                      : 'text-athena-blue shrink-0'
+                }
+              />
+            )}
             <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-bold text-athena-navy">{a.title}</div>
               <div className="text-xs text-[#71809a]">{a.sub}</div>
             </div>
-            <div className="text-xs font-bold text-athena-blue">{a.meta}</div>
+            <div className={`text-xs font-bold ${a.correct === false ? 'text-[#e14b4b]' : 'text-athena-blue'}`}>
+              {a.meta}
+            </div>
           </div>
         )) : (
           <div className="py-8 text-center text-sm text-[#8b96aa]">
@@ -6196,53 +6442,22 @@ function UpcomingCard({ profile }) {
 }
 
 function CoachCard() {
-  const [throwing, setThrowing] = useState(false)
-  const busyRef = useRef(false)
-
-  const throwSpear = () => {
-    if (busyRef.current) return
-    busyRef.current = true
-    setThrowing(true)
-    window.setTimeout(() => {
-      setThrowing(false)
-      busyRef.current = false
-    }, 900)
-  }
-
   return (
     <div className="coach-card">
       <div className="coach-bubble">
         Consistency is the key to mastery. You’ve got this!
       </div>
       <div className="coach-figure">
-        <AnimatePresence>
-          {throwing ? (
-            <motion.img
-              key="spear"
-              src="/spear.png"
-              alt=""
-              className="coach-spear"
-              initial={{ opacity: 1, x: 10, y: 36, rotate: 12, scaleX: -1 }}
-              animate={{ opacity: [1, 1, 0], x: -520, y: -30, rotate: -8, scaleX: -1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.78, ease: [0.18, 0.7, 0.2, 1] }}
-            />
-          ) : null}
-        </AnimatePresence>
-        <button
-          type="button"
-          className={`coach-athena-btn ${throwing ? 'is-throwing' : ''}`}
-          onClick={throwSpear}
-          aria-label="Athena. Click to throw a spear."
-        >
-          <motion.img
-            src="/athena-coach.png"
-            alt="Athena coach"
-            className="coach-athena"
-            animate={throwing ? { rotate: [0, -8, 4, 0], y: [0, -6, 0] } : { rotate: 0, y: 0 }}
-            transition={{ duration: 0.45, ease: 'easeOut' }}
-          />
-        </button>
+        <motion.img
+          src="/athena-coach.png"
+          alt="Athena coach"
+          className="coach-athena"
+          animate={{ y: [0, -10, 0], rotate: [-2, 2, -2] }}
+          transition={{
+            y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut' },
+            rotate: { duration: 3.2, repeat: Infinity, ease: 'easeInOut' },
+          }}
+        />
       </div>
     </div>
   )
