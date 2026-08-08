@@ -2798,7 +2798,7 @@ function countSkillProgress(progress, subject, domain, skill, questionIds) {
   }
 }
 
-function shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce = [], questionTimes = []) {
+function shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce = [], questionTimes = [], wrongAttempts = []) {
   const answeredIdx = []
   const unansweredIdx = []
   questions.forEach((_, i) => {
@@ -2814,6 +2814,7 @@ function shuffleSessionUnanswered(questions, answers, eliminated, index, missedO
   const nextEliminated = order.map((i) => (eliminated[i] ? [...eliminated[i]] : []))
   const nextMissedOnce = order.map((i) => Boolean(missedOnce[i]))
   const nextQuestionTimes = order.map((i) => Number(questionTimes[i]) || 0)
+  const nextWrongAttempts = order.map((i) => (wrongAttempts[i] ? [...wrongAttempts[i]] : []))
   const nextIndex = Math.max(0, nextQuestions.findIndex((q) => q.id === currentId))
   return {
     questions: nextQuestions,
@@ -2821,6 +2822,7 @@ function shuffleSessionUnanswered(questions, answers, eliminated, index, missedO
     eliminated: nextEliminated,
     missedOnce: nextMissedOnce,
     questionTimes: nextQuestionTimes,
+    wrongAttempts: nextWrongAttempts,
     index: nextIndex,
   }
 }
@@ -3139,10 +3141,10 @@ function asciiToLatex(input, { display = false } = {}) {
     .replace(/>=/g, '\\ge ')
     .replace(/!=/g, '\\ne ')
 
-  // exponents: ^(expr) or ^token — also normalize base)^(exp so KaTeX groups cleanly
+  // exponents: ^(expr) or ^digit(s) / ^letter — never ^2z as one token (that is x^2 z)
   t = t.replace(/\^\(([^)]+)\)/g, '^{$1}')
-  t = t.replace(/\)\^([A-Za-z0-9]+)/g, ')^{$1}')
-  t = t.replace(/\^([A-Za-z0-9]+)/g, '^{$1}')
+  t = t.replace(/\)\^(\d+|[A-Za-z])/g, ')^{$1}')
+  t = t.replace(/\^(\d+|[A-Za-z])/g, '^{$1}')
 
   // Number/id atoms may include thousands separators (1,044m) so we don't split on the comma.
   const numId = String.raw`(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)[A-Za-z]*|[A-Za-z][A-Za-z0-9]*`
@@ -3169,6 +3171,13 @@ function asciiToLatex(input, { display = false } = {}) {
       `${fracCmd}{$1}{$2}`,
     )
   }
+
+  // √(expr) / sqrt(expr) after fractions so roots can wrap stacked fractions
+  t = t.replace(
+    new RegExp(`(?:√|sqrt)\\s*(${parenGroup})`, 'gi'),
+    (_, g) => `\\sqrt{${stripOuterParens(g)}}`,
+  )
+  t = t.replace(/(?:√|sqrt)\s*([A-Za-z0-9]+)/gi, '\\sqrt{$1}')
 
   // 7,400 → 7{,}400 so KaTeX keeps the thousands separator (after fractions are built).
   // Use (?!\d) so it still works in 1,044m (no word-boundary between digit and letter).
@@ -3720,10 +3729,13 @@ function PracticeChoiceList({
   locked = false,
   onSelect,
   onEliminate,
+  wrongAttempts = [],
+  revealCorrect = true,
 }) {
-  const showFeedback = Boolean(reveal) && selected != null && selected !== ''
+  const showFeedback = Boolean(reveal) && ((selected != null && selected !== '') || wrongAttempts.length > 0)
   const correctIdx = typeof question.answer === 'number' ? question.answer : null
   const choices = question.choices?.length ? question.choices : ['', '', '', '']
+  const wrongSet = new Set(wrongAttempts)
 
   return (
     <div className="practice-choices">
@@ -3735,8 +3747,8 @@ function PracticeChoiceList({
         const crossed = (eliminated || []).includes(i)
         let state = ''
         if (showFeedback && correctIdx != null) {
-          if (i === correctIdx) state = 'is-correct'
-          else if (isSelected && i !== correctIdx) state = 'is-wrong'
+          if (revealCorrect && i === correctIdx) state = 'is-correct'
+          else if (wrongSet.has(i) || (isSelected && i !== correctIdx)) state = 'is-wrong'
         }
         return (
           <div
@@ -3746,9 +3758,9 @@ function PracticeChoiceList({
             <button
               type="button"
               className="practice-choice-main"
-              disabled={locked}
+              disabled={locked || wrongSet.has(i)}
               onClick={() => {
-                if (!locked) onSelect(i)
+                if (!locked && !wrongSet.has(i)) onSelect(i)
               }}
             >
               <span className="practice-choice-letter">{letters[i]}</span>
@@ -3822,6 +3834,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     return Array(config.count || 0).fill(null)
   })
   const [eliminated, setEliminated] = useState(() => Array(config.count || 0).fill(null).map(() => []))
+  const [wrongAttempts, setWrongAttempts] = useState(() => Array(config.count || 0).fill(null).map(() => []))
   const [missedOnce, setMissedOnce] = useState(() => Array(config.count || 0).fill(false))
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
@@ -3919,7 +3932,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   }
 
   const shuffleUnanswered = () => {
-    const next = shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce, questionTimes)
+    const next = shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts)
     setSessionQuestions(next.questions)
     setAnswers(next.answers)
     answersRef.current = next.answers
@@ -3927,6 +3940,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     setMissedOnce(next.missedOnce)
     setQuestionTimes(next.questionTimes)
     questionTimesRef.current = next.questionTimes
+    setWrongAttempts(next.wrongAttempts)
     setIndex(next.index)
   }
 
@@ -3962,10 +3976,17 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   const revealFeedback = feedbackMode === 'immediate' || reviewMode
   const answersLocked = source === 'set' && reviewMode
   const answered = answers[index] != null && answers[index] !== ''
+  const wrongTried = wrongAttempts[index] || []
+  const choiceCount = Array.isArray(current?.choices) ? current.choices.length : 4
+  const bankGradual = source === 'bank' && feedbackMode === 'immediate' && !reviewMode && current?.type !== 'spr'
+  const revealCorrect = !bankGradual
+    || isAnswerCorrect(current, answers[index]) === true
+    || wrongTried.length >= Math.max(0, choiceCount - 1)
+  const choicesLocked = answersLocked || (bankGradual && revealCorrect)
   const verdict = revealFeedback && answered ? isAnswerCorrect(current, answers[index]) : null
 
   const recordAnswer = (value) => {
-    if (answersLocked) return
+    if (choicesLocked) return
     setAnswers((prev) => {
       const next = [...prev]
       next[index] = value
@@ -3973,6 +3994,13 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       return next
     })
     if (!current) return
+    if (typeof value === 'number' && isAnswerCorrect(current, value) === false) {
+      setWrongAttempts((prev) => {
+        const next = prev.map((row) => [...(row || [])])
+        if (!next[index].includes(value)) next[index] = [...next[index], value]
+        return next
+      })
+    }
     if (isAnswerCorrect(current, value) === false) {
       setMissedOnce((prev) => {
         const next = [...prev]
@@ -3996,7 +4024,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   }
 
   const toggleEliminate = (choiceIdx) => {
-    if (answersLocked) return
+    if (choicesLocked) return
     setEliminated((prev) => {
       const next = prev.map((row) => [...row])
       const row = next[index]
@@ -4137,7 +4165,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
                   type="button"
                   className={`practice-outline-btn compact ${pdfOpen ? 'active' : ''}`}
                   aria-pressed={pdfOpen}
-                  title="View original PDF question"
+                  title="If anything looks off, open the original source question."
                   onClick={() => setPdfOpen((v) => !v)}
                 >
                   <FileText size={14} />
@@ -4184,7 +4212,9 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
                   eliminated={eliminated[index]}
                   feedbackMode={feedbackMode}
                   reveal={revealFeedback}
-                  locked={answersLocked}
+                  locked={choicesLocked}
+                  wrongAttempts={wrongTried}
+                  revealCorrect={revealCorrect}
                   onSelect={selectChoice}
                   onEliminate={toggleEliminate}
                 />
@@ -4203,12 +4233,12 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
             missedOnce={missedOnce}
             revealResults={revealFeedback}
             onJump={setIndex}
-            onShuffleUnanswered={answersLocked ? undefined : shuffleUnanswered}
+            onShuffleUnanswered={choicesLocked && source === 'set' ? undefined : shuffleUnanswered}
           />
           <button
             type="button"
             className="practice-outline-btn"
-            disabled={!answered || !revealFeedback}
+            disabled={bankGradual ? !revealCorrect : (!answered || !revealFeedback)}
             onClick={() => setExplainOpen(true)}
           >
             <List size={15} />
@@ -4333,6 +4363,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     return Array(config.count || 0).fill(null)
   })
   const [eliminated, setEliminated] = useState(() => Array(config.count || 0).fill(null).map(() => []))
+  const [wrongAttempts, setWrongAttempts] = useState(() => Array(config.count || 0).fill(null).map(() => []))
   const [missedOnce, setMissedOnce] = useState(() => Array(config.count || 0).fill(false))
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
@@ -4428,7 +4459,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   }
 
   const shuffleUnanswered = () => {
-    const next = shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce, questionTimes)
+    const next = shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts)
     setSessionQuestions(next.questions)
     setAnswers(next.answers)
     answersRef.current = next.answers
@@ -4436,6 +4467,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     setMissedOnce(next.missedOnce)
     setQuestionTimes(next.questionTimes)
     questionTimesRef.current = next.questionTimes
+    setWrongAttempts(next.wrongAttempts)
     setIndex(next.index)
   }
 
@@ -4471,10 +4503,17 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   const revealFeedback = feedbackMode === 'immediate' || reviewMode
   const answersLocked = source === 'set' && reviewMode
   const answered = answers[index] != null && answers[index] !== ''
+  const wrongTried = wrongAttempts[index] || []
+  const choiceCount = Array.isArray(current?.choices) ? current.choices.length : 4
+  const bankGradual = source === 'bank' && feedbackMode === 'immediate' && !reviewMode && current?.type !== 'spr'
+  const revealCorrect = !bankGradual
+    || isAnswerCorrect(current, answers[index]) === true
+    || wrongTried.length >= Math.max(0, choiceCount - 1)
+  const choicesLocked = answersLocked || (bankGradual && revealCorrect)
   const verdict = revealFeedback && answered ? isAnswerCorrect(current, answers[index]) : null
 
   const selectChoice = (choiceIdx) => {
-    if (answersLocked) return
+    if (choicesLocked) return
     setAnswers((prev) => {
       const next = [...prev]
       next[index] = choiceIdx
@@ -4483,6 +4522,11 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     })
     if (!current) return
     if (isAnswerCorrect(current, choiceIdx) === false) {
+      setWrongAttempts((prev) => {
+        const next = prev.map((row) => [...(row || [])])
+        if (!next[index].includes(choiceIdx)) next[index] = [...next[index], choiceIdx]
+        return next
+      })
       setMissedOnce((prev) => {
         const next = [...prev]
         next[index] = true
@@ -4501,7 +4545,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   }
 
   const toggleEliminate = (choiceIdx) => {
-    if (answersLocked) return
+    if (choicesLocked) return
     setEliminated((prev) => {
       const next = prev.map((row) => [...row])
       const row = next[index]
@@ -4611,7 +4655,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
                   type="button"
                   className={`practice-outline-btn compact reading-outline-btn ${pdfOpen ? 'active' : ''}`}
                   aria-pressed={pdfOpen}
-                  title="View original PDF page"
+                  title="If anything looks off, open the original source question."
                   onClick={() => setPdfOpen((v) => !v)}
                 >
                   <FileText size={14} />
@@ -4630,7 +4674,9 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
             eliminated={eliminated[index]}
             feedbackMode={feedbackMode}
             reveal={revealFeedback}
-            locked={answersLocked}
+            locked={choicesLocked}
+            wrongAttempts={wrongTried}
+            revealCorrect={revealCorrect}
             onSelect={selectChoice}
             onEliminate={toggleEliminate}
           />
@@ -4646,12 +4692,12 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
             missedOnce={missedOnce}
             revealResults={revealFeedback}
             onJump={setIndex}
-            onShuffleUnanswered={answersLocked ? undefined : shuffleUnanswered}
+            onShuffleUnanswered={choicesLocked && source === 'set' ? undefined : shuffleUnanswered}
           />
           <button
             type="button"
             className="practice-outline-btn reading-outline-btn"
-            disabled={!answered || !revealFeedback}
+            disabled={bankGradual ? !revealCorrect : (!answered || !revealFeedback)}
             onClick={() => setExplainOpen(true)}
           >
             <List size={15} />
@@ -4755,7 +4801,7 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
                       type="button"
                       className={outlineClass}
                       aria-pressed={pdfOpen}
-                      title={isReading ? 'View original PDF page' : 'View original PDF question'}
+                      title="If anything looks off, open the original source question."
                       onClick={() => setPdfOpen((v) => !v)}
                     >
                       <FileText size={14} />
