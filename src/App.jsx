@@ -3955,6 +3955,48 @@ function renderPromptLine(line, equations) {
   return renderProseWithMath(raw)
 }
 
+/** If OCR split the italic source mid-sentence into the passage, rejoin it. */
+function repairSourceAndPassage(source, passage) {
+  let src = String(source || '').replace(/\s+/g, ' ').trim()
+  let pas = String(passage || '').replace(/\s+/g, ' ').trim()
+  if (!src || !pas) return { source: src, passage: pas }
+  // Complete sources end with sentence punctuation.
+  if (/[.!?"”')\]]$/.test(src)) return { source: src, passage: pas }
+
+  const isSpeakerCue = (text) => /^[A-Z][A-Z\s.'-]{0,40}:/.test(text)
+  const looksLikeAttribution = (sentence) =>
+    /\bare also\b/i.test(sentence) ||
+    (/^[A-Z][a-z]+(?:,\s+[A-Z][a-z]+)+/.test(sentence) &&
+      /\b(?:are|is|was|were)\b/.test(sentence))
+
+  let rest = pas
+  const absorbed = []
+  while (rest) {
+    if (isSpeakerCue(rest)) break
+    const m = rest.match(/^(.+?[.!?])(?:\s+|$)([\s\S]*)$/)
+    if (!m) {
+      absorbed.push(rest)
+      rest = ''
+      break
+    }
+    const sentence = m[1].trim()
+    const after = m[2].trim()
+    absorbed.push(sentence)
+    rest = after
+    if (!rest || isSpeakerCue(rest)) break
+    // Keep going only for clear extra attribution lines (e.g. cast list).
+    const next = rest.match(/^(.+?[.!?])(?:\s+|$)([\s\S]*)$/)
+    if (next && looksLikeAttribution(next[1].trim())) continue
+    break
+  }
+
+  if (!absorbed.length) return { source: src, passage: pas }
+  return {
+    source: `${src} ${absorbed.join(' ')}`.trim(),
+    passage: rest,
+  }
+}
+
 /** Split dual-passage text (Text 1 / Text 2) and rhetorical-synthesis notes for SAT-style layout. */
 function splitRhetoricalNoteSentences(rest) {
   let protectedText = String(rest || '')
@@ -5198,15 +5240,25 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
             <>
               <div className="practice-passage-label">{current.passageTitle || 'Passage'}</div>
               <div className="practice-passage-body">
-                {current.source ? (
-                  <p className="practice-passage-source">{current.source}</p>
-                ) : null}
-                {current.figure ? (
-                  <div className="practice-figure-wrap reading-figure-wrap">
-                    <img src={current.figure} alt="Passage figure" className="practice-figure reading-figure" />
-                  </div>
-                ) : null}
-                <PassageSections passage={current.passage} />
+                {(() => {
+                  const { source: passageSource, passage: passageBody } = repairSourceAndPassage(
+                    current.source,
+                    current.passage,
+                  )
+                  return (
+                    <>
+                      {passageSource ? (
+                        <p className="practice-passage-source">{passageSource}</p>
+                      ) : null}
+                      {current.figure ? (
+                        <div className="practice-figure-wrap reading-figure-wrap">
+                          <img src={current.figure} alt="Passage figure" className="practice-figure reading-figure" />
+                        </div>
+                      ) : null}
+                      <PassageSections passage={passageBody} />
+                    </>
+                  )
+                })()}
               </div>
             </>
           )}
