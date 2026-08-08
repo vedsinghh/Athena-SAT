@@ -4874,36 +4874,6 @@ function ProgressPage({ profile }) {
             <p>Practice set reports, question bank activity, and your study streak.</p>
           </div>
         </div>
-        <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
-          <motion.div
-            className="progress-athena-bubble"
-            initial={{ opacity: 0, y: 8, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ delay: 0.25, duration: 0.45, ease: 'easeOut' }}
-          >
-            {athenaCheer}
-          </motion.div>
-          <motion.img
-            src="/athena-progress.png"
-            alt=""
-            className="progress-athena-img"
-            draggable={false}
-            initial={{ opacity: 0, y: 28, rotate: -4 }}
-            animate={{
-              opacity: 1,
-              y: [0, -9, 0],
-              rotate: [-2, 2, -2],
-            }}
-            transition={{
-              opacity: { duration: 0.5, ease: 'easeOut' },
-              y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
-              rotate: { duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
-            }}
-          />
-          <span className="progress-athena-spark s1" aria-hidden="true" />
-          <span className="progress-athena-spark s2" aria-hidden="true" />
-          <span className="progress-athena-spark s3" aria-hidden="true" />
-        </div>
       </header>
 
       <div className="progress-summary">
@@ -4924,15 +4894,49 @@ function ProgressPage({ profile }) {
           <div className="progress-summary-value">{displayBest}<span>days</span></div>
           <div className="progress-summary-sub">Longest consecutive practice stretch</div>
         </div>
-        <div className="card progress-summary-card">
-          <div className="progress-summary-label">Practice Sets</div>
-          <div className="progress-summary-value">{sets.length}</div>
-          <div className="progress-summary-sub">Finished from Math / Reading tabs</div>
-        </div>
-        <div className="card progress-summary-card">
-          <div className="progress-summary-label">Bank Questions</div>
-          <div className="progress-summary-value">{bankLines.length}</div>
-          <div className="progress-summary-sub">Answered from Question Bank</div>
+        <div className="progress-summary-corner">
+          <div className="progress-summary-stack">
+            <div className="card progress-summary-card">
+              <div className="progress-summary-label">Bank Questions</div>
+              <div className="progress-summary-value">{bankLines.length}</div>
+              <div className="progress-summary-sub">Answered from Question Bank</div>
+            </div>
+            <div className="card progress-summary-card">
+              <div className="progress-summary-label">Practice Sets</div>
+              <div className="progress-summary-value">{sets.length}</div>
+              <div className="progress-summary-sub">Finished from Math / Reading tabs</div>
+            </div>
+          </div>
+          <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
+            <motion.div
+              className="progress-athena-bubble"
+              initial={{ opacity: 0, y: 8, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: 0.25, duration: 0.45, ease: 'easeOut' }}
+            >
+              {athenaCheer}
+            </motion.div>
+            <motion.img
+              src="/athena-progress.png"
+              alt=""
+              className="progress-athena-img"
+              draggable={false}
+              initial={{ opacity: 0, y: 28, rotate: -4 }}
+              animate={{
+                opacity: 1,
+                y: [0, -10, 0],
+                rotate: [-2, 2, -2],
+              }}
+              transition={{
+                opacity: { duration: 0.5, ease: 'easeOut' },
+                y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
+                rotate: { duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
+              }}
+            />
+            <span className="progress-athena-spark s1" aria-hidden="true" />
+            <span className="progress-athena-spark s2" aria-hidden="true" />
+            <span className="progress-athena-spark s3" aria-hidden="true" />
+          </div>
         </div>
       </div>
 
@@ -6126,15 +6130,137 @@ function UpcomingCard({ profile }) {
 }
 
 function CoachCard() {
+  const tips = [
+    'Consistency is the key to mastery. You’ve got this!',
+    'One solid set beats a week of waiting.',
+    'Missed a question? That’s just ammo for next time.',
+    'Aim for the bullseye — then raise the target.',
+  ]
+  const [tipIdx, setTipIdx] = useState(0)
+  const [throwing, setThrowing] = useState(false)
+  const [hit, setHit] = useState(false)
+  const busyRef = useRef(false)
+  const timersRef = useRef([])
+
+  const clearThrowTimers = () => {
+    timersRef.current.forEach((id) => window.clearTimeout(id))
+    timersRef.current = []
+  }
+
+  const doThrow = () => {
+    if (busyRef.current) return
+    busyRef.current = true
+    clearThrowTimers()
+    setThrowing(true)
+    setHit(false)
+    timersRef.current.push(window.setTimeout(() => setHit(true), 620))
+    timersRef.current.push(window.setTimeout(() => {
+      setThrowing(false)
+      setHit(false)
+      setTipIdx((i) => (i + 1) % tips.length)
+      busyRef.current = false
+    }, 1500))
+  }
+
+  useEffect(() => {
+    const kickoff = window.setTimeout(() => doThrow(), 1200)
+    const id = window.setInterval(() => doThrow(), 7000)
+    return () => {
+      window.clearTimeout(kickoff)
+      window.clearInterval(id)
+      clearThrowTimers()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-    <div className="coach-card">
-      <div className="coach-bubble">
-        Consistency is the key to mastery. You’ve got this!
+    <button
+      type="button"
+      className={`coach-card ${throwing ? 'is-throwing' : ''} ${hit ? 'is-hit' : ''}`}
+      onClick={() => doThrow()}
+      aria-label="Athena practice tip. Click to toss a spear."
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={tipIdx}
+          className="coach-bubble"
+          initial={{ opacity: 0, y: 8, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -6, scale: 0.98 }}
+          transition={{ duration: 0.35 }}
+        >
+          {tips[tipIdx]}
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="coach-arena" aria-hidden="true">
+        <motion.img
+          src="/target.png"
+          alt=""
+          className="coach-target"
+          animate={
+            hit
+              ? { rotate: [0, -10, 8, -5, 3, 0], scale: [1, 1.08, 0.98, 1.04, 1], x: [0, 4, -3, 2, 0] }
+              : { y: [0, -4, 0] }
+          }
+          transition={
+            hit
+              ? { duration: 0.55, ease: 'easeOut' }
+              : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }
+          }
+        />
+
+        <AnimatePresence>
+          {throwing ? (
+            <motion.img
+              key="spear"
+              src="/spear.png"
+              alt=""
+              className="coach-spear"
+              initial={{ opacity: 0, x: -28, y: 58, rotate: -28, scale: 0.85 }}
+              animate={{ opacity: [0, 1, 1, 1], x: 118, y: -8, rotate: 18, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.7 }}
+              transition={{ duration: 0.62, ease: [0.22, 0.9, 0.28, 1] }}
+            />
+          ) : null}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {hit ? (
+            <motion.span
+              key="burst"
+              className="coach-hit-burst"
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={{ opacity: [0, 1, 0], scale: [0.4, 1.25, 1.55] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.55 }}
+            />
+          ) : null}
+        </AnimatePresence>
+
+        <div className="coach-athena-wrap">
+          <motion.img
+            src="/athena-coach.png"
+            alt=""
+            className="coach-athena"
+            animate={
+              throwing
+                ? { y: [0, -14, 2], rotate: [0, -6, 3, 0], scale: [1, 1.04, 1] }
+                : { y: [0, -7, 0], rotate: [0, 1.5, 0, -1.2, 0] }
+            }
+            transition={
+              throwing
+                ? { duration: 0.7, ease: 'easeOut' }
+                : { duration: 3.6, repeat: Infinity, ease: 'easeInOut' }
+            }
+          />
+        </div>
+
+        <span className="coach-spark s1" />
+        <span className="coach-spark s2" />
+        <span className="coach-spark s3" />
       </div>
-      <div className="coach-figure">
-        <img src="/athena-coach.png" alt="Athena coach" className="coach-athena" />
-      </div>
-    </div>
+    </button>
   )
 }
 
