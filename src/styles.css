@@ -2544,7 +2544,7 @@ button { cursor: pointer; }
   line-height: 1.55;
   font-weight: 500;
   color: #12346f;
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family: "STIX Two Text", "Times New Roman", Times, serif;
   font-variant-numeric: lining-nums;
 }
 .practice-prompt p {
@@ -2554,7 +2554,7 @@ button { cursor: pointer; }
   margin-bottom: 0;
 }
 .practice-eq-line {
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family: "STIX Two Text", "Times New Roman", Times, serif;
   font-size: 1.05em;
   letter-spacing: 0;
   padding: 4px 0;
@@ -2583,21 +2583,49 @@ button { cursor: pointer; }
   font-size: 1em;
 }
 .math-text {
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family: "STIX Two Text", "Times New Roman", Times, serif;
   font-variant-numeric: lining-nums;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 .math-var {
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family: "STIX Two Text", "Times New Roman", Times, serif;
   font-style: italic;
   font-weight: 500;
 }
 .math-num {
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family: "STIX Two Text", "Times New Roman", Times, serif;
   font-style: normal;
   font-variant-numeric: lining-nums;
   font-weight: 500;
+}
+.practice-data-table-wrap {
+  margin: 10px 0 16px;
+  overflow-x: auto;
+}
+.practice-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "STIX Two Text", "Times New Roman", Times, serif;
+  font-size: 15px;
+  color: #12346f;
+}
+.practice-data-table th,
+.practice-data-table td {
+  border: 1px solid #cfd8ea;
+  padding: 8px 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+.practice-data-table thead th {
+  background: #f3f6fc;
+  font-weight: 600;
+}
+.practice-data-table tbody th {
+  background: #f8fafc;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
 }
 .practice-figure-wrap {
   margin: 0 0 16px;
@@ -3004,7 +3032,7 @@ button { cursor: pointer; }
   font-size: 17px;
   font-weight: 500;
   color: #12346f;
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family: "STIX Two Text", "Times New Roman", Times, serif;
   font-variant-numeric: lining-nums;
   letter-spacing: 0.01em;
   line-height: 1.45;

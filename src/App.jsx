@@ -3172,7 +3172,15 @@ function KatexHtml({ latex, display = false, className = '' }) {
 function looksLikeEquation(line) {
   const s = String(line || '').trim()
   if (!s || s.length > 120) return false
-  if (/\b(the|and|what|which|according|given|function|equation|value|graph)\b/i.test(s) && s.length > 40) {
+  // Table dumps / data rows from the readable PDF are not equations.
+  if (/^(TABLE|Columns?|Group\s*\d+)/i.test(s)) return false
+  if (/\bGroup\s*\d+/i.test(s)) return false
+  if (/^TABLE:/i.test(s) || /\bTABLE:/i.test(s)) return false
+  if (/^=\s*\d/.test(s) && (s.match(/,/g) || []).length >= 1) return false
+  if ((s.match(/,/g) || []).length >= 2 && /\d\s*,\s*\d/.test(s) && !/[+\-^/]/.test(s.replace(/,/g, ''))) {
+    return false
+  }
+  if (/\b(the|and|what|which|according|given|function|equation|value|graph|probability|selected|buttons|table|summarizes)\b/i.test(s) && s.length > 40) {
     return false
   }
   const ops = (s.match(/[=+\-−×÷/^()]/g) || []).length
@@ -3182,13 +3190,15 @@ function looksLikeEquation(line) {
 
 function extractInlineMathSegments(text) {
   const s = String(text ?? '')
+  // Don't math-ify transcribed table blocks.
+  if (/\bTABLE:/i.test(s) || /\bGroup\s*\d+\s*=/i.test(s)) return []
   const hits = []
   const patterns = [
     new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
     new RegExp(String.raw`[A-Za-z0-9]+(?:\^[A-Za-z0-9]+)?\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
     new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)\s*/\s*[A-Za-z0-9]+`, 'g'),
     /[A-Za-z]\([A-Za-z0-9]+\)\s*=\s*[A-Za-z0-9+\-−^*/().\s,{,}]+?(?=(?:[.,;:]|\s+(?:and|or|where|has|is|are|in|of|to|for|with|the|a|an)\b)|$)/gi,
-    /y\s*=\s*[A-Za-z0-9+\-−^*/().\s,{,}]+?(?=(?:[.,;:]|\s+(?:and|or|where|estimates|models|is|are|in|of|to|for|with|the|a|an)\b)|$)/gi,
+    /(?<![A-Za-z])y\s*=\s*[A-Za-z0-9+\-−^*/().\s,{,}]+?(?=(?:[.,;:]|\s+(?:and|or|where|estimates|models|is|are|in|of|to|for|with|the|a|an)\b)|$)/gi,
     /\b[A-Za-z]\([A-Za-z0-9]+\)/g,
     /\b[A-Za-z0-9]+(?:\^[A-Za-z0-9]+)+\b/g,
     /\b\d[\d,]*(?:\.\d+)?\s*\/\s*\d[\d,]*(?:\.\d+)?\b/g,
@@ -3434,10 +3444,66 @@ function formatPromptParagraphs(prompt) {
       paras.push(line)
       continue
     }
+    // Keep soft-wrapped table rows with the TABLE block.
+    if (buf.length && (/^TABLE:/i.test(buf[0]) || /\bTABLE:/i.test(buf.join(' ')))) {
+      buf.push(line)
+      continue
+    }
+    if (/^TABLE:/i.test(line) || (/^=\s*\d/.test(line) && buf.length && /\bGroup\s*\d+/i.test(buf.join(' ')))) {
+      if (!/^TABLE:/i.test(line)) {
+        buf.push(line)
+        continue
+      }
+      flush()
+      buf.push(line)
+      continue
+    }
     buf.push(line)
   }
   flush()
   return paras
+}
+
+function parseTranscribedTable(text) {
+  const raw = String(text || '').replace(/\s+/g, ' ').trim()
+  if (!/\bTABLE:/i.test(raw)) return null
+  const colMatch = raw.match(/Columns\s*=\s*([^.]+)\./i)
+  if (!colMatch) return null
+  const columns = colMatch[1].split(',').map((s) => s.trim()).filter(Boolean)
+  const groups = [...raw.matchAll(/Group\s*(\d+)\s*=\s*([0-9,\s]+)/gi)].map((m) => ({
+    label: `Group ${m[1]}`,
+    values: m[2].split(',').map((s) => s.trim()).filter(Boolean),
+  }))
+  if (!columns.length || !groups.length) return null
+  return { columns, groups }
+}
+
+function PracticeTable({ table }) {
+  if (!table) return null
+  return (
+    <div className="practice-data-table-wrap">
+      <table className="practice-data-table">
+        <thead>
+          <tr>
+            <th scope="col" />
+            {table.columns.map((col) => (
+              <th key={col} scope="col">{col}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.groups.map((row) => (
+            <tr key={row.label}>
+              <th scope="row">{row.label}</th>
+              {table.columns.map((col, i) => (
+                <td key={`${row.label}-${col}`}>{row.values[i] ?? ''}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
 function PracticeQuestionBody({ question, hideFigure = false, hidePassage = false }) {
@@ -3463,11 +3529,17 @@ function PracticeQuestionBody({ question, hideFigure = false, hidePassage = fals
       ) : null}
       {promptLines.length ? (
         <div className="practice-prompt">
-          {promptLines.map((line, i) => (
-            <p key={i} className={looksLikeEquation(line) ? 'practice-eq-line' : undefined}>
-              {renderPromptLine(line, equations)}
-            </p>
-          ))}
+          {promptLines.map((line, i) => {
+            const table = parseTranscribedTable(line)
+            if (table) {
+              return <PracticeTable key={i} table={table} />
+            }
+            return (
+              <p key={i} className={looksLikeEquation(line) ? 'practice-eq-line' : undefined}>
+                {renderPromptLine(line, equations)}
+              </p>
+            )
+          })}
         </div>
       ) : equations.length ? (
         <div className="practice-prompt">
