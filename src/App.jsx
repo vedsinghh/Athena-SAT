@@ -1046,12 +1046,14 @@ function Dashboard({
             profile={profile}
             onCompleteQuestion={onCompleteQuestion}
             onCompleteSession={onCompleteSession}
+            onOpenQuestionBank={() => setPage('Question Bank Math')}
           />
         ) : page === 'Reading' ? (
           <ReadingPage
             profile={profile}
             onCompleteQuestion={onCompleteQuestion}
             onCompleteSession={onCompleteSession}
+            onOpenQuestionBank={() => setPage('Question Bank Reading')}
           />
         ) : page === 'Question Bank' ? (
           <QuestionBankPage
@@ -1912,7 +1914,7 @@ function QuestionBankReadingPage({ onBack, profile, onCompleteQuestion }) {
   )
 }
 
-function ReadingPage({ profile, onCompleteQuestion, onCompleteSession }) {
+function ReadingPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuestionBank }) {
   const reading = deriveSubjectStats(
     profile.qbankProgress,
     'reading',
@@ -2235,13 +2237,21 @@ function ReadingPage({ profile, onCompleteQuestion, onCompleteSession }) {
               <div className="math-stat-sub">{s.sub}</div>
             </div>
           ))}
+          <button
+            type="button"
+            className="card quick-action-btn subject-qbank-shortcut reading"
+            onClick={onOpenQuestionBank}
+          >
+            <BookOpen className="mx-auto shrink-0" size={22} />
+            <span className="quick-action-label">Reading Question Bank</span>
+          </button>
         </aside>
       </div>
     </div>
   )
 }
 
-function MathPage({ profile, onCompleteQuestion, onCompleteSession }) {
+function MathPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuestionBank }) {
   const math = deriveSubjectStats(
     profile.qbankProgress,
     'math',
@@ -2508,6 +2518,14 @@ function MathPage({ profile, onCompleteQuestion, onCompleteSession }) {
               <div className="math-stat-sub">{s.sub}</div>
             </div>
           ))}
+          <button
+            type="button"
+            className="card quick-action-btn subject-qbank-shortcut math"
+            onClick={onOpenQuestionBank}
+          >
+            <Calculator className="mx-auto shrink-0" size={22} />
+            <span className="quick-action-label">Math Question Bank</span>
+          </button>
         </aside>
       </div>
     </div>
@@ -4294,21 +4312,34 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
 }
 
 function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) {
+  const [pdfOpen, setPdfOpen] = useState(false)
+
+  useEffect(() => {
+    setPdfOpen(false)
+  }, [questionId, subject, open])
+
   if (!open) return null
   const question = lookupQuestion(questionId, subject)
   const letters = ['A', 'B', 'C', 'D']
   const verdict = question ? isAnswerCorrect(question, answer) : null
+  const isReading = subject === 'reading'
+  const canShowPdf = isReading
+    ? Boolean(question?.pdf && question?.pdfPage != null)
+    : Boolean(question?.pdfPreview || (question?.pdf && question?.pdfPage != null))
+  const outlineClass = isReading
+    ? `practice-outline-btn compact reading-outline-btn ${pdfOpen ? 'active' : ''}`
+    : `practice-outline-btn compact ${pdfOpen ? 'active' : ''}`
 
   return createPortal(
     <div className="practice-modal-backdrop progress-question-backdrop" onClick={onClose} role="presentation">
       <div
-        className="practice-modal practice-results-modal progress-question-modal"
+        className={`practice-modal practice-results-modal progress-question-modal ${isReading ? 'reading-progress-review' : ''}`}
         role="dialog"
         aria-modal="true"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="practice-modal-head">
-          <h3>{subject === 'math' ? 'Math Question' : 'Reading & Writing Question'}</h3>
+          <h3>{isReading ? 'Reading & Writing Question' : 'Math Question'}</h3>
           <button type="button" className="practice-modal-close" onClick={onClose} aria-label="Close">
             <X size={18} />
           </button>
@@ -4320,42 +4351,75 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
             <>
               <div className="progress-review-meta">
                 <span>{[question.domain, question.skill || question.topic].filter(Boolean).join(' · ')}</span>
-                {verdict != null && (
-                  <span className={`practice-verdict ${verdict ? 'ok' : 'bad'}`}>
-                    {verdict ? 'Correct' : 'Incorrect'}
-                  </span>
-                )}
-                {verdict == null && (answer == null || answer === '') && (
-                  <span className="practice-verdict">Unanswered</span>
-                )}
-              </div>
-              <PracticeQuestionBody question={question} />
-              {question.type === 'spr' ? (
-                <SprAnswerInput
-                  key={`${question.id}-review`}
-                  question={question}
-                  value={answer ?? ''}
-                  revealAnswer
-                  onSubmit={() => {}}
-                />
-              ) : (
-                <PracticeChoiceList
-                  question={question}
-                  letters={letters}
-                  selected={typeof answer === 'number' ? answer : null}
-                  eliminated={[]}
-                  feedbackMode="immediate"
-                  reveal
-                  onSelect={() => {}}
-                  onEliminate={() => {}}
-                />
-              )}
-              {question.explanation ? (
-                <div className="progress-review-explain">
-                  <strong>Explanation</strong>
-                  <p>{question.explanation}</p>
+                <div className="progress-review-meta-right">
+                  {verdict != null && (
+                    <span className={`practice-verdict ${verdict ? 'ok' : 'bad'}`}>
+                      {verdict ? 'Correct' : 'Incorrect'}
+                    </span>
+                  )}
+                  {verdict == null && (answer == null || answer === '') && (
+                    <span className="practice-verdict">Unanswered</span>
+                  )}
+                  {canShowPdf && (
+                    <button
+                      type="button"
+                      className={outlineClass}
+                      aria-pressed={pdfOpen}
+                      title={isReading ? 'View original PDF page' : 'View original PDF question'}
+                      onClick={() => setPdfOpen((v) => !v)}
+                    >
+                      <FileText size={14} />
+                      PDF
+                    </button>
+                  )}
                 </div>
-              ) : null}
+              </div>
+
+              {pdfOpen && canShowPdf ? (
+                isReading ? (
+                  <PracticePdfFramePanel
+                    pdf={question.pdf}
+                    pdfPage={question.pdfPage}
+                    tone="reading"
+                  />
+                ) : (
+                  <PracticePdfPanel
+                    pdf={question.pdf}
+                    pdfPage={question.pdfPage}
+                    pdfPreview={question.pdfPreview}
+                  />
+                )
+              ) : (
+                <>
+                  <PracticeQuestionBody question={question} />
+                  {question.type === 'spr' ? (
+                    <SprAnswerInput
+                      key={`${question.id}-review`}
+                      question={question}
+                      value={answer ?? ''}
+                      revealAnswer
+                      onSubmit={() => {}}
+                    />
+                  ) : (
+                    <PracticeChoiceList
+                      question={question}
+                      letters={letters}
+                      selected={typeof answer === 'number' ? answer : null}
+                      eliminated={[]}
+                      feedbackMode="immediate"
+                      reveal
+                      onSelect={() => {}}
+                      onEliminate={() => {}}
+                    />
+                  )}
+                  {question.explanation ? (
+                    <div className="progress-review-explain">
+                      <strong>Explanation</strong>
+                      <p>{question.explanation}</p>
+                    </div>
+                  ) : null}
+                </>
+              )}
             </>
           )}
         </div>

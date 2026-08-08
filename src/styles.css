@@ -781,6 +781,25 @@ button { cursor: pointer; }
   text-wrap: balance;
   hyphens: auto;
 }
+.subject-qbank-shortcut {
+  border: 1px solid #e8ebf2;
+  min-height: 96px;
+  transition: transform .15s, box-shadow .15s;
+}
+.subject-qbank-shortcut:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(31, 61, 125, .08);
+}
+.subject-qbank-shortcut.math {
+  background: #edf8f2;
+  color: #18a05e;
+}
+.subject-qbank-shortcut.math .quick-action-label { color: #12346f; }
+.subject-qbank-shortcut.reading {
+  background: #f2ecfb;
+  color: #7a4ac8;
+}
+.subject-qbank-shortcut.reading .quick-action-label { color: #12346f; }
 .dashboard-greek-key { display: none; }
 
 /* Math page */
@@ -3599,6 +3618,21 @@ button { cursor: pointer; }
   margin-bottom: 14px;
   font-size: 13px;
   color: #66738c;
+}
+.progress-review-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.progress-question-modal.reading-progress-review {
+  max-width: min(860px, calc(100vw - 32px));
+}
+.progress-question-modal .practice-pdf-inline {
+  margin-top: 4px;
+}
+.progress-question-modal .practice-pdf-inline-frame {
+  min-height: min(52vh, 560px);
 }
 .progress-review-explain {
   margin-top: 16px;
