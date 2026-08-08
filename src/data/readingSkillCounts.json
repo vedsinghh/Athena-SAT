@@ -1,0 +1,32 @@
+{
+  "Information and Ideas": {
+    "total": 47,
+    "skills": {
+      "Inferences": 16,
+      "Command of Evidence": 18,
+      "Central Ideas and Details": 13
+    }
+  },
+  "Craft and Structure": {
+    "total": 32,
+    "skills": {
+      "Text Structure and Purpose": 11,
+      "Cross-Text Connections": 3,
+      "Words in Context": 18
+    }
+  },
+  "Expression of Ideas": {
+    "total": 33,
+    "skills": {
+      "Transitions": 21,
+      "Rhetorical Synthesis": 12
+    }
+  },
+  "Standard English Conventions": {
+    "total": 38,
+    "skills": {
+      "Boundaries": 21,
+      "Form, Structure, and Sense": 17
+    }
+  }
+}

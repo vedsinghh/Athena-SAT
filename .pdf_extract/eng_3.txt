@@ -1,0 +1,42 @@
+Question ID: 09d942c6
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Reading and Writing
+Information and Ideas
+Inferences
+Hard
+Question
+A social species, chickens will cry out to one another in warning if they sense a hawk or other predator nearby. But if alone, a chicken will remain
+silent so as not to attract the predator’s attention. Sonja Hillemacher decided to use this behavior to determine whether individual chickens
+possess a capacity to recognize themselves visually when reflected in a mirror (a common standard for animal intelligence). In the first condition
+of her study, the subject could see its reflection, but no other chickens were present. In a second condition, another chicken was visible to the
+subject. Hillemacher presented an image of a hawk to the subject in both conditions, reasoning that if chickens lacked a capacity for visual self-
+recognition, then ______
+Which choice most logically completes the text?
+Answer
+A. neither study condition would elicit an audible response from the subject.
+B. the subject likely would cry out a warning in both study conditions.
+C. only the first study condition would elicit an audible response from the subject.
+D. the subject would fail to distinguish its reflection from the image of the hawk.
+Correct Answer: B
+Rationale
+Choice B is the best answer because it most logically completes the text’s discussion of Hillemacher’s study of visual self-recognition in
+chickens. According to the text, when a predator is nearby, chickens cry out in warning if another chicken is present but remain silent if alone to
+avoid attracting the predator’s attention. The text explains that Hillemacher set up one condition in which a subject was alone and could see its
+reflection in a mirror and another condition in which the subject could see another chicken, and then presented an image of a hawk (a predator).
+It follows that if chickens aren’t capable of recognizing themselves visually in a mirror, the subject likely would cry out a warning in both
+conditions; in the first condition because it would perceive its reflection as another chicken—that is, it would think another chicken is present—
+and in the second condition because it would see that another chicken is actually present.
+Choice A is incorrect because the text suggests that regardless of chickens’ ability to visually recognize themselves in mirrors, the subject in the
+second condition would cry out a warning because another chicken is actually present. Fur ther, if chickens do lack visual self-recognition, the
+subject in the first condition likely would also cry out because it would think its reflection is another chicken. Choice C is incorrect. The text does
+suggest that if chickens lack the ability to visually recognize themselves in mirrors, the subject would cry out a warning in the first condition
+because it would think its reflection is another chicken. However, the text also indicates that regardless of their capacity of self-recognition,
+chickens cry out a warning when other chickens are present, and another chicken is present in the second condition. Therefore, both conditions—
+not just the first one—likely would elicit an audible response from the subject. Choice D is incorrect because the text indicates that the study was
+focused on determining whether chickens recognize themselves visually in a mirror or instead perceive their reflections as other chickens; there’s
+no suggestion that a lack of self-recognition would cause a chicken to confuse its reflection with the image of a hawk.

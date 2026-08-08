@@ -1,0 +1,47 @@
+Question ID: 58817765
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Reading and Writing
+Information and Ideas
+Inferences
+Hard
+Question
+Some geologists have proposed designating the period from 1950 to the present as a new geological epoch (the Anthropocene) characterized by
+human impact on Ear th, but they have struggled to identify reliable stratigraphic markers of the epoch’s onset. Inta Dimante-Deimantovica and a
+research team investigated whether the initial appearance of primary microplastics—invented and mass-produced for industrial and other
+purposes, beginning around the middle of the twentieth century—in sedimentary layers could serve this role. The researchers analyzed European
+lake sediment profiles from the late eighteenth century to the present. Microplastics were present in all layers, likely because cer tain microplastic
+shapes enabled rapid downward migration. The researchers therefore concluded that ______
+Which choice most logically completes the text?
+Answer
+A. the lowest sedimentary layer in which microplastics are found cannot be treated as indicative of the chronological beginning of the
+Anthropocene. 
+B. the presence of microplastics in sediment dating to the late eighteenth century casts doubt on the appropriateness of designating 1950 as the
+onset of the Anthropocene. 
+C. microplastics are not prevalent enough in sediment to serve as a reliable sign of the human impact characteristic of the Anthropocene. 
+D. using the earliest presence of microplastics as a stratigraphic marker of the beginning of the Anthropocene is likely to be viable in some
+locations but is not viable in Europe.
+Correct Answer: A
+Rationale
+Choice A is the best answer because it most logically completes the text’s discussion of microplastics as a proposed stratigraphic marker for the
+onset of the Anthropocene. The text indicates that although primary microplastics (used for industrial and other purposes) were invented and
+mass-produced beginning only around the mid-twentieth century, researchers found microplastics throughout European lake sediment profiles
+dating from the late eighteenth century to the present. According to the text, microplastics were in all layers of sediment likely because
+microplastics of cer tain shapes can rapidly migrate downward—that is, they can move into sedimentary layers that predate their manufacture.
+Since it can’t be assumed that the date of a layer in which microplastics are found indicates when the microplastics were first deposited, it
+follows that the lowest sedimentary layer containing microplastics can’t be treated as indicative of the chronological beginning of the
+Anthropocene.
+Choice B is incorrect. The text explains that microplastics appeared in layers of sediment long predating 1950 likely because cer tain shapes
+allowed them to rapidly migrate downward—that is, the par ticles physically moved into older layers. This finding doesn’t cast doubt on the
+appropriateness of considering 1950 as the onset of the Anthropocene; it doesn’t suggest a flaw in thinking that humans’ impact on Ear th shifted
+around 1950 but simply suggests that the position of microplastics in sediment isn’t useful as an indicator of such a shift. Choice C is incorrect
+because the issue presented in the text isn’t a lack of prevalence of microplastics (and though no quantity is indicated, microplastics were found
+across all the layers) but rather the inability to determine when microplastics were originally deposited, since the par ticles can migrate rapidly
+into older sediment layers. Choice D is incorrect because the text indicates that the likely cause of microplastics being present in all layers of the
+sediment profiles is a proper ty of microplastic par ticles themselves (cer tain shapes allowing them to rapidly move downward into older layers),
+not a characteristic of European lake sediment or anything else specific to Europe. There’s no reason to think the issue of par ticle migration
+wouldn’t occur in other locations.

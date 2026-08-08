@@ -1,0 +1,49 @@
+Question ID: 8e6a96f5
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Reading and Writing
+Information and Ideas
+Inferences
+Hard
+Question
+Duckweed is a small freshwater plant that is often exposed to zinc pollution. Sofia Vámos and colleagues collected samples of four duckweed
+ecotypes (genetically and geographically distinct populations within a species), along with water from each ecotype’s habitat. Hypothesizing that
+each ecotype is adapted to its local conditions in ways that bolster its growth and resistance to pollutants, the researchers grew each ecotype in
+all four water samples and with three levels of zinc (none, low, high). (The researchers did not replicate local differences in light or temperature.)
+They found that the ecotypes grew equally well in all four water samples and that adding zinc consistently enhanced growth, regardless of
+concentration, suggesting that ______
+Which choice most logically completes the text?
+Answer
+A. while the ecotypes are genetically and geographically distinct, those differences do not represent adaptations to local environmental
+conditions.
+B. there may not be significant differences in the water that each ecotype inhabits, but there are significant differences in each ecotype’s
+resistance to zinc pollution.
+C. if each ecotype is indeed locally adapted as the researchers hypothesized, those adaptations are to other environmental conditions than the
+water each ecotype inhabits.
+D. although the researchers’ hypothesis does not appear to be suppor ted, this may be because the levels of zinc exposure the plants in the
+experiment received did not match their exposure in their natural environments.
+Correct Answer: C
+Rationale
+Choice C is the best answer because it most logically completes the text’s discussion of Vámos and colleagues’ experiment with four duckweed
+ecotypes. According to the text, the researchers hypothesized that each ecotype is adapted to its local habitat in ways that help it grow more
+effectively and better tolerate pollutants. To test this, they grew each ecotype in water collected from all four habitats and exposed them to three
+different zinc levels. If the hypothesis were correct, each ecotype would be expected to thrive more in water from its own habitat than in the other
+waters and to respond to zinc levels differently depending on the level of zinc pollution in its home environment. However, the results showed
+that every ecotype grew just as well in every water sample, and that zinc boosted growth the same way across all ecotypes no matter the
+concentration. In other words, the experiment found no evidence that these ecotypes have specifically adapted to their local water or their local
+zinc exposure. It follows, then, that if each ecotype is actually locally adapted, it is adapted not to the water conditions in its habitat but to other
+environmental factors—such as local light or temperature levels, which the text notes the researchers didn’t account for in their experiment.
+Choice A is incorrect because the findings presented in the text suggest only that the ecotypes’ genetic and geographic differences don’t
+represent adaptations to local water conditions and zinc levels, not that the differences don’t represent adaptations to any local environmental
+conditions. Indeed, the text notes that the researchers didn’t account for light or temperature levels in each habitat, suggesting the possibility
+that the ecotypes are adapted to those or other local environmental factors. Choice B is incorrect because it contradicts the findings presented
+in the text. The text states that zinc consistently enhanced growth regardless of concentration, meaning the ecotypes all responded similarly to
+zinc. This uniform response indicates there aren’t significant differences in their resistance to zinc pollution. Choice D is incorrect because the
+findings presented in the text don’t demonstrate that the researchers’ hypothesis of local adaptation isn’t suppor ted. That the ecotypes grew
+equally well in all of the water samples and equally benefited from added zinc at all levels, regardless of zinc levels in their natural environments,
+suggests only that the ecotypes aren’t adapted to their local water conditions and zinc levels; these findings don’t rule out the possibility that the
+ecotypes are adapted to other local factors in their habitats, such as light or temperature (which the text notes the researchers didn’t examine).

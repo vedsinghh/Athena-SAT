@@ -1,0 +1,43 @@
+Question ID: 55ea0659
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Algebra
+Linear equations in one
+variable
+Hard
+Question
+In the given equation, 
+ is a positive integer. If the given equation has exactly one solution, what CANNOT be the value of 
+?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: D
+Rationale
+Choice D is correct. In the given equation, 
+, 
+ is a positive integer. Distributing on the left-hand side of this equation
+yields 
+. Subtracting 
+ from both sides of this equation yields 
+. Subtracting 
+ from both sides
+of this equation yields 
+, which can be written as 
+. For this equation to have exactly one solution, the coefficient
+of 
+, 
+, cannot be equal to 
+. Therefore, 
+ CANNOT be the value of 
+.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.

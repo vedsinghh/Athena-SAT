@@ -1,0 +1,54 @@
+Question ID: 107d0c62
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Algebra
+Linear equations in two
+variables
+Hard
+Question
+The equation gives a volume 
+, in gallons, of a 
+ solution that could be mixed with a volume 
+, in gallons, of a 
+ solution to produce a
+ solution. According to this equation, what volume, in gallons, of the 
+ solution could be mixed with 
+ gallons of the 
+ solution to
+produce a 
+ solution? (Assume that the volume of the mixture is the sum of the volumes of the two solutions before they were mixed.)
+Correct Answer: 210
+Rationale
+The correct answer is 
+. It’s given that the equation 
+ represents mixing a 
+ solution and a 
+ solution to
+obtain a 
+ solution. It’s also given that 
+ represents the volume, in gallons, of the 
+ solution. If 
+ gallons of the 
+ solution is used, it
+follows that 
+. Substituting 
+ for 
+ in the given equation yields 
+, or 
+. Subtracting 
+ from both sides of this equation yields 
+. Subtracting 
+ from both sides of this equation yields
+. Dividing both sides of this equation by 
+ yields 
+. Therefore, the volume of the 
+ solution that could be mixed with
+ gallons of the 
+ solution to produce a 
+ solution is 
+ gallons.

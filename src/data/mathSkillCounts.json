@@ -1,0 +1,40 @@
+{
+  "Algebra": {
+    "total": 23,
+    "skills": {
+      "Linear equations in two variables": 2,
+      "Linear equations in one variable": 5,
+      "Linear functions": 6,
+      "Systems of two linear equations in two variables": 7,
+      "Linear inequalities in one or two variables": 3
+    }
+  },
+  "Advanced Math": {
+    "total": 27,
+    "skills": {
+      "Equivalent expressions": 7,
+      "Nonlinear equations in one variable and systems of equations in two variables": 9,
+      "Nonlinear functions": 11
+    }
+  },
+  "Problem-Solving and Data Analysis": {
+    "total": 19,
+    "skills": {
+      "Percentages": 4,
+      "Inference from sample statistics and margin of error": 3,
+      "One-variable data: distributions and measures of center and spread": 4,
+      "Probability and conditional probability": 2,
+      "Two-variable data: models and scatterplots": 3,
+      "Ratios, rates, proportional relationships, and units": 3
+    }
+  },
+  "Geometry and Trigonometry": {
+    "total": 51,
+    "skills": {
+      "Lines, angles, and triangles": 14,
+      "Right triangles and trigonometry": 9,
+      "Circles": 12,
+      "Area and volume": 16
+    }
+  }
+}

@@ -1,0 +1,31 @@
+Question ID: 088bc84e
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Algebra
+Linear equations in one
+variable
+Medium
+Question
+If 
+, what is the value of 
+?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: C
+Rationale
+Choice C is correct. Dividing both sides of the given equation by 
+ yields 
+. Therefore, the value of 
+ is 
+.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

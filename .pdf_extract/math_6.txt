@@ -1,0 +1,49 @@
+Question ID: 935f3403
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Algebra
+Linear equations in one
+variable
+Easy
+Question
+For a restaurant owner to purchase a pizza oven at a total price of 
+ dollars, a onetime down payment is required, and then fixed monthly
+payments are made for the remaining amount owed for the pizza oven. The equation 
+ represents this situation, where 
+is the number of fixed monthly payments that are made. Which of the following is the best interpretation of 
+ in this context?
+Answer
+A. The amount, in dollars, of the down payment
+B. The amount, in dollars, of each fixed monthly payment
+C. The total amount, in dollars, paid for the pizza oven after 
+ fixed monthly payments
+D. The total number of fixed monthly payments
+Correct Answer: B
+Rationale
+Choice B is correct. For a restaurant owner to purchase a pizza oven at a total price of 
+ dollars, a onetime down payment is required, and
+then fixed monthly payments are made for the remaining amount owed for the pizza oven. It’s given that the equation 
+represents this situation, where 
+ is the number of fixed monthly payments that are made. In this equation, 
+ is a constant term, which
+represents the onetime down payment, in dollars, and 
+ is the coefficient of 
+. Multiplying 
+ by 
+ gives the total amount, in dollars, paid by
+the fixed monthly payments. Therefore, the best interpretation of 
+ in this context is the amount, in dollars, of each fixed monthly payment.
+Choice A is incorrect. This is the best interpretation of 
+, not 
+, in this context.
+Choice C is incorrect. This is the best interpretation of 
+, not 
+, in this context.
+Choice D is incorrect. This is the best interpretation of the variable 
+, not 
+, in this context.
