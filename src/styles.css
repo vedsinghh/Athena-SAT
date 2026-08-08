@@ -2544,7 +2544,7 @@ button { cursor: pointer; }
   line-height: 1.55;
   font-weight: 500;
   color: #12346f;
-  font-family: var(--math-font);
+  font-family: "DM Sans", system-ui, sans-serif;
   font-variant-numeric: lining-nums;
 }
 .practice-prompt p {
@@ -2554,25 +2554,47 @@ button { cursor: pointer; }
   margin-bottom: 0;
 }
 .practice-eq-line {
-  font-family: var(--math-font);
-  font-size: 1.12em;
-  letter-spacing: 0.01em;
-  padding: 2px 0;
-  font-style: italic;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 1.05em;
+  letter-spacing: 0;
+  padding: 4px 0;
+  font-style: normal;
+}
+.practice-katex {
+  font-size: 1.05em;
+  color: #12346f;
+}
+.practice-katex-display {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0 4px;
+}
+.practice-katex-inline {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.08em;
+  max-width: 100%;
+}
+.practice-katex .katex {
+  font-size: 1.05em;
+}
+.practice-choice-text .practice-katex {
+  font-size: 1em;
 }
 .math-text {
-  font-family: var(--math-font);
+  font-family: "DM Sans", system-ui, sans-serif;
   font-variant-numeric: lining-nums;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 .math-var {
-  font-family: var(--math-italic);
+  font-family: "DM Sans", system-ui, sans-serif;
   font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
 }
 .math-num {
-  font-family: var(--math-font);
+  font-family: "DM Sans", system-ui, sans-serif;
   font-style: normal;
   font-variant-numeric: lining-nums;
   font-weight: 500;
@@ -2982,7 +3004,7 @@ button { cursor: pointer; }
   font-size: 17px;
   font-weight: 500;
   color: #12346f;
-  font-family: var(--math-font);
+  font-family: "DM Sans", system-ui, sans-serif;
   font-variant-numeric: lining-nums;
   letter-spacing: 0.01em;
   line-height: 1.45;

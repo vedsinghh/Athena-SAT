@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Update mathQuestions.json prompts/choices from Program Readable PDF. Keeps figures."""
+"""Update mathQuestions.json prompts/choices from Program Readable PDF.
+
+Keeps figures and original pdf/pdfPreview fields for the PDF button.
+"""
 
 from __future__ import annotations
 
@@ -93,10 +96,7 @@ def main():
         else:
             q["choices"] = src["choices"]
             q["type"] = "mc"
-        q["pdf"] = PDF_URL
-        if src["pdfPage"]:
-            q["pdfPage"] = src["pdfPage"]
-        q.pop("pdfPreview", None)
+        # Keep original pdf / pdfPage / pdfPreview for the PDF viewer button.
         updated += 1
 
     JSON_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")

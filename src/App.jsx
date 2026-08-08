@@ -12,6 +12,7 @@ import mathQuestions from './data/mathQuestions.json'
 import readingQuestions from './data/readingQuestions.json'
 import mathSkillCounts from './data/mathSkillCounts.json'
 import readingSkillCounts from './data/readingSkillCounts.json'
+import katex from 'katex'
 
 const QUESTION_POOLS = ['Collegeboard Summer 2026']
 const DEFAULT_QUESTION_POOL = QUESTION_POOLS[0]
@@ -3072,29 +3073,185 @@ function shouldPreferChoiceImage(text) {
   return false
 }
 
+function stripOuterParens(expr) {
+  let s = String(expr || '').trim()
+  while (s.startsWith('(') && s.endsWith(')')) {
+    let depth = 0
+    let wraps = true
+    for (let i = 0; i < s.length; i += 1) {
+      if (s[i] === '(') depth += 1
+      else if (s[i] === ')') {
+        depth -= 1
+        if (depth === 0 && i < s.length - 1) {
+          wraps = false
+          break
+        }
+      }
+    }
+    if (!wraps || depth !== 0) break
+    s = s.slice(1, -1).trim()
+  }
+  return s
+}
+
+/** Convert readable ASCII math from the PDF extract into KaTeX-friendly LaTeX. */
+function asciiToLatex(input, { display = false } = {}) {
+  let t = String(input ?? '').trim()
+  if (!t) return ''
+  const fracCmd = display ? '\\dfrac' : '\\frac'
+  t = t
+    .replace(/−/g, '-')
+    .replace(/·/g, '\\cdot ')
+    .replace(/×/g, '\\times ')
+    .replace(/÷/g, '\\div ')
+    .replace(/≤/g, '\\le ')
+    .replace(/≥/g, '\\ge ')
+    .replace(/≠/g, '\\ne ')
+    .replace(/∞/g, '\\infty ')
+    .replace(/°/g, '^{\\circ}')
+    .replace(/<=/g, '\\le ')
+    .replace(/>=/g, '\\ge ')
+    .replace(/!=/g, '\\ne ')
+
+  // 7,400 → 7{,}400 so KaTeX keeps the thousands separator
+  t = t.replace(/(\d),(\d{3}\b)/g, '$1{,}$2')
+
+  // exponents: ^(expr) or ^token
+  t = t.replace(/\^\(([^)]+)\)/g, '^{$1}')
+  t = t.replace(/\^([A-Za-z0-9]+)/g, '^{$1}')
+
+  // slash fractions → stacked fractions
+  const parenGroup = String.raw`\((?:[^()]|\([^()]*\))*\)`
+  let prev = ''
+  while (t !== prev) {
+    prev = t
+    t = t.replace(
+      new RegExp(`(${parenGroup})\\s*/\\s*(${parenGroup})`, 'g'),
+      (_, a, b) => `${fracCmd}{${stripOuterParens(a)}}{${stripOuterParens(b)}}`,
+    )
+    t = t.replace(
+      new RegExp(`([A-Za-z0-9]+)\\s*/\\s*(${parenGroup})`, 'g'),
+      (_, a, b) => `${fracCmd}{${a}}{${stripOuterParens(b)}}`,
+    )
+    t = t.replace(
+      new RegExp(`(${parenGroup})\\s*/\\s*([A-Za-z0-9]+)`, 'g'),
+      (_, a, b) => `${fracCmd}{${stripOuterParens(a)}}{${b}}`,
+    )
+    t = t.replace(
+      /(?<![A-Za-z\\])([A-Za-z0-9]+)\s*\/\s*([A-Za-z0-9]+)(?![A-Za-z])/g,
+      `${fracCmd}{$1}{$2}`,
+    )
+  }
+
+  return t
+}
+
+function KatexHtml({ latex, display = false, className = '' }) {
+  const html = useMemo(() => {
+    try {
+      return katex.renderToString(latex, {
+        throwOnError: false,
+        displayMode: display,
+        strict: 'ignore',
+        trust: false,
+      })
+    } catch {
+      return null
+    }
+  }, [latex, display])
+
+  if (!html) return <span className={className}>{latex}</span>
+  return (
+    <span
+      className={`practice-katex ${display ? 'practice-katex-display' : 'practice-katex-inline'} ${className}`.trim()}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  )
+}
+
+function looksLikeEquation(line) {
+  const s = String(line || '').trim()
+  if (!s || s.length > 120) return false
+  if (/\b(the|and|what|which|according|given|function|equation|value|graph)\b/i.test(s) && s.length > 40) {
+    return false
+  }
+  const ops = (s.match(/[=+\-−×÷/^()]/g) || []).length
+  const letters = (s.match(/[A-Za-z]/g) || []).length
+  return ops >= 1 && letters <= 36 && s.split(/\s+/).length <= 16
+}
+
+function extractInlineMathSegments(text) {
+  const s = String(text ?? '')
+  const hits = []
+  const patterns = [
+    new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
+    new RegExp(String.raw`[A-Za-z0-9]+(?:\^[A-Za-z0-9]+)?\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
+    new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)\s*/\s*[A-Za-z0-9]+`, 'g'),
+    /[A-Za-z]\([A-Za-z0-9]+\)\s*=\s*[A-Za-z0-9+\-−^*/().\s,{,}]+?(?=(?:[.,;:]|\s+(?:and|or|where|has|is|are|in|of|to|for|with|the|a|an)\b)|$)/gi,
+    /y\s*=\s*[A-Za-z0-9+\-−^*/().\s,{,}]+?(?=(?:[.,;:]|\s+(?:and|or|where|estimates|models|is|are|in|of|to|for|with|the|a|an)\b)|$)/gi,
+    /\b[A-Za-z]\([A-Za-z0-9]+\)/g,
+    /\b[A-Za-z0-9]+(?:\^[A-Za-z0-9]+)+\b/g,
+    /\b\d[\d,]*(?:\.\d+)?\s*\/\s*\d[\d,]*(?:\.\d+)?\b/g,
+    /\b[A-Za-z]\s*\/\s*[A-Za-z0-9]+\b/g,
+  ]
+
+  for (const re of patterns) {
+    re.lastIndex = 0
+    let m
+    while ((m = re.exec(s))) {
+      const start = m.index
+      const end = start + m[0].length
+      if (!m[0].trim()) continue
+      hits.push({ start, end, text: m[0] })
+    }
+  }
+
+  hits.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start))
+  const picked = []
+  for (const hit of hits) {
+    if (picked.some((p) => hit.start < p.end && hit.end > p.start)) continue
+    picked.push(hit)
+  }
+  picked.sort((a, b) => a.start - b.start)
+  return picked
+}
+
+function renderProseWithMath(text) {
+  const raw = String(text ?? '')
+  if (!raw) return null
+  const segments = extractInlineMathSegments(raw)
+  if (!segments.length) return raw
+
+  const nodes = []
+  let cursor = 0
+  segments.forEach((seg, i) => {
+    if (seg.start > cursor) {
+      nodes.push(<span key={`t${i}`}>{raw.slice(cursor, seg.start)}</span>)
+    }
+    nodes.push(
+      <KatexHtml key={`m${i}`} latex={asciiToLatex(seg.text, { display: false })} />,
+    )
+    cursor = seg.end
+  })
+  if (cursor < raw.length) {
+    nodes.push(<span key="tend">{raw.slice(cursor)}</span>)
+  }
+  return nodes
+}
+
 function renderMathText(text, { asEquation = false } = {}) {
   const raw = String(text ?? '')
   if (!raw) return null
-  // Keep prose as plain text with math font via CSS — only specially mark
-  // short equation choices so we don't fragment word-problem stems.
-  if (!asEquation) return raw
 
-  const equationLike = looksLikeEquation(raw)
-    || (/[=+\-−×÷/^]/.test(raw) && raw.length <= 96)
+  if (asEquation && looksLikeEquation(raw)) {
+    return <KatexHtml latex={asciiToLatex(raw, { display: false })} />
+  }
 
-  if (!equationLike) return raw
+  if (asEquation || /[=^/]|[A-Za-z]\(/.test(raw)) {
+    return renderProseWithMath(raw)
+  }
 
-  const parts = raw.split(/(\$?\d+(?:,\d{3})*(?:\.\d+)?%?|(?<![A-Za-z])[A-Za-z](?![A-Za-z]))/g)
-  return parts.map((part, i) => {
-    if (!part) return null
-    if (/^\$?\d/.test(part) || part.endsWith('%')) {
-      return <span key={i} className="math-num">{part}</span>
-    }
-    if (/^[A-Za-z]$/.test(part)) {
-      return <span key={i} className="math-var">{part}</span>
-    }
-    return <span key={i}>{part}</span>
-  })
+  return raw
 }
 
 function PracticeExplanationModal({ open, explanation, onClose }) {
@@ -3230,31 +3387,29 @@ function PracticeResultsModal({ open, questions, answers, onClose, onExit }) {
   )
 }
 
-function looksLikeEquation(line) {
-  const s = String(line || '')
-  if (s.length > 80) return false
-  const ops = (s.match(/[=+\-−×÷/^()]/g) || []).length
-  const letters = (s.match(/[A-Za-z]/g) || []).length
-  return ops >= 1 && letters <= 24 && s.split(/\s+/).length <= 12
-}
-
 function renderPromptLine(line, equations) {
-  const parts = String(line).split(/\{\{eq:(\d+)\}\}/)
-  if (parts.length === 1) return line
-  const nodes = []
-  for (let i = 0; i < parts.length; i += 1) {
-    if (i % 2 === 0) {
-      if (parts[i]) nodes.push(<span key={`t${i}`}>{parts[i]}</span>)
-    } else {
-      const src = equations[Number(parts[i])]
-      if (src) {
-        nodes.push(
-          <img key={`e${i}`} src={src} alt="Equation" className="practice-inline-eq" />,
-        )
+  const raw = String(line)
+  if (/\{\{eq:\d+\}\}/.test(raw)) {
+    const parts = raw.split(/\{\{eq:(\d+)\}\}/)
+    const nodes = []
+    for (let i = 0; i < parts.length; i += 1) {
+      if (i % 2 === 0) {
+        if (parts[i]) nodes.push(<span key={`t${i}`}>{renderProseWithMath(parts[i])}</span>)
+      } else {
+        const src = equations[Number(parts[i])]
+        if (src) {
+          nodes.push(
+            <img key={`e${i}`} src={src} alt="Equation" className="practice-inline-eq" />,
+          )
+        }
       }
     }
+    return nodes
   }
-  return nodes
+  if (looksLikeEquation(raw)) {
+    return <KatexHtml latex={asciiToLatex(raw, { display: true })} display />
+  }
+  return renderProseWithMath(raw)
 }
 
 /** Merge PDF soft-wrapped lines into paragraphs; keep equation lines separate. */
