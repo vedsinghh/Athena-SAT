@@ -3065,6 +3065,32 @@ function choiceDisplayText(choice) {
   return trimmed
 }
 
+/** Split "f(x) = …; g(x) = …" style choices into stacked equation lines. */
+function splitStackedChoiceEquations(text) {
+  const s = String(text || '').trim()
+  if (!s) return null
+  if (s.includes('\n')) {
+    const lines = s.split(/\n+/).map((p) => p.trim()).filter(Boolean)
+    if (lines.length >= 2 && lines.every((p) => /=/.test(p))) return lines
+  }
+  if (!s.includes(';')) return null
+  const parts = s.split(/\s*;\s*/).map((p) => p.trim()).filter(Boolean)
+  if (parts.length < 2 || parts.length > 4) return null
+  const isEq = (p) => {
+    if (!/=/.test(p)) return false
+    if (p.length < 6 || p.length > 100) return false
+    if (/\?\s*$/.test(p)) return false
+    // Keep reading/prose choices intact
+    if (/\b(only|neither|both|sufficient|incorrect|correct)\b/i.test(p)) return false
+    const words = p.split(/\s+/).length
+    if (words > 14) return false
+    if (/[A-Za-z]\(/.test(p)) return true
+    return /[A-Za-z]/.test(p) && /[0-9+\-^/()]/.test(p) && words <= 10
+  }
+  if (!parts.every(isEq)) return null
+  return parts
+}
+
 function shouldPreferChoiceImage(text) {
   const s = String(text || '').trim()
   if (!s) return true
@@ -3704,6 +3730,7 @@ function PracticeChoiceList({
       {choices.map((choice, i) => {
         const { image } = normalizeChoice(choice)
         const text = choiceDisplayText(choice)
+        const stacked = text ? splitStackedChoiceEquations(text) : null
         const isSelected = selected === i
         const crossed = (eliminated || []).includes(i)
         let state = ''
@@ -3714,7 +3741,7 @@ function PracticeChoiceList({
         return (
           <div
             key={`${question.id}-${letters[i]}`}
-            className={`practice-choice ${isSelected ? 'selected' : ''} ${crossed ? 'crossed' : ''} ${state} ${locked ? 'locked' : ''}`}
+            className={`practice-choice ${stacked ? 'stacked' : ''} ${isSelected ? 'selected' : ''} ${crossed ? 'crossed' : ''} ${state} ${locked ? 'locked' : ''}`}
           >
             <button
               type="button"
@@ -3726,7 +3753,18 @@ function PracticeChoiceList({
             >
               <span className="practice-choice-letter">{letters[i]}</span>
               <span className="practice-choice-content">
-                {text ? <span className="practice-choice-text math-text">{renderMathText(text, { asEquation: true })}</span> : null}
+                {stacked ? (
+                  <span className="practice-choice-text practice-choice-stack math-text">
+                    {stacked.map((line, li) => (
+                      <span key={`${question.id}-${letters[i]}-L${li}`} className="practice-choice-eq-line">
+                        {renderMathText(line, { asEquation: true })}
+                      </span>
+                    ))}
+                  </span>
+                ) : null}
+                {!stacked && text ? (
+                  <span className="practice-choice-text math-text">{renderMathText(text, { asEquation: true })}</span>
+                ) : null}
                 {!text && image ? <img src={image} alt="" className="practice-choice-image" /> : null}
                 {!text && !image ? <span className="practice-choice-text">{letters[i]}</span> : null}
               </span>
@@ -4816,15 +4854,55 @@ function ProgressPage({ profile }) {
     setReview({ subject, questionId, answer: answer ?? null })
   }
 
+  const athenaCheer = streak >= 7
+    ? `Day ${streak} — trophy energy!`
+    : streak >= 3
+      ? `Day ${streak} streak. She's proud.`
+      : streak >= 1
+        ? 'Nice practice day!'
+        : 'Practice once and she lifts the cup.'
+
   return (
     <div className="progress-page">
       <header className="progress-hero">
-        <div className="progress-hero-badge" aria-hidden="true">
-          <Trophy size={22} strokeWidth={2.1} />
+        <div className="progress-hero-main">
+          <div className="progress-hero-badge" aria-hidden="true">
+            <Trophy size={22} strokeWidth={2.1} />
+          </div>
+          <div>
+            <h1>Progress</h1>
+            <p>Practice set reports, question bank activity, and your study streak.</p>
+          </div>
         </div>
-        <div>
-          <h1>Progress</h1>
-          <p>Practice set reports, question bank activity, and your study streak.</p>
+        <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
+          <motion.div
+            className="progress-athena-bubble"
+            initial={{ opacity: 0, y: 8, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.25, duration: 0.45, ease: 'easeOut' }}
+          >
+            {athenaCheer}
+          </motion.div>
+          <motion.img
+            src="/athena-progress.png"
+            alt=""
+            className="progress-athena-img"
+            draggable={false}
+            initial={{ opacity: 0, y: 28, rotate: -4 }}
+            animate={{
+              opacity: 1,
+              y: [0, -9, 0],
+              rotate: [-2, 2, -2],
+            }}
+            transition={{
+              opacity: { duration: 0.5, ease: 'easeOut' },
+              y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
+              rotate: { duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
+            }}
+          />
+          <span className="progress-athena-spark s1" aria-hidden="true" />
+          <span className="progress-athena-spark s2" aria-hidden="true" />
+          <span className="progress-athena-spark s3" aria-hidden="true" />
         </div>
       </header>
 

@@ -608,15 +608,28 @@ def crop_math_figure(page: fitz.Page, out_path: Path, text: str) -> tuple[str | 
         for key in sorted(lines):
             ws = sorted(lines[key], key=lambda w: w[0])
             text_ln = " ".join(w[4] for w in ws)
-            if re.search(r"(?i)\b(also shown|is shown|are shown)\b", text_ln):
-                intro_bottom = max(w[3] for w in ws)
-                break
             if re.match(r"^(Seating|Proportion|capacity|Less than|Greater than)\b", text_ln, re.I):
                 break
             if re.fullmatch(r"[\d\s.Oxy−-]+", text_ln):
                 break
-            if len(text_ln.split()) >= 5 and sum(ch.isalpha() for ch in text_ln) >= 20:
+            # Axis / short chart labels — figure has started
+            if len(text_ln.split()) <= 3 and re.fullmatch(
+                r"(?i)(temperature|depth|time|year|distance|height|weight|cost|price|x|y|o|\(.*\))+",
+                text_ln.replace(" ", ""),
+            ):
+                break
+            alpha = sum(ch.isalpha() for ch in text_ln)
+            words_n = len(text_ln.split())
+            if words_n >= 5 and alpha >= 20:
+                # Keep consuming wrapped intro lines (don't stop at first "shown")
                 intro_bottom = max(w[3] for w in ws)
+                continue
+            if re.search(r"(?i)\b(also shown|is shown|are shown|is also shown)\b", text_ln):
+                intro_bottom = max(w[3] for w in ws)
+                continue
+            # Short non-prose → figure content
+            if words_n <= 4 and alpha < 18:
+                break
         mid_top = intro_bottom + 2
         mid_bottom = cue_y - 4
         if mid_bottom > mid_top + 36:
@@ -647,12 +660,19 @@ def crop_math_figure(page: fitz.Page, out_path: Path, text: str) -> tuple[str | 
                             continue
                         if w[1] >= cue_y - 2:
                             continue
+                        token = w[4].strip()
+                        # Don't pull wrapped stem prose into the figure crop
+                        if len(token) > 10 and sum(ch.isalpha() for ch in token) >= 6:
+                            continue
                         wr = fitz.Rect(w[0], w[1], w[2], w[3])
+                        # Skip leftover intro words sitting above the drawing core
+                        if mid_clusters and wr.y1 < core.y0 - 2 and sum(ch.isalpha() for ch in token) >= 3:
+                            continue
                         union |= wr
                     clip = fitz.Rect(
-                        max(page.rect.x0 + 12, min(union.x0 - 14, page.rect.x0 + 20)),
-                        max(page.rect.y0 + 8, mid_top - 4),
-                        min(page.rect.x1 - 12, max(union.x1 + 14, page.rect.x0 + 200)),
+                        max(page.rect.x0 + 12, union.x0 - 14),
+                        max(page.rect.y0 + 8, max(mid_top, union.y0 - 10)),
+                        min(page.rect.x1 - 12, union.x1 + 14),
                         min(page.rect.y1 - 8, mid_bottom),
                     )
                     if clip.height >= 40 and clip.width >= 60:
