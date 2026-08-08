@@ -2004,7 +2004,7 @@ function ReadingPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQue
       value: reading.weakestDomain || 'Not enough data',
       sub: reading.weakestDomain ? 'Improve here!' : 'Need attempts in 2+ domains',
       icon: <AlertTriangle size={18} />,
-      tone: 'orange',
+      tone: 'danger',
       compact: true,
     },
   ]
@@ -2226,7 +2226,7 @@ function ReadingPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQue
           {stats.map((s) => (
             <div key={s.label} className={`card math-stat math-stat-${s.tone}`}>
               <div className="math-stat-top">
-                <div className="text-xs font-semibold text-[#6b7894]">{s.label}</div>
+                <div className={`text-xs font-semibold ${s.tone === 'danger' ? 'text-[#14284f]' : 'text-[#6b7894]'}`}>{s.label}</div>
                 <div className="math-stat-icon">{s.icon}</div>
               </div>
               <div className={`math-stat-value ${s.compact ? 'compact' : ''}`}>{s.value}</div>
@@ -2321,7 +2321,7 @@ function MathPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuesti
       value: math.weakestDomain || 'Not enough data',
       sub: math.weakestDomain ? 'Improve here!' : 'Need attempts in 2+ domains',
       icon: <AlertTriangle size={18} />,
-      tone: 'orange',
+      tone: 'danger',
       compact: true,
     },
   ]
@@ -2507,7 +2507,7 @@ function MathPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuesti
           {stats.map((s) => (
             <div key={s.label} className={`card math-stat math-stat-${s.tone}`}>
               <div className="math-stat-top">
-                <div className="text-xs font-semibold text-[#6b7894]">{s.label}</div>
+                <div className={`text-xs font-semibold ${s.tone === 'danger' ? 'text-[#14284f]' : 'text-[#6b7894]'}`}>{s.label}</div>
                 <div className="math-stat-icon">{s.icon}</div>
               </div>
               <div className={`math-stat-value ${s.compact ? 'compact' : ''}`}>{s.value}</div>
@@ -4877,7 +4877,7 @@ function ProgressPage({ profile }) {
       </header>
 
       <div className="progress-summary">
-        <div className="card progress-summary-card">
+        <div className="card progress-summary-card progress-summary-streak">
           <div className="progress-summary-label">Current Streak</div>
           <div className="progress-summary-value accent-orange">{streak}<span>days</span></div>
           <div className="progress-week">
@@ -4888,26 +4888,34 @@ function ProgressPage({ profile }) {
               </div>
             ))}
           </div>
+          <div className="progress-summary-best">
+            Best streak <strong>{displayBest}</strong> day{displayBest === 1 ? '' : 's'}
+          </div>
         </div>
-        <div className="card progress-summary-card">
-          <div className="progress-summary-label">Best Streak</div>
-          <div className="progress-summary-value">{displayBest}<span>days</span></div>
-          <div className="progress-summary-sub">Longest consecutive practice stretch</div>
+        <div className="card progress-summary-card progress-summary-accuracy">
+          <div className="progress-summary-label">
+            <Target size={13} strokeWidth={2.2} />
+            Hit rate
+          </div>
+          {analytics.totalGraded ? (
+            <div className="progress-summary-accuracy-body">
+              <ProgressHitRing correct={analytics.correct} incorrect={analytics.incorrect} size={86} />
+              <div className="progress-summary-accuracy-copy">
+                <div className="progress-summary-value">{formatStatPct(analytics.accuracy)}</div>
+                <div className="progress-summary-sub">
+                  {analytics.correct}/{analytics.totalGraded} correct across sets & bank
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="progress-summary-accuracy-empty">
+              <div className="progress-summary-accuracy-placeholder" aria-hidden="true" />
+              <div className="progress-summary-sub">Answer questions to unlock your hit rate.</div>
+            </div>
+          )}
         </div>
         <div className="progress-summary-corner">
-          <div className="progress-summary-stack">
-            <div className="card progress-summary-card">
-              <div className="progress-summary-label">Bank Questions</div>
-              <div className="progress-summary-value">{bankLines.length}</div>
-              <div className="progress-summary-sub">Answered from Question Bank</div>
-            </div>
-            <div className="card progress-summary-card">
-              <div className="progress-summary-label">Practice Sets</div>
-              <div className="progress-summary-value">{sets.length}</div>
-              <div className="progress-summary-sub">Finished from Math / Reading tabs</div>
-            </div>
-          </div>
-          <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
+          <div className="progress-summary-stack-wrap">
             <motion.div
               className="progress-athena-bubble"
               initial={{ opacity: 0, y: 8, scale: 0.92 }}
@@ -4916,6 +4924,20 @@ function ProgressPage({ profile }) {
             >
               {athenaCheer}
             </motion.div>
+            <div className="progress-summary-stack">
+              <div className="card progress-summary-card">
+                <div className="progress-summary-label">Bank Questions</div>
+                <div className="progress-summary-value">{bankLines.length}</div>
+                <div className="progress-summary-sub">Answered from Question Bank</div>
+              </div>
+              <div className="card progress-summary-card">
+                <div className="progress-summary-label">Practice Sets</div>
+                <div className="progress-summary-value">{sets.length}</div>
+                <div className="progress-summary-sub">Finished from Math / Reading tabs</div>
+              </div>
+            </div>
+          </div>
+          <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
             <motion.img
               src="/athena-progress.png"
               alt=""
@@ -5345,11 +5367,9 @@ function ProgressAnalytics({ analytics, streak }) {
   )
 }
 
-function ProgressHitRing({ correct, incorrect }) {
+function ProgressHitRing({ correct, incorrect, size = 96, stroke = 14 }) {
   const total = correct + incorrect
   if (!total) return null
-  const size = 96
-  const stroke = 14
   const r = (size - stroke) / 2
   const c = 2 * Math.PI * r
   const correctLen = (correct / total) * c
@@ -6130,86 +6150,25 @@ function UpcomingCard({ profile }) {
 }
 
 function CoachCard() {
-  const tips = [
-    'Consistency is the key to mastery. You’ve got this!',
-    'One solid set beats a week of waiting.',
-    'Missed a question? That’s just ammo for next time.',
-    'Aim for the bullseye — then raise the target.',
-  ]
-  const [tipIdx, setTipIdx] = useState(0)
   const [throwing, setThrowing] = useState(false)
-  const [hit, setHit] = useState(false)
   const busyRef = useRef(false)
-  const timersRef = useRef([])
 
-  const clearThrowTimers = () => {
-    timersRef.current.forEach((id) => window.clearTimeout(id))
-    timersRef.current = []
-  }
-
-  const doThrow = () => {
+  const throwSpear = () => {
     if (busyRef.current) return
     busyRef.current = true
-    clearThrowTimers()
     setThrowing(true)
-    setHit(false)
-    timersRef.current.push(window.setTimeout(() => setHit(true), 620))
-    timersRef.current.push(window.setTimeout(() => {
+    window.setTimeout(() => {
       setThrowing(false)
-      setHit(false)
-      setTipIdx((i) => (i + 1) % tips.length)
       busyRef.current = false
-    }, 1500))
+    }, 900)
   }
 
-  useEffect(() => {
-    const kickoff = window.setTimeout(() => doThrow(), 1200)
-    const id = window.setInterval(() => doThrow(), 7000)
-    return () => {
-      window.clearTimeout(kickoff)
-      window.clearInterval(id)
-      clearThrowTimers()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
-    <button
-      type="button"
-      className={`coach-card ${throwing ? 'is-throwing' : ''} ${hit ? 'is-hit' : ''}`}
-      onClick={() => doThrow()}
-      aria-label="Athena practice tip. Click to toss a spear."
-    >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={tipIdx}
-          className="coach-bubble"
-          initial={{ opacity: 0, y: 8, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -6, scale: 0.98 }}
-          transition={{ duration: 0.35 }}
-        >
-          {tips[tipIdx]}
-        </motion.div>
-      </AnimatePresence>
-
-      <div className="coach-arena" aria-hidden="true">
-        <motion.img
-          src="/target.png"
-          alt=""
-          className="coach-target"
-          animate={
-            hit
-              ? { rotate: [0, -10, 8, -5, 3, 0], scale: [1, 1.08, 0.98, 1.04, 1], x: [0, 4, -3, 2, 0] }
-              : { y: [0, -4, 0] }
-          }
-          transition={
-            hit
-              ? { duration: 0.55, ease: 'easeOut' }
-              : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }
-          }
-        />
-
+    <div className="coach-card">
+      <div className="coach-bubble">
+        Consistency is the key to mastery. You’ve got this!
+      </div>
+      <div className="coach-figure">
         <AnimatePresence>
           {throwing ? (
             <motion.img
@@ -6217,50 +6176,29 @@ function CoachCard() {
               src="/spear.png"
               alt=""
               className="coach-spear"
-              initial={{ opacity: 0, x: -28, y: 58, rotate: -28, scale: 0.85 }}
-              animate={{ opacity: [0, 1, 1, 1], x: 118, y: -8, rotate: 18, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.7 }}
-              transition={{ duration: 0.62, ease: [0.22, 0.9, 0.28, 1] }}
-            />
-          ) : null}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {hit ? (
-            <motion.span
-              key="burst"
-              className="coach-hit-burst"
-              initial={{ opacity: 0, scale: 0.4 }}
-              animate={{ opacity: [0, 1, 0], scale: [0.4, 1.25, 1.55] }}
+              initial={{ opacity: 1, x: 10, y: 36, rotate: 12, scaleX: -1 }}
+              animate={{ opacity: [1, 1, 0], x: -520, y: -30, rotate: -8, scaleX: -1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.55 }}
+              transition={{ duration: 0.78, ease: [0.18, 0.7, 0.2, 1] }}
             />
           ) : null}
         </AnimatePresence>
-
-        <div className="coach-athena-wrap">
+        <button
+          type="button"
+          className={`coach-athena-btn ${throwing ? 'is-throwing' : ''}`}
+          onClick={throwSpear}
+          aria-label="Athena. Click to throw a spear."
+        >
           <motion.img
             src="/athena-coach.png"
-            alt=""
+            alt="Athena coach"
             className="coach-athena"
-            animate={
-              throwing
-                ? { y: [0, -14, 2], rotate: [0, -6, 3, 0], scale: [1, 1.04, 1] }
-                : { y: [0, -7, 0], rotate: [0, 1.5, 0, -1.2, 0] }
-            }
-            transition={
-              throwing
-                ? { duration: 0.7, ease: 'easeOut' }
-                : { duration: 3.6, repeat: Infinity, ease: 'easeInOut' }
-            }
+            animate={throwing ? { rotate: [0, -8, 4, 0], y: [0, -6, 0] } : { rotate: 0, y: 0 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
           />
-        </div>
-
-        <span className="coach-spark s1" />
-        <span className="coach-spark s2" />
-        <span className="coach-spark s3" />
+        </button>
       </div>
-    </button>
+    </div>
   )
 }
 

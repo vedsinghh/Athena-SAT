@@ -451,6 +451,9 @@ button { cursor: pointer; }
   max-width: 1300px; margin: 0 auto;
   display: grid; grid-template-columns: minmax(0,1fr) 330px; gap: 20px;
 }
+.dashboard-grid > aside {
+  overflow: visible;
+}
 .card {
   border: 1px solid #e4e9f2;
   border-radius: 20px;
@@ -709,32 +712,18 @@ button { cursor: pointer; }
   min-height: 360px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  border-radius: 24px;
+  overflow: visible;
+  border-radius: 0;
   padding: 12px 8px 0;
-  width: 100%;
-  border: 1px solid #e4e9f2;
-  background:
-    radial-gradient(circle at 82% 72%, rgba(240, 163, 90, 0.16) 0 18%, transparent 42%),
-    radial-gradient(circle at 18% 30%, rgba(59, 111, 217, 0.1) 0 16%, transparent 40%),
-    rgba(255, 255, 255, 0.97);
-  box-shadow: 0 16px 45px rgba(31, 61, 125, 0.06), 0 2px 10px rgba(31, 61, 125, 0.03);
-  text-align: left;
-  cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-.coach-card:hover {
-  box-shadow: 0 18px 48px rgba(31, 61, 125, 0.1), 0 4px 14px rgba(31, 61, 125, 0.05);
-}
-.coach-card:focus-visible {
-  outline: 2px solid #5b9ee8;
-  outline-offset: 3px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 .coach-bubble {
   position: relative;
   z-index: 2;
   align-self: flex-start;
-  max-width: 210px;
+  max-width: 200px;
   margin: 0 4px 4px;
   border: 1px solid #d9e3f5;
   border-radius: 22px;
@@ -759,109 +748,6 @@ button { cursor: pointer; }
   border-bottom: 1px solid #d9e3f5;
   transform: rotate(45deg);
 }
-.coach-arena {
-  position: relative;
-  flex: 1;
-  min-height: 260px;
-  margin-top: 4px;
-  overflow: visible;
-}
-.coach-athena-wrap {
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  transform: translateX(-54%);
-  z-index: 2;
-  pointer-events: none;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  width: 92%;
-  max-width: 280px;
-  height: min(300px, 78%);
-}
-.coach-athena {
-  display: block;
-  width: auto;
-  height: 100%;
-  max-height: 300px;
-  max-width: 100%;
-  object-fit: contain;
-  object-position: bottom center;
-  pointer-events: none;
-  filter: drop-shadow(0 12px 18px rgba(40, 60, 110, 0.14));
-}
-.coach-target {
-  position: absolute;
-  right: 2px;
-  top: 18px;
-  width: 78px;
-  height: auto;
-  z-index: 1;
-  pointer-events: none;
-  filter: drop-shadow(0 8px 12px rgba(40, 60, 110, 0.14));
-}
-.coach-spear {
-  position: absolute;
-  left: 42%;
-  top: 42%;
-  width: 132px;
-  height: auto;
-  z-index: 3;
-  pointer-events: none;
-  filter: drop-shadow(0 4px 8px rgba(40, 60, 110, 0.2));
-  transform-origin: left center;
-}
-.coach-hit-burst {
-  position: absolute;
-  right: 22px;
-  top: 36px;
-  width: 46px;
-  height: 46px;
-  border-radius: 999px;
-  background:
-    radial-gradient(circle, rgba(240, 163, 90, 0.55) 0 28%, transparent 62%),
-    conic-gradient(from 20deg, transparent 0 18%, #f0a35a 18% 22%, transparent 22% 40%, #3b6fd9 40% 44%, transparent 44% 62%, #e8c45a 62% 66%, transparent 66% 100%);
-  z-index: 4;
-  pointer-events: none;
-}
-.coach-spark {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
-  z-index: 1;
-  opacity: 0.7;
-  animation: coachSpark 2.6s ease-in-out infinite;
-}
-.coach-spark.s1 {
-  left: 18%;
-  top: 28%;
-  background: #f0a35a;
-}
-.coach-spark.s2 {
-  right: 28%;
-  top: 58%;
-  width: 6px;
-  height: 6px;
-  background: #3b6fd9;
-  animation-delay: 0.5s;
-}
-.coach-spark.s3 {
-  left: 30%;
-  bottom: 22%;
-  width: 5px;
-  height: 5px;
-  background: #e8c45a;
-  animation-delay: 1s;
-}
-@keyframes coachSpark {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.25; }
-  50% { transform: translateY(-8px) scale(1.3); opacity: 0.9; }
-}
-.coach-card.is-hit .coach-target {
-  filter: drop-shadow(0 0 12px rgba(240, 163, 90, 0.45));
-}
 .coach-figure {
   position: relative;
   flex: 1;
@@ -869,6 +755,47 @@ button { cursor: pointer; }
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  overflow: visible;
+  z-index: 1;
+}
+.coach-athena-btn {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-height: 320px;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+.coach-athena-btn:focus-visible {
+  outline: 2px solid #5b9ee8;
+  outline-offset: 4px;
+  border-radius: 16px;
+}
+.coach-athena {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-height: 320px;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 16px rgba(40,60,110,.1));
+}
+.coach-spear {
+  position: absolute;
+  left: 38%;
+  top: 38%;
+  width: 150px;
+  height: auto;
+  z-index: 5;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(40, 60, 110, 0.22));
+  transform-origin: center center;
 }
 .quick-action-btn {
   display: flex;
@@ -1225,6 +1152,20 @@ button { cursor: pointer; }
 .math-stat-blue .math-stat-icon { color: #2f62d6; background: #eef3ff; }
 .math-stat-purple .math-stat-icon { color: #7a4ac8; background: #f4effb; }
 .math-stat-orange .math-stat-icon { color: #e07020; background: #fff1e8; }
+.math-stat-danger {
+  background: #fff5f4;
+  border-color: #f0d0cc;
+}
+.math-stat-danger .math-stat-icon {
+  color: #d94841;
+  background: #fde8e6;
+}
+.math-stat-danger .math-stat-top > div:first-child,
+.math-stat-danger .math-stat-value,
+.math-stat-danger .math-stat-value.compact,
+.math-stat-danger .math-stat-sub {
+  color: #14284f;
+}
 .math-stat-value {
   margin-top: 6px;
   font-size: 26px;
@@ -3587,23 +3528,33 @@ button { cursor: pointer; }
 }
 .progress-summary {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.9fr) minmax(340px, 1.45fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr) minmax(380px, 1.55fr);
   gap: 14px;
   margin-bottom: 14px;
   align-items: stretch;
 }
 .progress-summary-corner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(170px, 1.05fr);
-  gap: 10px;
-  align-items: stretch;
+  grid-template-columns: minmax(150px, 0.72fr) minmax(220px, 1.2fr);
+  gap: 8px;
+  align-items: end;
   min-width: 0;
+  min-height: 280px;
+}
+.progress-summary-stack-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  align-self: stretch;
+  justify-content: flex-end;
 }
 .progress-summary-stack {
   display: flex;
   flex-direction: column;
   gap: 10px;
   min-width: 0;
+  flex: 1;
 }
 .progress-summary-stack .progress-summary-card {
   flex: 1;
@@ -3614,8 +3565,9 @@ button { cursor: pointer; }
 .progress-athena {
   position: relative;
   min-width: 0;
-  min-height: 210px;
+  min-height: 280px;
   height: 100%;
+  align-self: stretch;
   z-index: 3;
   pointer-events: none;
   user-select: none;
@@ -3623,36 +3575,34 @@ button { cursor: pointer; }
 }
 .progress-athena-img {
   position: absolute;
-  right: -10px;
-  bottom: -18px;
-  width: min(250px, 100%);
-  height: auto;
-  max-height: 250px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
   display: block;
   object-fit: contain;
-  object-position: bottom right;
+  object-position: center bottom;
   filter: drop-shadow(0 16px 24px rgba(40, 60, 110, 0.16));
   -webkit-mask-image: linear-gradient(
     to bottom,
     #000 0%,
-    #000 82%,
-    rgba(0, 0, 0, 0.55) 92%,
+    #000 86%,
+    rgba(0, 0, 0, 0.55) 94%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to bottom,
     #000 0%,
-    #000 82%,
-    rgba(0, 0, 0, 0.55) 92%,
+    #000 86%,
+    rgba(0, 0, 0, 0.55) 94%,
     transparent 100%
   );
 }
 .progress-athena-bubble {
-  position: absolute;
-  left: 0;
-  top: 6px;
+  position: relative;
   z-index: 4;
-  max-width: 180px;
+  align-self: flex-start;
+  max-width: 100%;
   padding: 11px 14px;
   border-radius: 16px 16px 16px 5px;
   background: #14284f;
@@ -3666,7 +3616,7 @@ button { cursor: pointer; }
 .progress-athena-bubble::after {
   content: '';
   position: absolute;
-  right: 28px;
+  left: 22px;
   bottom: -7px;
   width: 14px;
   height: 14px;
@@ -3683,22 +3633,22 @@ button { cursor: pointer; }
   animation: progressAthenaSpark 2.4s ease-in-out infinite;
 }
 .progress-athena-spark.s1 {
-  top: 36px;
-  right: 22px;
+  top: 12%;
+  right: 18%;
   background: #f0a35a;
   animation-delay: 0s;
 }
 .progress-athena-spark.s2 {
-  top: 68px;
-  right: 58px;
+  top: 28%;
+  right: 36%;
   width: 7px;
   height: 7px;
   background: #3b6fd9;
   animation-delay: 0.45s;
 }
 .progress-athena-spark.s3 {
-  top: 28px;
-  right: 88px;
+  top: 8%;
+  right: 48%;
   width: 6px;
   height: 6px;
   background: #e8c45a;
@@ -3734,6 +3684,59 @@ button { cursor: pointer; }
   margin-top: 10px;
   font-size: 12px;
   color: #7a869e;
+}
+.progress-summary-best {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #eef2f8;
+  font-size: 12px;
+  font-weight: 600;
+  color: #7a869e;
+}
+.progress-summary-best strong {
+  color: #14284f;
+  font-weight: 800;
+}
+.progress-summary-accuracy {
+  display: flex;
+  flex-direction: column;
+}
+.progress-summary-accuracy .progress-summary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.progress-summary-accuracy-body {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+.progress-summary-accuracy-copy {
+  min-width: 0;
+}
+.progress-summary-accuracy-copy .progress-summary-value {
+  margin-top: 0;
+  font-size: 32px;
+}
+.progress-summary-accuracy-copy .progress-summary-sub {
+  margin-top: 8px;
+  line-height: 1.35;
+}
+.progress-summary-accuracy-empty {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+.progress-summary-accuracy-placeholder {
+  width: 86px;
+  height: 86px;
+  border-radius: 999px;
+  border: 12px solid #edf0f5;
+  flex: 0 0 auto;
 }
 .progress-week {
   display: grid;
@@ -4088,8 +4091,8 @@ button { cursor: pointer; }
   }
   .progress-summary-corner {
     grid-column: 1 / -1;
-    grid-template-columns: minmax(0, 0.85fr) minmax(200px, 1fr);
-    min-height: 220px;
+    grid-template-columns: minmax(0, 0.75fr) minmax(240px, 1.15fr);
+    min-height: 260px;
   }
 }
 @media (max-width: 980px) {
@@ -4101,12 +4104,7 @@ button { cursor: pointer; }
   .progress-analytics-heat {
     grid-column: span 6;
   }
-  .progress-athena-img {
-    width: min(220px, 100%);
-    max-height: 220px;
-  }
   .progress-athena-bubble {
-    max-width: 150px;
     font-size: 14px;
   }
 }
@@ -4116,9 +4114,10 @@ button { cursor: pointer; }
   }
   .progress-summary-corner {
     grid-template-columns: 1fr;
+    min-height: 0;
   }
   .progress-athena {
-    min-height: 190px;
+    min-height: 240px;
     order: -1;
   }
   .progress-analytics-hit,
