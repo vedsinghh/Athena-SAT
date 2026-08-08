@@ -2541,7 +2541,7 @@ button { cursor: pointer; }
 .practice-prompt {
   margin: 0 0 18px;
   font-size: 17px;
-  line-height: 1.55;
+  line-height: 1.7;
   font-weight: 500;
   color: #12346f;
   font-family: "STIX Two Text", "Times New Roman", Times, serif;
@@ -2572,9 +2572,12 @@ button { cursor: pointer; }
 }
 .practice-katex-inline {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: baseline;
   margin: 0 0.08em;
   max-width: 100%;
+  /* Keep points like (-1, 105) and short expressions on one line */
+  white-space: nowrap;
+  overflow: visible;
 }
 .practice-katex .katex {
   font-size: 1.05em;
@@ -2602,6 +2605,8 @@ button { cursor: pointer; }
 .practice-data-table-wrap {
   margin: 10px 0 16px;
   overflow-x: auto;
+  display: flex;
+  justify-content: center;
 }
 .practice-data-table {
   width: 100%;
@@ -2609,6 +2614,10 @@ button { cursor: pointer; }
   font-family: "STIX Two Text", "Times New Roman", Times, serif;
   font-size: 15px;
   color: #12346f;
+}
+.practice-data-table-simple {
+  width: auto;
+  min-width: 200px;
 }
 .practice-data-table th,
 .practice-data-table td {
@@ -2629,7 +2638,7 @@ button { cursor: pointer; }
 }
 .practice-figure-wrap {
   margin: 0 0 16px;
-  padding: 12px;
+  padding: 14px 12px;
   border-radius: 12px;
   border: 1px solid #e8eef7;
   background: #fff;
@@ -2637,12 +2646,12 @@ button { cursor: pointer; }
 }
 .practice-figure {
   display: block;
-  width: auto;
+  width: 100%;
   max-width: 100%;
   height: auto;
-  max-height: min(56vh, 520px);
+  max-height: min(70vh, 640px);
   object-fit: contain;
-  object-position: center top;
+  object-position: center center;
   margin: 0 auto;
 }
 .practice-eq-wrap {
@@ -2670,6 +2679,14 @@ button { cursor: pointer; }
 }
 .practice-prompt p {
   display: block;
+}
+.practice-statement-line {
+  margin: 0.2em 0;
+  padding-left: 0.15em;
+  line-height: 1.5;
+}
+.practice-prompt p:not(.practice-statement-line) + p.practice-statement-line {
+  margin-top: 0.85em;
 }
 .practice-choice-content {
   display: flex;
@@ -3412,7 +3429,7 @@ button { cursor: pointer; }
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 .progress-summary-card {
   padding: 18px 18px 16px;
@@ -3474,6 +3491,344 @@ button { cursor: pointer; }
   color: #fff;
 }
 .progress-week-day.today span { color: #e07020; font-weight: 700; }
+
+.progress-analytics {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.progress-analytics-card {
+  padding: 16px 18px 18px;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+}
+.progress-analytics-hit { grid-column: span 4; }
+.progress-analytics-subjects { grid-column: span 4; }
+.progress-analytics-fun { grid-column: span 4; }
+.progress-analytics-trend { grid-column: span 5; }
+.progress-analytics-domains { grid-column: span 4; }
+.progress-analytics-heat { grid-column: span 3; }
+
+.progress-analytics-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7894;
+  letter-spacing: 0.01em;
+}
+.progress-analytics-empty {
+  margin-top: 28px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #8b96ab;
+}
+
+.progress-hit-body {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+.progress-hit-ring {
+  flex: 0 0 auto;
+  display: block;
+}
+.progress-hit-stat { min-width: 0; }
+.progress-hit-pct {
+  font-size: 34px;
+  font-weight: 800;
+  color: #14284f;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.progress-hit-sub {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #7a869e;
+}
+.progress-hit-legend {
+  margin-top: 12px;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5b6e95;
+}
+.progress-hit-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.progress-hit-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  display: block;
+}
+.progress-hit-legend i.ok { background: #18a05e; }
+.progress-hit-legend i.bad { background: #e14b4b; }
+.progress-trend-single {
+  margin-top: 28px;
+}
+
+.progress-subject-stack {
+  display: flex;
+  height: 14px;
+  margin-top: 22px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #eef2f8;
+}
+.progress-subject-stack span {
+  display: block;
+  height: 100%;
+  min-width: 0;
+}
+.progress-subject-stack .math { background: #18a05e; }
+.progress-subject-stack .reading { background: #7c3aed; }
+.progress-subject-rows {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+.progress-subject-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.progress-subject-row .swatch {
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+.progress-subject-row .swatch.math { background: #18a05e; }
+.progress-subject-row .swatch.reading { background: #7c3aed; }
+.progress-subject-row strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #14284f;
+}
+.progress-subject-row em {
+  display: block;
+  margin-top: 2px;
+  font-style: normal;
+  font-size: 12px;
+  color: #7a869e;
+}
+
+.progress-analytics-fun {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(224, 112, 32, 0.14), transparent 55%),
+    #fff;
+}
+.progress-momentum {
+  margin-top: 4px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.progress-momentum-gauge {
+  position: relative;
+  width: 132px;
+  height: 132px;
+}
+.progress-momentum-core {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.progress-momentum-owl {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.progress-momentum-core strong {
+  font-size: 26px;
+  font-weight: 800;
+  color: #14284f;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.progress-momentum-core span {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8a95a8;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.progress-orbit {
+  display: flex;
+  gap: 7px;
+  margin-top: 8px;
+}
+.progress-orbit i {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #d7deea;
+  display: block;
+}
+.progress-orbit i.on {
+  background: #e07020;
+  box-shadow: 0 0 0 3px rgba(224, 112, 32, 0.18);
+}
+.progress-momentum-hint {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e07020;
+}
+.progress-fun-pace {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 11px;
+  color: #8a95a8;
+}
+
+.progress-trend {
+  margin-top: 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.progress-trend-svg {
+  width: 100%;
+  height: 120px;
+  display: block;
+}
+.progress-trend-grid {
+  stroke: #e7ecf4;
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+.progress-trend-svg .dot-math { fill: #18a05e; }
+.progress-trend-svg .dot-reading { fill: #7c3aed; }
+.progress-trend-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #7a869e;
+}
+.progress-trend-footer strong.up { color: #18a05e; }
+.progress-trend-footer strong.down { color: #e14b4b; }
+
+.progress-domain-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.progress-domain-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: #3d4d6b;
+  font-weight: 600;
+}
+.progress-domain-top strong {
+  color: #14284f;
+  font-weight: 800;
+}
+.progress-domain-track {
+  margin-top: 5px;
+  height: 8px;
+  border-radius: 999px;
+  background: #eef2f8;
+  overflow: hidden;
+}
+.progress-domain-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #3d6fd8, #14284f);
+}
+.progress-domain-list em {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-size: 11px;
+  color: #8a95a8;
+}
+
+.progress-heat {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+.progress-heat-cell {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: #eef2f8;
+}
+.progress-heat-cell.lv1 { background: #f8d7b8; }
+.progress-heat-cell.lv2 { background: #f0a35a; }
+.progress-heat-cell.lv3 { background: #e07020; }
+.progress-heat-cell.lv4 { background: #b85110; }
+.progress-heat-legend {
+  margin-top: auto;
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #8a95a8;
+}
+.progress-heat-legend i {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  display: block;
+  background: #eef2f8;
+}
+.progress-heat-legend i.lv1 { background: #f8d7b8; }
+.progress-heat-legend i.lv2 { background: #f0a35a; }
+.progress-heat-legend i.lv3 { background: #e07020; }
+.progress-heat-legend i.lv4 { background: #b85110; }
+
+@media (max-width: 980px) {
+  .progress-analytics-hit,
+  .progress-analytics-subjects,
+  .progress-analytics-fun,
+  .progress-analytics-trend,
+  .progress-analytics-domains,
+  .progress-analytics-heat {
+    grid-column: span 6;
+  }
+}
+@media (max-width: 720px) {
+  .progress-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .progress-analytics-hit,
+  .progress-analytics-subjects,
+  .progress-analytics-fun,
+  .progress-analytics-trend,
+  .progress-analytics-domains,
+  .progress-analytics-heat {
+    grid-column: span 12;
+  }
+}
+
 .progress-history-card {
   padding: 20px 22px 10px;
 }

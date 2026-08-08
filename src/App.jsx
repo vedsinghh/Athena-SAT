@@ -3113,15 +3113,16 @@ function asciiToLatex(input, { display = false } = {}) {
     .replace(/>=/g, '\\ge ')
     .replace(/!=/g, '\\ne ')
 
-  // 7,400 → 7{,}400 so KaTeX keeps the thousands separator
-  t = t.replace(/(\d),(\d{3}\b)/g, '$1{,}$2')
-
-  // exponents: ^(expr) or ^token
+  // exponents: ^(expr) or ^token — also normalize base)^(exp so KaTeX groups cleanly
   t = t.replace(/\^\(([^)]+)\)/g, '^{$1}')
+  t = t.replace(/\)\^([A-Za-z0-9]+)/g, ')^{$1}')
   t = t.replace(/\^([A-Za-z0-9]+)/g, '^{$1}')
 
-  // slash fractions → stacked fractions
+  // Number/id atoms may include thousands separators (1,044m) so we don't split on the comma.
+  const numId = String.raw`(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)[A-Za-z]*|[A-Za-z][A-Za-z0-9]*`
   const parenGroup = String.raw`\((?:[^()]|\([^()]*\))*\)`
+
+  // slash fractions → stacked fractions
   let prev = ''
   while (t !== prev) {
     prev = t
@@ -3130,18 +3131,22 @@ function asciiToLatex(input, { display = false } = {}) {
       (_, a, b) => `${fracCmd}{${stripOuterParens(a)}}{${stripOuterParens(b)}}`,
     )
     t = t.replace(
-      new RegExp(`([A-Za-z0-9]+)\\s*/\\s*(${parenGroup})`, 'g'),
+      new RegExp(`(${numId})\\s*/\\s*(${parenGroup})`, 'g'),
       (_, a, b) => `${fracCmd}{${a}}{${stripOuterParens(b)}}`,
     )
     t = t.replace(
-      new RegExp(`(${parenGroup})\\s*/\\s*([A-Za-z0-9]+)`, 'g'),
+      new RegExp(`(${parenGroup})\\s*/\\s*(${numId})`, 'g'),
       (_, a, b) => `${fracCmd}{${stripOuterParens(a)}}{${b}}`,
     )
     t = t.replace(
-      /(?<![A-Za-z\\])([A-Za-z0-9]+)\s*\/\s*([A-Za-z0-9]+)(?![A-Za-z])/g,
+      new RegExp(`(?<![A-Za-z\\\\])(${numId})\\s*/\\s*(${numId})(?![A-Za-z])`, 'g'),
       `${fracCmd}{$1}{$2}`,
     )
   }
+
+  // 7,400 → 7{,}400 so KaTeX keeps the thousands separator (after fractions are built).
+  // Use (?!\d) so it still works in 1,044m (no word-boundary between digit and letter).
+  t = t.replace(/(\d),(\d{3})(?!\d)/g, '$1{,}$2')
 
   return t
 }
@@ -3172,6 +3177,16 @@ function KatexHtml({ latex, display = false, className = '' }) {
 function looksLikeEquation(line) {
   const s = String(line || '').trim()
   if (!s || s.length > 120) return false
+  // Questions / prose sentences must stay mixed text+math, not whole-line KaTeX.
+  if (/\?\s*$/.test(s)) return false
+  if (isRomanStatementLine(s)) return false
+  if (
+    /\b(if|what|which|how|when|where|find|given|according|function|equation|value|graph|probability|selected|buttons|table|summarizes|shifting|result|defined|following|the|and)\b/i.test(
+      s,
+    )
+  ) {
+    return false
+  }
   // Table dumps / data rows from the readable PDF are not equations.
   if (/^(TABLE|Columns?|Group\s*\d+)/i.test(s)) return false
   if (/\bGroup\s*\d+/i.test(s)) return false
@@ -3180,12 +3195,14 @@ function looksLikeEquation(line) {
   if ((s.match(/,/g) || []).length >= 2 && /\d\s*,\s*\d/.test(s) && !/[+\-^/]/.test(s.replace(/,/g, ''))) {
     return false
   }
-  if (/\b(the|and|what|which|according|given|function|equation|value|graph|probability|selected|buttons|table|summarizes)\b/i.test(s) && s.length > 40) {
-    return false
-  }
   const ops = (s.match(/[=+\-−×÷/^()]/g) || []).length
   const letters = (s.match(/[A-Za-z]/g) || []).length
   return ops >= 1 && letters <= 36 && s.split(/\s+/).length <= 16
+}
+
+/** SAT-style roman numeral answer statements: "I. …", "II. …", "III. …" */
+function isRomanStatementLine(line) {
+  return /^(I{1,3}|IV|VI{0,3}|IX|X+)\.\s+\S/.test(String(line || '').trim())
 }
 
 function extractInlineMathSegments(text) {
@@ -3193,26 +3210,46 @@ function extractInlineMathSegments(text) {
   // Don't math-ify transcribed table blocks.
   if (/\bTABLE:/i.test(s) || /\bGroup\s*\d+\s*=/i.test(s)) return []
   const hits = []
+  // Math RHS: atoms may juxtapose (7,400(0.87)^x), but spaces only around operators — never English words.
+  const fnCall = String.raw`[A-Za-z]\(-?[A-Za-z0-9.]+\)`
+  const caretExp = String.raw`(?:\^[A-Za-z0-9]+|\^\([^)]+\))?`
+  const mathAtom = String.raw`${fnCall}|\d{1,3}(?:,\d{3})+(?:\.\d+)?${caretExp}|\d+(?:\.\d+)?${caretExp}|[A-Za-z0-9]+${caretExp}|\([^()]+\)${caretExp}`
+  const mathExpr = String.raw`(?:${mathAtom})+(?:\s*[+\-−*/]\s*(?:${mathAtom})+)*`
   const patterns = [
     new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
     new RegExp(String.raw`[A-Za-z0-9]+(?:\^[A-Za-z0-9]+)?\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
     new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)\s*/\s*[A-Za-z0-9]+`, 'g'),
-    /[A-Za-z]\([A-Za-z0-9]+\)\s*=\s*[A-Za-z0-9+\-−^*/().\s,{,}]+?(?=(?:[.,;:]|\s+(?:and|or|where|has|is|are|in|of|to|for|with|the|a|an)\b)|$)/gi,
-    /(?<![A-Za-z])y\s*=\s*[A-Za-z0-9+\-−^*/().\s,{,}]+?(?=(?:[.,;:]|\s+(?:and|or|where|estimates|models|is|are|in|of|to|for|with|the|a|an)\b)|$)/gi,
-    /\b[A-Za-z]\([A-Za-z0-9]+\)/g,
+    new RegExp(String.raw`${fnCall}\s*=\s*${mathExpr}`, 'gi'),
+    new RegExp(String.raw`(?<![A-Za-z])y\s*=\s*${mathExpr}`, 'gi'),
+    // e.g. (x + 8)^2 + (y + 8)^2 = 25  (no = inside mathExpr — avoids runaway backtracking)
+    new RegExp(String.raw`(?<![A-Za-z])${mathExpr}\s*=\s*${mathExpr}`, 'g'),
+    // Parenthetical powers: (x + 8)^2
+    /\([^()]{1,80}\)\s*\^[A-Za-z0-9]+/g,
+    // f(-2) - f(0)
+    new RegExp(String.raw`${fnCall}(?:\s*[+\-−]\s*${fnCall})+`, 'g'),
+    // Points / ordered pairs: (1, 9), (-1, 105)
+    /\(\s*-?[A-Za-z0-9.]+(?:\s*,\s*-?[A-Za-z0-9.]+)+\s*\)/g,
+    new RegExp(String.raw`\b${fnCall}`, 'g'),
     /\b[A-Za-z0-9]+(?:\^[A-Za-z0-9]+)+\b/g,
+    /\b\d+[A-Za-z]\b/g,
     /\b\d[\d,]*(?:\.\d+)?\s*\/\s*\d[\d,]*(?:\.\d+)?\b/g,
     /\b[A-Za-z]\s*\/\s*[A-Za-z0-9]+\b/g,
   ]
 
   for (const re of patterns) {
-    re.lastIndex = 0
-    let m
-    while ((m = re.exec(s))) {
-      const start = m.index
-      const end = start + m[0].length
-      if (!m[0].trim()) continue
-      hits.push({ start, end, text: m[0] })
+    try {
+      re.lastIndex = 0
+      let m
+      while ((m = re.exec(s))) {
+        const start = m.index
+        const end = start + m[0].length
+        if (!m[0].trim()) continue
+        hits.push({ start, end, text: m[0] })
+        // Guard against zero-length matches
+        if (m[0].length === 0) re.lastIndex += 1
+      }
+    } catch {
+      // Ignore pathological regex failures on a single pattern.
     }
   }
 
@@ -3257,7 +3294,7 @@ function renderMathText(text, { asEquation = false } = {}) {
     return <KatexHtml latex={asciiToLatex(raw, { display: false })} />
   }
 
-  if (asEquation || /[=^/]|[A-Za-z]\(/.test(raw)) {
+  if (asEquation || /[=^/]|[A-Za-z]\(|\(\s*-?[A-Za-z0-9.]+\s*,/.test(raw)) {
     return renderProseWithMath(raw)
   }
 
@@ -3422,7 +3459,7 @@ function renderPromptLine(line, equations) {
   return renderProseWithMath(raw)
 }
 
-/** Merge PDF soft-wrapped lines into paragraphs; keep equation lines separate. */
+/** Merge PDF soft-wrapped lines into paragraphs; keep equation / TABLE / I.–III. lines separate. */
 function formatPromptParagraphs(prompt) {
   const lines = String(prompt || '').split(/\n/)
   const paras = []
@@ -3433,27 +3470,37 @@ function formatPromptParagraphs(prompt) {
       buf = []
     }
   }
+  const inTableBuf = () => buf.length > 0 && /^TABLE:/i.test(buf[0])
+  const isTableContinuation = (line) => {
+    if (/^(Group\s*\d+|Columns\s*=|Rectangle\b)/i.test(line)) return true
+    if (/^\d+(\s*->|\s*,|\s*$)/.test(line)) return true
+    if (/^=\s*\d/.test(line)) return true
+    // Soft-wrapped tail fragments: "day.", "inches.", "mm."
+    if (/^[a-z0-9].{0,48}$/i.test(line) && !/^(The|Which|What|If|One|A|In|For|Given|Based)\b/i.test(line)) {
+      return true
+    }
+    return false
+  }
+
   for (const raw of lines) {
     const line = raw.trim()
     if (!line) {
       flush()
       continue
     }
-    if (looksLikeEquation(line) || /\{\{eq:\d+\}\}/.test(line)) {
+    if (inTableBuf()) {
+      if (isTableContinuation(line)) {
+        buf.push(line)
+        continue
+      }
+      flush()
+    }
+    if (looksLikeEquation(line) || /\{\{eq:\d+\}\}/.test(line) || isRomanStatementLine(line)) {
       flush()
       paras.push(line)
       continue
     }
-    // Keep soft-wrapped table rows with the TABLE block.
-    if (buf.length && (/^TABLE:/i.test(buf[0]) || /\bTABLE:/i.test(buf.join(' ')))) {
-      buf.push(line)
-      continue
-    }
-    if (/^TABLE:/i.test(line) || (/^=\s*\d/.test(line) && buf.length && /\bGroup\s*\d+/i.test(buf.join(' ')))) {
-      if (!/^TABLE:/i.test(line)) {
-        buf.push(line)
-        continue
-      }
+    if (/^TABLE:/i.test(line)) {
       flush()
       buf.push(line)
       continue
@@ -3467,19 +3514,91 @@ function formatPromptParagraphs(prompt) {
 function parseTranscribedTable(text) {
   const raw = String(text || '').replace(/\s+/g, ' ').trim()
   if (!/\bTABLE:/i.test(raw)) return null
+
+  // Format: Columns = A, B. Group 1 = 1, 2, 3. Group 2 = ...
   const colMatch = raw.match(/Columns\s*=\s*([^.]+)\./i)
-  if (!colMatch) return null
-  const columns = colMatch[1].split(',').map((s) => s.trim()).filter(Boolean)
-  const groups = [...raw.matchAll(/Group\s*(\d+)\s*=\s*([0-9,\s]+)/gi)].map((m) => ({
-    label: `Group ${m[1]}`,
-    values: m[2].split(',').map((s) => s.trim()).filter(Boolean),
-  }))
-  if (!columns.length || !groups.length) return null
-  return { columns, groups }
+  if (colMatch) {
+    const columns = colMatch[1].split(',').map((s) => s.trim()).filter(Boolean)
+    const groups = [...raw.matchAll(/Group\s*(\d+)\s*=\s*([0-9,\s]+)/gi)].map((m) => ({
+      label: `Group ${m[1]}`,
+      values: m[2].split(',').map((s) => s.trim()).filter(Boolean),
+    }))
+    if (columns.length && groups.length) return { columns, groups }
+  }
+
+  // Format: Deliveries 0 -> 2 days; 3 -> 2 days; ...
+  const arrowMatch = raw.match(/TABLE:\s*([A-Za-z][A-Za-z /-]*)\s+(?=\d+\s*->)(.+)/i)
+  if (arrowMatch) {
+    const col1 = arrowMatch[1].trim().replace(/\s+/g, ' ')
+    const pairs = [...arrowMatch[2].matchAll(/(-?\d+(?:,\d{3})*(?:\.\d+)?)\s*->\s*(-?\d+(?:,\d{3})*(?:\.\d+)?)\s*(days?)?/gi)]
+    if (pairs.length) {
+      const col2 = pairs.some((p) => p[3]) ? 'Days' : 'Count'
+      return {
+        headers: [col1, col2],
+        rows: pairs.map((p) => [p[1], p[2]]),
+      }
+    }
+  }
+
+  // Format: Rectangle A: area = 630 square inches, perimeter = 210 inches. Rectangle B: ...
+  const namedBody = raw.replace(/^TABLE:\s*/i, '')
+  const namedRows = [...namedBody.matchAll(
+    /((?:Rectangle\s+)?[A-Za-z][A-Za-z0-9 ]*?):\s*([^.]*(?:\d[^.]*)?)\./gi,
+  )]
+  if (namedRows.length >= 1) {
+    const parsed = namedRows.map((m) => {
+      const label = m[1].trim()
+      const props = [...m[2].matchAll(
+        /([a-z][a-z\s]*?)\s*=\s*(.+?)(?=\s*,\s*[a-z][a-z\s]*\s*=|\s*$)/gi,
+      )].map((p) => [
+        p[1].trim().replace(/\b\w/g, (c) => c.toUpperCase()),
+        p[2].trim(),
+      ])
+      return props.length ? { label, props } : null
+    }).filter(Boolean)
+    if (parsed.length) {
+      const headers = ['', ...parsed[0].props.map((p) => p[0])]
+      const rows = parsed.map((r) => {
+        const byKey = Object.fromEntries(r.props)
+        return [r.label, ...headers.slice(1).map((h) => byKey[h] ?? '')]
+      })
+      return { headers, rows }
+    }
+  }
+
+  return null
 }
 
 function PracticeTable({ table }) {
   if (!table) return null
+
+  if (Array.isArray(table.headers) && Array.isArray(table.rows)) {
+    return (
+      <div className="practice-data-table-wrap">
+        <table className="practice-data-table practice-data-table-simple">
+          <thead>
+            <tr>
+              {table.headers.map((col, i) => (
+                <th key={`h${i}`} scope="col">{col || null}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.rows.map((row, ri) => (
+              <tr key={`r${ri}`}>
+                {row.map((cell, ci) => (
+                  <td key={`c${ci}`}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
+  if (!table.columns?.length || !table.groups?.length) return null
+
   return (
     <div className="practice-data-table-wrap">
       <table className="practice-data-table">
@@ -3534,8 +3653,19 @@ function PracticeQuestionBody({ question, hideFigure = false, hidePassage = fals
             if (table) {
               return <PracticeTable key={i} table={table} />
             }
+            // Never show raw TABLE: dumps if parsing failed.
+            if (/^\s*TABLE:/i.test(line)) return null
             return (
-              <p key={i} className={looksLikeEquation(line) ? 'practice-eq-line' : undefined}>
+              <p
+                key={i}
+                className={
+                  looksLikeEquation(line)
+                    ? 'practice-eq-line'
+                    : isRomanStatementLine(line)
+                      ? 'practice-statement-line'
+                      : undefined
+                }
+              >
                 {renderPromptLine(line, equations)}
               </p>
             )
@@ -4662,6 +4792,10 @@ function ProgressPage({ profile }) {
   const displayBest = bestStreak
   const [expandedSetId, setExpandedSetId] = useState(null)
   const [review, setReview] = useState(null)
+  const analytics = useMemo(
+    () => deriveProgressAnalytics(history, profile.qbankProgress || {}),
+    [history, profile.qbankProgress],
+  )
 
   const weekDays = useMemo(() => {
     const labels = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
@@ -4723,6 +4857,8 @@ function ProgressPage({ profile }) {
           <div className="progress-summary-sub">Answered from Question Bank</div>
         </div>
       </div>
+
+      <ProgressAnalytics analytics={analytics} streak={streak} />
 
       <section className="card progress-history-card">
         <div className="progress-history-head">
@@ -4825,6 +4961,495 @@ function ProgressPage({ profile }) {
         answer={review?.answer}
         onClose={() => setReview(null)}
       />
+    </div>
+  )
+}
+
+/** Aggregate charts for the Progress analytics tiles. */
+function deriveProgressAnalytics(history, qbankProgress) {
+  const list = Array.isArray(history) ? history : []
+  const sets = list.filter((e) => e.type === 'set')
+  const bank = list.filter((e) => e.type === 'bank')
+
+  let correct = 0
+  let incorrect = 0
+  const subject = { math: { correct: 0, total: 0 }, reading: { correct: 0, total: 0 } }
+  const domainMap = new Map()
+  const times = []
+
+  const bumpDomain = (name, isCorrect) => {
+    if (!name) return
+    const cur = domainMap.get(name) || { name, correct: 0, total: 0 }
+    cur.total += 1
+    if (isCorrect) cur.correct += 1
+    domainMap.set(name, cur)
+  }
+
+  sets.forEach((entry) => {
+    const sub = entry.subject === 'math' ? 'math' : 'reading'
+    ;(entry.items || []).forEach((item) => {
+      if (item.correct == null) return
+      if (item.correct) {
+        correct += 1
+        subject[sub].correct += 1
+      } else {
+        incorrect += 1
+      }
+      subject[sub].total += 1
+      bumpDomain(item.domain, item.correct)
+      if (isValidStatNumber(item.elapsed) && item.elapsed > 0) times.push(item.elapsed)
+    })
+    if (!(entry.items || []).length && isValidStatNumber(entry.correct) && isValidStatNumber(entry.total)) {
+      correct += entry.correct
+      incorrect += Math.max(0, entry.total - entry.correct)
+      subject[sub].correct += entry.correct
+      subject[sub].total += entry.total
+    }
+  })
+
+  bank.forEach((entry) => {
+    const sub = entry.subject === 'math' ? 'math' : 'reading'
+    if (entry.correct == null) return
+    if (entry.correct) {
+      correct += 1
+      subject[sub].correct += 1
+    } else {
+      incorrect += 1
+    }
+    subject[sub].total += 1
+    const domainGuess = String(entry.sub || '').split(' · ')[0] || null
+    bumpDomain(domainGuess, entry.correct)
+    if (isValidStatNumber(entry.elapsed) && entry.elapsed > 0) times.push(entry.elapsed)
+  })
+
+  // Prefer live qbank domain stats when history has no domain labels yet.
+  if (!domainMap.size) {
+    Object.values(qbankProgress || {}).forEach((item) => {
+      if (!item?.domain || item.correct == null) return
+      bumpDomain(item.domain, Boolean(item.correct))
+    })
+  }
+
+  const totalGraded = correct + incorrect
+  const accuracy = totalGraded ? Math.round((correct / totalGraded) * 100) : null
+
+  const scoreTrend = [...sets]
+    .filter((e) => isValidStatNumber(e.accuracy))
+    .slice(0, 12)
+    .reverse()
+    .map((e) => ({
+      accuracy: e.accuracy,
+      subject: e.subject,
+      when: e.createdAt,
+    }))
+
+  const domains = [...domainMap.values()]
+    .filter((d) => d.total > 0)
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 5)
+    .map((d) => ({
+      ...d,
+      pct: Math.round((d.correct / d.total) * 100),
+    }))
+
+  // 14-day activity heatmap
+  const dayCounts = new Map()
+  list.forEach((e) => {
+    const key = localDayKey(e.createdAt)
+    if (!key) return
+    dayCounts.set(key, (dayCounts.get(key) || 0) + 1)
+  })
+  const heatDays = []
+  const today = new Date()
+  for (let i = 13; i >= 0; i -= 1) {
+    const d = new Date(today)
+    d.setDate(today.getDate() - i)
+    const key = localDayKey(d)
+    heatDays.push({
+      key,
+      count: dayCounts.get(key) || 0,
+      label: d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }),
+    })
+  }
+  const heatMax = Math.max(1, ...heatDays.map((d) => d.count))
+
+  const avgSec = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : null
+
+  return {
+    correct,
+    incorrect,
+    totalGraded,
+    accuracy,
+    subject,
+    scoreTrend,
+    domains,
+    heatDays,
+    heatMax,
+    avgSec,
+    activeDays: dayCounts.size,
+  }
+}
+
+function ProgressAnalytics({ analytics, streak }) {
+  const a = analytics || {}
+  const charge = Math.round(
+    Math.min(
+      100,
+      (isValidStatNumber(a.accuracy) ? a.accuracy * 0.5 : 0)
+        + Math.min(25, (streak || 0) * 5)
+        + Math.min(25, (a.totalGraded || 0) * 1.5),
+    ),
+  )
+  const mood = charge >= 75 ? 'On fire' : charge >= 45 ? 'Warming up' : charge >= 20 ? 'Getting started' : 'Ready when you are'
+  const mathPct = a.subject?.math?.total
+    ? Math.round((a.subject.math.correct / a.subject.math.total) * 100)
+    : null
+  const readingPct = a.subject?.reading?.total
+    ? Math.round((a.subject.reading.correct / a.subject.reading.total) * 100)
+    : null
+  const mathShare = a.totalGraded
+    ? Math.round(((a.subject?.math?.total || 0) / a.totalGraded) * 100)
+    : 0
+  const readingShare = a.totalGraded ? 100 - mathShare : 0
+
+  return (
+    <section className="progress-analytics" aria-label="Progress analytics">
+      <div className="card progress-analytics-card progress-analytics-hit">
+        <div className="progress-analytics-label">
+          <Target size={15} strokeWidth={2.2} />
+          Hit rate
+        </div>
+        {a.totalGraded ? (
+          <div className="progress-hit-body">
+            <ProgressHitRing correct={a.correct} incorrect={a.incorrect} />
+            <div className="progress-hit-stat">
+              <div className="progress-hit-pct">{formatStatPct(a.accuracy)}</div>
+              <div className="progress-hit-sub">{a.totalGraded} graded answers</div>
+              <div className="progress-hit-legend">
+                <span><i className="ok" /> {a.correct} correct</span>
+                <span><i className="bad" /> {a.incorrect} incorrect</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="progress-analytics-empty">Answer questions to unlock your hit rate.</div>
+        )}
+      </div>
+
+      <div className="card progress-analytics-card progress-analytics-subjects">
+        <div className="progress-analytics-label">
+          <BarChart3 size={15} strokeWidth={2.2} />
+          Subject mix
+        </div>
+        {a.totalGraded ? (
+          <>
+            <div className="progress-subject-stack" aria-hidden="true">
+              <motion.span
+                className="math"
+                initial={{ width: 0 }}
+                animate={{ width: `${mathShare}%` }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+              />
+              <motion.span
+                className="reading"
+                initial={{ width: 0 }}
+                animate={{ width: `${readingShare}%` }}
+                transition={{ duration: 0.7, ease: 'easeOut', delay: 0.08 }}
+              />
+            </div>
+            <div className="progress-subject-rows">
+              <div className="progress-subject-row">
+                <span className="swatch math" />
+                <div>
+                  <strong>Math</strong>
+                  <em>{a.subject.math.total} answered · {formatStatPct(mathPct)}</em>
+                </div>
+              </div>
+              <div className="progress-subject-row">
+                <span className="swatch reading" />
+                <div>
+                  <strong>Reading</strong>
+                  <em>{a.subject.reading.total} answered · {formatStatPct(readingPct)}</em>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="progress-analytics-empty">Practice both subjects to see the split.</div>
+        )}
+      </div>
+
+      <div className="card progress-analytics-card progress-analytics-fun">
+        <div className="progress-analytics-label">
+          <Flame size={15} strokeWidth={2.2} />
+          Athena charge
+        </div>
+        <MomentumMeter charge={charge} mood={mood} streak={streak || 0} />
+        {a.avgSec != null ? (
+          <div className="progress-fun-pace">Avg pace ~{a.avgSec}s / question</div>
+        ) : null}
+      </div>
+
+      <div className="card progress-analytics-card progress-analytics-trend">
+        <div className="progress-analytics-label">
+          <Sparkles size={15} strokeWidth={2.2} />
+          Practice set scores
+        </div>
+        {a.scoreTrend?.length >= 2 ? (
+          <ScoreTrendChart points={a.scoreTrend} />
+        ) : a.scoreTrend?.length === 1 ? (
+          <div className="progress-trend-single">
+            <div className="progress-hit-pct">{formatStatPct(a.scoreTrend[0].accuracy)}</div>
+            <div className="progress-hit-sub">Finish another set to unlock the trend line.</div>
+          </div>
+        ) : (
+          <div className="progress-analytics-empty">Complete practice sets to chart your scores.</div>
+        )}
+      </div>
+
+      <div className="card progress-analytics-card progress-analytics-domains">
+        <div className="progress-analytics-label">
+          <ListFilter size={15} strokeWidth={2.2} />
+          Domain focus
+        </div>
+        {a.domains?.length ? (
+          <ul className="progress-domain-list">
+            {a.domains.map((d) => (
+              <li key={d.name}>
+                <div className="progress-domain-top">
+                  <span>{d.name}</span>
+                  <strong>{d.pct}%</strong>
+                </div>
+                <div className="progress-domain-track">
+                  <motion.i
+                    initial={{ width: 0 }}
+                    animate={{ width: `${d.pct}%` }}
+                    transition={{ duration: 0.65, ease: 'easeOut' }}
+                  />
+                </div>
+                <em>{d.total} attempt{d.total === 1 ? '' : 's'}</em>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="progress-analytics-empty">Domain stats appear as you practice by skill.</div>
+        )}
+      </div>
+
+      <div className="card progress-analytics-card progress-analytics-heat">
+        <div className="progress-analytics-label">
+          <CalendarDays size={15} strokeWidth={2.2} />
+          Last 14 days
+        </div>
+        <div className="progress-heat" role="img" aria-label="Activity over the last 14 days">
+          {a.heatDays?.map((d) => {
+            const level = d.count === 0 ? 0 : Math.min(4, Math.ceil((d.count / a.heatMax) * 4))
+            return (
+              <div
+                key={d.key}
+                className={`progress-heat-cell lv${level}`}
+                title={`${d.label}: ${d.count} activit${d.count === 1 ? 'y' : 'ies'}`}
+              />
+            )
+          })}
+        </div>
+        <div className="progress-heat-legend">
+          <span>Less</span>
+          <i className="lv0" /><i className="lv1" /><i className="lv2" /><i className="lv3" /><i className="lv4" />
+          <span>More</span>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ProgressHitRing({ correct, incorrect }) {
+  const total = correct + incorrect
+  if (!total) return null
+  const size = 96
+  const stroke = 14
+  const r = (size - stroke) / 2
+  const c = 2 * Math.PI * r
+  const correctLen = (correct / total) * c
+  const incorrectLen = c - correctLen
+  return (
+    <svg className="progress-hit-ring" width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#edf0f5" strokeWidth={stroke} />
+      {incorrect > 0 && (
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke="#e14b4b"
+          strokeWidth={stroke}
+          strokeDasharray={`${incorrectLen} ${c}`}
+          transform={`rotate(${(correct / total) * 360 - 90} ${size / 2} ${size / 2})`}
+          initial={{ strokeDasharray: `0 ${c}` }}
+          animate={{ strokeDasharray: `${incorrectLen} ${c}` }}
+          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.12 }}
+        />
+      )}
+      {correct > 0 && (
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke="#18a05e"
+          strokeWidth={stroke}
+          strokeDasharray={`${correctLen} ${c}`}
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          initial={{ strokeDasharray: `0 ${c}` }}
+          animate={{ strokeDasharray: `${correctLen} ${c}` }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        />
+      )}
+    </svg>
+  )
+}
+
+function ScoreTrendChart({ points }) {
+  const w = 320
+  const h = 110
+  const padX = 8
+  const padY = 12
+  const vals = points.map((p) => p.accuracy)
+  const min = Math.min(...vals, 0)
+  const max = Math.max(...vals, 100)
+  const span = Math.max(1, max - min)
+  const coords = points.map((p, i) => {
+    const x = padX + (i / Math.max(1, points.length - 1)) * (w - padX * 2)
+    const y = padY + (1 - (p.accuracy - min) / span) * (h - padY * 2)
+    return { x, y, ...p }
+  })
+  const line = coords.map((c, i) => `${i === 0 ? 'M' : 'L'}${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(' ')
+  const area = `${line} L${coords[coords.length - 1].x},${h - 2} L${coords[0].x},${h - 2} Z`
+  const last = coords[coords.length - 1]
+  const first = coords[0]
+  const delta = last.accuracy - first.accuracy
+
+  return (
+    <div className="progress-trend">
+      <svg viewBox={`0 0 ${w} ${h}`} className="progress-trend-svg" role="img" aria-label="Score trend">
+        <defs>
+          <linearGradient id="progressTrendFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#e07020" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#e07020" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+        {[25, 50, 75].map((tick) => {
+          const y = padY + (1 - (tick - min) / span) * (h - padY * 2)
+          if (tick < min || tick > max) return null
+          return <line key={tick} x1={padX} x2={w - padX} y1={y} y2={y} className="progress-trend-grid" />
+        })}
+        <motion.path
+          d={area}
+          fill="url(#progressTrendFill)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        />
+        <motion.path
+          d={line}
+          fill="none"
+          stroke="#e07020"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.9, ease: 'easeOut' }}
+        />
+        {coords.map((c) => (
+          <circle
+            key={`${c.when}-${c.x}`}
+            cx={c.x}
+            cy={c.y}
+            r={c.subject === 'math' ? 3.5 : 3.5}
+            className={c.subject === 'math' ? 'dot-math' : 'dot-reading'}
+          />
+        ))}
+      </svg>
+      <div className="progress-trend-footer">
+        <span>{points.length} sets</span>
+        <strong className={delta >= 0 ? 'up' : 'down'}>
+          {delta >= 0 ? '+' : ''}{delta} pts vs first
+        </strong>
+      </div>
+    </div>
+  )
+}
+
+function MomentumMeter({ charge, mood, streak }) {
+  const clamped = Math.max(0, Math.min(100, charge || 0))
+  const size = 132
+  const stroke = 12
+  const r = (size - stroke) / 2
+  const c = 2 * Math.PI * r
+  const len = (clamped / 100) * c * 0.75 // 270° arc
+  const orbit = [0, 1, 2, 3, 4].map((i) => i < Math.min(5, streak))
+
+  return (
+    <div className="progress-momentum">
+      <div className="progress-momentum-gauge">
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={r}
+            fill="none"
+            stroke="#e8edf5"
+            strokeWidth={stroke}
+            strokeDasharray={`${c * 0.75} ${c}`}
+            strokeLinecap="round"
+            transform={`rotate(135 ${size / 2} ${size / 2})`}
+          />
+          <motion.circle
+            cx={size / 2}
+            cy={size / 2}
+            r={r}
+            fill="none"
+            stroke="url(#athenaChargeGrad)"
+            strokeWidth={stroke}
+            strokeDasharray={`${len} ${c}`}
+            strokeLinecap="round"
+            transform={`rotate(135 ${size / 2} ${size / 2})`}
+            initial={{ strokeDasharray: `0 ${c}` }}
+            animate={{ strokeDasharray: `${len} ${c}` }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+          />
+          <defs>
+            <linearGradient id="athenaChargeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#f0a35a" />
+              <stop offset="100%" stopColor="#e07020" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div className="progress-momentum-core">
+          <motion.div
+            className="progress-momentum-owl"
+            animate={{ y: [0, -3, 0], rotate: clamped >= 75 ? [0, -6, 6, 0] : 0 }}
+            transition={{ duration: clamped >= 75 ? 1.4 : 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            🦉
+          </motion.div>
+          <strong>{clamped}</strong>
+          <span>charge</span>
+        </div>
+      </div>
+      <div className="progress-orbit" aria-hidden="true">
+        {orbit.map((on, i) => (
+          <motion.i
+            key={i}
+            className={on ? 'on' : ''}
+            initial={{ scale: 0.6, opacity: 0.4 }}
+            animate={{ scale: on ? 1 : 0.75, opacity: on ? 1 : 0.35 }}
+            transition={{ delay: i * 0.06 }}
+          />
+        ))}
+      </div>
+      <p className="progress-momentum-hint">{mood}</p>
     </div>
   )
 }
