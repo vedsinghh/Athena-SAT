@@ -1993,6 +1993,10 @@ button { cursor: pointer; }
   padding-bottom: 6px;
   border-bottom: 2px solid #18a05e;
 }
+.qbm-reading .qbm-section-title {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
 .qbm-select-domain {
   flex-shrink: 0;
   height: 32px;
