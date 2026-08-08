@@ -2525,6 +2525,54 @@ function shuffleInPlace(list) {
   return list
 }
 
+/** Take up to `take` items by round-robin across buckets so one group can't dominate. */
+function pickRoundRobin(buckets, take, { shuffle = false } = {}) {
+  const prepared = buckets
+    .map((items) => {
+      if (!items?.length) return []
+      return shuffle ? shuffleInPlace([...items]) : [...items]
+    })
+    .filter((bucket) => bucket.length)
+
+  if (!prepared.length) return []
+  if (prepared.length === 1) {
+    return prepared[0].slice(0, take)
+  }
+
+  const selected = []
+  let cursor = 0
+  while (selected.length < take) {
+    let added = false
+    for (const bucket of prepared) {
+      if (selected.length >= take) break
+      if (cursor < bucket.length) {
+        selected.push(bucket[cursor])
+        added = true
+      }
+    }
+    if (!added) break
+    cursor += 1
+  }
+  return shuffle ? shuffleInPlace(selected) : selected
+}
+
+function orderPoolByDomains(items, domainList, shuffle) {
+  if (!items.length) return []
+  if (domainList.length <= 1) {
+    return shuffle ? shuffleInPlace([...items]) : [...items]
+  }
+  const buckets = domainList.map((domain) => items.filter((q) => q.domain === domain))
+  const ordered = pickRoundRobin(buckets, items.length, { shuffle: false })
+  // pickRoundRobin may miss items whose domain isn't in domainList; append leftovers.
+  if (ordered.length < items.length) {
+    const seen = new Set(ordered.map((q) => q.id))
+    for (const q of items) {
+      if (!seen.has(q.id)) ordered.push(q)
+    }
+  }
+  return shuffle ? shuffleInPlace(ordered) : ordered
+}
+
 function completedQuestionIds(progress, subject) {
   return new Set(
     Object.entries(progress || {})
@@ -2597,30 +2645,32 @@ function pickQuestions(bank, { count, shuffle, domains, difficulties, questions:
     ? Math.min(count, pool.length)
     : pool.length
 
-  // Multiple domains: pull evenly (round-robin) so one domain doesn't dominate bank order.
-  if (domainList.length > 1) {
-    const buckets = domainList.map((domain) => {
-      const items = pool.filter((q) => q.domain === domain)
-      return shuffle ? shuffleInPlace([...items]) : [...items]
-    }).filter((bucket) => bucket.length)
+  // Multiple difficulties: round-robin so Hard (majority of the bank) can't dominate.
+  // Within each difficulty, also spread across domains when several are selected.
+  if (levels.length > 1) {
+    const buckets = levels.map((level) => (
+      orderPoolByDomains(
+        pool.filter((q) => q.difficulty === level),
+        domainList,
+        shuffle,
+      )
+    ))
+    const undiffed = pool.filter((q) => !q.difficulty)
+    if (undiffed.length) {
+      buckets.push(orderPoolByDomains(undiffed, domainList, shuffle))
+    }
+    const selected = pickRoundRobin(buckets, take, { shuffle })
+    if (selected.length) {
+      return selected.map((q, i) => ({ ...q, practiceIndex: i + 1 }))
+    }
+  }
 
-    if (buckets.length > 1) {
-      const selected = []
-      let cursor = 0
-      while (selected.length < take) {
-        let added = false
-        for (const bucket of buckets) {
-          if (selected.length >= take) break
-          if (cursor < bucket.length) {
-            selected.push(bucket[cursor])
-            added = true
-          }
-        }
-        if (!added) break
-        cursor += 1
-      }
-      const ordered = shuffle ? shuffleInPlace(selected) : selected
-      return ordered.map((q, i) => ({ ...q, practiceIndex: i + 1 }))
+  // Multiple domains (single / no difficulty): pull evenly across domains.
+  if (domainList.length > 1) {
+    const buckets = domainList.map((domain) => pool.filter((q) => q.domain === domain))
+    const selected = pickRoundRobin(buckets, take, { shuffle })
+    if (selected.length) {
+      return selected.map((q, i) => ({ ...q, practiceIndex: i + 1 }))
     }
   }
 
