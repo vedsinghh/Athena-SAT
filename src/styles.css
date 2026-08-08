@@ -1802,6 +1802,10 @@ button { cursor: pointer; }
   font-weight: 600;
   color: #66738c;
 }
+.qbank-topic-grid {
+  margin-top: 18px;
+  grid-column: auto;
+}
 
 /* Question Bank — Math detail */
 .qbm-page {
@@ -2331,8 +2335,10 @@ button { cursor: pointer; }
 }
 .reading-figure {
   max-height: min(62vh, 640px);
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   object-fit: contain;
+  object-position: center center;
 }
 
 /* Practice session */
@@ -2456,6 +2462,55 @@ button { cursor: pointer; }
   font-size: 12px;
 }
 .practice-outline-btn:hover { background: #f6f9ff; }
+.practice-pdf-tip {
+  position: relative;
+}
+.practice-pdf-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: max-content;
+  max-width: min(260px, 70vw);
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #14284f;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 8px 20px rgba(20, 40, 79, 0.22);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease, visibility 0.12s;
+}
+.practice-pdf-tip::before {
+  content: '';
+  position: absolute;
+  top: calc(100% + 2px);
+  right: 18px;
+  z-index: 41;
+  border: 6px solid transparent;
+  border-bottom-color: #14284f;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.12s ease, visibility 0.12s;
+}
+.practice-pdf-tip:hover::after,
+.practice-pdf-tip:focus-visible::after,
+.practice-pdf-tip:hover::before,
+.practice-pdf-tip:focus-visible::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 .practice-split {
   display: grid;
   grid-template-columns: minmax(280px, .95fr) minmax(0, 1.05fr);
@@ -2544,12 +2599,16 @@ button { cursor: pointer; }
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 16px;
+  overflow: visible;
+  position: relative;
+  z-index: 5;
 }
 .practice-q-left,
 .practice-q-right {
   display: flex;
   align-items: center;
   gap: 10px;
+  overflow: visible;
 }
 .practice-q-number {
   display: grid;
@@ -2686,6 +2745,9 @@ button { cursor: pointer; }
   white-space: nowrap;
 }
 .practice-figure-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0 0 16px;
   padding: 14px 12px;
   border-radius: 12px;
@@ -2695,7 +2757,7 @@ button { cursor: pointer; }
 }
 .practice-figure {
   display: block;
-  width: 100%;
+  width: auto;
   max-width: 100%;
   height: auto;
   max-height: min(70vh, 640px);
@@ -2981,6 +3043,20 @@ body.math-reference-dragging * {
   color: #1f2937;
 }
 .practice-modal-body p { margin: 0 0 12px; }
+.practice-explanation-body p {
+  margin: 0 0 14px;
+}
+.practice-explanation-body .math-var,
+.practice-explanation-body .math-num,
+.progress-review-explain .math-var,
+.progress-review-explain .math-num {
+  color: #12346f;
+}
+.practice-explanation-body .practice-katex,
+.progress-review-explain .practice-katex {
+  font-size: 1.02em;
+  color: #12346f;
+}
 .practice-modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -3068,11 +3144,13 @@ body.math-reference-dragging * {
 }
 .practice-q-image {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   max-height: min(62vh, 720px);
+  height: auto;
   object-fit: contain;
-  object-position: top center;
-  margin: 0 0 16px;
+  object-position: center center;
+  margin: 0 auto 16px;
   border-radius: 12px;
   background: #fff;
   border: 1px solid #e8eef7;
@@ -4920,11 +4998,14 @@ body.math-reference-dragging * {
   font-size: 13px;
 }
 .progress-review-explain p {
-  margin: 0;
+  margin: 0 0 12px;
   color: #44536d;
   font-size: 13px;
-  line-height: 1.5;
-  white-space: pre-wrap;
+  line-height: 1.55;
+  white-space: normal;
+}
+.progress-review-explain p:last-child {
+  margin-bottom: 0;
 }
 .progress-question-backdrop {
   z-index: 220;

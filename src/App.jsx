@@ -1081,16 +1081,55 @@ function Dashboard({
   onCompleteSession,
 }) {
   const [page, setPage] = useState('dashboard')
+  const [quickLaunch, setQuickLaunch] = useState(null)
 
   const goDashboard = () => {
     setPage('dashboard')
+    setQuickLaunch(null)
     onGoDashboard()
   }
 
   const navigate = (key) => {
     if (key === 'dashboard') goDashboard()
     else if (key === 'profiles') onOpenProfiles()
-    else setPage(key)
+    else {
+      setQuickLaunch(null)
+      setPage(key)
+    }
+  }
+
+  const launchQuickMath = () => {
+    setQuickLaunch({
+      subject: 'math',
+      domains: [...MATH_DOMAIN_NAMES],
+      domain: 'All Domains',
+      topic: 'Quick Mix',
+      difficulty: ['Easy', 'Medium', 'Hard'],
+      difficulties: ['Easy', 'Medium', 'Hard'],
+      count: 20,
+      shuffle: true,
+      feedbackMode: 'deferred',
+      source: 'set',
+      excludeIds: [...completedQuestionIds(profile.qbankProgress, 'math')],
+    })
+    setPage('Math')
+  }
+
+  const launchQuickReading = () => {
+    setQuickLaunch({
+      subject: 'reading',
+      domains: [...READING_DOMAIN_NAMES],
+      domain: 'All Domains',
+      topic: 'Quick Mix',
+      difficulty: ['Easy', 'Medium', 'Hard'],
+      difficulties: ['Easy', 'Medium', 'Hard'],
+      count: 20,
+      shuffle: true,
+      feedbackMode: 'deferred',
+      source: 'set',
+      excludeIds: [...completedQuestionIds(profile.qbankProgress, 'reading')],
+    })
+    setPage('Reading')
   }
 
   return (
@@ -1149,7 +1188,12 @@ function Dashboard({
 
           <aside className="space-y-4">
             <StreakCard profile={profile} />
-            <UpcomingCard profile={profile} />
+            <QuickPracticeCard
+              onQuickMath={launchQuickMath}
+              onQuickReading={launchQuickReading}
+              onPracticeTest={() => setPage('Practice Tests')}
+              onBrowse={() => setPage('Question Bank')}
+            />
             <CoachCard />
           </aside>
         </div>
@@ -1159,6 +1203,8 @@ function Dashboard({
             onCompleteQuestion={onCompleteQuestion}
             onCompleteSession={onCompleteSession}
             onOpenQuestionBank={() => setPage('Question Bank Math')}
+            initialSession={quickLaunch?.subject === 'math' ? quickLaunch : null}
+            onInitialSessionConsumed={() => setQuickLaunch(null)}
           />
         ) : page === 'Reading' ? (
           <ReadingPage
@@ -1166,6 +1212,8 @@ function Dashboard({
             onCompleteQuestion={onCompleteQuestion}
             onCompleteSession={onCompleteSession}
             onOpenQuestionBank={() => setPage('Question Bank Reading')}
+            initialSession={quickLaunch?.subject === 'reading' ? quickLaunch : null}
+            onInitialSessionConsumed={() => setQuickLaunch(null)}
           />
         ) : page === 'Question Bank' ? (
           <QuestionBankPage
@@ -1335,6 +1383,13 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics 
   const mathPct = mathTotal ? Math.round((mathSolved / mathTotal) * 100) : 0
   const attempted = readingSolved + mathSolved
   const accuracy = deriveOverallAccuracy(progress)
+  const topicAccuracy = useMemo(() => {
+    const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
+    return deriveProgressAnalytics(history, progress, {
+      heatDays: 14,
+      allowQbankFallback: true,
+    }).topicAccuracy
+  }, [profile.progressHistory, progress])
 
   return (
     <div className="qbank-page">
@@ -1426,6 +1481,11 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics 
             <div className="qbank-metric-value">{formatStatPct(accuracy)}</div>
           </div>
           <StreakCard profile={profile} compact />
+        </div>
+
+        <div className="progress-topic-grid qbank-topic-grid">
+          <TopicAccuracyCard title="English" domains={topicAccuracy?.reading || []} />
+          <TopicAccuracyCard title="Math" domains={topicAccuracy?.math || []} />
         </div>
       </section>
     </div>
@@ -2024,7 +2084,14 @@ function QuestionBankReadingPage({ onBack, profile, onCompleteQuestion }) {
   )
 }
 
-function ReadingPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuestionBank }) {
+function ReadingPage({
+  profile,
+  onCompleteQuestion,
+  onCompleteSession,
+  onOpenQuestionBank,
+  initialSession = null,
+  onInitialSessionConsumed,
+}) {
   const reading = deriveSubjectStats(
     profile.qbankProgress,
     'reading',
@@ -2045,9 +2112,16 @@ function ReadingPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQue
   const [filterDomains, setFilterDomains] = useState(['Information and Ideas'])
   const [filterDifficulties, setFilterDifficulties] = useState(['Medium'])
   const [questionCount, setQuestionCount] = useState('20')
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState(() => initialSession || null)
   const [athenaFactOpen, setAthenaFactOpen] = useState(false)
   const athenaFactRef = useRef(null)
+
+  useEffect(() => {
+    if (!initialSession) return undefined
+    setSession(initialSession)
+    onInitialSessionConsumed?.()
+    return undefined
+  }, [initialSession, onInitialSessionConsumed])
 
   useEffect(() => {
     if (!athenaFactOpen) return undefined
@@ -2361,7 +2435,14 @@ function ReadingPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQue
   )
 }
 
-function MathPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuestionBank }) {
+function MathPage({
+  profile,
+  onCompleteQuestion,
+  onCompleteSession,
+  onOpenQuestionBank,
+  initialSession = null,
+  onInitialSessionConsumed,
+}) {
   const math = deriveSubjectStats(
     profile.qbankProgress,
     'math',
@@ -2382,7 +2463,14 @@ function MathPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuesti
   const [filterDomains, setFilterDomains] = useState(['Algebra'])
   const [filterDifficulties, setFilterDifficulties] = useState(['Medium'])
   const [questionCount, setQuestionCount] = useState('20')
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState(() => initialSession || null)
+
+  useEffect(() => {
+    if (!initialSession) return undefined
+    setSession(initialSession)
+    onInitialSessionConsumed?.()
+    return undefined
+  }, [initialSession, onInitialSessionConsumed])
 
   const toggleDomain = (name) => {
     setFilterDomains((prev) => {
@@ -3271,6 +3359,8 @@ function asciiToLatex(input, { display = false } = {}) {
     .replace(/<=/g, '\\le ')
     .replace(/>=/g, '\\ge ')
     .replace(/!=/g, '\\ne ')
+    .replace(/π/g, '\\pi')
+    .replace(/(?<![A-Za-z\\])pi\b/gi, '\\pi')
 
   // exponents: ^(expr) or ^digit(s) / ^letter — never ^2z as one token (that is x^2 z)
   t = t.replace(/\^\(([^)]+)\)/g, '^{$1}')
@@ -3280,11 +3370,44 @@ function asciiToLatex(input, { display = false } = {}) {
   // Number/id atoms may include thousands separators (1,044m) so we don't split on the comma.
   const numId = String.raw`(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)[A-Za-z]*|[A-Za-z][A-Za-z0-9]*`
   const parenGroup = String.raw`\((?:[^()]|\([^()]*\))*\)`
+  const radicalLatex = String.raw`\\sqrt(?:\[[^\]]+\])?\{(?:[^{}]|\{[^{}]*\})*\}`
 
-  // slash fractions → stacked fractions
+  // Map PDF/OCR cube-root corruptions, then radicals → LaTeX BEFORE slash fractions
+  // so we don't steal the parentheses inside ∛(…)/….
+  t = t.replace(/I√/g, '∛')
+  t = t.replace(/(?<![A-Za-z])I(\([^()]*\))/g, '∛$1')
+  t = t.replace(
+    new RegExp(`∛\\s*(${parenGroup})`, 'g'),
+    (_, g) => `\\sqrt[3]{${stripOuterParens(g)}}`,
+  )
+  t = t.replace(
+    new RegExp(`∜\\s*(${parenGroup})`, 'g'),
+    (_, g) => `\\sqrt[4]{${stripOuterParens(g)}}`,
+  )
+  t = t.replace(
+    new RegExp(`(?:√|sqrt)\\s*(${parenGroup})`, 'gi'),
+    (_, g) => `\\sqrt{${stripOuterParens(g)}}`,
+  )
+  t = t.replace(/∛\s*([A-Za-z0-9]+)/g, '\\sqrt[3]{$1}')
+  t = t.replace(/∜\s*([A-Za-z0-9]+)/g, '\\sqrt[4]{$1}')
+  t = t.replace(/(?:√|sqrt)\s*([A-Za-z0-9]+)/gi, '\\sqrt{$1}')
+
+  // π / n  (and n / π) before the generic numId fraction pass
+  t = t.replace(/\\pi\s*\/\s*(\d+(?:\.\d+)?)/g, `${fracCmd}{\\pi}{$1}`)
+  t = t.replace(/(\d+(?:\.\d+)?)\s*\/\s*\\pi\b/g, `${fracCmd}{$1}{\\pi}`)
+
+  // slash fractions → stacked fractions (including radical numerators)
   let prev = ''
   while (t !== prev) {
     prev = t
+    t = t.replace(
+      new RegExp(`(${radicalLatex})\\s*/\\s*(${parenGroup})`, 'g'),
+      (_, a, b) => `${fracCmd}{${a}}{${stripOuterParens(b)}}`,
+    )
+    t = t.replace(
+      new RegExp(`(${radicalLatex})\\s*/\\s*(${radicalLatex}|\\d+)`, 'g'),
+      (_, a, b) => `${fracCmd}{${a}}{${b}}`,
+    )
     t = t.replace(
       new RegExp(`(${parenGroup})\\s*/\\s*(${parenGroup})`, 'g'),
       (_, a, b) => `${fracCmd}{${stripOuterParens(a)}}{${stripOuterParens(b)}}`,
@@ -3302,13 +3425,6 @@ function asciiToLatex(input, { display = false } = {}) {
       `${fracCmd}{$1}{$2}`,
     )
   }
-
-  // √(expr) / sqrt(expr) after fractions so roots can wrap stacked fractions
-  t = t.replace(
-    new RegExp(`(?:√|sqrt)\\s*(${parenGroup})`, 'gi'),
-    (_, g) => `\\sqrt{${stripOuterParens(g)}}`,
-  )
-  t = t.replace(/(?:√|sqrt)\s*([A-Za-z0-9]+)/gi, '\\sqrt{$1}')
 
   // 7,400 → 7{,}400 so KaTeX keeps the thousands separator (after fractions are built).
   // Use (?!\d) so it still works in 1,044m (no word-boundary between digit and letter).
@@ -3378,27 +3494,38 @@ function extractInlineMathSegments(text) {
   const hits = []
   // Math RHS: atoms may juxtapose (7,400(0.87)^x), but spaces only around operators — never English words.
   const fnCall = String.raw`[A-Za-z]\(-?[A-Za-z0-9.]+\)`
-  const caretExp = String.raw`(?:\^[A-Za-z0-9]+|\^\([^)]+\))?`
-  const mathAtom = String.raw`${fnCall}|\d{1,3}(?:,\d{3})+(?:\.\d+)?${caretExp}|\d+(?:\.\d+)?${caretExp}|[A-Za-z0-9]+${caretExp}|\([^()]+\)${caretExp}`
-  const mathExpr = String.raw`(?:${mathAtom})+(?:\s*[+\-−*/]\s*(?:${mathAtom})+)*`
+  const radical = String.raw`(?:∛|∜|√|I√)\([^()]*\)`
+  const caretExp = String.raw`(?:\^[A-Za-z0-9]+|\^\([^)]+\)|\^\{[^{}]+\})?`
+  const mathAtom = String.raw`${radical}|${fnCall}${caretExp}|\d{1,3}(?:,\d{3})+(?:\.\d+)?${caretExp}|\d+(?:\.\d+)?${caretExp}|[A-Za-z0-9]+${caretExp}|\([^()]+\)${caretExp}`
+  const mathExpr = String.raw`(?:${mathAtom})+(?:\s*[+\-−*/·]\s*(?:${mathAtom})+)*`
   const patterns = [
+    // Radical fractions: ∛(…)/[…] or ∛(…)/5
+    new RegExp(String.raw`${radical}\s*/\s*(?:\[[^\]]+\]|\((?:[^()]|\([^()]*\))+\)|(?:${mathAtom})+)`, 'g'),
+    // Bracketed numerator fractions: [n^(14/3) · p^(5/3)] / (5np)
+    new RegExp(String.raw`\[[^\]]+\]\s*/\s*(?:\[[^\]]+\]|\((?:[^()]|\([^()]*\))+\)|(?:${mathAtom})+)`, 'g'),
     new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
-    new RegExp(String.raw`[A-Za-z0-9]+(?:\^[A-Za-z0-9]+)?\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
+    new RegExp(String.raw`[A-Za-z0-9]+(?:\^[A-Za-z0-9]+|\^\{[^{}]+\})?\s*/\s*\((?:[^()]|\([^()]*\))+\)`, 'g'),
     new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)\s*/\s*[A-Za-z0-9]+`, 'g'),
     new RegExp(String.raw`${fnCall}\s*=\s*${mathExpr}`, 'gi'),
     new RegExp(String.raw`(?<![A-Za-z])y\s*=\s*${mathExpr}`, 'gi'),
     // e.g. (x + 8)^2 + (y + 8)^2 = 25  (no = inside mathExpr — avoids runaway backtracking)
     new RegExp(String.raw`(?<![A-Za-z])${mathExpr}\s*=\s*${mathExpr}`, 'g'),
-    // Parenthetical powers: (x + 8)^2
-    /\([^()]{1,80}\)\s*\^[A-Za-z0-9]+/g,
+    // Parenthetical powers: (x + 8)^2 or (4.1)^{x + b}
+    /\([^()]{1,80}\)\s*(?:\^[A-Za-z0-9]+|\^\{[^{}]+\})/g,
+    // Standalone radicals
+    new RegExp(radical, 'g'),
     // f(-2) - f(0)
     new RegExp(String.raw`${fnCall}(?:\s*[+\-−]\s*${fnCall})+`, 'g'),
     // Points / ordered pairs: (1, 9), (-1, 105)
     /\(\s*-?[A-Za-z0-9.]+(?:\s*,\s*-?[A-Za-z0-9.]+)+\s*\)/g,
-    new RegExp(String.raw`\b${fnCall}`, 'g'),
-    /\b[A-Za-z0-9]+(?:\^[A-Za-z0-9]+)+\b/g,
+    // p(8)^x — include trailing caret so we don't orphan ^x after bare p(8)
+    new RegExp(String.raw`\b${fnCall}${caretExp}`, 'g'),
+    /\b[A-Za-z0-9]+(?:\^[A-Za-z0-9]+|\^\{[^{}]+\})+\b/g,
     /\b\d+[A-Za-z]\b/g,
     /\b\d[\d,]*(?:\.\d+)?\s*\/\s*\d[\d,]*(?:\.\d+)?\b/g,
+    /(?:π|pi)\s*\/\s*\d[\d,]*(?:\.\d+)?/gi,
+    /\b[A-Za-z]{1,3}\s*\/\s*\d[\d,]*(?:\.\d+)?\b/g,
+    /\b\d[\d,]*(?:\.\d+)?\s*\/\s*(?:π|pi)\b/gi,
     /\b[A-Za-z]\s*\/\s*[A-Za-z0-9]+\b/g,
   ]
 
@@ -3433,13 +3560,13 @@ function renderProseWithMath(text) {
   const raw = String(text ?? '')
   if (!raw) return null
   const segments = extractInlineMathSegments(raw)
-  if (!segments.length) return raw
+  if (!segments.length) return wrapMathTokens(raw)
 
   const nodes = []
   let cursor = 0
   segments.forEach((seg, i) => {
     if (seg.start > cursor) {
-      nodes.push(<span key={`t${i}`}>{raw.slice(cursor, seg.start)}</span>)
+      nodes.push(<span key={`t${i}`}>{wrapMathTokens(raw.slice(cursor, seg.start))}</span>)
     }
     nodes.push(
       <KatexHtml key={`m${i}`} latex={asciiToLatex(seg.text, { display: false })} />,
@@ -3447,9 +3574,41 @@ function renderProseWithMath(text) {
     cursor = seg.end
   })
   if (cursor < raw.length) {
-    nodes.push(<span key="tend">{raw.slice(cursor)}</span>)
+    nodes.push(<span key="tend">{wrapMathTokens(raw.slice(cursor))}</span>)
   }
   return nodes
+}
+
+/** Style leftover numbers / single-letter variables in prose (explanations, prompts). */
+function wrapMathTokens(text) {
+  const raw = String(text ?? '')
+  if (!raw) return null
+  // Numbers (incl. thousands / decimals / %); lowercase vars b–z; π.
+  // Skip lone "a" (article) and A–D after "Choice ".
+  const re = /(\d{1,3}(?:,\d{3})+(?:\.\d+)?%?|\d+(?:\.\d+)?%?|π|(?<![A-Za-z])[b-z](?![A-Za-z]))/g
+  const nodes = []
+  let last = 0
+  let m
+  let i = 0
+  while ((m = re.exec(raw))) {
+    if (m.index > last) nodes.push(raw.slice(last, m.index))
+    const token = m[0]
+    const isNum = /^[\d,]/.test(token) || token.endsWith('%')
+    nodes.push(
+      <span key={`tok${i}`} className={isNum || token === 'π' ? 'math-num' : 'math-var'}>
+        {token}
+      </span>,
+    )
+    i += 1
+    last = m.index + token.length
+  }
+  if (last < raw.length) nodes.push(raw.slice(last))
+  return nodes.length === 1 && typeof nodes[0] === 'string' ? nodes[0] : nodes
+}
+
+function renderExplanationParagraph(para, { withMath = true } = {}) {
+  if (!withMath) return String(para ?? '')
+  return renderProseWithMath(para)
 }
 
 function renderMathText(text, { asEquation = false } = {}) {
@@ -3464,10 +3623,10 @@ function renderMathText(text, { asEquation = false } = {}) {
     return renderProseWithMath(raw)
   }
 
-  return raw
+  return wrapMathTokens(raw)
 }
 
-function PracticeExplanationModal({ open, explanation, onClose }) {
+function PracticeExplanationModal({ open, explanation, onClose, withMath = true }) {
   if (!open) return null
   return (
     <div className="practice-modal-backdrop" onClick={onClose} role="presentation">
@@ -3484,9 +3643,11 @@ function PracticeExplanationModal({ open, explanation, onClose }) {
             <X size={18} />
           </button>
         </div>
-        <div className="practice-modal-body">
+        <div className="practice-modal-body practice-explanation-body">
           {explanation
-            ? explanation.split(/\n+/).map((para, i) => <p key={i}>{para}</p>)
+            ? String(explanation).split(/\n+/).map((para, i) => (
+              <p key={i}>{renderExplanationParagraph(para, { withMath })}</p>
+            ))
             : <p>No explanation is available for this question yet.</p>}
         </div>
       </div>
@@ -3822,6 +3983,11 @@ function formatPromptParagraphs(prompt) {
         continue
       }
       flush()
+    }
+    // Soft-wrapped equation: previous line ended with "=" and this continues the RHS.
+    if (buf.length && /=\s*$/.test(buf[buf.length - 1]) && !/^(I{1,3}|IV|VI{0,3}|IX|X+)\.\s/.test(line)) {
+      buf.push(line)
+      continue
     }
     if (looksLikeEquation(line) || /\{\{eq:\d+\}\}/.test(line) || isRomanStatementLine(line)) {
       flush()
@@ -4457,9 +4623,10 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
               {current?.pdf && current?.pdfPage != null && (
                 <button
                   type="button"
-                  className={`practice-outline-btn compact ${pdfOpen ? 'active' : ''}`}
+                  className={`practice-outline-btn compact practice-pdf-tip ${pdfOpen ? 'active' : ''}`}
                   aria-pressed={pdfOpen}
-                  title="If anything looks off, open the original source question."
+                  aria-label="PDF. If anything looks off, open the original source question."
+                  data-tip="If anything looks off, open the original source question."
                   onClick={() => setPdfOpen((v) => !v)}
                 >
                   <FileText size={14} />
@@ -4951,9 +5118,10 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
               {current?.pdf && current?.pdfPage != null && (
                 <button
                   type="button"
-                  className={`practice-outline-btn compact reading-outline-btn ${pdfOpen ? 'active' : ''}`}
+                  className={`practice-outline-btn compact reading-outline-btn practice-pdf-tip ${pdfOpen ? 'active' : ''}`}
                   aria-pressed={pdfOpen}
-                  title="If anything looks off, open the original source question."
+                  aria-label="PDF. If anything looks off, open the original source question."
+                  data-tip="If anything looks off, open the original source question."
                   onClick={() => setPdfOpen((v) => !v)}
                 >
                   <FileText size={14} />
@@ -5033,6 +5201,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
         open={explainOpen}
         explanation={current?.explanation}
         onClose={() => setExplainOpen(false)}
+        withMath={false}
       />
       <PracticeResultsModal
         open={resultsOpen}
@@ -5097,9 +5266,10 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
                   {canShowPdf && (
                     <button
                       type="button"
-                      className={outlineClass}
+                      className={`${outlineClass} practice-pdf-tip`}
                       aria-pressed={pdfOpen}
-                      title="If anything looks off, open the original source question."
+                      aria-label="PDF. If anything looks off, open the original source question."
+                      data-tip="If anything looks off, open the original source question."
                       onClick={() => setPdfOpen((v) => !v)}
                     >
                       <FileText size={14} />
@@ -5149,7 +5319,9 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
                   {question.explanation ? (
                     <div className="progress-review-explain">
                       <strong>Explanation</strong>
-                      <p>{question.explanation}</p>
+                      {String(question.explanation).split(/\n+/).map((para, i) => (
+                        <p key={i}>{renderExplanationParagraph(para, { withMath: !isReading })}</p>
+                      ))}
                     </div>
                   ) : null}
                 </>
@@ -6819,25 +6991,56 @@ function StreakCard({ profile, compact = false }) {
   )
 }
 
-function UpcomingCard({ profile }) {
+function QuickPracticeCard({ onQuickMath, onQuickReading, onPracticeTest, onBrowse }) {
+  const items = [
+    {
+      key: 'math',
+      title: 'Quick Math Shuffle',
+      sub: '20 questions · All difficulties',
+      type: 'math',
+      onClick: onQuickMath,
+    },
+    {
+      key: 'reading',
+      title: 'Quick Reading Shuffle',
+      sub: '20 questions · All difficulties',
+      type: 'reading',
+      onClick: onQuickReading,
+    },
+    {
+      key: 'test',
+      title: 'Practice Test',
+      sub: 'Full-length SAT simulation',
+      type: 'test',
+      onClick: onPracticeTest,
+    },
+  ]
+
   return (
     <div className="card">
-      <h3 className="text-lg font-bold text-athena-navy">Upcoming</h3>
+      <h3 className="text-lg font-bold text-athena-navy">Quick Practice</h3>
       <div className="mt-3 divide-y divide-[#edf0f5]">
-        {profile.upcoming.map((u, i)=>(
-          <div key={i} className="flex items-center gap-3 py-3">
+        {items.map((item) => (
+          <button
+            key={item.key}
+            type="button"
+            className="flex w-full cursor-pointer items-center gap-3 border-0 bg-transparent py-3 text-left"
+            onClick={item.onClick}
+          >
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#eef3ff] text-athena-blue">
-              {u.type==='math'?<Calculator size={19}/>:u.type==='reading'?<BookOpen size={19}/>:<CalendarDays size={19}/>}
+              {item.type === 'math' ? <Calculator size={19} /> : item.type === 'reading' ? <BookOpen size={19} /> : <CalendarDays size={19} />}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-bold text-athena-navy">{u.title}</div>
-              <div className="truncate text-xs text-[#758099]">{u.sub}</div>
+              <div className="truncate text-sm font-bold text-athena-navy">{item.title}</div>
+              <div className="truncate text-xs text-[#758099]">{item.sub}</div>
             </div>
             <ChevronRight size={18} className="text-[#77859e]" />
-          </div>
+          </button>
         ))}
       </div>
-      <button className="mt-3 text-xs font-semibold text-athena-blue">View Full Schedule →</button>
+      <button type="button" className="mt-3 text-xs font-semibold text-athena-blue" onClick={onBrowse}>
+        More practice options →
+      </button>
     </div>
   )
 }
