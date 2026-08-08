@@ -2842,7 +2842,7 @@ button { cursor: pointer; }
 .practice-modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 300;
   background: rgba(15, 23, 42, 0.45);
   display: flex;
   align-items: center;
@@ -2850,6 +2850,93 @@ button { cursor: pointer; }
   padding: 32px 24px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+}
+.math-reference-panel {
+  position: fixed;
+  z-index: 320;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e9f2;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.22);
+  overflow: hidden;
+  pointer-events: auto;
+  min-width: 360px;
+}
+.math-reference-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px 12px 44px;
+  border-bottom: 1px solid #edf0f5;
+  flex-shrink: 0;
+  background: #fff;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.math-reference-panel-head:active {
+  cursor: grabbing;
+}
+.math-reference-panel-head h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: #12346f;
+  letter-spacing: -0.02em;
+}
+.math-reference-panel-body {
+  margin: 0;
+  padding: 10px 12px 12px;
+  overflow: hidden;
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.math-reference-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 8px;
+  background: #fff;
+  pointer-events: none;
+  user-select: none;
+}
+.math-reference-resize {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1.5px solid #c5d0e2;
+  border-radius: 8px;
+  background: #f3f6fb;
+  color: #3d5a86;
+  box-shadow: 0 1px 3px rgba(20, 40, 79, 0.12);
+  cursor: nwse-resize;
+  touch-action: none;
+  display: grid;
+  place-items: center;
+}
+.math-reference-resize:hover {
+  background: #e8eef8;
+  border-color: #8fa3c4;
+  color: #23406a;
+}
+body.math-reference-dragging {
+  user-select: none !important;
+  cursor: nwse-resize;
+}
+body.math-reference-dragging * {
+  cursor: inherit !important;
 }
 .practice-modal {
   width: min(640px, 100%);
@@ -3593,19 +3680,19 @@ button { cursor: pointer; }
 }
 .progress-summary {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr) minmax(380px, 1.55fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.2fr) minmax(320px, 1.35fr);
   gap: 14px;
   margin-bottom: 14px;
   align-items: stretch;
 }
 .progress-summary-corner {
   display: grid;
-  grid-template-columns: minmax(200px, 1.35fr) minmax(180px, 0.9fr);
-  gap: 6px;
-  align-items: end;
+  grid-template-columns: minmax(140px, 1fr) minmax(160px, 0.85fr);
+  gap: 0;
+  align-items: stretch;
   min-width: 0;
-  min-height: 280px;
-  margin-top: 28px;
+  min-height: 0;
+  margin-top: 0;
   overflow: visible;
 }
 .progress-summary-stack {
@@ -3614,18 +3701,20 @@ button { cursor: pointer; }
   gap: 10px;
   min-width: 0;
   align-self: stretch;
-  justify-content: flex-end;
+  height: 100%;
+  justify-content: stretch;
 }
 .progress-summary-stack .progress-summary-card {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 0;
 }
 .progress-athena {
   position: relative;
   min-width: 0;
-  min-height: 280px;
+  min-height: 0;
   height: 100%;
   align-self: stretch;
   z-index: 3;
@@ -3635,13 +3724,14 @@ button { cursor: pointer; }
 }
 .progress-athena-img {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 4% -4% -6% -4%;
+  width: auto;
+  height: 108%;
   max-height: none;
+  max-width: none;
   display: block;
   object-fit: contain;
-  object-position: right bottom;
+  object-position: center bottom;
   filter: drop-shadow(0 16px 24px rgba(40, 60, 110, 0.16));
   -webkit-mask-image: linear-gradient(
     to bottom,
@@ -3660,29 +3750,29 @@ button { cursor: pointer; }
 }
 .progress-athena-bubble {
   position: absolute;
-  left: 50%;
-  top: -44px;
+  left: 44%;
+  top: -40px;
   z-index: 5;
-  max-width: min(200px, 92%);
+  max-width: min(150px, 88%);
   width: max-content;
-  padding: 11px 14px;
-  border-radius: 16px 16px 16px 5px;
+  padding: 7px 10px;
+  border-radius: 12px 12px 12px 4px;
   background: #14284f;
   color: #fff;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 800;
-  line-height: 1.28;
+  line-height: 1.25;
   letter-spacing: -0.015em;
-  box-shadow: 0 12px 28px rgba(20, 40, 79, 0.24);
+  box-shadow: 0 10px 22px rgba(20, 40, 79, 0.22);
   text-align: center;
 }
 .progress-athena-bubble::after {
   content: '';
   position: absolute;
-  left: 50%;
-  bottom: -7px;
-  width: 14px;
-  height: 14px;
+  left: 72%;
+  bottom: -5px;
+  width: 10px;
+  height: 10px;
   background: #14284f;
   transform: translateX(-50%) rotate(45deg);
   border-radius: 2px;
@@ -4471,8 +4561,9 @@ button { cursor: pointer; }
   }
   .progress-summary-corner {
     grid-column: 1 / -1;
-    grid-template-columns: minmax(0, 1.2fr) minmax(200px, 0.95fr);
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 0.9fr);
     min-height: 260px;
+    gap: 0;
   }
 }
 @media (max-width: 980px) {
@@ -4488,7 +4579,7 @@ button { cursor: pointer; }
     grid-template-columns: 1fr;
   }
   .progress-athena-bubble {
-    font-size: 14px;
+    font-size: 11px;
   }
 }
 @media (max-width: 720px) {

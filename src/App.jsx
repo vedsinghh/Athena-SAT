@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, animate, motion } from 'framer-motion'
 import {
-  AlertTriangle, BarChart3, BookOpen, Calculator, CalendarDays,
+  AlertTriangle, ArrowUpLeft, BarChart3, BookOpen, Calculator, CalendarDays,
   ChevronDown, ChevronRight, ClipboardList, Clock, ExternalLink, Filter,
   Flame, FunctionSquare, Highlighter, Home, Import, Lightbulb, List, Pause, PenLine, Radical, Save,
   Settings, Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, XCircle, CheckCircle2, Check,
@@ -2643,7 +2643,6 @@ function MathPage({ profile, onCompleteQuestion, onCompleteSession, onOpenQuesti
 }
 
 const DESMOS_API_KEY = '7ad3aa8ec126436495e727c52a77826a'
-const FORMULA_SHEET_URL = 'https://satsuite.collegeboard.org/media/pdf/sat-suite-of-assessments-student-guide.pdf'
 
 const MATH_QUESTION_BANK = mathQuestions
 const READING_QUESTION_BANK = readingQuestions
@@ -3495,6 +3494,168 @@ function PracticeExplanationModal({ open, explanation, onClose }) {
   )
 }
 
+const MATH_REFERENCE_ASPECT = 1024 / 528
+const MATH_REFERENCE_CHROME_H = 72
+const MATH_REFERENCE_PAD_X = 24
+const MATH_REFERENCE_MIN_W = 360
+
+function mathReferenceHeightForWidth(width) {
+  const imgW = Math.max(240, width - MATH_REFERENCE_PAD_X)
+  return Math.round(MATH_REFERENCE_CHROME_H + imgW / MATH_REFERENCE_ASPECT)
+}
+
+function MathReferenceModal({ open, onClose }) {
+  const dragRef = useRef(null)
+  const [box, setBox] = useState(null)
+
+  useEffect(() => {
+    if (!open) {
+      setBox(null)
+      return undefined
+    }
+    const width = Math.min(440, Math.max(MATH_REFERENCE_MIN_W, window.innerWidth - 36))
+    const height = mathReferenceHeightForWidth(width)
+    setBox({
+      left: Math.max(12, window.innerWidth - width - 18),
+      top: Math.max(12, window.innerHeight - height - 18),
+      width,
+      height,
+    })
+    return undefined
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return undefined
+    const onMove = (e) => {
+      const drag = dragRef.current
+      if (!drag) return
+      if (drag.mode === 'move') {
+        setBox((prev) => {
+          if (!prev) return prev
+          const maxLeft = Math.max(0, window.innerWidth - prev.width)
+          const maxTop = Math.max(0, window.innerHeight - 56)
+          return {
+            ...prev,
+            left: Math.min(maxLeft, Math.max(0, drag.startLeft + (e.clientX - drag.startX))),
+            top: Math.min(maxTop, Math.max(0, drag.startTop + (e.clientY - drag.startY))),
+          }
+        })
+      } else if (drag.mode === 'resize') {
+        setBox((prev) => {
+          if (!prev) return prev
+          // Top-left resize: keep bottom-right fixed, lock aspect to the sheet.
+          const right = drag.startLeft + drag.startWidth
+          const bottom = drag.startTop + drag.startHeight
+          const dx = drag.startX - e.clientX
+          const dy = (drag.startY - e.clientY) * MATH_REFERENCE_ASPECT
+          const delta = (dx + dy) / 2
+          const maxWidth = Math.max(MATH_REFERENCE_MIN_W, right - 8)
+          const maxByHeight = Math.max(
+            MATH_REFERENCE_MIN_W,
+            MATH_REFERENCE_PAD_X + (bottom - 8 - MATH_REFERENCE_CHROME_H) * MATH_REFERENCE_ASPECT,
+          )
+          const width = Math.min(maxWidth, maxByHeight, Math.max(MATH_REFERENCE_MIN_W, drag.startWidth + delta))
+          const height = mathReferenceHeightForWidth(width)
+          return {
+            width,
+            height,
+            left: Math.max(0, right - width),
+            top: Math.max(0, bottom - height),
+          }
+        })
+      }
+    }
+    const onUp = () => {
+      dragRef.current = null
+      document.body.classList.remove('math-reference-dragging')
+    }
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onUp)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
+      document.body.classList.remove('math-reference-dragging')
+    }
+  }, [open])
+
+  if (!open || !box) return null
+
+  const startMove = (e) => {
+    if (e.button !== 0) return
+    if (e.target.closest('button')) return
+    dragRef.current = {
+      mode: 'move',
+      startX: e.clientX,
+      startY: e.clientY,
+      startLeft: box.left,
+      startTop: box.top,
+    }
+    document.body.classList.add('math-reference-dragging')
+    e.preventDefault()
+  }
+
+  const startResize = (e) => {
+    if (e.button !== 0) return
+    dragRef.current = {
+      mode: 'resize',
+      startX: e.clientX,
+      startY: e.clientY,
+      startLeft: box.left,
+      startTop: box.top,
+      startWidth: box.width,
+      startHeight: box.height,
+    }
+    document.body.classList.add('math-reference-dragging')
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  return createPortal(
+    <div
+      className="math-reference-panel"
+      role="dialog"
+      aria-label="Math reference sheet"
+      style={{
+        left: box.left,
+        top: box.top,
+        width: box.width,
+        height: box.height,
+      }}
+    >
+      <button
+        type="button"
+        className="math-reference-resize"
+        aria-label="Resize reference sheet"
+        title="Drag to resize"
+        onPointerDown={startResize}
+      >
+        <ArrowUpLeft size={16} strokeWidth={2.4} />
+      </button>
+      <div
+        className="math-reference-panel-head"
+        onPointerDown={startMove}
+      >
+        <h3>Reference Sheet</h3>
+        <button type="button" className="practice-modal-close" onClick={onClose} aria-label="Close">
+          <X size={18} />
+        </button>
+      </div>
+      <div className="math-reference-panel-body">
+        <img
+          src="/math-reference.png"
+          alt="SAT Math reference sheet with geometry formulas and volume formulas"
+          className="math-reference-img"
+          draggable={false}
+        />
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
+
 function PracticePdfPanel({ pdf, pdfPage, pdfPreview }) {
   if (!pdfPreview && !(pdf && pdfPage)) return null
   const fullSrc = pdf && pdfPage ? `${pdf}#page=${pdfPage}` : null
@@ -3971,6 +4132,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
   const [resultsOpen, setResultsOpen] = useState(false)
+  const [referenceOpen, setReferenceOpen] = useState(false)
   const [reviewMode, setReviewMode] = useState(false)
   const [elapsed, setElapsed] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -4008,6 +4170,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     setExplainOpen(false)
     setPdfOpen(false)
     setResultsOpen(false)
+    setReferenceOpen(false)
     setReviewMode(false)
     setElapsed(0)
     elapsedRef.current = 0
@@ -4210,15 +4373,14 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
               </div>
             </div>
           </div>
-          <a
+          <button
+            type="button"
             className="practice-outline-btn"
-            href={FORMULA_SHEET_URL}
-            target="_blank"
-            rel="noreferrer"
+            onClick={() => setReferenceOpen((v) => !v)}
           >
             <FileText size={15} />
             Reference Sheet
-          </a>
+          </button>
           <button
             type="button"
             className="practice-outline-btn"
@@ -4408,6 +4570,10 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
         open={explainOpen}
         explanation={current?.explanation}
         onClose={() => setExplainOpen(false)}
+      />
+      <MathReferenceModal
+        open={referenceOpen}
+        onClose={() => setReferenceOpen(false)}
       />
       <PracticeResultsModal
         open={resultsOpen}
