@@ -14,7 +14,7 @@ import mathSkillCounts from './data/mathSkillCounts.json'
 import readingSkillCounts from './data/readingSkillCounts.json'
 import katex from 'katex'
 
-const QUESTION_POOLS = ['Collegeboard Summer 2026']
+const QUESTION_POOLS = ['Collegeboard Summer 2026', 'SAT Educator Bank 1']
 const DEFAULT_QUESTION_POOL = QUESTION_POOLS[0]
 const STAT_NA = 'N/A'
 
