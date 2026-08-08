@@ -2824,6 +2824,24 @@ function formatElapsed(totalSeconds) {
   return [h, m, s].map((n) => String(n).padStart(2, '0')).join(':')
 }
 
+function formatStudyDuration(totalSeconds) {
+  const sec = Math.max(0, Math.round(Number(totalSeconds) || 0))
+  if (!sec) return '0m'
+  const h = Math.floor(sec / 3600)
+  const m = Math.floor((sec % 3600) / 60)
+  if (h > 0 && m > 0) return `${h}h ${m}m`
+  if (h > 0) return `${h}h`
+  if (m > 0) return `${m}m`
+  return `${sec}s`
+}
+
+function topicAccuracyTone(pct) {
+  if (!isValidStatNumber(pct)) return 'empty'
+  if (pct >= 85) return 'high'
+  if (pct >= 60) return 'mid'
+  return 'low'
+}
+
 function loadDesmosApi() {
   if (typeof window !== 'undefined' && window.Desmos) {
     return Promise.resolve(window.Desmos)
@@ -5292,7 +5310,9 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   let incorrect = 0
   const subject = { math: { correct: 0, total: 0 }, reading: { correct: 0, total: 0 } }
   const domainMap = new Map()
+  const topicMap = new Map()
   const times = []
+  const dayTime = new Map()
 
   const bumpDomain = (name, isCorrect) => {
     if (!name) return
@@ -5302,9 +5322,29 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     domainMap.set(name, cur)
   }
 
+  const bumpTopic = (sub, name, isCorrect) => {
+    if (!name || isCorrect == null) return
+    const key = `${sub}::${name}`
+    const cur = topicMap.get(key) || { subject: sub, name, correct: 0, total: 0 }
+    cur.total += 1
+    if (isCorrect) cur.correct += 1
+    topicMap.set(key, cur)
+  }
+
+  const addStudySeconds = (createdAt, sub, seconds) => {
+    if (!isValidStatNumber(seconds) || seconds <= 0) return
+    const key = localDayKey(createdAt)
+    if (!key) return
+    const cur = dayTime.get(key) || { math: 0, reading: 0 }
+    cur[sub] = (cur[sub] || 0) + seconds
+    dayTime.set(key, cur)
+  }
+
   sets.forEach((entry) => {
     const sub = entry.subject === 'math' ? 'math' : 'reading'
-    ;(entry.items || []).forEach((item) => {
+    const items = entry.items || []
+    let itemTimeSum = 0
+    items.forEach((item) => {
       if (item.correct == null) return
       if (item.correct) {
         correct += 1
@@ -5314,13 +5354,21 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
       }
       subject[sub].total += 1
       bumpDomain(item.domain, item.correct)
-      if (isValidStatNumber(item.elapsed) && item.elapsed > 0) times.push(item.elapsed)
+      bumpTopic(sub, item.domain, item.correct)
+      if (isValidStatNumber(item.elapsed) && item.elapsed > 0) {
+        times.push(item.elapsed)
+        itemTimeSum += item.elapsed
+        addStudySeconds(entry.createdAt, sub, item.elapsed)
+      }
     })
-    if (!(entry.items || []).length && isValidStatNumber(entry.correct) && isValidStatNumber(entry.total)) {
+    if (!items.length && isValidStatNumber(entry.correct) && isValidStatNumber(entry.total)) {
       correct += entry.correct
       incorrect += Math.max(0, entry.total - entry.correct)
       subject[sub].correct += entry.correct
       subject[sub].total += entry.total
+    }
+    if (!itemTimeSum && isValidStatNumber(entry.elapsed) && entry.elapsed > 0) {
+      addStudySeconds(entry.createdAt, sub, entry.elapsed)
     }
   })
 
@@ -5336,14 +5384,20 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     subject[sub].total += 1
     const domainGuess = String(entry.sub || '').split(' · ')[0] || null
     bumpDomain(domainGuess, entry.correct)
-    if (isValidStatNumber(entry.elapsed) && entry.elapsed > 0) times.push(entry.elapsed)
+    bumpTopic(sub, domainGuess, entry.correct)
+    if (isValidStatNumber(entry.elapsed) && entry.elapsed > 0) {
+      times.push(entry.elapsed)
+      addStudySeconds(entry.createdAt, sub, entry.elapsed)
+    }
   })
 
   // Prefer live qbank domain stats when history has no domain labels yet (all-time only).
   if (!domainMap.size && options.allowQbankFallback) {
     Object.values(qbankProgress || {}).forEach((item) => {
       if (!item?.domain || item.correct == null) return
+      const sub = item.subject === 'math' ? 'math' : 'reading'
       bumpDomain(item.domain, Boolean(item.correct))
+      bumpTopic(sub, item.domain, Boolean(item.correct))
     })
   }
 
@@ -5369,6 +5423,25 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
       pct: Math.round((d.correct / d.total) * 100),
     }))
 
+  const buildTopicList = (sub, names) => names
+    .map((name) => {
+      const cur = topicMap.get(`${sub}::${name}`)
+      if (!cur?.total) return null
+      return {
+        name,
+        correct: cur.correct,
+        total: cur.total,
+        pct: Math.round((cur.correct / cur.total) * 100),
+      }
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.total - a.total)
+
+  const topicAccuracy = {
+    reading: buildTopicList('reading', READING_DOMAIN_NAMES),
+    math: buildTopicList('math', MATH_DOMAIN_NAMES),
+  }
+
   // Activity heatmap for the selected span
   const dayCounts = new Map()
   list.forEach((e) => {
@@ -5378,6 +5451,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   })
   const heatDays = []
   const today = new Date()
+  const todayKey = localDayKey(today)
   for (let i = heatSpan - 1; i >= 0; i -= 1) {
     const d = new Date(today)
     d.setDate(today.getDate() - i)
@@ -5390,6 +5464,28 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   }
   const heatMax = Math.max(1, ...heatDays.map((d) => d.count))
 
+  const studyDays = []
+  for (let i = heatSpan - 1; i >= 0; i -= 1) {
+    const d = new Date(today)
+    d.setDate(today.getDate() - i)
+    const key = localDayKey(d)
+    const timesForDay = dayTime.get(key) || { math: 0, reading: 0 }
+    const mathSec = timesForDay.math || 0
+    const readingSec = timesForDay.reading || 0
+    studyDays.push({
+      key,
+      label: key === todayKey
+        ? 'Today'
+        : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+      mathSec,
+      readingSec,
+      totalSec: mathSec + readingSec,
+    })
+  }
+  const studyTotalSec = studyDays.reduce((sum, d) => sum + d.totalSec, 0)
+  const studyAvgSec = studyDays.length ? Math.round(studyTotalSec / studyDays.length) : 0
+  const studyMaxSec = Math.max(studyAvgSec, ...studyDays.map((d) => d.totalSec), 1)
+
   const avgSec = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : null
 
   return {
@@ -5400,6 +5496,11 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     subject,
     scoreTrend,
     domains,
+    topicAccuracy,
+    studyDays,
+    studyTotalSec,
+    studyAvgSec,
+    studyMaxSec,
     heatDays,
     heatMax,
     avgSec,
@@ -5576,7 +5677,141 @@ function ProgressAnalytics({ analytics, streak, heatLabel = 'Last 14 days' }) {
           <span>More</span>
         </div>
       </div>
+
+      <div className="progress-topic-grid">
+        <TopicAccuracyCard title="English" domains={a.topicAccuracy?.reading || []} />
+        <TopicAccuracyCard title="Math" domains={a.topicAccuracy?.math || []} />
+      </div>
+
+      <DailyStudyTimeCard
+        days={a.studyDays || []}
+        totalSec={a.studyTotalSec || 0}
+        avgSec={a.studyAvgSec || 0}
+        maxSec={a.studyMaxSec || 1}
+        rangeLabel={heatLabel}
+      />
     </section>
+  )
+}
+
+function TopicAccuracyCard({ title, domains }) {
+  const rows = Array.isArray(domains) ? domains : []
+  return (
+    <div className="card progress-topic-card">
+      <div className="progress-topic-head">
+        <div>
+          <h3>{title}</h3>
+          <p>Accuracy by topic</p>
+        </div>
+        <div className="progress-topic-legend" aria-hidden="true">
+          <span><i className="high" /> ≥ 85%</span>
+          <span><i className="mid" /> 60 – 84%</span>
+          <span><i className="low" /> &lt; 60%</span>
+        </div>
+      </div>
+      {rows.length ? (
+        <ul className="progress-topic-list">
+          {rows.map((d) => {
+            const tone = topicAccuracyTone(d.pct)
+            return (
+              <li key={d.name}>
+                <div className="progress-topic-copy">
+                  <strong>{d.name}</strong>
+                  <em>{d.total} attempt{d.total === 1 ? '' : 's'}</em>
+                </div>
+                <div className="progress-topic-meter">
+                  <div className="progress-topic-track" aria-hidden="true">
+                    <span className="seg low" />
+                    <span className="seg mid" />
+                    <span className="seg high" />
+                    <i
+                      className={`thumb ${tone}`}
+                      style={{ left: `${Math.max(0, Math.min(100, d.pct))}%` }}
+                    />
+                  </div>
+                  <strong className={`progress-topic-pct ${tone}`}>{d.pct}%</strong>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      ) : (
+        <div className="progress-analytics-empty">Practice {title.toLowerCase()} topics to unlock accuracy by domain.</div>
+      )}
+    </div>
+  )
+}
+
+function DailyStudyTimeCard({ days, totalSec, avgSec, maxSec, rangeLabel }) {
+  const series = Array.isArray(days) ? days : []
+  const hasTime = series.some((d) => d.totalSec > 0)
+  const avgPct = maxSec > 0 ? Math.min(100, (avgSec / maxSec) * 100) : 0
+
+  return (
+    <div className="card progress-study-card">
+      <div className="progress-study-head">
+        <div>
+          <h3>Daily study time</h3>
+          <p>Stacked by subject. The dashed line is your daily average.</p>
+        </div>
+      </div>
+      <div className="progress-study-metrics">
+        <div>
+          <strong>{formatStudyDuration(totalSec)}</strong>
+          <span>{rangeLabel || 'This range'}</span>
+        </div>
+        <div>
+          <strong>{formatStudyDuration(avgSec)}</strong>
+          <span>per day</span>
+        </div>
+      </div>
+      {hasTime ? (
+        <div className="progress-study-chart" role="img" aria-label="Daily study time by subject">
+          <div className="progress-study-plot">
+            <div className="progress-study-tracks">
+              <div className="progress-study-avg" style={{ bottom: `${avgPct}%` }}>
+                <em>Average {formatStudyDuration(avgSec)}</em>
+              </div>
+              {series.map((d) => {
+                const height = d.totalSec > 0 ? Math.max(6, (d.totalSec / maxSec) * 100) : 0
+                const mathShare = d.totalSec ? (d.mathSec / d.totalSec) * 100 : 0
+                const readingShare = d.totalSec ? (d.readingSec / d.totalSec) * 100 : 0
+                return (
+                  <div
+                    key={d.key}
+                    className="progress-study-track"
+                    title={`${d.label}: Math ${formatStudyDuration(d.mathSec)}, Reading ${formatStudyDuration(d.readingSec)}`}
+                  >
+                    {d.totalSec > 0 ? (
+                      <motion.div
+                        className="progress-study-stack"
+                        initial={{ height: 0 }}
+                        animate={{ height: `${height}%` }}
+                        transition={{ duration: 0.55, ease: 'easeOut' }}
+                      >
+                        {d.mathSec > 0 ? <span className="math" style={{ height: `${mathShare}%` }} /> : null}
+                        {d.readingSec > 0 ? <span className="reading" style={{ height: `${readingShare}%` }} /> : null}
+                      </motion.div>
+                    ) : null}
+                  </div>
+                )
+              })}
+            </div>
+            <div className="progress-study-labels">
+              {series.map((d) => (
+                <span key={d.key} className="progress-study-label">{d.label}</span>
+              ))}
+            </div>
+          </div>
+          <div className="progress-study-swatches">
+            <span><i className="math" /> Math</span>
+            <span><i className="reading" /> Reading</span>
+          </div>
+        </div>
+      ) : (
+        <div className="progress-analytics-empty">Timed practice will show up here as daily study bars.</div>
+      )}
+    </div>
   )
 }
 
