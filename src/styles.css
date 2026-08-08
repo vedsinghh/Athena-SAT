@@ -3751,7 +3751,7 @@ body.math-reference-dragging * {
 .progress-athena-bubble {
   position: absolute;
   left: 44%;
-  top: -40px;
+  top: 8px;
   z-index: 5;
   max-width: min(150px, 88%);
   width: max-content;
