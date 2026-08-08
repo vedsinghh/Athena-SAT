@@ -487,13 +487,6 @@ function safeReadProfiles() {
   } catch {
     /* ignore */
   }
-  if (!profiles.some(p => p.id === demoProfile.id)) {
-    profiles = [{ ...demoProfile }, ...profiles]
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles))
-    localStorage.setItem(ACTIVE_KEY, demoProfile.id)
-  } else if (!localStorage.getItem(ACTIVE_KEY)) {
-    localStorage.setItem(ACTIVE_KEY, demoProfile.id)
-  }
   const normalized = profiles.map((p) => scrubEmptyPracticeSets(applyStreakFromHistory({
     ...p,
     progressHistory: Array.isArray(p.progressHistory) ? p.progressHistory : [],
@@ -507,6 +500,12 @@ function safeReadProfiles() {
     /* ignore */
   }
   return normalized
+}
+
+function resolveActiveProfileId(profiles) {
+  const stored = localStorage.getItem(ACTIVE_KEY)
+  if (stored && profiles.some((p) => p.id === stored)) return stored
+  return null
 }
 
 function saveProfiles(profiles) {
@@ -540,22 +539,15 @@ function makeStarterProfile({ name, grade, goalScore, bestScore, school, testDat
 
 export default function App() {
   const [profiles, setProfiles] = useState(() => safeReadProfiles())
-  const [activeId, setActiveId] = useState(() => {
-    const list = safeReadProfiles()
-    const stored = localStorage.getItem(ACTIVE_KEY)
-    const storedProfile = list.find(p => p.id === stored)
-    if (storedProfile && ((storedProfile.qbankProgress && Object.keys(storedProfile.qbankProgress).length) || storedProfile.activity?.length)) {
-      return stored
-    }
-    localStorage.setItem(ACTIVE_KEY, demoProfile.id)
-    return demoProfile.id
-  })
-  const [screen, setScreen] = useState('dashboard')
+  const [activeId, setActiveId] = useState(() => resolveActiveProfileId(safeReadProfiles()))
+  const [screen, setScreen] = useState(() => (
+    resolveActiveProfileId(safeReadProfiles()) ? 'dashboard' : 'welcome'
+  ))
   const [profilesOpen, setProfilesOpen] = useState(false)
   const [toast, setToast] = useState('')
 
   const activeProfile = useMemo(
-    () => profiles.find(p => p.id === activeId) || profiles.find(p => p.id === demoProfile.id) || profiles[0] || null,
+    () => (activeId ? profiles.find((p) => p.id === activeId) || null : null),
     [profiles, activeId]
   )
 
@@ -598,18 +590,7 @@ export default function App() {
     const next = profiles.filter((p) => p.id !== profileId)
     setProfilesOpen(false)
     if (!next.length) {
-      const fresh = {
-        ...demoProfile,
-        id: demoProfile.id,
-        school: '',
-        testDate: '',
-        bestScore: null,
-        currentScore: 1200,
-        qbankProgress: {},
-        activity: [],
-        progressHistory: [],
-      }
-      persistProfiles([fresh])
+      persistProfiles([])
       setActiveId(null)
       localStorage.removeItem(ACTIVE_KEY)
       setScreen('welcome')
