@@ -1222,7 +1222,6 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading }) {
   const mathPct = mathTotal ? Math.round((mathSolved / mathTotal) * 100) : 0
   const attempted = readingSolved + mathSolved
   const accuracy = deriveOverallAccuracy(progress)
-  const streak = computeStreakFromHistory(profile.progressHistory).streak
 
   return (
     <div className="qbank-page">
@@ -1311,11 +1310,7 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading }) {
             <div className="qbank-metric-label">Current Accuracy</div>
             <div className="qbank-metric-value">{formatStatPct(accuracy)}</div>
           </div>
-          <div className="qbank-metric qbank-metric-indigo">
-            <div className="qbank-metric-icon"><Flame size={18} /></div>
-            <div className="qbank-metric-label">Study Streak</div>
-            <div className="qbank-metric-value">{formatStatCount(streak)}</div>
-          </div>
+          <StreakCard profile={profile} compact />
         </div>
       </section>
     </div>
@@ -3742,7 +3737,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
             </div>
             <div className="practice-q-right">
               <button type="button" className="practice-text-btn">Report</button>
-              {current?.pdfPreview && (
+              {current?.pdf && current?.pdfPage != null && (
                 <button
                   type="button"
                   className={`practice-outline-btn compact ${pdfOpen ? 'active' : ''}`}
@@ -3767,7 +3762,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
             </div>
           </div>
 
-          {pdfOpen && current?.pdfPreview ? (
+          {pdfOpen && current?.pdf && current?.pdfPage != null ? (
             <PracticePdfPanel
               pdf={current.pdf}
               pdfPage={current.pdfPage}
@@ -5122,7 +5117,7 @@ function QuickActions({ onOpenReadingBank, onOpenMathBank }) {
   )
 }
 
-function StreakCard({ profile }) {
+function StreakCard({ profile, compact = false }) {
   const history = profile.progressHistory || []
   const { streak, bestStreak } = computeStreakFromHistory(history)
   const displayStreak = streak
@@ -5135,6 +5130,26 @@ function StreakCard({ profile }) {
     d.setDate(today.getDate() - dow + i)
     return { label, active: daySet.has(localDayKey(d)) }
   })
+
+  if (compact) {
+    return (
+      <div className="qbank-metric qbank-metric-streak">
+        <div className="qbank-streak-title">Current Streak 🔥</div>
+        <div className="qbank-streak-value">
+          {displayStreak}<span>days</span>
+        </div>
+        <div className="qbank-streak-week">
+          {week.map((d, i) => (
+            <div key={`${d.label}-${i}`} className="qbank-streak-day">
+              <span>{d.label}</span>
+              <i className={d.active ? 'on' : ''}>{d.active ? '✓' : ''}</i>
+            </div>
+          ))}
+        </div>
+        <div className="qbank-streak-best">Best streak: {displayBest} days</div>
+      </div>
+    )
+  }
 
   return (
     <div className="card">

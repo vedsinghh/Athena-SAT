@@ -1689,6 +1689,70 @@ button { cursor: pointer; }
 .qbank-metric-orange .qbank-metric-value { color: #e07020; }
 .qbank-metric-indigo .qbank-metric-icon { background: #ecebff; color: #5b4cdb; }
 .qbank-metric-indigo .qbank-metric-value { color: #5b4cdb; }
+.qbank-metric-streak {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 14px 12px;
+}
+.qbank-streak-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #12346f;
+  line-height: 1.2;
+}
+.qbank-streak-value {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  line-height: 1;
+  color: #f18700;
+}
+.qbank-streak-value span {
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  vertical-align: middle;
+}
+.qbank-streak-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  text-align: center;
+}
+.qbank-streak-day span {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  color: #748097;
+  line-height: 1;
+}
+.qbank-streak-day i {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin: 5px auto 0;
+  border-radius: 999px;
+  border: 1px solid #b9c4d8;
+  color: #8d99ad;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+}
+.qbank-streak-day i.on {
+  border-color: #f18700;
+  background: #f18700;
+  color: #fff;
+}
+.qbank-streak-best {
+  font-size: 11px;
+  font-weight: 600;
+  color: #66738c;
+}
 
 /* Question Bank — Math detail */
 .qbm-page {
