@@ -3556,8 +3556,14 @@ function extractInlineMathSegments(text) {
   return picked
 }
 
+function normalizeUnitSuperscripts(text) {
+  return String(text ?? '')
+    .replace(/\b(km|cm|mm|µm|μm|nm|m|ft|in|mi)\s*\^?2\b/gi, (_, u) => `${u}²`)
+    .replace(/\b(km|cm|mm|µm|μm|nm|m|ft|in|mi)\s*\^?3\b/gi, (_, u) => `${u}³`)
+}
+
 function renderProseWithMath(text) {
-  const raw = String(text ?? '')
+  const raw = normalizeUnitSuperscripts(text)
   if (!raw) return null
   const segments = extractInlineMathSegments(raw)
   if (!segments.length) return wrapMathTokens(raw)
@@ -3607,12 +3613,13 @@ function wrapMathTokens(text) {
 }
 
 function renderExplanationParagraph(para, { withMath = true } = {}) {
-  if (!withMath) return String(para ?? '')
-  return renderProseWithMath(para)
+  const raw = normalizeUnitSuperscripts(para)
+  if (!withMath) return raw
+  return renderProseWithMath(raw)
 }
 
 function renderMathText(text, { asEquation = false } = {}) {
-  const raw = String(text ?? '')
+  const raw = normalizeUnitSuperscripts(text)
   if (!raw) return null
 
   if (asEquation && looksLikeEquation(raw)) {
@@ -3948,6 +3955,120 @@ function renderPromptLine(line, equations) {
   return renderProseWithMath(raw)
 }
 
+/** Split dual-passage text (Text 1 / Text 2) and rhetorical-synthesis notes for SAT-style layout. */
+function splitRhetoricalNoteSentences(rest) {
+  let protectedText = String(rest || '')
+  const repls = []
+  const protect = (pat) => {
+    protectedText = protectedText.replace(pat, (m) => {
+      repls.push(m)
+      return `@@${repls.length - 1}@@`
+    })
+  }
+  protect(/\bet al\./gi)
+  protect(/\b(?:Dr|Mr|Mrs|Ms|Prof|vs|etc|approx|fig|eq)\./gi)
+  protect(/\b[A-Z]\./g)
+  protect(/\d+\.\d+/g)
+
+  const parts = protectedText.split(
+    /(?<=[.!?]["'”’])\s+(?=[A-Z"'“‘(])|(?<=[.!?])\s+(?=[A-Z"'“‘(])/
+  )
+  return parts
+    .map((part) => {
+      let out = part
+      repls.forEach((r, j) => {
+        out = out.split(`@@${j}@@`).join(r)
+      })
+      return out.trim()
+    })
+    .filter(Boolean)
+}
+
+function parseRhetoricalNotes(passage) {
+  const text = String(passage || '').replace(/\s+/g, ' ').trim()
+  const match = text.match(
+    /^(While researching a topic, a student has taken the following notes:)\s*/i
+  )
+  if (!match) return null
+  const notes = splitRhetoricalNoteSentences(text.slice(match[0].length))
+  if (notes.length < 2) return null
+  return { intro: match[1], notes }
+}
+
+function parsePassageSections(passage) {
+  const notesBlock = parseRhetoricalNotes(passage)
+  if (notesBlock) {
+    return [{ type: 'notes', intro: notesBlock.intro, notes: notesBlock.notes }]
+  }
+
+  const text = String(passage || '').replace(/\s+/g, ' ').trim()
+  if (!text) return []
+
+  const dualRe = /\bText\s+([12])\b/g
+  const matches = [...text.matchAll(dualRe)]
+  const labels = new Set(matches.map((m) => m[1]))
+  if (matches.length >= 2 && labels.has('1') && labels.has('2')) {
+    const sections = []
+    if (matches[0].index > 0) {
+      const intro = text.slice(0, matches[0].index).trim()
+      if (intro) sections.push({ type: 'intro', text: intro })
+    }
+    for (let i = 0; i < matches.length; i++) {
+      const labelEnd = matches[i].index + matches[i][0].length
+      const end = i + 1 < matches.length ? matches[i + 1].index : text.length
+      const body = text.slice(labelEnd, end).trim()
+      sections.push({ type: 'labeled', label: `Text ${matches[i][1]}`, body })
+    }
+    return sections
+  }
+
+  return String(passage || '')
+    .split(/\n{2,}/)
+    .map((para) => para.trim())
+    .filter(Boolean)
+    .map((para) => ({ type: 'para', text: para }))
+}
+
+function PassageSections({ passage, className = '' }) {
+  const sections = parsePassageSections(passage)
+  if (!sections.length) return null
+
+  return (
+    <div className={className || undefined}>
+      {sections.map((section, i) => {
+        if (section.type === 'notes') {
+          return (
+            <div key={i} className="practice-passage-notes">
+              <p className="practice-passage-notes-intro">{section.intro}</p>
+              <ul className="practice-passage-notes-list">
+                {section.notes.map((note, j) => (
+                  <li key={j}>{note}</li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        if (section.type === 'intro') {
+          return (
+            <p key={i} className="practice-passage-intro">
+              {section.text}
+            </p>
+          )
+        }
+        if (section.type === 'labeled') {
+          return (
+            <div key={i} className="practice-passage-text-block">
+              <div className="practice-passage-text-label">{section.label}</div>
+              {section.body ? <p>{section.body}</p> : null}
+            </div>
+          )
+        }
+        return <p key={i}>{section.text}</p>
+      })}
+    </div>
+  )
+}
+
 /** Merge PDF soft-wrapped lines into paragraphs; keep equation / TABLE / I.–III. lines separate. */
 function formatPromptParagraphs(prompt) {
   const lines = String(prompt || '').split(/\n/)
@@ -4133,13 +4254,7 @@ function PracticeQuestionBody({ question, hideFigure = false, hidePassage = fals
           <img src={figure} alt="Figure" className="practice-figure" />
         </div>
       ) : null}
-      {passage ? (
-        <div className="practice-passage-text">
-          {String(passage).split(/\n{2,}/).map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
-      ) : null}
+      {passage ? <PassageSections passage={passage} className="practice-passage-text" /> : null}
       {promptLines.length ? (
         <div className="practice-prompt">
           {promptLines.map((line, i) => {
@@ -5091,13 +5206,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
                     <img src={current.figure} alt="Passage figure" className="practice-figure reading-figure" />
                   </div>
                 ) : null}
-                {(current.passage || '')
-                  .split(/\n{2,}/)
-                  .map((para) => para.trim())
-                  .filter(Boolean)
-                  .map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
+                <PassageSections passage={current.passage} />
               </div>
             </>
           )}

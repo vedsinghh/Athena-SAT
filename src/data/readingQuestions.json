@@ -1756,7 +1756,7 @@
     "pool": "Collegeboard Summer 2026",
     "passageTitle": "Passage",
     "passage": "Text 1 Many teleost fish species are protogynous, meaning that fertile females can become fertile males. One model holds that protogyny occurs when body size confers a greater reproductive advantage on males than on females. In teleost fish, body size is irrelevant to female reproduction, but among males (which tend to be larger than females), only individuals comparatively large enough to defend territory reproduce. An individual could thus maximize its lifetime reproductive success by staying female when small and becoming male upon reaching a critical size threshold. Text 2 Investigating protogyny in teleost fish, Alexander Goikoetxea and colleagues placed captured spotty wrasses of typical size distributions into two mixed-sex tanks. During the breeding season, they removed all males from tank 1 but none from tank 2. They observed that sexual change began in 81 percent of females in tank 1 but in no females in tank 2.",
-    "prompt": "Based on the texts, which choice best explains the difference in the outcomes of the two tanks in Goikoetxea and colleagues' experiment (Text 2) using the model presented inText 1?",
+    "prompt": "Based on the texts, which choice best explains the difference in the outcomes of the two tanks in Goikoetxea and colleagues' experiment (Text 2) using the model presented in Text 1?",
     "choices": [
       {
         "text": "Once the males were removed from tank 1, territories in the tank were undefended and thus even small females could maximize their reproductive success by becoming male and taking over those territories, whereas only the largest females in tank 2 could successfully take over territories due to the ongoing presence of males in the tank."
@@ -1786,7 +1786,7 @@
     "pool": "Collegeboard Summer 2026",
     "passageTitle": "Passage",
     "passage": "Text 1 Hycean planets are a class of exoplanets (planets outside our solar system) with oceans of liquid water—critical to supporting life—and atmospheres rich in hydrogen. Computer models have determined that for potential hycean planets, the range of the habitable zone (HZ), the distance from a star that allows a planet to retain liquid water on its surface, begins at about 1 astronomical unit (AU). In 2021, Nikku Madhusudhan et al. identified K2-18 b as a hycean candidate, noting that the planet is located right on the inner edge of the HZ. Text 2 In a 2023 paper, Shang-Min Tsai et al. claimed that the hydrogen-rich atmospheres of K2-18 b and other hycean candidates admit wavelengths of light that cause elevated surface temperatures and increased water evaporation. Unlike earlier assessments, Tsai et al. 's calculations therefore placed the inner edge for these planets' HZ as far out as 3.85 AU.",
-    "prompt": "Based on the texts, how would Tsai et al. (Text 2) most likely respond to Madhusudhan et al. 's research, as presented inText 1?",
+    "prompt": "Based on the texts, how would Tsai et al. (Text 2) most likely respond to Madhusudhan et al.'s research, as presented in Text 1?",
     "choices": [
       {
         "text": "By stating that the chemical composition of the atmosphere of the hycean candidate Madhusudhan et al. identified suggests that this planet's surface is unlikely to harbor liquid water"
@@ -1815,8 +1815,8 @@
     "difficulty": "Hard",
     "pool": "Collegeboard Summer 2026",
     "passageTitle": "Passage",
-    "passage": "terminals in London from which trains travel to the countryside. Text 1 To Margaret the station of King's Cross had always suggested Infinity. Its very situation—withdrawn a little behind the facile splendours of St. Pancras—implied a comment on the materialism of life. Those two great arches, colourless, indifferent, shouldering between them an unlovely clock, were fit portals for some eternal adventure, whose issue might be prosperous, but would certainly not be expressed in the ordinary language of prosperity. Text 2 The interplay between opposing ideological positions in Howards End is broadly articulated in the novel's organization of geographic space. On the one hand, the modern metropolis of London represents capitalism's emphasis on pragmatism and the accumulation of material wealth; on the other, the English countryside, accessible via King's Cross, fosters an idealism that values tradition, authentic personal connection, and the aesthetic—what the novel calls \"the infinite.\"",
-    "prompt": "Based on the texts, the author of Text 2 would most likely agree with which statement about King's Cross, as it is depicted inText 1?",
+    "passage": "Text 1 To Margaret the station of King's Cross had always suggested Infinity. Its very situation—withdrawn a little behind the facile splendours of St. Pancras—implied a comment on the materialism of life. Those two great arches, colourless, indifferent, shouldering between them an unlovely clock, were fit portals for some eternal adventure, whose issue might be prosperous, but would certainly not be expressed in the ordinary language of prosperity. Text 2 The interplay between opposing ideological positions in Howards End is broadly articulated in the novel's organization of geographic space. On the one hand, the modern metropolis of London represents capitalism's emphasis on pragmatism and the accumulation of material wealth; on the other, the English countryside, accessible via King's Cross, fosters an idealism that values tradition, authentic personal connection, and the aesthetic—what the novel calls \"the infinite.\"",
+    "prompt": "Based on the texts, the author of Text 2 would most likely agree with which statement about King's Cross, as it is depicted in Text 1?",
     "choices": [
       {
         "text": "King's Cross has a relatively unassuming appearance whose sharp contrast with the more aesthetically pleasing appearance of St. Pancras suggests to Margaret the ascendancy of the pragmatic capitalistic outlook among London's inhabitants."
@@ -1834,7 +1834,7 @@
     "answer": 3,
     "type": "mc",
     "explanation": "ChoiceD is the best answer because it presents a statement about King's Cross, as depicted inText 1, that the author of Text 2 would most likely agree with. InText 1, Margaret associates King's Cross with \"Infinity\" and sees its arches as portals for an adventure whose value transcends London's mundane materialism. The author of Text 2 provides an interpretation of the novel's geography that is consistent with Margaret's vision, explaining that London represents capitalist materialism while the countryside —\"accessible via King's Cross\"— fosters idealism, authentic connection, and the aesthetic (\"the infinite\"). By characterizing King's Cross as a \"point of connection between London and the countryside\" that offers access to the \"intangible abundance\" promised by \"the novel's rural spaces,\" choiceD provides a reading of the railway terminal that aligns with the interpretive framework setup by the author of Text 2.\n\nChoice A is incorrect because Margaret views King's Cross positively — as evoking infinity and eternal adventure — not as a sign of capitalism's dominance. Text 1 characterizes St. Pancras's splendors as \"facile,\" or superficial, so that the contrast elevates King's Cross rather than signaling materialism's ascendancy. Choice B is incorrect because the author of Text 2 positions King's Cross as a gateway to the countryside's idealism, not as a vehicle for materialism intruding into rural spaces. Margaret's sense of wonder at the station arises from herse nse that it offers access to the countryside's idealism rather than to London's materialism. Choice C is incorrect because nothing inText 1 suggests Margaret is disillusioned; her perception of King's Cross is defined by expansive possibility, not resignation. Moreover, Margaret finds the austerity of King's Cross (relative to St. Pancras) appealing — its unpretentious appearance resonates with her attitude toward the \"materialism of life.\"",
-    "source": "Text 1 is adapted from E.M. Forster’s 1910 novel Howards End. Text 2 discusses Howards End. King’s Cross and St. Pancras are adjacent railway",
+    "source": "Text 1 is adapted from E.M. Forster's 1910 novel Howards End. Text 2 discusses Howards End. King's Cross and St. Pancras are adjacent railway terminals in London from which trains travel to the countryside.",
     "pdf": "/qbank/reading/English-Questions-Unanswered.pdf",
     "pdfPage": 77
   },
@@ -3018,7 +3018,7 @@
     "difficulty": "Medium",
     "pool": "Collegeboard Summer 2026",
     "passageTitle": "Passage",
-    "passage": "While researching a topic, a student has taken the following notes: Ukiyo-e woodblock prints were a popular artistic formin Japan from the 1600s through the 1800s. Ukiyo-e prints were produced by teams of artisans that included artists, wood-carvers, printers, and publishers. Sōsaku-hanga was a popular Japanese printmaking movement that emerged in the early 1900s. Sōsaku-hanga prioritized individual artistic expression. An artist working in this style typically handled all aspects of print creation, from drawing to wood carving to printing.",
+    "passage": "While researching a topic, a student has taken the following notes: Ukiyo-e woodblock prints were a popular artistic form in Japan from the 1600s through the 1800s. Ukiyo-e prints were produced by teams of artisans that included artists, wood-carvers, printers, and publishers. Sōsaku-hanga was a popular Japanese printmaking movement that emerged in the early 1900s. Sōsaku-hanga prioritized individual artistic expression. An artist working in this style typically handled all aspects of print creation, from drawing to wood carving to printing.",
     "prompt": "The student wants to contrast ukiyo-e and sōsaku-hanga production methods. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
     "choices": [
       {
@@ -3228,7 +3228,7 @@
     "difficulty": "Hard",
     "pool": "Collegeboard Summer 2026",
     "passageTitle": "Passage",
-    "passage": "While researching a topic, a student has taken the following notes: Producing the nutrient-rich cyanobacterium L. maxima at industrial scale requires high-quality samples of L. maxima DNA. YirlisYadeth Pineda-Rodriguez and a team of researchers at the University of Córdoba, Colombia, evaluated the quantity and purity of L. maxima DNA extracted using three different DNA extraction kits. CTAB 2X (kit 1) had a DNA yield of 2,134 nanograms per microliter (ng/µL) and a purity ratio of 2.2. Pbact (kit 2) had a DNA yield of 157 ng/µL and a purity ratio of 1.6. Pplant (kit 3) had a DNA yield of 12.5 ng/µL and a purity ratio of 1.5.",
+    "passage": "While researching a topic, a student has taken the following notes: Producing the nutrient-rich cyanobacterium L. maxima at industrial scale requires high-quality samples of L. maxima DNA. Yirlis Yadeth Pineda-Rodriguez and a team of researchers at the University of Córdoba, Colombia, evaluated the quantity and purity of L. maxima DNA extracted using three different DNA extraction kits. CTAB 2X (kit 1) had a DNA yield of 2,134 nanograms per microliter (ng/µL) and a purity ratio of 2.2. Pbact (kit 2) had a DNA yield of 157 ng/µL and a purity ratio of 1.6. Pplant (kit 3) had a DNA yield of 12.5 ng/µL and a purity ratio of 1.5.",
     "prompt": "According to the researchers, Pbact was the most effective because it was the only one with both a sufficiently high yield and a purity rate close to the ideal of 1.8. The student wants to emphasize the significance of a similarity between two of the kits. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
     "choices": [
       {
@@ -3288,7 +3288,7 @@
     "difficulty": "Medium",
     "pool": "Collegeboard Summer 2026",
     "passageTitle": "Passage",
-    "passage": "While researching a topic, a student has taken the following notes: Albert Einstein's theory of general relativity allows for potential shor tcuts through spacetime. These hypothetical spacetime tunnels are known as wormholes. For matter to travel through a wormhole, it would need to have negative energy density. Negative energy density means that the matter would have less energy than empty space. Such matter has not been shown to exist.",
+    "passage": "While researching a topic, a student has taken the following notes: Albert Einstein's theory of general relativity allows for potential shortcuts through spacetime. These hypothetical spacetime tunnels are known as wormholes. For matter to travel through a wormhole, it would need to have negative energy density. Negative energy density means that the matter would have less energy than empty space. Such matter has not been shown to exist.",
     "prompt": "The student wants to acknowledge a complication affecting travel through wormholes. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
     "choices": [
       {
@@ -3922,21 +3922,21 @@
     "prompt": "Which choice completes the text so that it conforms to the conventions of Standard English?",
     "choices": [
       {
-        "text": "200,000 km 2 Puntland Desert,"
+        "text": "200,000 km² Puntland Desert,"
       },
       {
-        "text": "200,000 km 2, Puntland Desert"
+        "text": "200,000 km², Puntland Desert"
       },
       {
-        "text": "200,000 km 2 Puntland Desert"
+        "text": "200,000 km² Puntland Desert"
       },
       {
-        "text": "200,000 km 2, Puntland Desert,"
+        "text": "200,000 km², Puntland Desert,"
       }
     ],
     "answer": 2,
     "type": "mc",
-    "explanation": "Choice C is the best answer. The convention being tested is the use of punctuation between a modifier and a noun and also between a subject and a verb. No punctuation is needed when, as in th is case, a modifying phrase (\"roughly 200,000 km 2\") precedes the noun phrase it modifies (\"Puntland Desert\") to form the subject of the sentence. Additionally, no punctuation is needed between the subject (\"The roughly...Desert\") and the main verb (\"is classified\").\n\nChoice A is incorrect because no punctuation is needed between the subject and the main verb. Choice B is incorrect because no punctuation is needed between the modifier and the noun phrase. ChoiceD is incorrect because no punctuation is needed between the modifier and the noun phrase, nor is it needed between the subject and the main verb.",
+    "explanation": "Choice C is the best answer. The convention being tested is the use of punctuation between a modifier and a noun and also between a subject and a verb. No punctuation is needed when, as in this case, a modifying phrase (\"roughly 200,000 km²\") precedes the noun phrase it modifies (\"Puntland Desert\") to form the subject of the sentence. Additionally, no punctuation is needed between the subject (\"The roughly...Desert\") and the main verb (\"is classified\").\n\nChoice A is incorrect because no punctuation is needed between the subject and the main verb. Choice B is incorrect because no punctuation is needed between the modifier and the noun phrase. Choice D is incorrect because no punctuation is needed between the modifier and the noun phrase, nor is it needed between the subject and the main verb.",
     "pdf": "/qbank/reading/English-Questions-Answered.pdf",
     "pdfPage": 146
   },
