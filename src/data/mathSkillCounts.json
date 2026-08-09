@@ -29,12 +29,12 @@
     }
   },
   "Geometry and Trigonometry": {
-    "total": 51,
+    "total": 156,
     "skills": {
-      "Lines, angles, and triangles": 14,
-      "Right triangles and trigonometry": 9,
-      "Circles": 12,
-      "Area and volume": 16
+      "Lines, angles, and triangles": 44,
+      "Right triangles and trigonometry": 29,
+      "Circles": 27,
+      "Area and volume": 56
     }
   }
 }

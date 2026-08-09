@@ -4,7 +4,7 @@ import { AnimatePresence, animate, motion } from 'framer-motion'
 import {
   AlertTriangle, ArrowUpLeft, BarChart3, BookOpen, Calculator, CalendarDays,
   ChevronDown, ChevronRight, ClipboardList, Clock, ExternalLink, Filter,
-  Flame, FunctionSquare, Highlighter, Home, Import, Lightbulb, List, Pause, PenLine, Radical, Save,
+  Flame, FunctionSquare, Highlighter, Home, Import, Lightbulb, List, Pause, Play, PenLine, Radical, Save,
   Settings, Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, XCircle, CheckCircle2, Check,
   FileText, Vault, Building2, ChevronUp, ListFilter
 } from 'lucide-react'
@@ -114,8 +114,20 @@ function formatAvgTime(seconds) {
   return `${m}:${String(s).padStart(2, '0')}`
 }
 
+/** Prefer latest qbankProgress correctness when available (history may only store first attempt). */
+function resolveAttemptCorrect(progress, subject, questionId, fallbackCorrect) {
+  if (questionId == null || questionId === '' || !progress) {
+    return Boolean(fallbackCorrect)
+  }
+  const row = progress[String(questionId)]
+  if (row && row.subject === subject && typeof row.correct === 'boolean') {
+    return row.correct
+  }
+  return Boolean(fallbackCorrect)
+}
+
 /** Aggregate accuracy / answered / avg time from progress history for a subject. */
-function deriveSubjectActivityStats(history, subject, { dayKey = null } = {}) {
+function deriveSubjectActivityStats(history, subject, { dayKey = null, progress = null } = {}) {
   let correct = 0
   let answered = 0
   let timeSum = 0
@@ -127,7 +139,7 @@ function deriveSubjectActivityStats(history, subject, { dayKey = null } = {}) {
 
     if (entry.type === 'bank') {
       answered += 1
-      if (entry.correct) correct += 1
+      if (resolveAttemptCorrect(progress, subject, entry.questionId, entry.correct)) correct += 1
       if (isValidStatNumber(entry.elapsed) && entry.elapsed > 0) {
         timeSum += entry.elapsed
         timeCount += 1
@@ -144,7 +156,7 @@ function deriveSubjectActivityStats(history, subject, { dayKey = null } = {}) {
       let itemTimeCount = 0
       items.forEach((item) => {
         answered += 1
-        if (item.correct) correct += 1
+        if (resolveAttemptCorrect(progress, subject, item.questionId, item.correct)) correct += 1
         if (isValidStatNumber(item.elapsed) && item.elapsed > 0) {
           timeSum += item.elapsed
           itemTimeCount += 1
@@ -378,6 +390,34 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
   if (correct == null) return profile
   const isMath = subject === 'math'
   const timeSpent = isValidStatNumber(elapsed) && elapsed > 0 ? Math.round(elapsed) : null
+  const qid = String(question.id)
+  const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
+  const existingIdx = history.findIndex(
+    (entry) => entry?.type === 'bank'
+      && entry?.subject === subject
+      && String(entry.questionId) === qid,
+  )
+
+  // Upsert so re-checks in Question Bank update today's accuracy to match overall progress.
+  if (existingIdx >= 0) {
+    const prev = history[existingIdx]
+    const nextEntry = {
+      ...prev,
+      correct: Boolean(correct),
+      answer: answer ?? null,
+      difficulty: question.difficulty || prev.difficulty || null,
+      sub: [question.domain, question.skill || question.topic].filter(Boolean).join(' · ') || prev.sub,
+      elapsed: timeSpent ?? prev.elapsed ?? null,
+    }
+    const progressHistory = history.map((entry, i) => (i === existingIdx ? nextEntry : entry))
+    const activity = progressHistory.map(historyToActivityItem).slice(0, 40)
+    return applyStreakFromHistory({
+      ...profile,
+      progressHistory,
+      activity,
+    })
+  }
+
   return appendProgressHistory(profile, {
     id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
     type: 'bank',
@@ -385,7 +425,7 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
     title: isMath ? 'Question Bank · Math' : 'Question Bank · Reading',
     sub: [question.domain, question.skill || question.topic].filter(Boolean).join(' · ') || 'Practice question',
     correct: Boolean(correct),
-    questionId: String(question.id),
+    questionId: qid,
     answer: answer ?? null,
     difficulty: question.difficulty || null,
     elapsed: timeSpent,
@@ -599,20 +639,60 @@ function isEmptyPracticeSetEntry(entry) {
   return false
 }
 
+function reconcileBankHistoryWithProgress(profile) {
+  const progress = profile.qbankProgress || {}
+  const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
+  let changed = false
+  const nextHistory = history.map((entry) => {
+    if (entry?.type !== 'bank' || entry.questionId == null) return entry
+    const row = progress[String(entry.questionId)]
+    if (!row || row.subject !== entry.subject || typeof row.correct !== 'boolean') return entry
+    if (Boolean(entry.correct) === row.correct) return entry
+    changed = true
+    return { ...entry, correct: row.correct }
+  }).map((entry) => {
+    if (entry?.type !== 'set' || !Array.isArray(entry.items) || !entry.items.length) return entry
+    let itemsChanged = false
+    const items = entry.items.map((item) => {
+      if (!item || item.questionId == null || item.correct == null) return item
+      const row = progress[String(item.questionId)]
+      if (!row || row.subject !== entry.subject || typeof row.correct !== 'boolean') return item
+      if (Boolean(item.correct) === row.correct) return item
+      itemsChanged = true
+      return { ...item, correct: row.correct }
+    })
+    if (!itemsChanged) return entry
+    changed = true
+    const correctCount = items.filter((item) => item && item.correct).length
+    const answeredCount = items.filter((item) => item && item.correct != null).length
+    return {
+      ...entry,
+      items,
+      correct: correctCount,
+      answered: answeredCount,
+      total: answeredCount,
+      accuracy: answeredCount ? Math.round((correctCount / answeredCount) * 100) : entry.accuracy,
+    }
+  })
+  if (!changed) return profile
+  return applyStreakFromHistory({
+    ...profile,
+    progressHistory: nextHistory,
+    activity: nextHistory.map(historyToActivityItem).slice(0, 40),
+  })
+}
+
 function scrubEmptyPracticeSets(profile) {
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
   const cleaned = history.filter((entry) => !isEmptyPracticeSetEntry(entry))
-  if (cleaned.length === history.length) {
-    return {
+  const base = cleaned.length === history.length
+    ? { ...profile, progressHistory: history }
+    : applyStreakFromHistory({
       ...profile,
-      progressHistory: history,
-    }
-  }
-  return applyStreakFromHistory({
-    ...profile,
-    progressHistory: cleaned,
-    activity: cleaned.map(historyToActivityItem).slice(0, 40),
-  })
+      progressHistory: cleaned,
+      activity: cleaned.map(historyToActivityItem).slice(0, 40),
+    })
+  return reconcileBankHistoryWithProgress(base)
 }
 
 function safeReadProfiles() {
@@ -1130,11 +1210,12 @@ function Dashboard({
       topic: 'Quick Mix',
       difficulty: ['Easy', 'Medium', 'Hard'],
       difficulties: ['Easy', 'Medium', 'Hard'],
-      count: 20,
+      count: 10,
       shuffle: true,
       feedbackMode: 'deferred',
       source: 'set',
       excludeIds: [...completedQuestionIds(profile.qbankProgress, 'math')],
+      sessionKey: `quick-math-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
     setPage('Math')
   }
@@ -1147,11 +1228,12 @@ function Dashboard({
       topic: 'Quick Mix',
       difficulty: ['Easy', 'Medium', 'Hard'],
       difficulties: ['Easy', 'Medium', 'Hard'],
-      count: 20,
+      count: 10,
       shuffle: true,
       feedbackMode: 'deferred',
       source: 'set',
       excludeIds: [...completedQuestionIds(profile.qbankProgress, 'reading')],
+      sessionKey: `quick-reading-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
     setPage('Reading')
   }
@@ -2157,8 +2239,13 @@ function ReadingPage({
     readingQuestions,
   )
   const history = profile.progressHistory || []
-  const overallActivity = deriveSubjectActivityStats(history, 'reading')
-  const todayActivity = deriveSubjectActivityStats(history, 'reading', { dayKey: localDayKey() })
+  const overallActivity = deriveSubjectActivityStats(history, 'reading', {
+    progress: profile.qbankProgress,
+  })
+  const todayActivity = deriveSubjectActivityStats(history, 'reading', {
+    dayKey: localDayKey(),
+    progress: profile.qbankProgress,
+  })
   const domains = reading.domains.map((d) => ({
     ...d,
     icon: d.name.includes('Information') ? Lightbulb
@@ -2258,22 +2345,24 @@ function ReadingPage({
   const startPractice = () => {
     const primary = filterDomains[0] || 'Information and Ideas'
     setSession({
-      domains: filterDomains,
+      domains: [...filterDomains],
       domain: filterDomains.length > 1 ? `${filterDomains.length} Domains` : primary,
       topic: filterDomains.length > 1 ? filterDomains.join(' · ') : primary,
-      difficulty: filterDifficulties,
-      difficulties: filterDifficulties,
+      difficulty: [...filterDifficulties],
+      difficulties: [...filterDifficulties],
       count: Number(questionCount) || 20,
-      shuffle,
+      shuffle: Boolean(shuffle),
       feedbackMode: 'deferred',
       source: 'set',
       excludeIds: [...completedQuestionIds(profile.qbankProgress, 'reading')],
+      sessionKey: `reading-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
   }
 
   if (session) {
     return (
       <ReadingPracticeSession
+        key={session.sessionKey || 'reading-session'}
         config={session}
         onEnd={() => setSession(null)}
         onCompleteQuestion={onCompleteQuestion}
@@ -2414,7 +2503,7 @@ function ReadingPage({
                 <div className="math-filter-block math-filter-shuffle">
                   <div>
                     <div className="math-filter-label">4. Shuffle Questions</div>
-                    <p className="math-filter-hint">Randomize the order of questions.</p>
+                    <p className="math-filter-hint">Randomly pull from every domain and difficulty you selected.</p>
                   </div>
                   <button
                     type="button"
@@ -2508,8 +2597,13 @@ function MathPage({
     mathQuestions,
   )
   const history = profile.progressHistory || []
-  const overallActivity = deriveSubjectActivityStats(history, 'math')
-  const todayActivity = deriveSubjectActivityStats(history, 'math', { dayKey: localDayKey() })
+  const overallActivity = deriveSubjectActivityStats(history, 'math', {
+    progress: profile.qbankProgress,
+  })
+  const todayActivity = deriveSubjectActivityStats(history, 'math', {
+    dayKey: localDayKey(),
+    progress: profile.qbankProgress,
+  })
   const domains = math.domains.map((d) => ({
     ...d,
     icon: d.name === 'Algebra' ? FunctionSquare
@@ -2589,22 +2683,24 @@ function MathPage({
   const startPractice = () => {
     const primary = filterDomains[0] || 'Algebra'
     setSession({
-      domains: filterDomains,
+      domains: [...filterDomains],
       domain: filterDomains.length > 1 ? `${filterDomains.length} Domains` : primary,
       topic: filterDomains.length > 1 ? filterDomains.join(' · ') : (primary === 'Algebra' ? 'Linear Equations' : 'Core Skills'),
-      difficulty: filterDifficulties,
-      difficulties: filterDifficulties,
+      difficulty: [...filterDifficulties],
+      difficulties: [...filterDifficulties],
       count: Number(questionCount) || 20,
-      shuffle,
+      shuffle: Boolean(shuffle),
       feedbackMode: 'deferred',
       source: 'set',
       excludeIds: [...completedQuestionIds(profile.qbankProgress, 'math')],
+      sessionKey: `math-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
   }
 
   if (session) {
     return (
       <MathPracticeSession
+        key={session.sessionKey || 'math-session'}
         config={session}
         onEnd={() => setSession(null)}
         onCompleteQuestion={onCompleteQuestion}
@@ -2709,7 +2805,7 @@ function MathPage({
                 <div className="math-filter-block math-filter-shuffle">
                   <div>
                     <div className="math-filter-label">4. Shuffle Questions</div>
-                    <p className="math-filter-hint">Randomize the order of questions.</p>
+                    <p className="math-filter-hint">Randomly pull from every domain and difficulty you selected.</p>
                   </div>
                   <button
                     type="button"
@@ -2897,8 +2993,9 @@ function orderBankPracticeQuestions(pool, progress, subject, { shuffle = false }
 }
 
 function pickQuestions(bank, { count, shuffle, domains, difficulties, questions: preset, pools, excludeIds }) {
+  const shouldShuffle = Boolean(shuffle)
   if (Array.isArray(preset) && preset.length) {
-    const working = shuffle ? shuffleInPlace([...preset]) : [...preset]
+    const working = shouldShuffle ? shuffleInPlace([...preset]) : [...preset]
     const limited = typeof count === 'number' && count > 0 ? working.slice(0, count) : working
     return limited.map((q, i) => ({ ...q, practiceIndex: i + 1 }))
   }
@@ -2921,37 +3018,41 @@ function pickQuestions(bank, { count, shuffle, domains, difficulties, questions:
     ? Math.min(count, pool.length)
     : pool.length
 
-  // Multiple difficulties: round-robin so Hard (majority of the bank) can't dominate.
-  // Within each difficulty, also spread across domains when several are selected.
+  // Shuffle on: random sample from the full filtered pool (all selected domains + difficulties).
+  if (shouldShuffle) {
+    return shuffleInPlace([...pool])
+      .slice(0, take)
+      .map((q, i) => ({ ...q, practiceIndex: i + 1 }))
+  }
+
+  // Shuffle off: round-robin so Hard / one domain can't dominate bank order.
   if (levels.length > 1) {
     const buckets = levels.map((level) => (
       orderPoolByDomains(
         pool.filter((q) => q.difficulty === level),
         domainList,
-        shuffle,
+        false,
       )
     ))
     const undiffed = pool.filter((q) => !q.difficulty)
     if (undiffed.length) {
-      buckets.push(orderPoolByDomains(undiffed, domainList, shuffle))
+      buckets.push(orderPoolByDomains(undiffed, domainList, false))
     }
-    const selected = pickRoundRobin(buckets, take, { shuffle })
+    const selected = pickRoundRobin(buckets, take, { shuffle: false })
     if (selected.length) {
       return selected.map((q, i) => ({ ...q, practiceIndex: i + 1 }))
     }
   }
 
-  // Multiple domains (single / no difficulty): pull evenly across domains.
   if (domainList.length > 1) {
     const buckets = domainList.map((domain) => pool.filter((q) => q.domain === domain))
-    const selected = pickRoundRobin(buckets, take, { shuffle })
+    const selected = pickRoundRobin(buckets, take, { shuffle: false })
     if (selected.length) {
       return selected.map((q, i) => ({ ...q, practiceIndex: i + 1 }))
     }
   }
 
-  const working = shuffle ? shuffleInPlace([...pool]) : [...pool]
-  return working.slice(0, take).map((q, i) => ({ ...q, practiceIndex: i + 1 }))
+  return pool.slice(0, take).map((q, i) => ({ ...q, practiceIndex: i + 1 }))
 }
 
 function buildPracticeQuestions(count, shuffle, domains, difficulties, questions, pools, excludeIds) {
@@ -3089,13 +3190,22 @@ function shuffleSessionUnanswered(questions, answers, eliminated, index, missedO
   shuffleInPlace(unansweredIdx)
   const order = [...answeredIdx, ...unansweredIdx]
   const currentId = questions[index]?.id
+  const currentAnswered = !(answers[index] == null || answers[index] === '')
   const nextQuestions = order.map((i) => questions[i])
   const nextAnswers = order.map((i) => answers[i])
   const nextEliminated = order.map((i) => (eliminated[i] ? [...eliminated[i]] : []))
   const nextMissedOnce = order.map((i) => Boolean(missedOnce[i]))
   const nextQuestionTimes = order.map((i) => Number(questionTimes[i]) || 0)
   const nextWrongAttempts = order.map((i) => (wrongAttempts[i] ? [...wrongAttempts[i]] : []))
-  const nextIndex = Math.max(0, nextQuestions.findIndex((q) => q.id === currentId))
+  // If the current question is already answered, stay on it. Otherwise keep the same
+  // slot index so the visible question changes with the shuffle (following the old id
+  // would leave the same stem on screen and feel like shuffle did nothing).
+  let nextIndex
+  if (currentAnswered) {
+    nextIndex = Math.max(0, nextQuestions.findIndex((q) => q.id === currentId))
+  } else {
+    nextIndex = Math.min(index, Math.max(0, nextQuestions.length - 1))
+  }
   return {
     questions: nextQuestions,
     answers: nextAnswers,
@@ -3417,6 +3527,8 @@ function asciiToLatex(input, { display = false } = {}) {
     .replace(/≠/g, '\\ne ')
     .replace(/∞/g, '\\infty ')
     .replace(/°/g, '^{\\circ}')
+    .replace(/∠/g, '\\angle ')
+    .replace(/△/g, '\\triangle ')
     .replace(/<=/g, '\\le ')
     .replace(/>=/g, '\\ge ')
     .replace(/!=/g, '\\ne ')
@@ -3601,6 +3713,8 @@ function extractInlineMathSegments(text) {
     /(?:√|sqrt)\s*\([^()]*\)/gi,
     // f(-2) - f(0)
     new RegExp(String.raw`${fnCall}(?:\s*[+\-−]\s*${fnCall})+`, 'g'),
+    // Angle / triangle symbols: ∠SQX, △ABC
+    /[∠△]\s*[A-Za-z]{1,4}\b/g,
     // Inequalities: 0 ≤ x ≤ 480, x >= 2, y ≤ -x
     /(?:-?\d+(?:\.\d+)?|[A-Za-z])\s*(?:≤|≥|<=|>=|<|>)\s*(?:-?\d+(?:\.\d+)?|[A-Za-z])(?:\s*(?:≤|≥|<=|>=|<|>)\s*(?:-?\d+(?:\.\d+)?|[A-Za-z]))*/g,
     // Points / ordered pairs: (1, 9), (-1, 105)
@@ -3722,8 +3836,49 @@ function renderMathText(text, { asEquation = false } = {}) {
   return wrapMathTokens(raw)
 }
 
+function splitExplanationParagraphs(explanation) {
+  const text = String(explanation || '').replace(/\r\n/g, '\n').trim()
+  if (!text) return []
+  // PDF/OCR often wraps mid-sentence with a single newline. Only blank lines
+  // are real paragraph breaks (e.g. correct block vs each incorrect choice).
+  return text
+    .split(/\n{2,}/)
+    .map((para) => para.replace(/\n+/g, ' ').replace(/[ \t]{2,}/g, ' ').trim())
+    .filter(Boolean)
+}
+
+function PracticePauseOverlay({ open, onResume, tone = 'math' }) {
+  if (!open) return null
+  return (
+    <div
+      className={`practice-pause-overlay ${tone === 'reading' ? 'reading' : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Practice paused"
+    >
+      <motion.div
+        className="practice-pause-card"
+        initial={{ opacity: 0, scale: 0.92, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+      >
+        <div className="practice-pause-icon" aria-hidden="true">
+          <Pause size={28} strokeWidth={2.4} />
+        </div>
+        <h3>Paused</h3>
+        <p>Timer is stopped. Resume when you&apos;re ready.</p>
+        <button type="button" className="practice-pause-resume" onClick={onResume}>
+          <Play size={16} strokeWidth={2.4} />
+          Resume
+        </button>
+      </motion.div>
+    </div>
+  )
+}
+
 function PracticeExplanationModal({ open, explanation, onClose, withMath = true }) {
   if (!open) return null
+  const paragraphs = splitExplanationParagraphs(explanation)
   return (
     <div className="practice-modal-backdrop" onClick={onClose} role="presentation">
       <div
@@ -3740,8 +3895,8 @@ function PracticeExplanationModal({ open, explanation, onClose, withMath = true 
           </button>
         </div>
         <div className="practice-modal-body practice-explanation-body">
-          {explanation
-            ? String(explanation).split(/\n+/).map((para, i) => (
+          {paragraphs.length
+            ? paragraphs.map((para, i) => (
               <p key={i}>{renderExplanationParagraph(para, { withMath })}</p>
             ))
             : <p>No explanation is available for this question yet.</p>}
@@ -4520,7 +4675,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       config.pools,
       excludeIds,
     ),
-    [config.count, config.shuffle, config.domains, config.difficulties, config.difficulty, config.questions, config.pools, excludeIds],
+    [config.sessionKey, config.count, config.shuffle, config.domains, config.difficulties, config.difficulty, config.questions, config.pools, excludeIds],
   )
   const [sessionQuestions, setSessionQuestions] = useState(null)
   const questions = sessionQuestions || builtQuestions
@@ -4716,14 +4871,13 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       })
     }
     const qid = String(current.id)
-    const firstLog = source === 'bank' && !loggedQuestionsRef.current.has(qid)
-    if (firstLog) loggedQuestionsRef.current.add(qid)
     onCompleteQuestion?.(current, value, 'math', {
       source,
-      logHistory: firstLog,
+      logHistory: source === 'bank',
       updateProgress: source === 'bank',
       elapsed: currentQuestionElapsed(),
     })
+    if (source === 'bank') loggedQuestionsRef.current.add(qid)
   }
 
   const selectChoice = (choiceIdx) => {
@@ -4796,10 +4950,10 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
           <button
             type="button"
             className="practice-outline-btn"
-            onClick={() => setPaused((v) => !v)}
+            onClick={() => setPaused(true)}
           >
             <Pause size={15} />
-            {paused ? 'Resume' : 'Pause'}
+            Pause
           </button>
         </div>
       </div>
@@ -4979,6 +5133,11 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
         </div>
       </div>
 
+      <PracticePauseOverlay
+        open={paused}
+        onResume={() => setPaused(false)}
+        tone="math"
+      />
       <PracticeExplanationModal
         open={explainOpen}
         explanation={current?.explanation}
@@ -5055,7 +5214,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       config.pools,
       excludeIds,
     ),
-    [config.count, config.shuffle, config.domains, config.difficulties, config.difficulty, config.questions, config.pools, excludeIds],
+    [config.sessionKey, config.count, config.shuffle, config.domains, config.difficulties, config.difficulty, config.questions, config.pools, excludeIds],
   )
   const [sessionQuestions, setSessionQuestions] = useState(null)
   const questions = sessionQuestions || builtQuestions
@@ -5245,14 +5404,13 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       })
     }
     const qid = String(current.id)
-    const firstLog = source === 'bank' && !loggedQuestionsRef.current.has(qid)
-    if (firstLog) loggedQuestionsRef.current.add(qid)
     onCompleteQuestion?.(current, choiceIdx, 'reading', {
       source,
-      logHistory: firstLog,
+      logHistory: source === 'bank',
       updateProgress: source === 'bank',
       elapsed: currentQuestionElapsed(),
     })
+    if (source === 'bank') loggedQuestionsRef.current.add(qid)
   }
 
   const toggleEliminate = (choiceIdx) => {
@@ -5313,10 +5471,10 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
           <button
             type="button"
             className="practice-outline-btn reading-outline-btn"
-            onClick={() => setPaused((v) => !v)}
+            onClick={() => setPaused(true)}
           >
             <Pause size={15} />
-            {paused ? 'Resume' : 'Pause'}
+            Pause
           </button>
         </div>
       </div>
@@ -5447,6 +5605,11 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
         </div>
       </div>
 
+      <PracticePauseOverlay
+        open={paused}
+        onResume={() => setPaused(false)}
+        tone="reading"
+      />
       <PracticeExplanationModal
         open={explainOpen}
         explanation={current?.explanation}
@@ -5569,7 +5732,7 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
                   {question.explanation ? (
                     <div className="progress-review-explain">
                       <strong>Explanation</strong>
-                      {String(question.explanation).split(/\n+/).map((para, i) => (
+                      {splitExplanationParagraphs(question.explanation).map((para, i) => (
                         <p key={i}>{renderExplanationParagraph(para, { withMath: !isReading })}</p>
                       ))}
                     </div>
@@ -5608,8 +5771,12 @@ function ProgressPage({ profile }) {
     sum + (item.answered || item.total || item.items?.length || 0)
   ), 0)
   const totalQuestionCount = bankQuestionCount + practiceSetQuestionCount
-  const readingAvgTimeSec = deriveSubjectActivityStats(history, 'reading').avgTimeSec
-  const mathAvgTimeSec = deriveSubjectActivityStats(history, 'math').avgTimeSec
+  const readingAvgTimeSec = deriveSubjectActivityStats(history, 'reading', {
+    progress: profile.qbankProgress,
+  }).avgTimeSec
+  const mathAvgTimeSec = deriveSubjectActivityStats(history, 'math', {
+    progress: profile.qbankProgress,
+  }).avgTimeSec
   const { streak, bestStreak } = computeStreakFromHistory(fullHistory)
   const displayBest = bestStreak
   const [expandedSetId, setExpandedSetId] = useState(null)
@@ -6612,8 +6779,8 @@ function ScoreTrendChart({ points }) {
         aria-label="Score trend"
       >        <defs>
           <linearGradient id="progressTrendFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#e07020" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#e07020" stopOpacity="0.02" />
+            <stop offset="0%" stopColor="#2F62D6" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#2F62D6" stopOpacity="0.02" />
           </linearGradient>
         </defs>
         {[25, 50, 75].map((tick) => {
@@ -6631,7 +6798,7 @@ function ScoreTrendChart({ points }) {
         <motion.path
           d={line}
           fill="none"
-          stroke="#e07020"
+          stroke="#2F62D6"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -7344,14 +7511,14 @@ function QuickPracticeCard({ onQuickMath, onQuickReading, onPracticeTest, onBrow
     {
       key: 'math',
       title: 'Quick Math Shuffle',
-      sub: '20 questions · All difficulties',
+      sub: '10 questions · All difficulties',
       type: 'math',
       onClick: onQuickMath,
     },
     {
       key: 'reading',
       title: 'Quick Reading Shuffle',
-      sub: '20 questions · All difficulties',
+      sub: '10 questions · All difficulties',
       type: 'reading',
       onClick: onQuickReading,
     },

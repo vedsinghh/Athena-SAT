@@ -9577,5 +9577,2808 @@
       }
     ],
     "answer": 1
+  },
+  {
+    "id": "6d99b141",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure, AC = CD. The measure of angle EBC is 45°, and the measure of angle ACD is 104°. What is the value of x?",
+    "type": "spr",
+    "explanation": "The correct answer is 83. It's given that in the figure, AC = C'D. Thus, triangle AC'D is an isosceles triangle and the measure of angle CDA\nis equal to the measure of angle C'AD. The sum of the measures of the interior angles of a triangle is 180°. Thus, the sum of the measures of\nthe interior angles of triangle AC'D is 180°. It's given that the measure of angle ACD is 104°. It follows that the sum of the measures of\nangles CDA and CAD is (180 — 104)°, or 76°. Since the measure of angle CDA is equal to the measure of angle CAD, the measure of\nangle C'DA is half of 76°, or 38°. The sum of the measures of the interior angles of triangle BDF is 180°. It's given that the measure of angle\nEBC is 45°. Since the measure of angle BDE, which is the same angle as angle CDA, is 38°, it follows that the measure of angle DE Bis\n(180 — 45 — 38)°, or 97°. Since angle DEB and angle AEB form a straight line, the sum of the measures of these angles is 180°. It's given\nin the figure that the measure of angle AEB is °. It follows that 97 + x = 180. Subtracting 97 from both sides of this equation yields x = 83.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 1,
+    "pdfPreview": "/qbank/math/previews/6d99b141.jpg",
+    "figure": "/qbank/math/figures/6d99b141.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "83"
+    ],
+    "answer": "83"
+  },
+  {
+    "id": "9912e19f",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Triangles EFG and JKL are congruent, where E, F, and G correspond to J, K, and L, respectively. The measure of angle E is 45° and the measure of angle F is 20°. What is the measure of angle J?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that triangles EF'G and J KL are congruent such that angle & corresponds to angle J. Corresponding angles of\ncongruent triangles are congruent, so angle & and angle J must be congruent. Therefore, if the measure of angle Fis 45°, then the measure of\nangle J is also 45°. Choice A is incorrect. This is the measure of angle K, not angle J. Choice C is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 3,
+    "pdfPreview": "/qbank/math/previews/9912e19f.jpg",
+    "choices": [
+      {
+        "text": "20°"
+      },
+      {
+        "text": "45°"
+      },
+      {
+        "text": "135°"
+      },
+      {
+        "text": "160°"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "4b7bb316",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The length of each edge of a box is 29 inches. Each side of the box is in the shape of a square. The box does not have a lid. What is the exterior\nsurface area, in square inches, of this box without a lid?",
+    "type": "spr",
+    "explanation": "The correct answer is 4,205. The exterior surface area of a figure is the sum of the areas of all its faces. It's given that the box does not have a\nlid and that each side of the box is in the shape of a square. Therefore, the box consists of 5 congruent square faces. It's also given that the\nlength of each edge is 29 inches. Let s represent the length of an edge of a square. It follows that the area of a square is equal to s². Therefore,\nthe area of each of the 5 square faces is equal to 29, or 841, square inches. Since the box consists of 5 congruent square faces, it follows that\nthe sum of the areas of all its faces, or the exterior surface area of this box without a lid, is 5(841), or 4,205, square inches.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 4,
+    "pdfPreview": "/qbank/math/previews/4b7bb316.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "4205"
+    ],
+    "answer": "4205"
+  },
+  {
+    "id": "e10d8313",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure shown, points Q, R, S, and T lie on line segment PV, and line segment RU intersects line segment SX at point W. The measure of ∠SQX is 48°, the measure of ∠SXQ is 86°, the measure of ∠SWU is 85°, and the measure of ∠VTU is 162°. What is the measure, in degrees, of ∠TUR?",
+    "type": "spr",
+    "explanation": "The correct answer is 123. The triangle angle sum theorem states that the sum of the measures of the interior angles of a triangle is 180 degrees. It's given that the measure of 7.S'Q.X is 48° and the measure of 7S.XQ is 86°. Since points S, Q, and X form a triangle, it\nfollows from the triangle angle sum theorem that the measure, in degrees, of 7QS.X is 180 — 48 — 86, or 46. It's also given that the measure\nof ∠SWU is 85°. Since ∠SWU and Z.S'W R are supplementary angles, the sum of their measures is 180 degrees. It follows that the\nmeasure, in degrees, of SW R is 180 — 85, or 95. Since points R, S, and W form a triangle, and ∠RSW is the same angle as ∠QSX, it\nfollows from the triangle angle sum theorem that the measure, in degrees, of ZW RS is 180 — 46 — 95, or 39. It's given that the measure of\n∠VTU is 162°. Since ∠VTU and ∠STU are supplementary angles, the sum of their measures is 180 degrees. It follows that the measure, in\ndegrees, of ∠STU is 180 — 162, or 18. Since points R, T, and U form a triangle, and ZU RT is the same angle as ZW RS, it follows from the\ntriangle angle sum theorem that the measure, in degrees, of ZT'U R is 180 — 39 — 18, or 123.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 5,
+    "pdfPreview": "/qbank/math/previews/e10d8313.jpg",
+    "figure": "/qbank/math/figures/e10d8313.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "123"
+    ],
+    "answer": "123"
+  },
+  {
+    "id": "bcb66188",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Triangle FGH is similar to triangle JKL, where angle F corresponds to angle J and angles G and K are right angles. If sin(F) = 308/317, what is the value of sin(J)?",
+    "type": "mc",
+    "explanation": "Choice B is correct. If two triangles are similar, then their corresponding angles are congruent. It's given that right triangle GZ is similar to\nright triangle J KL and angle F' corresponds to angle J. It follows that angle F' is congruent to angle J and, therefore, the measure of angle F’\nis equal to the measure of angle J. The sine ratios of angles of equal measure are equal. Since the measure of angle F is equal to the measure\nof angle J,sin(F’) = sin(J). It's given that sin(F’) = 208. Therefore, sin(J) is 308 317 317\" Choice A is incorrect. This is the value of cos(.J), not the value of sin(J). Choice C is incorrect. This is the reciprocal of the value of sin(J), not the value of sin(J). Choice D is incorrect. This is the reciprocal of the value of cos(.J), not the value of sin(.J).",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 6,
+    "pdfPreview": "/qbank/math/previews/bcb66188.jpg",
+    "choices": [
+      {
+        "text": "75/317"
+      },
+      {
+        "text": "308/317"
+      },
+      {
+        "text": "317/308"
+      },
+      {
+        "text": "317/75"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "5207e508",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure, line m is parallel to line n. What is the value of w?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It's given that lines m and n are parallel. Since line ¢ intersects both lines m and n, it's a transversal. The angles in the figure\nmarked as 170° and w® are on the same side of the transversal, where one is an interior angle with line ™ as a side, and the other is an exterior\nangle with line m as a side. Thus, the marked angles are corresponding angles. When two parallel lines are intersected by a transversal,\ncorresponding angles are congruent and, therefore, have equal measure. It follows that w°= 170°. Therefore, the value of w is 170. Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 9,
+    "pdfPreview": "/qbank/math/previews/5207e508.jpg",
+    "figure": "/qbank/math/figures/5207e508.jpg",
+    "choices": [
+      {
+        "text": "17"
+      },
+      {
+        "text": "30"
+      },
+      {
+        "text": "70"
+      },
+      {
+        "text": "170"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "f67e4efc",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A right circular cylinder has a volume of 45π. If the height of the cylinder is 5, what is the radius of the cylinder?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The volume of a right circular cylinder with a radius of r is the product of the area of the base, πr², and the height, h. The volume of the right circular cylinder described is 45π and its height is 5. If the radius is r, it follows that 45π = πr²(5). Dividing both sides of this equation by 5π yields 9 = r². Taking the positive square root of both sides of this equation yields r = 3. Therefore, the radius of the cylinder is 3.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect. This is the square of the radius, not the radius.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 10,
+    "pdfPreview": "/qbank/math/previews/f67e4efc.jpg",
+    "choices": [
+      {
+        "text": "3"
+      },
+      {
+        "text": "4.5"
+      },
+      {
+        "text": "9"
+      },
+      {
+        "text": "40"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "e5c57163",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Square A has side lengths that are 166 times the side lengths of square B. The area of square A is k times the area of square B. What is the\nvalue of k?",
+    "type": "spr",
+    "explanation": "The correct answer is 27,556. The area of a square is s², where s is the side length of the square. Let x represent the length of each side of square B. Substituting x for s in s² yields x². It follows that the area of square B is x². It’s given that square A has side lengths that are 166 times the side lengths of square B. Since x represents the length of each side of square B, the length of each side of square A can be represented by the expression 166x. It follows that the area of square A is (166x)², or 27,556x². It’s given that the area of square A is k times the area of square B. Since the area of square A is equal to 27,556x², and the area of square B is equal to x², an equation representing the given statement is 27,556x² = kx². Since x represents the length of each side of square B, the value of x must be positive. Therefore, the value of x² is also positive, so it does not equal 0. Dividing both sides of the equation 27,556x² = kx² by x² yields 27,556 = k. Therefore, the value of k is 27,556.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 13,
+    "pdfPreview": "/qbank/math/previews/e5c57163.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "27556"
+    ],
+    "answer": "27556"
+  },
+  {
+    "id": "33e29881",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In right triangle RST, the sum of the measures of angle R and angle S is 90 degrees. The value of sin(R) is sqrt(15)/4. What is the value of cos(S)?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The sine of any acute angle is equal to the cosine of its complement. It's given that in right triangle RST, the sum of the\nmeasures of angle R and angle S is 90 degrees. Therefore, angle R and angle S are complementary, and the value of sin R is equal to the value of cos S. It's given that the value of sin Ris vis so the value of cos S is also 5 Choice A is incorrect. This is the value of tan S. 1\ncos 5 * Choice C is incorrect. This is the value of Choice D is incorrect. This is the value of ww:\nan S",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 14,
+    "pdfPreview": "/qbank/math/previews/33e29881.jpg",
+    "choices": [
+      {
+        "text": "sqrt(15)/15"
+      },
+      {
+        "text": "sqrt(15)/4"
+      },
+      {
+        "text": "4sqrt(15)/15"
+      },
+      {
+        "text": "sqrt(15)"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "93f48423",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "What is the area, in square inches, of a rectangle with a length of 7 inches and a width of 6 inches?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The area, A, of a rectangle is given by the formula A = /w, where @ represents the length of the rectangle and w represents\nits width. It’s given that the rectangle has a length of 7 inches and a width of 6 inches. Substituting 7 for ? and 6 for w in the formula A = ?w\nyields A = (7)(6), or A = 42. Thus, the area, in square inches, of the rectangle is 42. Choice A is incorrect. This is the sum, not the product, of the length and width of the rectangle. Choice B is incorrect and may result from conceptual or calculation errors. Choice D is incorrect. This is twice the area, in square inches, of the rectangle.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 15,
+    "pdfPreview": "/qbank/math/previews/93f48423.jpg",
+    "choices": [
+      {
+        "text": "13"
+      },
+      {
+        "text": "20"
+      },
+      {
+        "text": "42"
+      },
+      {
+        "text": "84"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "5252e606",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The side length of a square is 55 centimeters (cm). What is the area, in cm², of the square?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The area A, in square centimeters (cm²), of a square with side length s, in cm, is given by the formula A = 8². It's\ngiven that the square has a side length of 55 cm. Substituting 55 for s in the formula A = s² yields A = 55²,or A= 3,025. Therefore, the\narea, in cm², of the square is 3,025. Choice A is incorrect and may result from conceptual or calculation errors.\n2 Choice B is incorrect. This is the perimeter, in cm, of the square, not its area, in cm². Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 16,
+    "pdfPreview": "/qbank/math/previews/5252e606.jpg",
+    "choices": [
+      {
+        "text": "110"
+      },
+      {
+        "text": "220"
+      },
+      {
+        "text": "3025"
+      },
+      {
+        "text": "12100"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "bb560789",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Triangle R has an area of 80 square centimeters (cm²). Square S has side lengths of 4 cm. What is the total area of triangle R and square S, in cm²?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It's given that triangle R has an area of 80 cm². The area of a square is 7², where 7 is the side length of the square. It's given\nthat square S has side lengths of 4 cm. It follows that the area, in cm², of square S is 42, or 16. Therefore, the total area, in cm², of triangle R\nand square S is 80 + 16, or 96. Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 17,
+    "pdfPreview": "/qbank/math/previews/bb560789.jpg",
+    "choices": [
+      {
+        "text": "42"
+      },
+      {
+        "text": "44"
+      },
+      {
+        "text": "84"
+      },
+      {
+        "text": "96"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "9342ca50",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure shown, BC is parallel to AD and x = 22. Line t passes through points A and C. What is the value of y?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It's given that BC is parallel to AD. Since line t intersects BC and AD, it's a transversal. The angles in the figure marked\nas x° and y° are on opposite sides of the transversal and lie between the parallel segments, so they are alternate interior angles. When two\nparallel segments are intersected by a transversal, alternate interior angles have equal measure. It's also given that x = 22. Therefore, the value\nof yis 22. Choice B is incorrect. This is the value of 2x, not the value of y. Choice C is incorrect. This is the complement of 22, not the value of y. Choice D is incorrect. This is the supplement of 22 , not the value of y.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 18,
+    "pdfPreview": "/qbank/math/previews/9342ca50.jpg",
+    "figure": "/qbank/math/figures/9342ca50.jpg",
+    "choices": [
+      {
+        "text": "22"
+      },
+      {
+        "text": "44"
+      },
+      {
+        "text": "68"
+      },
+      {
+        "text": "158"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "5afbdc8e",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "What is the length of one side of a square that has the same area as a circle with radius 2?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The area A of a circle with radius r is given by the formula A = πr². Thus, a circle with radius 2 has area π(2)², which can be rewritten as 4π. The area of a square with side length s is given by the formula A = s². Thus, if a square has the same area as a circle with radius 2, then s² = 4π. Since the side length of a square must be a positive number, taking the square root of both sides of s² = 4π gives s = √(4π). Using the properties of square roots, √(4π) can be rewritten as √4 · √π, which is equivalent to 2√π. Therefore, s = 2√π.\n\nChoice A is incorrect. The side length of the square isn't equal to the radius of the circle.\n\nChoice B is incorrect and may result from incorrectly simplifying the expression √(4π).\n\nChoice D is incorrect and may result from incorrectly simplifying the expression √(4π).",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 19,
+    "pdfPreview": "/qbank/math/previews/5afbdc8e.jpg",
+    "choices": [
+      {
+        "text": "2"
+      },
+      {
+        "text": "sqrt(2π)"
+      },
+      {
+        "text": "2sqrt(π)"
+      },
+      {
+        "text": "2π"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "983412ea",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A right square prism has a height of 14 units. The volume of the prism is 2,016 cubic units. What is the length, in units, of an edge of the base?",
+    "type": "spr",
+    "explanation": "The correct answer is 12. The volume, V, of a right square prism can be calculated using the formula V = s²h, where s represents the length of\nan edge of the base and / represents the height of the prism. It’s given that the volume of the prism is 2,016 cubic units and the height is 14\nunits. Substituting 2,016 for V and 14 for h in the formula V = s²h yields 2,016 = (s²) (14). Dividing both sides of this equation by 14 yields\n144 = s². Taking the square root of both sides of this equation yields two solutions: -12 = s and 12 = s. The length can't be negative, so 12 = s. Therefore, the length, in units, of an edge of the base is 12.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 20,
+    "pdfPreview": "/qbank/math/previews/983412ea.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "12"
+    ],
+    "answer": "12"
+  },
+  {
+    "id": "a4c0547f",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In triangle XYZ, angle Z is a right angle and the length of YZ is 24 units. If tan X = 12/35, what is the perimeter, in units, of triangle XYZ?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that angle Z in triangle XY Z is a right angle. Thus, side Y Z is the leg opposite angle X and side X Z is the leg\nadjacent to angle X.. The tangent of an acute angle in a right triangle is the ratio of the length of the leg opposite the angle to the length of the\nleg adjacent to the angle. It follows that tan X = x. It's given that tan _X = a and the length of side Y Z is 24 units. Substituting a for\ntan X and 24 for Y Z in the equation tan X = eee yields = = 3. Multiplying both sides of this equation by 35(X Z) yields 12(XZ) = 24(35), or 12(XZ) = 840. Dividing both sides of this equation by 12 yields XZ = 70. The length XY can be calculated using the\nPythagorean theorem, which states that if a right triangle has legs with lengths of a and b and a hypotenuse with length c, then a2 + b² = c².\nSubstituting 70 for a and 24 for b in this equation yields 70² + 24² = c², or 5,476 = c². Taking the square root of both sides of this equation\nyields +74 = c. Since the length of the hypotenuse must be positive, 74 = c. Therefore, the length of XY is 74 units. The perimeter of a\ntriangle is the sum of the lengths of all sides. Thus, (74 + 70 + 24) units, or 168 units, is the perimeter of triangle XY Z. Choice A is incorrect and may result from conceptual or calculation errors. Choice C is incorrect. This would be the perimeter, in units, for a right triangle where the length of side Y Z is 12 units, not 24 units. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 22,
+    "pdfPreview": "/qbank/math/previews/a4c0547f.jpg",
+    "choices": [
+      {
+        "text": "188"
+      },
+      {
+        "text": "168"
+      },
+      {
+        "text": "84"
+      },
+      {
+        "text": "71"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "659cb706",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Triangle XYZ shown is a right triangle. Which of the following has the same value as sin X?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The sine of an angle is equal to the cosine of its complementary angle. In the triangle shown, angle Z is a right angle; thus,\nangles X and Y are complementary angles. Therefore, cos Y has the same value as sin X. Choice A is incorrect and may result from conceptual errors. Choice B is incorrect and may result from conceptual errors. Choice C is incorrect and may result from conceptual errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 23,
+    "pdfPreview": "/qbank/math/previews/659cb706.jpg",
+    "figure": "/qbank/math/figures/659cb706.jpg",
+    "choices": [
+      {
+        "text": "tan X"
+      },
+      {
+        "text": "tan Y"
+      },
+      {
+        "text": "cos X"
+      },
+      {
+        "text": "cos Y"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c8d60e48",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the given triangle, AB = AC and angle ABC has a measure of 67°. What is the value of x?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Since A4 = AIC, the measures of their corresponding angles, “ ARG and “ACB, are equal. Since “ABC hasa\nmeasure of 67, the measure of “(CB is also 67². Since the sum of the measures of the interior angles in a triangle is 180° it follows\nthat² +67 +x = 1860, or 134+ ¥ = 180. Subtracting by 134 on both sides of this equation yields ¥ = 46. Choice A is incorrect and may result from calculation errors. Choice C is incorrect and may result from calculation errors. Choice D is incorrect and may result from calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 24,
+    "pdfPreview": "/qbank/math/previews/c8d60e48.jpg",
+    "choices": [
+      {
+        "text": "36"
+      },
+      {
+        "text": "46"
+      },
+      {
+        "text": "58"
+      },
+      {
+        "text": "70"
+      }
+    ],
+    "answer": 1,
+    "figure": "/qbank/math/figures/c8d60e48.jpg"
+  },
+  {
+    "id": "1f0b582e",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Square X has a side length of 12 centimeters. The perimeter of square Y is 2 times the perimeter of square X. What is the length, in centimeters,\nof one side of square Y?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The perimeter, P, of a square can be found using the formula P = 4s, where s is the length of each side of the square. It's\ngiven that square X has a side length of 12 centimeters. Substituting 12 for s in the formula for the perimeter of a square yields P = 4(12), or\nP = 48. Therefore, the perimeter of square X is 48 centimeters. It’s also given that the perimeter of square Y is 2 times the perimeter of square\nX. Therefore, the perimeter of square Y is 2(48), or 96, centimeters. Substituting 96 for P in the formula P = 4s gives 96 = 4s. Dividing both\nsides of this equation by 4 gives 24 = s. Therefore, the length of one side of square Y is 24 centimeters. Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 26,
+    "pdfPreview": "/qbank/math/previews/1f0b582e.jpg",
+    "choices": [
+      {
+        "text": "6"
+      },
+      {
+        "text": "10"
+      },
+      {
+        "text": "14"
+      },
+      {
+        "text": "24"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "deff8a2f",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The circumference of the base of a right circular cylinder is 20π meters, and the height of the cylinder is 6 meters. What is the volume, in cubic meters, of the cylinder?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The volume, V, of a right circular cylinder is given by the formula V = πr²h, where r is the radius of the base of the cylinder and h is the height of the cylinder. It’s given that a right circular cylinder has a height of 6 meters. Therefore, h = 6. It's also given that the right circular cylinder has a base with a circumference of 20π meters. The circumference, C, of a circle is given by C = 2πr, where r is the radius of the circle. Substituting 20π for C in the formula C = 2πr yields 20π = 2πr. Dividing each side of this equation by 2π yields 10 = r. Substituting 10 for r and 6 for h in the formula V = πr²h yields V = π(10)²(6), or V = 600π. Therefore, the volume, in cubic meters, of the cylinder is 600π.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect. This is the lateral surface area, not the volume, of the cylinder.\n\nChoice D is incorrect. This is the result of using the diameter, not the radius, for the value of r in the formula V = πr²h.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 27,
+    "pdfPreview": "/qbank/math/previews/deff8a2f.jpg",
+    "choices": [
+      {
+        "text": "60π"
+      },
+      {
+        "text": "120π"
+      },
+      {
+        "text": "600π"
+      },
+      {
+        "text": "2400π"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "d5f349b7",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Right triangles PQR and STU are similar, where P corresponds to S. If the measure of angle Q is 18°, what is the measure of angle S?",
+    "type": "mc",
+    "explanation": "Choice B is correct. In similar triangles, corresponding angles are congruent. It’s given that right triangles PQ.R and STU are similar, where\nangle P corresponds to angle S. It follows that angle P is congruent to angle S.. In the triangles shown, angle R and angle U are both marked\nas right angles, so angle R and angle U are corresponding angles. It follows that angle @ and angle T’ are corresponding angles, and thus, angle\nQ is congruent to angle 7’. It’s given that the measure of angle Q is 18°, so the measure of angle T is also 18°. Angle U is a right angle, so the\nmeasure of angle U is 90°. The sum of the measures of the interior angles of a triangle is 180°. Thus, the sum of the measures of the interior\nangles of triangle STU is 180 degrees. Let s represent the measure, in degrees, of angle S. It follows that s + 18 + 90 = 180, or s +108 = 180. Subtracting 108 from both sides of this equation yields s = 72. Therefore, if the measure of angle @ is 18 degrees, then the\nmeasure of angle Sis 72 degrees. Choice A is incorrect. This is the measure of angle 7’. Choice C is incorrect and may result from conceptual or calculation errors. Choice D is incorrect. This is the sum of the measures of angle S and angle U.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 29,
+    "pdfPreview": "/qbank/math/previews/d5f349b7.jpg",
+    "figure": "/qbank/math/figures/d5f349b7.jpg",
+    "choices": [
+      {
+        "text": "18°"
+      },
+      {
+        "text": "72°"
+      },
+      {
+        "text": "82°"
+      },
+      {
+        "text": "162°"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "babd7461",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure shown, triangle JKL is similar to triangle RST, where J corresponds to R and K corresponds to S. The length of JK is 15, and the perimeter of triangle JKL is 36. The length of RS is 135. What is the perimeter of triangle RST?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It’s given that triangle JK L is similar to triangle RST, where J corresponds to R and K corresponds to S. It follows that\nJK corresponds to RS. If two triangles are similar, then the scale factor between their perimeters is equal to the scale factor between the\nlengths of their corresponding sides. It's given that the length of JK is 15 and the length of RS is 135. Therefore, the scale factor from the\nlength of JK to the length of RS is 2, or 9. It’s given that the perimeter of triangle JK L is 36. Let p represent the perimeter of triangle RST.\nIt follows that % = 9. Multiplying each side of this equation by 36 yields p = 324. Therefore, the perimeter of triangle RST is 324. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 30,
+    "pdfPreview": "/qbank/math/previews/babd7461.jpg",
+    "figure": "/qbank/math/figures/babd7461.jpg",
+    "choices": [
+      {
+        "text": "324"
+      },
+      {
+        "text": "540"
+      },
+      {
+        "text": "2916"
+      },
+      {
+        "text": "8100"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "686b5212",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure, line q is parallel to line r, and both lines are intersected by line s. If y = 2x + 8, what is the value of x?",
+    "type": "spr",
+    "explanation": "The correct answer is 57. Based on the figure, the angle with measure y° and the angle vertical to the angle with measure 58° are same side\ninterior angles. Since vertical angles are congruent, the angle vertical to the angle with measure 58° also has measure 58°. It’s given that lines q\nand r are parallel. Therefore, same side interior angles between lines g and r are supplementary. It follows that y + 58 = 180. If y = 2a + 8,\nthen the value of # can be found by substituting 2a + 8 for y in the equation y + 58 = 180, which yields (2x + 8) + 58 = 180, or 2x + 66\n= 180. Subtracting 66 from both sides of this equation yields 22 = 114. Dividing both sides of this equation by 2 yields 7 = 57. Thus, if y = 2a + 8, the value of x is 57.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 31,
+    "pdfPreview": "/qbank/math/previews/686b5212.jpg",
+    "figure": "/qbank/math/figures/686b5212.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "57"
+    ],
+    "answer": "57"
+  },
+  {
+    "id": "a6dbad6b",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure above, lines ℓ and m are parallel, y = 20, and z = 60. What is the value of x?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Let the measure of the third angle in the smaller triangle be fl². Since lines @ and m are parallel and cut by transversals, it\nfollows that the corresponding angles formed are congruent. So q° = yo = 710°. The sum of the measures of the interior angles of a triangle\nis 180°, which for the interior angles in the smaller triangle yields @ +¥ +7 = 190. Given that 7 = 60 and @ = 20) it follows that #0+x +60 = 180. Solving for x gives ¥ = 160—60—20, or ¥ = 100. Choice A is incorrect and may result from incorrectly assuming that angles ¥ + # = 1610. Choice C is incorrect and may result from incorrectly\nassuming that the smaller triangle is a right triangle, with x as the right angle. Choice D is incorrect and may result from a misunderstanding of\nthe exterior angle theorem and incorrectly assuming that ¥ = + Z.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 32,
+    "pdfPreview": "/qbank/math/previews/a6dbad6b.jpg",
+    "choices": [
+      {
+        "text": "120"
+      },
+      {
+        "text": "100"
+      },
+      {
+        "text": "90"
+      },
+      {
+        "text": "80"
+      }
+    ],
+    "answer": 1,
+    "figure": "/qbank/math/figures/a6dbad6b.jpg"
+  },
+  {
+    "id": "81b664bc",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure above, AF, BE, and CD are parallel. Points B and E lie on AC and FD, respectively. If AB = 9, BC = 18.5, and FE = 8.5, what is the length of ED, to the nearest tenth?",
+    "type": "mc",
+    "explanation": "Choice Bis correct. Since AF, BE, and (CD are parallel, quadrilaterals AF and BEDE are similar. Let x represent the length of EF).\nOg . ae g 80 0 . . With similar figures, the ratios of the lengths of corresponding sides are equal. It follows that 7e5 = —. Multiplying both sides of this equation by 18.5 and by x yields 9¥ = (18.5)(8.5), or Gy = 157.25. Dividing both sides of this equation by 9 yields ¥ = 1.47, which to the nearest tenth is 17.5. Choice A is incorrect and may result from errors made when setting up the proportion. Choice C is incorrect and may result from errors made when setting up the proportion. Choice D is incorrect and may result from errors made when setting up the proportion.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 33,
+    "pdfPreview": "/qbank/math/previews/81b664bc.jpg",
+    "choices": [
+      {
+        "text": "16.8"
+      },
+      {
+        "text": "17.5"
+      },
+      {
+        "text": "18.4"
+      },
+      {
+        "text": "19.6"
+      }
+    ],
+    "answer": 1,
+    "figure": "/qbank/math/figures/81b664bc.jpg"
+  },
+  {
+    "id": "59cb654c",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The area of a square is 64 square inches. What is the side length, in inches, of this square?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It's given that the area of a square is 64 square inches. The area A, in square inches, of a square is given by the formula A\n= s*, where s is the side length, in inches, of the square. Substituting 64 for A in this formula yields 64 = s². Taking the positive square root of\nboth sides of this equation yields 8 = s. Thus, the side length, in inches, of this square is 8. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect. This is the area, in square inches, of the square, not the side length, in inches, of the square. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 34,
+    "pdfPreview": "/qbank/math/previews/59cb654c.jpg",
+    "choices": [
+      {
+        "text": "8"
+      },
+      {
+        "text": "16"
+      },
+      {
+        "text": "64"
+      },
+      {
+        "text": "128"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "902dc959",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure above, what is the value of tan(A)?",
+    "type": "mc",
+    "explanation": "Choice C is correct. Angle A is an acute angle in a right triangle, so the value of tan(A) is equivalent to the ratio of the length of the side\n: 20\nopposite angle A, 20, to the length of the nonhypotenuse side adjacent to angle A, 21. Therefore, tan(A} = rh Choice A is incorrect. This is the value of sin(A). Choice B is incorrect. This is the value of cos(A). Choice D is incorrect. This is the value of\ntan(B).",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 35,
+    "pdfPreview": "/qbank/math/previews/902dc959.jpg",
+    "choices": [
+      {
+        "text": "20/29"
+      },
+      {
+        "text": "21/29"
+      },
+      {
+        "text": "20/21"
+      },
+      {
+        "text": "21/20"
+      }
+    ],
+    "answer": 2,
+    "figure": "/qbank/math/figures/902dc959.jpg"
+  },
+  {
+    "id": "e86f0651",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A circle has a radius of 43 meters. What is the area, in square meters, of the circle?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The area, A, of a circle is given by the formula A = πr², where r is the radius of the circle. It’s given that the circle has a radius of 43 meters. Substituting 43 for r in the formula A = πr² yields A = π(43)², or A = 1,849π. Therefore, the area, in square meters, of the circle is 1,849π.\n\nChoice A is incorrect. This is the area, in square meters, of a circle with a radius of √(43/2) meters.\n\nChoice B is incorrect. This is the area, in square meters, of a circle with a radius of √43 meters.\n\nChoice C is incorrect. This is the circumference, in meters, of the circle.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 36,
+    "pdfPreview": "/qbank/math/previews/e86f0651.jpg",
+    "choices": [
+      {
+        "text": "43π/2"
+      },
+      {
+        "text": "43π"
+      },
+      {
+        "text": "86π"
+      },
+      {
+        "text": "1849π"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "96467fea",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Circle N has a radius of 7 millimeters (mm). Circle M has an area of 64π mm². What is the total area, in mm², of circles N and M?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It’s given that circle N has a radius of 7 mm. The area of a circle is given by the expression πr², where r is the radius of the circle. Substituting 7 for r in the expression yields π(7)², or 49π, for the area, in mm², of circle N. It’s also given that the area of circle M is 64π mm². Adding the two areas yields 49π + 64π, or 113π, mm². Therefore, the total area, in mm², of circles N and M is 113π.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 37,
+    "pdfPreview": "/qbank/math/previews/96467fea.jpg",
+    "choices": [
+      {
+        "text": "113π"
+      },
+      {
+        "text": "92π"
+      },
+      {
+        "text": "78π"
+      },
+      {
+        "text": "15π"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "858fd1cf",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A circle in the xy-plane has its center at (-1, 1). Line t is tangent to this circle at the point (5, -4). Which of the following points also lies on line t?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It’s given that the circle has its center at (—1, 1) and that line ¢ is tangent to this circle at the point (5, —4). Therefore, the\npoints (—1, 1) and (5, —4) are the endpoints of the radius of the circle at the point of tangency. The slope of a line or line segment that contains\nthe points (a, b) and (c, d) can be calculated as cn Substituting (—1, 1) for (a, b) and (5, —4) for (c, d) in the expression o£ yields\nFoy ,or —2. Thus, the slope of this radius is —3. A line that’s tangent to a circle is perpendicular to the radius of the circle at the point of\ntangency. It follows that line ¢ is perpendicular to the radius at the point (5, —A), so the slope of line ¢ is the negative reciprocal of the slope of\nthis radius. The negative reciprocal of —2 is £. Therefore, the slope of line ¢ is $. Since the slope of line ¢ is the same between any two points\non line ¢, a point lies on line ¢ if the slope of the line segment connecting the point and (5, —4) is $. Substituting choice C, (10, 2), for (a, b)\nand (5, —4) for (c, d) in the expression = yields =e. or $. Therefore, the point (10, 2) lies on line t. 4-6 Choice A is incorrect. The slope of the line segment connecting (0, $) and (5, —4) is ==, or —3, not $. Choice B is incorrect. The slope of the line segment connecting (4, 7) and (5, —4) is an or —11, not 4. Choice D is incorrect. The slope of the line segment connecting (11, 1) and (5, —4) is sah or 2, not £.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 38,
+    "pdfPreview": "/qbank/math/previews/858fd1cf.jpg",
+    "choices": [
+      {
+        "text": "(0, 6/5)"
+      },
+      {
+        "text": "(4, 7)"
+      },
+      {
+        "text": "(10, 2)"
+      },
+      {
+        "text": "(11, 1)"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "9adb86ed",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Points Q and R lie on a circle with center P. The radius of this circle is 9 inches. Triangle PQR has a perimeter of 31 inches. What is the length, in inches, of QR?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Since it's given that P is the center of a circle with a radius of 9 inches, and that points Q and R lie on that circle, it follows\nthat PQ and RP of triangle PQ R each have a length of 9 inches. Let the length of QR be z inches. It follows that the perimeter of triangle\nPQRis 9+ 9+ z inches. Since it's given that the perimeter of triangle PQR is 31 inches, it follows that 9 + 9+ 2 = 31,or18+2= 831.\nSubtracting 18 from both sides of this equation gives x = 13. Therefore, the length, in inches, of QR is 13. Choice A is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 39,
+    "pdfPreview": "/qbank/math/previews/9adb86ed.jpg",
+    "choices": [
+      {
+        "text": "13sqrt(2)"
+      },
+      {
+        "text": "13"
+      },
+      {
+        "text": "9sqrt(2)"
+      },
+      {
+        "text": "9"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "096c7ef5",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The three points shown define a circle. The circumference of this circle is kπ, where k is a constant. What is the value of k?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It’s given that the three points shown define a circle, so the center of that circle is an equal distance from each of the three\npoints. The point (7, 8) is halfway between the points (7, 5) and (7, 11) and is a distance of 3 units from each of those two points. The point\n(7, 8) is also a distance of 3 units from (4, 8). Because the point (7, 8) is the same distance from all three given points, it must be the center of\nthe circle. The radius of a circle is the distance from the center to any point on the circle. Since that distance is 3, it follows that the radius of the\ncircle is 3. The circumference of a circle with radius r is equal to 27rr. It follows that the circumference of the circle is 2(7) (3), or 67. It's given\nthat the circumference of the circle is kz. Therefore, the value of kis 6. Choice A is incorrect. This is the radius of the circle, not the value of & in the expression kr. Choice C is incorrect. This is the x-coordinate of the center of the circle, not the value of kin the expression kz.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 41,
+    "pdfPreview": "/qbank/math/previews/096c7ef5.jpg",
+    "choices": [
+      {
+        "text": "3"
+      },
+      {
+        "text": "6"
+      },
+      {
+        "text": "7"
+      },
+      {
+        "text": "9"
+      }
+    ],
+    "answer": 1,
+    "figure": "/qbank/math/figures/096c7ef5.jpg"
+  },
+  {
+    "id": "9966235e",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A cube has an edge length of 68 inches. A solid sphere with a radius of 34 inches is inside the cube, such that the sphere touches the center of\neach face of the cube. To the nearest cubic inch, what is the volume of the space in the cube not taken up by the sphere?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The volume of a cube can be found by using the formula V = s³, where V is the volume and s is the edge length of the cube. Therefore, the volume of the given cube is V = 68³, or 314,432 cubic inches. The volume of a sphere can be found by using the formula V = (4/3)πr³, where V is the volume and r is the radius of the sphere. Therefore, the volume of the given sphere is V = (4/3)π(34)³, or approximately 164,636 cubic inches. The volume of the space in the cube not taken up by the sphere is the difference of these two volumes, 314,432 − 164,636 = 149,796 cubic inches.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 44,
+    "pdfPreview": "/qbank/math/previews/9966235e.jpg",
+    "choices": [
+      {
+        "text": "149,796"
+      },
+      {
+        "text": "164,500"
+      },
+      {
+        "text": "190,955"
+      },
+      {
+        "text": "310,800"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "2b41a4c4",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A right rectangular prism has a length of 11 meters, a width of 8 meters, and a height of 10 meters. What is the volume, in cubic meters, of the\nprism?",
+    "type": "spr",
+    "explanation": "The correct answer is 880. The volume, V, of a right rectangular prism is given by the formula V = lwh, where l is the length, w is the width, and h is the height of the prism. It’s given that a right rectangular prism has a length of 11 meters, a width of 8 meters, and a height of 10 meters. Substituting 11 for l, 8 for w, and 10 for h in the formula V = lwh yields V = (11)(8)(10), or V = 880. Therefore, the volume, in cubic meters, of the prism is 880.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 45,
+    "pdfPreview": "/qbank/math/previews/2b41a4c4.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "880"
+    ],
+    "answer": "880"
+  },
+  {
+    "id": "a0369739",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In triangle ABC, the measure of angle B is 90° and BD is an altitude of the triangle. The length of AB is 15 and the length of AC is 23 greater than the length of AB. What is the value of BC/BD?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It's given that in triangle ABC, the measure of angle B is 90° and BDis an altitude of the triangle. Therefore, the measure\nof angle BDC is 90°. It follows that angle Bis congruent to angle D and angle C is congruent to angle C’. By the angle-angle similarity\npostulate, triangle ABC is similar to triangle BDC. Since triangles ABC and BDC are similar, it follows that 4g = BC It's also given that\nthe length of AB is 15 and the length of AC is 23 greater than the length of AB. Therefore, the length of AC is 15 + 23, or 38. Substituting 15\nfor AB and 38 for AC in the equation 4g = BE yields 38 = BC Therefore, the value of BC is 3 Choice A is incorrect. This is the value of BP Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 46,
+    "pdfPreview": "/qbank/math/previews/a0369739.jpg",
+    "choices": [
+      {
+        "text": "15/38"
+      },
+      {
+        "text": "15/23"
+      },
+      {
+        "text": "23/15"
+      },
+      {
+        "text": "38/15"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "a07ed090",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The figure shown is a right circular cylinder with a radius of r and height of h. A second right circular cylinder (not shown) has a volume that is 392 times as large as the volume of the cylinder shown. Which of the following could represent the radius R, in terms of r, and the height H, in terms of h, of the second cylinder?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The volume of a right circular cylinder is equal to πa²b, where a is the radius of a base of the cylinder and b is the height of the cylinder. It’s given that the cylinder shown has a radius of r and a height of h. It follows that the volume of the cylinder shown is equal to πr²h. It’s given that the second right circular cylinder has a radius of R and a height of H. It follows that the volume of the second cylinder is equal to πR²H. Choice C gives R = 7r and H = 8h. Substituting 7r for R and 8h for H in the expression that represents the volume of the second cylinder yields π(7r)²(8h), or π(49r²)(8h), which is equivalent to π(392r²h), or 392(πr²h). This expression is equal to 392 times the volume of the cylinder shown, πr²h. Therefore, R = 7r and H = 8h could represent the radius R, in terms of r, and the height H, in terms of h, of the second cylinder.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 47,
+    "pdfPreview": "/qbank/math/previews/a07ed090.jpg",
+    "figure": "/qbank/math/figures/a07ed090.jpg",
+    "choices": [
+      {
+        "text": "R = 8r and H = 7h"
+      },
+      {
+        "text": "R = 8r and H = 49h"
+      },
+      {
+        "text": "R = 7r and H = 8h"
+      },
+      {
+        "text": "R = 49r and H = 8h"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "cbe8ca31",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In △XYZ, the measure of ∠X is 24° and the measure of ∠Y is 98°. What is the measure of ∠Z?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The triangle angle sum theorem states that the sum of the measures of the interior angles of a triangle is 180°. It's given that\nin AXYZ, the measure of 7X is 24° and the measure of ∠Y is 98°. It follows that the measure of ∠Z is (180 — 24 — 98)°, or 58°. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect. This is the sum of the measures of 7X and ZY, not the measure of ∠Z. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 48,
+    "pdfPreview": "/qbank/math/previews/cbe8ca31.jpg",
+    "choices": [
+      {
+        "text": "58°"
+      },
+      {
+        "text": "74°"
+      },
+      {
+        "text": "122°"
+      },
+      {
+        "text": "212°"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "3b931fb0",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A right circular cylinder has a volume of 377 cubic centimeters. The area of the base of the cylinder is 13 square centimeters. What is the height, in centimeters, of the cylinder?",
+    "type": "spr",
+    "explanation": "The correct answer is 29. The volume, V, of a right circular cylinder is given by the formula V = πr²h, where r is the radius of the base of the cylinder and h is the height of the cylinder. Since the base of the cylinder is a circle with radius r, the area of the base of the cylinder is πr². It's given that a right circular cylinder has a volume of 37π cubic centimeters; therefore, V = 37π. It's also given that the area of the base of the cylinder is 13 square centimeters; therefore, πr² = 13. Substituting 37π for V and 13 for πr² in the formula V = πr²h yields 37π = 13h. Dividing both sides of this equation by 13 yields 29 = h. Therefore, the height of the cylinder, in centimeters, is 29.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 49,
+    "pdfPreview": "/qbank/math/previews/3b931fb0.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "29"
+    ],
+    "answer": "29"
+  },
+  {
+    "id": "94364a79",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Two nearby trees are perpendicular to the ground, which is flat. One of these trees is 10 feet tall and has a shadow that is 5 feet long. At the\nsame time, the shadow of the other tree is 2 feet long. How tall, in feet, is the other tree?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Each tree and its shadow can be modeled using a right triangle, where the height of the tree and the length of its shadow are\nthe legs of the triangle. At a given point in time, the right triangles formed by two nearby trees and their respective shadows will be similar.\nTherefore, if the height of the other tree is zx, in feet, the value of x can be calculated by solving the proportional relationship sie et = eee. This equation is equivalent to² = 5,0r2= 4. Multiplying each side of the equation 2 = + by 2 yields 4 = =. Therefore, the\nother tree is 4 feet tall. Choice A is incorrect and may result from calculating the difference between the lengths of the shadows, rather than the height of the other tree. Choice C is incorrect and may result from calculating the difference between the height of the 10-foot-tall tree and the length of the shadow of\nthe other tree, rather than calculating the height of the other tree. Choice D is incorrect and may result from a conceptual or calculation error.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 50,
+    "pdfPreview": "/qbank/math/previews/94364a79.jpg",
+    "choices": [
+      {
+        "text": "3"
+      },
+      {
+        "text": "4"
+      },
+      {
+        "text": "8"
+      },
+      {
+        "text": "27"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "51f26ce8",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "△QPR is similar to △STR. The lengths represented by ST, QP, PR, and QR in the figure are 14, 15, 20, and 25, respectively. What is the length of SR?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The figure shows that angle P in △QPR and angle T in △STR are right angles. It follows that angle P is congruent to\nangle T. The figure also shows that the measures of angle QRP and angle SRT are both x°. Therefore, angle Q. RP is congruent to angle\nSRT. it's given that △QPR is similar to △STR. Since angle P is congruent to angle J, and angle Q. RP is congruent to angle SRT, it\nfollows that OR corresponds to SR, and QP corresponds to ST. Since corresponding sides of similar triangles are proportional, it follows that\nSE = oP: It’s also given that the lengths of ST, QP, and QR are 14, 15, and 25, respectively. Substituting 14 for ST, 15 for QP, and 25 for\nOP yields © a = iz . Multiplying each side of this equation by 25 yields SR = (#)2 5),or SR = a. Thus, the QR in the equation\nlength of SR is 222 a On Choice B is incorrect. This is the result of solving the equation 3H = a not au =: Choice C is incorrect. This is the result of solving the equation Sh = 5 , not SR i. not SR 14\nan 25 ~ 15° Choice D is incorrect. This is the result of solving the equation att =",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 51,
+    "pdfPreview": "/qbank/math/previews/51f26ce8.jpg",
+    "figure": "/qbank/math/figures/51f26ce8.jpg",
+    "choices": [
+      {
+        "text": "350/15"
+      },
+      {
+        "text": "350/20"
+      },
+      {
+        "text": "210/20"
+      },
+      {
+        "text": "210/25"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c24e1bda",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure, line m is parallel to line n. What is the value of w?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It's given that lines m and n are parallel. Since line ¢ intersects both lines m and n, it's a transversal. The angles in the figure\nmarked as 134° and w® are on the same side of the transversal, where one is an interior angle with line ™ as a side, and the other is an exterior\nangle with line m as a side. Thus, the marked angles are corresponding angles. When two parallel lines are intersected by a transversal,\ncorresponding angles are congruent and, therefore, have equal measure. It follows that w°= 134°. Therefore, the value of w is 134. Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 54,
+    "pdfPreview": "/qbank/math/previews/c24e1bda.jpg",
+    "figure": "/qbank/math/figures/c24e1bda.jpg",
+    "choices": [
+      {
+        "text": "13"
+      },
+      {
+        "text": "34"
+      },
+      {
+        "text": "66"
+      },
+      {
+        "text": "134"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "055aafe7",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Triangle ABC is similar to triangle XYZ, where A, B, and C correspond to X, Y, and Z, respectively. In triangle ABC, the length of AB is 170 and the length of BC is 850. In triangle XYZ, the length of YZ is 60. What is the length of XY?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It's given that triangle ABC is similar to triangle XY Z, where A, B, and C correspond to X, Y, and Z, respectively. It\nfollows that side AB corresponds to side XY and side BC corresponds to side Y Z. Since the lengths of corresponding sides in similar\ntriangles are proportional, it follows that cee = +3. Substituting 170 for AB, 60 for Y Z, and 850 for BC in this equation yields x = &.\nMultiplying each side of this equation by 170 yields XY = 12. Therefore, the length of XY is 12. Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect. This is the length of YZ, not XY.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 55,
+    "pdfPreview": "/qbank/math/previews/055aafe7.jpg",
+    "choices": [
+      {
+        "text": "204"
+      },
+      {
+        "text": "182"
+      },
+      {
+        "text": "60"
+      },
+      {
+        "text": "12"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "2d2cb85e",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure, RT = TU, the measure of angle VST is 29°, and the measure of angle RVS is 41°. What is the value of x?",
+    "type": "spr",
+    "explanation": "The correct answer is 156. In the figure shown, the sum of the measures of angle UV S and angle RV‘S is 180°. It’s given that the measure of\nangle RVS is 41°. Therefore, the measure of angle UV'S is (180 — 41)°, or 139°. The sum of the measures of the interior angles of a triangle\nis 180°. In triangle UV'S, the measure of angle UV'S is 139° and it's given that the measure of angle VST is 29°. Thus, the measure of angle\nVUS is (180 — 139 — 29)°, or 12°. It's given that RT = TU. Therefore, triangle TU R is an isosceles triangle and the measure of VUS is\nequal to the measure of angle T'RU. In triangle TU R, the measure of angle VU is 12° and the measure of angle T’RU is 12°. Thus, the\nmeasure of angle UT'Ris (180 — 12 — 12)°, or 156°. The figure shows that the measure of angle UT R is x°, so the value of x is 156.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 56,
+    "pdfPreview": "/qbank/math/previews/2d2cb85e.jpg",
+    "figure": "/qbank/math/figures/2d2cb85e.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "156"
+    ],
+    "answer": "156"
+  },
+  {
+    "id": "345cc36a",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure shown, WZ and XY intersect at point Q. YQ = 63, WQ = 70, WX = 60, and XQ = 120. What is the length of YZ?",
+    "type": "spr",
+    "explanation": "The correct answer is 54. The figure shown includes two triangles, triangle WQX and triangle YQZ, such that angle WQ-X and angle YQZ\nare vertical angles. It follows that angle W@.X is congruent to angle Y QZ. It's also given in the figure that the measures of angle W and angle\nY are a°. Therefore angle W is congruent to angle Y. Since triangle WQX and triangle YQZ have two pairs of congruent angles, triangle\nWQX is similar to triangle YQZ by the angle-angle similarity postulate, where Y Z corresponds to WX, and YQ corresponds to WQ. Since\nthe lengths of corresponding sides in similar triangles are proportional, it follows that is = We: It's given that YQ = 63, WQ = 70, and\nWX = 60. Substituting 63 for YQ, 70 for WQ, and 60 for WX in the equation we = 22 yields x2 = 88 . Multiplying each side of this __] wQ\nequation by 60 yields YZ = (8) (60), or YZ = 54. Therefore, the length of YZ is 54.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 58,
+    "pdfPreview": "/qbank/math/previews/345cc36a.jpg",
+    "figure": "/qbank/math/figures/345cc36a.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "54"
+    ],
+    "answer": "54"
+  },
+  {
+    "id": "c8345903",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The circle above has center O, the length of arc ADC is 5π, and x = 100. What is the length of arc ABC?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The ratio of the lengths of two arcs of a circle is equal to the ratio of the measures of the central angles that subtend the arcs. It’s given that a minor arc is subtended by a central angle with measure 100° and has length 5π. Since the sum of the measures of the angles about a point is 360°, it follows that arc ABC is subtended by a central angle with measure 360° − 100° = 260°. If s is the length of arc ABC, then s must satisfy the ratio s/(5π) = 260/100. Reducing the fraction 260/100 to its simplest form gives 13/5. Therefore, s/(5π) = 13/5. Multiplying both sides of s/(5π) = 13/5 by 5π yields s = 13π.\n\nChoice A is incorrect. This is the length of an arc consisting of exactly half of the circle, but arc ABC is greater than half of the circle.\n\nChoice C is incorrect. This is the total circumference of the circle.\n\nChoice D is incorrect. This is half the length of arc ABC, not its full length.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 60,
+    "pdfPreview": "/qbank/math/previews/c8345903.jpg",
+    "choices": [
+      {
+        "text": "9π"
+      },
+      {
+        "text": "13π"
+      },
+      {
+        "text": "18π"
+      },
+      {
+        "text": "(13/2)π"
+      }
+    ],
+    "answer": 1,
+    "figure": "/qbank/math/figures/c8345903.jpg"
+  },
+  {
+    "id": "901c3215",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In triangles ABC and DEF, angles B and E each have measure 27° and angles C and F each have measure 41°. Which additional piece of information is sufficient to determine whether triangle ABC is congruent to triangle DEF?",
+    "type": "mc",
+    "explanation": "Choice C is correct. Since angles B and F each have the same measure and angles C’ and F each have the same measure, triangles ABC and\nDEF are similar, where side BC corresponds to side EF’. To determine whether two similar triangles are congruent, it is sufficient to\ndetermine whether one pair of corresponding sides are congruent. Therefore, to determine whether triangles ABC and DEF are congruent, it\nis sufficient to determine whether sides BC and EF have equal length. Thus, the lengths of BC' and E/F are sufficient to determine whether\ntriangle ABC is congruent to triangle DEF. Choice A is incorrect and may result from conceptual errors. Choice B is incorrect and may result from conceptual errors. Choice D is incorrect. The given information is sufficient to determine that triangles ABC and DEF are similar, but not whether they are\ncongruent.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 61,
+    "pdfPreview": "/qbank/math/previews/901c3215.jpg",
+    "choices": [
+      {
+        "text": "The measure of angle A"
+      },
+      {
+        "text": "The length of side AB"
+      },
+      {
+        "text": "The lengths of sides BC and EF"
+      },
+      {
+        "text": "No additional information is necessary."
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "2bddbc1b",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "What is the value of cos A in the triangle shown?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The cosine of an acute angle in a right triangle is defined as the ratio of the length of the leg adjacent to the angle to the\nlength of the hypotenuse. In the triangle shown, the length of the leg adjacent to angle A is 41, and the length of the hypotenuse is 42. Therefore, _ 41\ncos A = 3. a Choice A is incorrect. This is the value of = 7- Choice C is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 62,
+    "pdfPreview": "/qbank/math/previews/2bddbc1b.jpg",
+    "figure": "/qbank/math/figures/2bddbc1b.jpg",
+    "choices": [
+      {
+        "text": "42/41"
+      },
+      {
+        "text": "41/42"
+      },
+      {
+        "text": "1/42"
+      },
+      {
+        "text": "1/41"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "85f1892d",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In triangle XYZ, angle Y is a right angle, the measure of angle Z is 33°, and the length of YZ is 26 units. If the area, in square units, of triangle XYZ can be represented by the expression k tan 33°, where k is a constant, what is the value of k?",
+    "type": "spr",
+    "explanation": "The correct answer is 338. The tangent of an acute angle in a right triangle is the ratio of the length of the leg opposite the angle to the length of\nthe leg adjacent to the angle. In triangle XY Z, it's given that angle Y is a right angle. Thus, XY is the leg opposite of angle Z and YZ is the leg\nadjacent to angle Z. It follows that tan Z = x. It's also given that the measure of angle Z is 33° and the length of YZ is 26 units.\nSubstituting 33° for Z and 26 for Y Z in the equation tan Z = ee yields tan 33°= xy Multiplying each side of this equation by 26 yields\n26 tan 33°= XY. Therefore, the length of XY is 26 tan 33°. The area of a triangle is half the product of the lengths of its legs. Since the\nlength of YZ is 26 and the length of XY is 26 tan 33°, it follows that the area of triangle XY Z is + (26) (26 tan 33°) square units, or 338 tan 33° square units. It's given that the area, in square units, of triangle XY Z can be represented by the expression & tan 33°, where k is a\nconstant. Therefore, 338 is the value of k.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 63,
+    "pdfPreview": "/qbank/math/previews/85f1892d.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "338"
+    ],
+    "answer": "338"
+  },
+  {
+    "id": "f7dbde16",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In triangles LMN and RST, angles L and R each have measure 60°, LN = 10, and RT = 30. Which additional piece of information is sufficient to prove that triangle LMN is similar to triangle RST?",
+    "type": "mc",
+    "explanation": "Choice D is correct. Two triangles are similar if they have three pairs of congruent corresponding angles. It’s given that angles L and R each\nmeasure 60°, and so these corresponding angles are congruent. If angle M is 70°, then angle N must be 50° so that the sum of the angles in\ntriangle LMN is 180°. If angle T is 50°, then angle S must be 70° so that the sum of the angles in triangle RST is 180°. Therefore, if the\nmeasures of angles M and T are 70° and 50°, respectively, then corresponding angles M and S are both 70°, and corresponding angles NV and\nT are both 50°. It follows that triangles LM N and RST have three pairs of congruent corresponding angles, and so the triangles are similar.\nTherefore, the additional piece of information that is sufficient to prove that triangle LM N is similar to triangle RST is that the measures of\nangles M and T are 70° and 50°, respectively. Choice A is incorrect. If the measures of two sides in one triangle are proportional to the corresponding sides in another triangle and the included\nangles are congruent, then the triangles are similar. However, the two sides given are not proportional and the angle given is not included by the\ngiven sides. Choice B is incorrect. If the measures of two sides in one triangle are proportional to the corresponding sides in another triangle and the included\nangles are congruent, then the triangles are similar. However, the angle given is not included between the proportional sides. Choice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 65,
+    "pdfPreview": "/qbank/math/previews/f7dbde16.jpg",
+    "equations": [
+      "/qbank/math/equations/f7dbde16_0.jpg",
+      "/qbank/math/equations/f7dbde16_1.jpg"
+    ],
+    "choices": [
+      {
+        "text": "MN = 7 and ST = 7"
+      },
+      {
+        "text": "MN = 7 and ST = 21"
+      },
+      {
+        "text": "The measures of angles M and S are 70° and 60°, respectively."
+      },
+      {
+        "text": "The measures of angles M and T are 70° and 50°, respectively."
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "a4ed5285",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The figure shows the lengths, in inches, of two sides of a right triangle. What is the area of the triangle, in square inches?",
+    "type": "spr",
+    "explanation": "The correct answer is 2. The area, A, of a triangle is given by the formula. A = $bh, where bis the length of the base of the triangle and h is\nthe height of the triangle. In the right triangle shown, the length of the base of the triangle is 5 inches, and the height is 3 inches. It follows that\nb = 5 andh = 3. Substituting 5 for b and 3 for h in the formula A = $bh yields A = 4(5)(3), which is equivalent to. A = 4 (15), or A= ¥. Therefore, the area of the triangle, in square inches, is ¥. Note that 15/2 and 7.5 are examples of ways to enter a correct answer.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 66,
+    "pdfPreview": "/qbank/math/previews/a4ed5285.jpg",
+    "figure": "/qbank/math/figures/a4ed5285.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "7.5",
+      "15/2"
+    ],
+    "answer": "7.5"
+  },
+  {
+    "id": "87a9a2d4",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the right triangle shown, what is the value of sin A?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The sine of an acute angle in a right triangle is the ratio of the length of the side opposite that angle to the length of the\nhypotenuse. The hypotenuse of a right triangle is the side opposite the right angle. In right triangle ABC, side BC is the side opposite angle A\nand side AB is the hypotenuse. It's given that the length of side BC is 35 units and the length of side AB is 171 units. Therefore, the value of : ie 30\nsin A is 377. Choice A is incorrect and may result from conceptual or calculation errors. Choice C is incorrect. This is the ratio of the length of the hypotenuse to the length of the side opposite angle A rather than the ratio of the length\nof the side opposite angle A to the length of the hypotenuse. Choice D is incorrect. This is the length of the hypotenuse rather than sin A.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 67,
+    "pdfPreview": "/qbank/math/previews/87a9a2d4.jpg",
+    "figure": "/qbank/math/figures/87a9a2d4.jpg",
+    "choices": [
+      {
+        "text": "1/171"
+      },
+      {
+        "text": "35/171"
+      },
+      {
+        "text": "171/35"
+      },
+      {
+        "text": "171"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "e6f2ace7",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The lengths of the legs of a right triangle are shown. Which of the following is closest to the length of the triangle's hypotenuse?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The Pythagorean theorem states that for a right triangle, a² + b² = c², where a and b represent the lengths of the legs of\nthe triangle and c represents the length of its hypotenuse. In the triangle shown, the legs have lengths of 3 and 7. Substituting 3 for a and 7 for b\nin the equation a² + b² = c² yields 3² + 7² = c², which is equivalent to 9+ 49 = c², or 58 = c². Taking the positive square root of both sides\nof this equation yields 1/58 = c. Thus, the value of cis approximately 7.6. Therefore, of the given choices, 7.6 is the closest to the length of the\ntriangle's hypotenuse. Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 68,
+    "pdfPreview": "/qbank/math/previews/e6f2ace7.jpg",
+    "figure": "/qbank/math/figures/e6f2ace7.jpg",
+    "choices": [
+      {
+        "text": "3.2"
+      },
+      {
+        "text": "5"
+      },
+      {
+        "text": "7.6"
+      },
+      {
+        "text": "20"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "b0c5ece5",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Which equation shows the relationship between the side lengths of the given triangle?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The Pythagorean theorem states that in a right triangle, the sum of the squares of the lengths of the two legs is equal to the\nsquare of the length of the hypotenuse. Therefore, a² + b² = c², where a and b are the lengths of the legs and cis the length of the hypotenuse.\nFor the given right triangle, the lengths of the legs are 4 and 0, and the length of the hypotenuse is 19. Substituting 4 for a and 19 for c in the\nequation a² + b² = c² yields 4² + b² = 197. Thus, the relationship between the side lengths of the given triangle is 4² + b² = 19². Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 69,
+    "pdfPreview": "/qbank/math/previews/b0c5ece5.jpg",
+    "figure": "/qbank/math/figures/b0c5ece5.jpg",
+    "choices": [
+      {
+        "text": "4b = 19"
+      },
+      {
+        "text": "4 + b = 19"
+      },
+      {
+        "text": "4^2 + b^2 = 19^2"
+      },
+      {
+        "text": "4^2 - b^2 = 19^2"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "76c73dbf",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The graph of x^2 + x + y^2 + y = 199/2 in the xy-plane is a circle. What is the length of the circle’s radius?",
+    "type": "spr",
+    "explanation": "The correct answer is 10. It's given that the graph of x² + x + y² + y = 199/2 in the xy-plane is a circle. The equation of a circle in the xy-plane can be written in the form (x − h)² + (y − k)² = r², where the coordinates of the center of the circle are (h, k) and the length of the radius of the circle is r. Completing the square for x and for y: x² + x needs (1/2)² = 1/4, and y² + y needs 1/4. Adding 1/4 + 1/4 to both sides yields (x + 1/2)² + (y + 1/2)² = 199/2 + 1/2 = 200/2 = 100. Therefore, r² = 100, so r = 10. The length of the circle’s radius is 10.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 70,
+    "pdfPreview": "/qbank/math/previews/76c73dbf.jpg",
+    "equations": [
+      "/qbank/math/equations/76c73dbf_0.jpg"
+    ],
+    "choices": [],
+    "acceptedAnswers": [
+      "10"
+    ],
+    "answer": "10"
+  },
+  {
+    "id": "58c26db8",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The perimeter of an isosceles right triangle is 18 + 18sqrt(2) inches. What is the length, in inches, of the hypotenuse of this triangle?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The perimeter of a triangle is the sum of the lengths of its sides. Since the given triangle is an isosceles right triangle, the\nlength of each leg is the same and the length of the hypotenuse is equal to +/2 times the length of a leg. Let x represent the length, in inches, of\na leg of this isosceles right triangle. Therefore, the perimeter, in inches, of the triangle is 7 + 2 + zv2, or 24+ aV2, which is equivalent to\na(2 + v2). It's given that the perimeter of this triangle is 18 + 18+/2 inches. Thus, a(2 + v2) = 184+ 18,/2. Dividing both sides of this\nequation by 2 + V2 yields L= Jet Multiplying the right-hand side of this equation by avn yields x = 36436V2—18V2-36 | ore = 9V2.\nIt follows that the length, in inches, of a leg of this isosceles right triangle is 9/2. Therefore, the length, in inches, of the hypotenuse of this\nisosceles right triangle is (9v2) (v2), or 18. Choice A is incorrect. If this were the length of the hypotenuse, the perimeter would be 9+ 9/2 inches. Choice B is incorrect. This is the length, in inches, of a leg of this triangle, not the hypotenuse. Choice D is incorrect. If this were the length of the hypotenuse, the perimeter would be 36 + 18/2 inches.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 71,
+    "pdfPreview": "/qbank/math/previews/58c26db8.jpg",
+    "choices": [
+      {
+        "text": "9"
+      },
+      {
+        "text": "9sqrt(2)"
+      },
+      {
+        "text": "18"
+      },
+      {
+        "text": "18sqrt(2)"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "e336a1d2",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A cube has an edge length of 41 inches. What is the volume, in cubic inches, of the cube?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The volume, V, of a cube can be found using the formula V = s®, where is the edge length of the cube. It's given that a\ncube has an edge length of 41 inches. Substituting 41 inches for s in this equation yields V = 413 cubic inches, or V = 68,921 cubic inches.\nTherefore, the volume of the cube is 68,921 cubic inches. Choice A is incorrect. This is the perimeter, in inches, of the cube. Choice B is incorrect. This is the area, in square inches, of a face of the cube. Choice C is incorrect. This is the surface area, in square inches, of the cube.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 72,
+    "pdfPreview": "/qbank/math/previews/e336a1d2.jpg",
+    "choices": [
+      {
+        "text": "164"
+      },
+      {
+        "text": "1681"
+      },
+      {
+        "text": "10086"
+      },
+      {
+        "text": "68921"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "e4b4e9ea",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The length of the edge of the base of a right square prism is 6 units. The volume of the prism is 2,880 cubic units. What is the height, in units, of the prism?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The volume, V, of a right square prism is given by the formula V = sh, where $ represents the length of the edge of the\nbase and h represents the height of the prism. It’s given that the volume of a right square prism is 2,880 cubic units and the length of the edge\nof the base is 6 units. Substituting 2,880 for V and 6 for s in the formula V = s7h yields 2,880 = (67)h, or 2,880 = 36h. Dividing both sides\nof this equation by 36 yields 80 = h. Therefore, the height, in units, of the prism is 80. Choice A is incorrect. This is the height, in units, of a right square prism where the length of the edge of the base is 6 units and the volume of the\nprism is 144-/ 30, not 2,880, units. Choice B is incorrect. This is the area, in square units, of the base, not the height, in units, of the prism. Choice C is incorrect. This is the height, in units, of a right square prism where the length of the edge of the base is 6 units and the volume of the\nprism is 8644/5, not 2,880, units.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 73,
+    "pdfPreview": "/qbank/math/previews/e4b4e9ea.jpg",
+    "choices": [
+      {
+        "text": "4sqrt(30)"
+      },
+      {
+        "text": "36"
+      },
+      {
+        "text": "24sqrt(5)"
+      },
+      {
+        "text": "80"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c0586eb5",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A cylinder has a diameter of 8 inches and a height of 12 inches. What is the volume, in cubic inches, of the cylinder?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The base of a cylinder is a circle with a diameter equal to the diameter of the cylinder. The volume, V, of a cylinder can be found by multiplying the area of the circular base, A, by the height of the cylinder, h, or V = Ah. The area of a circle can be found using the formula A = πr², where r is the radius of the circle. It’s given that the diameter of the cylinder is 8 inches. Thus, the radius of this circle is 4 inches. Therefore, the area of the circular base of the cylinder is A = π(4)², or 16π square inches. It’s given that the height h of the cylinder is 12 inches. Substituting 16π for A and 12 for h in the formula V = Ah gives V = 16π(12), or 192π cubic inches.\n\nChoice A is incorrect. This is the area of the circular base of the cylinder.\n\nChoice B is incorrect and may result from using 8, instead of 16, as the value of r² in the formula for the area of a circle.\n\nChoice D is incorrect and may result from using 8, instead of 4, for the radius of the circular base.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 74,
+    "pdfPreview": "/qbank/math/previews/c0586eb5.jpg",
+    "choices": [
+      {
+        "text": "16π"
+      },
+      {
+        "text": "96π"
+      },
+      {
+        "text": "192π"
+      },
+      {
+        "text": "768π"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "52f7b898",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Right triangle ABC is shown. What is the value of tan A?",
+    "type": "mc",
+    "explanation": "Choice C is correct. In the triangle shown, the measure of angle B is 30° and angle C is a right angle, which means that it has a measure of 90°. Since the sum of the angles in a triangle is equal to 180°, the measure of angle A is equal to 180° − (30 + 90)°, or 60°. In a right triangle whose acute angles have measures 30° and 60°, the lengths of the sides are in the ratio 1 : √3 : 2, where the side opposite the 30° angle has relative length 1, the side opposite the 60° angle has relative length √3, and the hypotenuse has relative length 2. The value of tan A is the ratio of the length of the side opposite angle A to the length of the side adjacent to angle A. Since angle A measures 60°, tan A = √3 / 1 = √3.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect. This is the value of tan B, not tan A.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 75,
+    "pdfPreview": "/qbank/math/previews/52f7b898.jpg",
+    "figure": "/qbank/math/figures/52f7b898.jpg",
+    "equations": [
+      "/qbank/math/equations/52f7b898_0.jpg"
+    ],
+    "choices": [
+      {
+        "text": "sqrt(3)/54"
+      },
+      {
+        "text": "1/sqrt(3)"
+      },
+      {
+        "text": "sqrt(3)"
+      },
+      {
+        "text": "27sqrt(3)"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "03c6994f",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Square A has side lengths that are 246 times the side lengths of square B. The area of square A is k times the area of square B. What is the\nvalue of k?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The area of a square is s², where s is the side length of the square. Therefore, the area of square B is b, where bis the side\nlength of square B. It’s given that square A has side lengths that are 246 times the side lengths of square B. Therefore, the side length of square\nA can be represented by the expression 2460. It follows that the area of square A is (246b) 2 or 60,5160%. It’s given that the area of square A is\nk times the area of square B, so 60,516b² = kb. Therefore, the value of k is 60,516. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 76,
+    "pdfPreview": "/qbank/math/previews/03c6994f.jpg",
+    "choices": [
+      {
+        "text": "60516"
+      },
+      {
+        "text": "492"
+      },
+      {
+        "text": "246"
+      },
+      {
+        "text": "123"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "151eda3c",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A manufacturing company produces two sizes of cylindrical containers that each have a height of 50 centimeters. The radius of container A is 16\ncentimeters, and the radius of container B is 25% longer than the radius of container A. What is the volume, in cubic centimeters, of container B?",
+    "type": "mc",
+    "explanation": "Choice B is correct. If the radius of container A is 16 centimeters and the radius of container B is 25% longer than the radius of container A, then the radius of container B is 16 + (0.25)(16) = 20 centimeters. The volume of a cylinder is πr²h, where r is the radius of the cylinder and h is its height. Substituting r = 20 and h = 50 into πr²h yields that the volume of cylinder B is π(20)²(50) = 20,000π cubic centimeters.\n\nChoice A is incorrect and may result from multiplying the radius of cylinder B by the radius of cylinder A rather than squaring the radius of cylinder B.\n\nChoice C is incorrect and may result from multiplying the radius of cylinder B by 25 rather than squaring it.\n\nChoice D is incorrect and may result from taking the radius of cylinder B to be 25 centimeters rather than 20 centimeters.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 77,
+    "pdfPreview": "/qbank/math/previews/151eda3c.jpg",
+    "choices": [
+      {
+        "text": "16,000π"
+      },
+      {
+        "text": "20,000π"
+      },
+      {
+        "text": "25,000π"
+      },
+      {
+        "text": "31,250π"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "35d37640",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Point F lies on a unit circle in the xy-plane and has coordinates (1, 0). Point G is the center of the circle and has coordinates (0, 0). Point H also lies on the circle and has coordinates (-1, y), where y is a constant. Which of the following could be the positive measure of angle FGH in radians?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It's given that the circle is a unit circle, which means the circle has a radius of 1. It's also given that point G is the center of the circle and has coordinates (0, 0) and that point H lies on the circle and has coordinates (−1, y). Since the radius of the circle is 1, the value of y must be 0, as all other points with an x-coordinate of −1 are a distance greater than 1 away from point G. Since F and H are points on the unit circle centered at G, let side FG be the starting side of the angle and side GH be the terminal side of the angle. Since side FG is on the positive x-axis and side GH is on the negative x-axis, side FG is half of a rotation around the unit circle, or π radians, away from side GH. Therefore, the positive measure of angle FGH, in radians, is equal to π plus an integer multiple of 2π. In other words, the positive measure of angle FGH, in radians, is an odd integer multiple of π. Of the given choices, only 25π is an odd integer multiple of π.\n\nChoice A is incorrect. This could be the positive measure of an angle where the starting side is FG and the terminal side contains the point (0, −1), not (−1, 0).\n\nChoice B is incorrect. This could be the positive measure of an angle where the starting side is FG and the terminal side contains the point (0, 1), not (−1, 0).\n\nChoice C is incorrect. This could be the positive measure of an angle where the starting side is FG and the terminal side contains the point (1, 0), not (−1, 0).",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 78,
+    "pdfPreview": "/qbank/math/previews/35d37640.jpg",
+    "choices": [
+      {
+        "text": "27π/2"
+      },
+      {
+        "text": "29π/2"
+      },
+      {
+        "text": "24π"
+      },
+      {
+        "text": "25π"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "e50afdd3",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The graph of (x + 4)^2 + (y - 19)^2 = 121 is a circle in the xy-plane. The point (a, b) lies on the circle. Which of the following is a possible value for a?",
+    "type": "mc",
+    "explanation": "Choice B is correct. An equation of the form (2 — h)² +(y- ky² =r², where h, k, and r are constants, represents a circle in the xy-plane with\ncenter (A, k) and radius r. Therefore, the circle represented by the given equation has center (—4, 19) and radius 11. Since the center of the\ncircle has an x-coordinate of —4 and the radius of the circle is 11, the least possible x-coordinate for any point on the circle is —4 — 11, or —15.\nSimilarly, the greatest possible x-coordinate for any point on the circle is —4 + 11, or 7. Therefore, if the point (a, b) lies on the circle, it must be\ntrue that —15 < a < 7. Of the given choices, only —14 satisfies this inequality. Choice A is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 79,
+    "pdfPreview": "/qbank/math/previews/e50afdd3.jpg",
+    "equations": [
+      "/qbank/math/equations/e50afdd3_0.jpg",
+      "/qbank/math/equations/e50afdd3_1.jpg"
+    ],
+    "choices": [
+      {
+        "text": "-16"
+      },
+      {
+        "text": "-14"
+      },
+      {
+        "text": "11"
+      },
+      {
+        "text": "19"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "167aff9e",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Right rectangular prism X is similar to right rectangular prism Y. The surface area of right rectangular prism X is 58 square centimeters (cm²), and the surface area of right rectangular prism Y is 1,450 cm². The volume of right rectangular prism Y is 1,250 cubic centimeters (cm³). What is the sum of the volumes, in cm³, of right rectangular prism X and right rectangular prism Y?",
+    "type": "spr",
+    "explanation": "The correct answer is 1,260. Since it's given that prisms X and Y are similar, all the linear measurements of prism Y are k times the respective linear measurements of prism X, where k is a positive constant. Therefore, the surface area of prism Y is k² times the surface area of prism X and the volume of prism Y is k³ times the volume of prism X. It's given that the surface area of prism Y is 1,450 cm², and the surface area of prism X is 58 cm², which implies that 1,450 = 58k². Dividing both sides of this equation by 58 yields 25 = k², or k² = 25. Since k is a positive constant, k = 5. It's given that the volume of prism Y is 1,250 cm³. Therefore, the volume of prism X is equal to 1,250/k³ cm³, which is equivalent to 1,250/125 cm³, or 10 cm³. Thus, the sum of the volumes, in cm³, of the two prisms is 1,250 + 10, or 1,260.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 80,
+    "pdfPreview": "/qbank/math/previews/167aff9e.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "1260"
+    ],
+    "answer": "1260"
+  },
+  {
+    "id": "2266984b",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The equation x^2 + 20x + y^2 + 16y = -20 defines a circle in the xy-plane. What are the coordinates of the center of the circle?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The standard equation of a circle in the xy-plane is of the form (x − h)² + (y − k)² = r², where (h, k) are the coordinates of the center of the circle and r is the radius. The given equation can be rewritten in standard form by completing the squares. The sum of the first two terms, x² + 20x, needs a 100 to complete the square, and the sum of the next two terms, y² + 16y, needs a 64 to complete the square. Adding 100 and 64 to both sides of x² + 20x + y² + 16y = −20 yields x² + 20x + 100 + y² + 16y + 64 = −20 + 100 + 64, or (x + 10)² + (y + 8)² = 144. Therefore, the center of the circle is (−10, −8).\n\nChoice A is incorrect and may result from not dividing the coefficients of x and y by 2 when completing the square.\n\nChoice C is incorrect and may result from using the opposite of the correct center coordinates.\n\nChoice D is incorrect and may result from using the coefficients of x and y without completing the square.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 81,
+    "pdfPreview": "/qbank/math/previews/2266984b.jpg",
+    "choices": [
+      {
+        "text": "(-20, -16)"
+      },
+      {
+        "text": "(-10, -8)"
+      },
+      {
+        "text": "(10, 8)"
+      },
+      {
+        "text": "(20, 16)"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "d0b6d927",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A rectangle has an area of 63 square meters and a length of 9 meters. What is the width, in meters, of the rectangle?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The area A, in square meters, of a rectangle is the product of its length 7, in meters, and its width w, in meters; thus, A = ¢w. It's given that a rectangle has an area of 63 square meters and a length of 9 meters. Substituting 63 for A and 9 for 7 in the equation A\n= fw yields 63 = 9w. Dividing both sides of this equation by 9 yields 7 = w. Therefore, the width, in meters, of the rectangle is 7. Choice B is incorrect. This is the difference between the area, in square meters, and the length, in meters, of the rectangle, not the width, in\nmeters, of the rectangle. Choice C is incorrect. This is the square of the length, in meters, not the width, in meters, of the rectangle. Choice D is incorrect. This is the product of the area, in square meters, and the length, in meters, of the rectangle, not the width, in meters, of the\nrectangle.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 82,
+    "pdfPreview": "/qbank/math/previews/d0b6d927.jpg",
+    "choices": [
+      {
+        "text": "7"
+      },
+      {
+        "text": "54"
+      },
+      {
+        "text": "81"
+      },
+      {
+        "text": "567"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "d621cffb",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A sphere has a radius of 17/5 feet. What is the volume, in cubic feet, of the sphere?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The volume, V, of a sphere can be found using the formula V = (4/3)πr³, where r is the radius of the sphere. It’s given that the sphere has a radius of 17/5 feet. Substituting 17/5 for r in the formula V = (4/3)πr³ yields V = (4/3)π(17/5)³, which is equivalent to V = (4/3)π(4,913/125), or V = 19,652π/375. Therefore, the volume, in cubic feet, of the sphere is 19,652π/375.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect. This is the volume, in cubic feet, of a sphere with a different radius.\n\nChoice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 83,
+    "pdfPreview": "/qbank/math/previews/d621cffb.jpg",
+    "choices": [
+      {
+        "text": "5π/17"
+      },
+      {
+        "text": "68π/15"
+      },
+      {
+        "text": "32π/5"
+      },
+      {
+        "text": "19,652π/375"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "1429dcdf",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the triangle shown, what is the value of sin x°?",
+    "type": "spr",
+    "explanation": "The correct answer is s. In a right triangle, the sine of an acute angle is defined as the ratio of the length of the side opposite the angle to the\nlength of the hypotenuse. In the triangle shown, the length of the side opposite the angle with measure z° is 16 units and the length of the\nhypotenuse is 23 units. Therefore, the value of sin x° is 3s. Note that 16/23, .6956, .6957, 0.695, and 0.696 are examples of ways to enter a\ncorrect answer.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 84,
+    "pdfPreview": "/qbank/math/previews/1429dcdf.jpg",
+    "figure": "/qbank/math/figures/1429dcdf.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      ".6956",
+      ".6957",
+      "16/23"
+    ],
+    "answer": ".6956"
+  },
+  {
+    "id": "69b0d79d",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Point O is the center of the circle above, and the measure of angle OAB is 30°. If the length of OC is 18, what is the length of arc AB?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Because segments OA and OB are radii of the circle centered at point O, these segments have equal lengths. Therefore, triangle AOB is an isosceles triangle, where angles OAB and OBA are congruent base angles of the triangle. It's given that angle OAB measures 30°. Therefore, angle OBA also measures 30°. Let x° represent the measure of angle AOB. Since the sum of the measures of the three angles of any triangle is 180°, it follows that 30° + 30° + x° = 180°, or 60° + x° = 180°. Subtracting 60° from both sides of this equation yields x° = 120°, or (2π/3) radians. Therefore, the measure of angle AOB, and thus the measure of arc AB, is (2π/3) radians. Since OC is a radius of the given circle and its length is 18, the length of the radius of the circle is 18. Therefore, the length of arc AB can be calculated as (2π/3)(18), or 12π.\n\nChoice A is incorrect and may result from conceptual or computational errors.\n\nChoice C is incorrect and may result from conceptual or computational errors.\n\nChoice D is incorrect and may result from conceptual or computational errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 85,
+    "pdfPreview": "/qbank/math/previews/69b0d79d.jpg",
+    "choices": [
+      {
+        "text": "9π"
+      },
+      {
+        "text": "12π"
+      },
+      {
+        "text": "15π"
+      },
+      {
+        "text": "18π"
+      }
+    ],
+    "answer": 1,
+    "figure": "/qbank/math/figures/69b0d79d.jpg"
+  },
+  {
+    "id": "5a7e3b46",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In △ABC, ∠B is a right angle and the length of BC is 136 millimeters. If cos A = 3/5, what is the length, in millimeters, of AB?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that in A ABC, ZB is aright angle. Therefore, A. ABC is a right triangle, and AC is the hypotenuse of the\ntriangle. It's also given that cos A = 3. Since the cosine of an acute angle in a right triangle is defined as the ratio of the length of the side\nadjacent to the angle to the length of the hypotenuse, the ratio of the length of AB to the length of AC is 3 to 5. It follows that the length of AB\ncan be represented as 3a and the length of AC can be represented as 5a, where ais a constant. The Pythagorean theorem states that the sum\nof the squares of the length of the legs of a right triangle is equal to the square of the length of its hypotenuse, so it follows that AB² + BC²\n= AC². Substituting 3a for AB and 5a for AC in this equation yields (3a) + BC² = (5a), or 9a² + BC² = 25a². Subtracting 9a² from\nboth sides of this equation yields BC² = 16a², or BC = 4a. It follows that the ratio of the length of ABto the length of BC is 3 to 4. Let x\nrepresent the length, in millimeters, of AB. It's given that the length of BC is 136 millimeters. Since the ratio of the length of AB to the length\nof BC is 3 to 4, 3 = 3. Multiplying both sides of this equation by 136 yields 2 = S038) or £ = 102. Therefore, the length of AB is 102\nmillimeters. Choice A is incorrect. This is the scale factor by which the 3 to 4 to 5 ratio is multiplied that results in the side lengths of AABC. Choice C is incorrect. This is the length of BC, not the length of AB. Choice D is incorrect. This is the length of AC, not the length of AB.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 86,
+    "pdfPreview": "/qbank/math/previews/5a7e3b46.jpg",
+    "choices": [
+      {
+        "text": "34"
+      },
+      {
+        "text": "102"
+      },
+      {
+        "text": "136"
+      },
+      {
+        "text": "170"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "ebbf23ae",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A circle in the xy-plane has a diameter with endpoints (2, 4) and (2, 14). An equation of this circle is (x - 2)^2 + (y - 9)^2 = r^2, where r is a positive constant. What is the value of r?",
+    "type": "spr",
+    "explanation": "The correct answer is 5. The standard form of an equation of a circle in the xy-plane is (a — h)* + (y— k)² = r², where h, k, and rare\nconstants, the coordinates of the center of the circle are (h, k), and the length of the radius of the circle is 7. It's given that an equation of the\ncircle is (a — 2)² + (y — 9)² = r2. Therefore, the center of this circle is (2, 9). It's given that the endpoints of a diameter of the circle are (2, 4) and (2, 14). The length of the radius is the distance from the center of the circle to an endpoint of a diameter of the circle, which can be\nfound using the distance formula, 4/ (a1 — a2)² + (yi — yg)². Substituting the center of the circle (2, 9) and one endpoint of the diameter\n(2, 4) in this formula gives a distance of 4/ (2 — 2) + (9 — 4)², or V0² + 52, which is equivalent to 5. Since the distance from the center of\nthe circle to an endpoint of a diameter is 5, the value of r is 5.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 87,
+    "pdfPreview": "/qbank/math/previews/ebbf23ae.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "5"
+    ],
+    "answer": "5"
+  },
+  {
+    "id": "d7a8aa9c",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Each side of equilateral triangle S is multiplied by a scale factor of k to create equilateral triangle T. The length of each side of triangle T is\ngreater than the length of each side of triangle S. Which of the following could be the value of k?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It's given that each side of equilateral triangle S is multiplied by a scale factor of & to create equilateral triangle T. Since the\nlength of each side of triangle T is greater than the length of each side of triangle S, the scale factor of &k must be greater than 1. Of the given\nchoices, only 3 is greater than 1. Choice B is incorrect. If each side of equilateral triangle S is multiplied by a scale factor of 1, the length of each side of triangle T would be equal\nto the length of each side of triangle S. 28 Choice C is incorrect. If each side of equilateral triangle S is multiplied by a scale factor of 50° the length of each side of triangle T would be less\nthan the length of each side of triangle S. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 88,
+    "pdfPreview": "/qbank/math/previews/d7a8aa9c.jpg",
+    "choices": [
+      {
+        "text": "29/28"
+      },
+      {
+        "text": "1"
+      },
+      {
+        "text": "28/29"
+      },
+      {
+        "text": "0"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "a2659088",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A right circular cylinder has a height of 8 meters (m) and a base with a radius of 12 m. What is the volume, in m³, of the cylinder?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The volume, V, of a right circular cylinder is given by V = πr²h, where r is the radius of the circular base and h is the height of the cylinder. It’s given that the cylinder has a height of 8 meters and a base with a radius of 12 meters. Substituting 12 for r and 8 for h in V = πr²h yields V = π(12)²(8), or V = 1,152π. Therefore, the volume, in m³, of the cylinder is 1,152π.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect. This is the volume, in m³, of a cylinder with a radius of 8 meters and a height of 12 meters.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 89,
+    "pdfPreview": "/qbank/math/previews/a2659088.jpg",
+    "choices": [
+      {
+        "text": "8π"
+      },
+      {
+        "text": "20π"
+      },
+      {
+        "text": "768π"
+      },
+      {
+        "text": "1152π"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "502d9690",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Rectangle ABCD is similar to rectangle EFGH. The area of rectangle ABCD is 648 square inches, and the area of rectangle EFGH is 72 square inches. The length of the longest side of rectangle ABCD is 36 inches. What is the length, in inches, of the longest side of rectangle EFGH?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It's given that rectangle ABCD is similar to rectangle HE F'G'H. Therefore, if the length of each side of rectangle ABC'D is\nk times the length of the corresponding side of rectangle EFGH, then the area of rectangle ABCD is k² times the area of rectangle EFGH.\nIt's given that the area of rectangle ABCD is 648 square inches and the area of rectangle EFGH is 72 square inches. It follows that k² = BF or k² = 9. Taking the square root of each side of this equation yields k = /9, or k = 3. It follows that the length of each side of\nrectangle ABC'D is 3 times the length of the corresponding side of rectangle EF'G‘H. It's given that the length of the longest side of rectangle\nABCD is 36 inches. Therefore, 36 inches is 3 times the length of the longest side of rectangle EF'GH, and the longest side of rectangle\nEFGH is equal to 38 or 12, inches. Choice A is incorrect. This is the length, in inches, of the longest side of a rectangle with side lengths that are $ the corresponding side lengths\nof rectangle ABCD, rather than a rectangle with an area that is $ the area of rectangle ABCD. Choice B is incorrect. This is the factor by which the area of rectangle A BC'D is larger than the area of rectangle HF'GH, not the length, in\ninches, of the longest side of rectangle EFGH. Choice D is incorrect. This is the length, in inches, of the longest side of rectangle ABC'D, not rectangle EF GH.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 90,
+    "pdfPreview": "/qbank/math/previews/502d9690.jpg",
+    "choices": [
+      {
+        "text": "4"
+      },
+      {
+        "text": "9"
+      },
+      {
+        "text": "12"
+      },
+      {
+        "text": "36"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "6b4707aa",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "(x + 5)^2 + (y - 5)^2 = 25\nCircle A in the xy-plane has the equation above. Circle B has the same center as circle A. The radius of circle B is twice the radius of circle A. The equation defining circle B in the xy-plane is (x + 5)^2 + (y - 5)^2 = k, where k is a constant. What is the value of k?",
+    "type": "spr",
+    "explanation": "The correct answer is 100. An equation of a circle in the xy-plane can be written as (x — t)² +(y- u) = r², where the center of the circle is\n(t, u), the radius of the circle is r, and where ¢, u, and r are constants. It's given that the equation of circle A is (2 + 5) +(y- 5)² = 25,\nwhich is equivalent to (a + 5)² + (y— 5)² = 5. Therefore, the center of circle A is (—5, 5) and the radius of circle A is 5. It’s given that circle\nB has the same center as circle A and that the radius of circle B is two times the radius of circle A. Therefore, the center of circle B is (—5, 5) and\nthe radius of circle B is 2(5), or 10. Substituting —5 for ¢, 5 for u, and 10 for rin the equation (a — t)² + (y—u)² = r yields (w +5)² + (y— 5)² = 10%, which is equivalent to (x + 5)² + (y— 5)² = 100. It follows that the equation of circle B in the xy-plane is (a + 5)\n+ (y— 5)² = 100. It's also given that the equation defining circle B in the xy-plane is (a + 5)² + (y — 5)² = k, where kis a constant.\nTherefore, the value of k is 100. 2",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 94,
+    "pdfPreview": "/qbank/math/previews/6b4707aa.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "100"
+    ],
+    "answer": "100"
+  },
+  {
+    "id": "4c95c7d4",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A graphic designer is creating a logo for a company. The logo is shown in the figure above. The logo is in the shape of a trapezoid and consists of three congruent equilateral triangles. If the perimeter of the logo is 20 centimeters, what is the combined area of the shaded regions, in square centimeters, of the logo?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It’s given that the logo is in the shape of a trapezoid that consists of three congruent equilateral triangles, and that the\nperimeter of the trapezoid is 20 centimeters (cm). Since the perimeter of the trapezoid is the sum of the lengths of 5 of the sides of the triangles, 20\nthe length of each side of an equilateral triangle is 5. = 4 CIM. Dividing up one equilateral triangle into two right triangles yields a pair of congruent 30°-60°-90° triangles. The shorter leg of each right triangle is half the length of the side of an equilateral triangle, or 2 cm. Using the Pythagorean Theorem, a + pb² = c, the height of the equilateral triangle can be found. Substituting @ = 2 andG =4 and solving for b yields 1\n“af 42-9\" = af 12 =24/ 3 cm. The area of one equilateral triangle is 3p bh. where fi = # and ft = 24/ 3. Therefore, the area of one |\nequilateral triangle is 3 MeV) =4./3 cIm@ The shaded area consists of two such triangles, so its area is (7)(4)./3 = 843 cm². 1\nAlternate approach: The area of a trapezoid can be found by evaluating the expression > (64+ b2))h, where zis the length of one base, fs\nis the length of the other base, and h is the height of the trapezoid. Substituting b4 = 8, fs =4, and ft = 2.) 3 yields the expression | |\n78 +4)(2,/3), or 3 (12)(2v 3), which gives an area of 124//3 CIN for the trapezoid. Since two-thirds of the trapezoid is shaded, the area of the shaded region is = x 12/3 = 4/3. Choice A is incorrect. This is the height of the trapezoid. Choice B is incorrect. This is the area of one of the equilateral triangles, not two. Choice\nD is incorrect and may result from using a height of 4 for each triangle rather than the height of 24/3.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 95,
+    "pdfPreview": "/qbank/math/previews/4c95c7d4.jpg",
+    "choices": [
+      {
+        "text": "2sqrt(3)"
+      },
+      {
+        "text": "4sqrt(3)"
+      },
+      {
+        "text": "8sqrt(3)"
+      },
+      {
+        "text": "16"
+      }
+    ],
+    "answer": 2,
+    "figure": "/qbank/math/figures/4c95c7d4.jpg"
+  },
+  {
+    "id": "b8a225ff",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "(x + 5)^2 + (y - 5)^2 = 4\nCircle A in the xy-plane has the equation above. Circle B has the same center as circle A. The radius of circle B is twice the radius of circle A. The equation defining circle B in the xy-plane is (x + 5)^2 + (y - 5)^2 = k, where k is a constant. What is the value of k?",
+    "type": "spr",
+    "explanation": "The correct answer is 16. An equation of a circle in the xy-plane can be written as (x − h)² + (y − k)² = r², where the center of the circle is (h, k) and the radius of the circle is r. It's given that the equation of circle A is (x + 5)² + (y − 5)² = 4, which is equivalent to (x + 5)² + (y − 5)² = 2². Therefore, the radius of circle A is 2. The radius of circle B is twice the radius of circle A, so the radius of circle B is 4. Since circle B has the same center as circle A, an equation for circle B is (x + 5)² + (y − 5)² = 4², or (x + 5)² + (y − 5)² = 16. The constant on the right side of this equation is 16.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 97,
+    "pdfPreview": "/qbank/math/previews/b8a225ff.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "16"
+    ],
+    "answer": "16"
+  },
+  {
+    "id": "b0a72bdc",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "What is the diameter of the circle in the xy-plane with equation (x - 5)^2 + (y - 3)^2 = 16?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The standard form of an equation of a circle in the xy-plane is (x − h)² + (y − k)² = r², where the coordinates of the center of the circle are (h, k) and the length of the radius of the circle is r. For the circle in the xy-plane with equation (x − 5)² + (y − 3)² = 16, it follows that r² = 16. Taking the square root of both sides of this equation yields r = 4. The diameter of a circle is twice the radius, so the diameter is 2 · 4 = 8.\n\nChoice A is incorrect. This is the radius, not the diameter, of the circle.\n\nChoice C is incorrect. This is the square of the radius, not the diameter.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 98,
+    "pdfPreview": "/qbank/math/previews/b0a72bdc.jpg",
+    "choices": [
+      {
+        "text": "4"
+      },
+      {
+        "text": "8"
+      },
+      {
+        "text": "16"
+      },
+      {
+        "text": "32"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "933fee1a",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Triangles ABC and DEF are shown above. Which of the following is equal to the ratio BC/AB?",
+    "type": "mc",
+    "explanation": "Choice B is correct. In right triangle ABC, the measure of angle B must be 58° because the sum of the measure of angle A, which is 32°, and the\nmeasure of angle B is 90°. Angle D in the right triangle DEF has measure 58°. Hence, triangles ABC and DEF are similar (by angle-angle\na BC\nsimilarity). Since BC is the side opposite to the angle with measure 32° and AB is the hypotenuse in right triangle ABC, the ratio “AB is equal\n9 DE\no —.\nDE\noo Cea — BC tans\nAlternate approach: The trigonometric ratios can be used to answer this question. In right triangle ABC, the ratio AB = sin(32 }. The angle\na aN² ac OF nae\nEin triangle DEF has measure 32° because MLZ D) + MLZ EF) = 40\". In triangle DEF, the ratio DE = sin(32 ‘. Therefore,\nDF _ BC\nDE AB’",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 99,
+    "pdfPreview": "/qbank/math/previews/933fee1a.jpg",
+    "choices": [
+      {
+        "text": "DE/DF"
+      },
+      {
+        "text": "DF/DE"
+      },
+      {
+        "text": "DF/EF"
+      },
+      {
+        "text": "EF/DE"
+      }
+    ],
+    "answer": 1,
+    "figure": "/qbank/math/figures/933fee1a.jpg"
+  },
+  {
+    "id": "64c1f044",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the triangle shown, what is the value of tan x°?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The tangent of an acute angle in a right triangle is defined as the ratio of the length of the side opposite the angle to the\nlength of the shorter side adjacent to the angle. In the triangle shown, the length of the side opposite the angle with measure ° is 26 units and\nthe length of the side adjacent to the angle with measure 2° is 7 units. Therefore, the value of tan x° is 8 Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 102,
+    "pdfPreview": "/qbank/math/previews/64c1f044.jpg",
+    "figure": "/qbank/math/figures/64c1f044.jpg",
+    "choices": [
+      {
+        "text": "1/26"
+      },
+      {
+        "text": "19/26"
+      },
+      {
+        "text": "26/7"
+      },
+      {
+        "text": "33/7"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "2f7c92ad",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure shown, triangle CAE is similar to triangle CBD. The measure of angle CBD is 57°, and AE = 26(BD). What is the measure of angle CAE?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It's given that triangle CAE is similar to triangle CBD. Corresponding angles in similar triangles have equal measure.\nAngle BC'D and angle ACE represent the same angle. It follows that angle BC'D and angle AC'E have equal measure and are corresponding\nangles. It's given in the figure that angle BDC and angle AEC are right angles and therefore have equal measure. It follows that angle BDC\nand angle AEC are corresponding angles. Therefore, angle CBD and angle C'AE are corresponding angles and have equal measure. It's given\nthat the measure of angle C_BD is 57°, so the measure of angle CAE is 57°. Choice A is incorrect and may result from conceptual errors. Choice B is incorrect and may result from conceptual errors. Choice D is incorrect and may result from conceptual errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 103,
+    "pdfPreview": "/qbank/math/previews/2f7c92ad.jpg",
+    "figure": "/qbank/math/figures/2f7c92ad.jpg",
+    "choices": [
+      {
+        "text": "(26·57)°"
+      },
+      {
+        "text": "(26 + 57)°"
+      },
+      {
+        "text": "57°"
+      },
+      {
+        "text": "26°"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "c447367f",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A circle in the xy-plane has its center at (19, 18) and has a radius of 9k. Which equation represents this circle?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The equation of a circle in the xy-plane can be written as (x — h)² + (y— k)² = r², where the center of the circle is (h, k)\nand the radius of the circle is r. It's given that this circle has a center at (19, 18) and a radius of 9k. Substituting 19 for h, 18 for k, and 9k for r\nin (w —h)² + (y—k)² = r’ yields (w — 19)² + (y — 18)² = (9k), or (w — 19)² + (y— 18)² = 81h². Therefore, the equation that\nrepresents this circle is (a — 19)² + (y— 18)² = 81k’. Choice A is incorrect. This equation represents a circle with radius oVk, not 9k. Choice C is incorrect. This equation represents a circle with radius V 9k, not 9k. Choice D is incorrect. This equation represents a circle with radius V9k, not 9k.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 104,
+    "pdfPreview": "/qbank/math/previews/c447367f.jpg",
+    "choices": [
+      {
+        "text": "(x - 19)^2 + (y - 18)^2 = 81k"
+      },
+      {
+        "text": "(x - 19)^2 + (y - 18)^2 = 81k^2"
+      },
+      {
+        "text": "(x - 19)^2 + (y - 18)^2 = 9k"
+      },
+      {
+        "text": "(x - 19)^2 + (y - 18)^2 = 9k^2"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "b2528e6b",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The three points shown define a circle. The circumference of this circle is kπ, where k is a constant. What is the value of k?",
+    "type": "spr",
+    "explanation": "The correct answer is 8. It's given that the three points shown define a circle, so the center of that circle is an equal distance from each of the\nthree points. The point (6, 6) is halfway between the points (6, 2) and (6, 10), and is a distance of 4 units from each of those two points. The\npoint (6, 6) is also a distance of 4 units from (2, 6). Because the point (6, 6) is the same distance from all three points shown, it must be the\ncenter of the circle. Since that distance is 4, it follows that the radius of the circle is 4. The circumference of a circle with radius 7 is equal to 27r.\nIt follows that the circumference of the given circle is 2n(A), or 87. It's given that the circumference of the circle is kz. Therefore, the value of k\nis 8.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 105,
+    "pdfPreview": "/qbank/math/previews/b2528e6b.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "8"
+    ],
+    "answer": "8",
+    "figure": "/qbank/math/figures/b2528e6b.jpg"
+  },
+  {
+    "id": "9fec9d49",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The floor of a ballroom has an area of 600 square meters. An architect creates a scale model of the floor of the ballroom, where the length of each side of the model is 1/10 times the length of the corresponding side of the actual floor of the ballroom. What is the area, in square meters, of the scale model?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It's given that the length of each side of a scale model is 1/10 times the length of the corresponding side of the actual floor of a ballroom. Therefore, the area of the scale model is (1/10)², or 1/100, times the area of the actual floor of the ballroom. It’s given that the area of the floor of the ballroom is 600 square meters. Therefore, the area, in square meters, of the scale model is (1/100)(600), or 6.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 106,
+    "pdfPreview": "/qbank/math/previews/9fec9d49.jpg",
+    "choices": [
+      {
+        "text": "6"
+      },
+      {
+        "text": "10"
+      },
+      {
+        "text": "60"
+      },
+      {
+        "text": "150"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "ba8ca563",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A cube has a volume of 474,552 cubic units. What is the surface area, in square units, of the cube?",
+    "type": "spr",
+    "explanation": "The correct answer is 36,504. The volume of a cube can be found using the formula V = s°, where 5 represents the edge length of a cube. It’s\ngiven that this cube has a volume of 474,552 cubic units. Substituting 474,552 for V in V = s® yields 474,552 = s®. Taking the cube root of\nboth sides of this equation yields 78 = s. Thus, the edge length of the cube is 78 units. Since each face of a cube is a square, it follows that\neach face has an edge length of 78 units. The area of a square can be found using the formula A = s². Substituting 78 for s in this formula\nyields _A = 78²,or A = 6,084. Therefore, the area of one face of this cube is 6,084 square units. Since a cube has 6 faces, the surface area, in\nsquare units, of this cube is 6(6,084), or 36,504.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 107,
+    "pdfPreview": "/qbank/math/previews/ba8ca563.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "36504"
+    ],
+    "answer": "36504"
+  },
+  {
+    "id": "5011b039",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "What is the radius of the circle in the xy-plane defined by (x + 2)^2 + (y + 5)^2 = 169?",
+    "type": "spr",
+    "explanation": "The correct answer is 13. The equation of a circle in the xy-plane can be written in the form (x − h)² + (y − k)² = r², where (h, k) is the center of the circle and r is the radius of the circle. It's given that the circle in the xy-plane is defined by (x + 2)² + (y + 5)² = 169. Therefore, r² = 169. Taking the positive square root of both sides of this equation yields r = 13. Therefore, the radius of the circle is 13.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 108,
+    "pdfPreview": "/qbank/math/previews/5011b039.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "13"
+    ],
+    "answer": "13"
+  },
+  {
+    "id": "9d078710",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure shown, line ℓ intersects lines j and k. Which additional piece of information is sufficient to prove that lines j and k are parallel?",
+    "type": "mc",
+    "explanation": "Choice A is correct. In the figure shown, lines 7 and & are parallel if and only if a pair of corresponding angles are congruent. It's given that one\nangle has a measure of 40° and that the corresponding angle has a measure of w®. Therefore, w = 40 is sufficient to prove that lines 7 and k\nare parallel. Choice B is incorrect. The angle measuring x° and the angle measuring 40° are alternate interior angles. Thus, if lines j and k are parallel, x is\nequal to 40, not 140. Choice C is incorrect. The angle measuring y° and the angle measuring 40° are vertical angles. Thus, y = 40, whether lines 7 and k are parallel\nor not. Choice D is incorrect. The angle measuring z° is supplementary to the angle measuring 40°. Thus, z = 180 — 40, or z = 140, whether lines 7\nand & are parallel or not.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 109,
+    "pdfPreview": "/qbank/math/previews/9d078710.jpg",
+    "figure": "/qbank/math/figures/9d078710.jpg",
+    "choices": [
+      {
+        "text": "w = 40"
+      },
+      {
+        "text": "x = 140"
+      },
+      {
+        "text": "y = 40"
+      },
+      {
+        "text": "z = 140"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "b1e1c2f5",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In right triangle ABC, angle C is the right angle and BC = 162. Point D on side AB is connected by a line segment with point E on side AC such that line segment DE is parallel to side BC and CE = 2AE. What is the length of line segment DE?",
+    "type": "spr",
+    "explanation": "The correct answer is 54. It’s given that in triangle ABC, point D on side AB is connected by a line segment with point F on side AC such that\nline segment DE is parallel to side BC. It follows that parallel segments DE and BC are intersected by sides AB and AC’ If two parallel\nsegments are intersected by a third segment, corresponding angles are congruent. Thus, corresponding angles C and AED are congruent and\ncorresponding angles B and ADE are congruent. Since triangle ADE has two angles that are each congruent to an angle in triangle ABC,\ntriangle ADE is similar to triangle ABC by the angle-angle similarity postulate, where side DE corresponds to side BC, and side AE\ncorresponds to side AC. Since the lengths of corresponding sides in similar triangles are proportional, it follows that aE = 42. Since point\nlies on side AC’, AE + CE = AC. tt's given that CE = 2AE. Substituting 2AE for CE in the equation AE + CE = AC yields AE\n+ 2AE = AC or 3AE = AC. It's given that BC = 162. Substituting 162 for BC and 3.4E for AC in the equation 3B = 4g yields PE\nAE DE = gag) OU ter = ¥ Multiplying both sides of this equation by 162 yields DE = 54. Thus, the length of line segment DE is 54.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 110,
+    "pdfPreview": "/qbank/math/previews/b1e1c2f5.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "54"
+    ],
+    "answer": "54"
+  },
+  {
+    "id": "0d43db90",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The perimeter of triangle ABC is 17 inches, the length of side AB is 4 inches, and the length of side AC is 7 inches. What is the length, in\ninches, of side BC?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The perimeter of a triangle is the sum of the lengths of all three sides of the triangle. It’s given that the lengths of side AB and side AC are 4 inches and 7 inches, respectively. Let x represent the length, in inches, of side BC. The sum of the lengths, in inches, of all three sides of triangle ABC can be represented by the expression 4 + 7 + x, or 11 + x. It’s given that the perimeter of triangle ABC is 17 inches. Therefore, 11 + x = 17. Subtracting 11 from both sides of this equation yields x = 6. Therefore, the length, in inches, of side BC is 6.\n\nChoice A is incorrect. This is the length of side AB, not side BC.\n\nChoice C is incorrect. This is the length of side AC, not side BC.\n\nChoice D is incorrect. This is the sum of the lengths of sides AB and AC, not the length of side BC.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 113,
+    "pdfPreview": "/qbank/math/previews/0d43db90.jpg",
+    "choices": [
+      {
+        "text": "4"
+      },
+      {
+        "text": "6"
+      },
+      {
+        "text": "7"
+      },
+      {
+        "text": "11"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "94f7c9e2",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In triangle QRS shown, QR < RS. Which expression represents the length of QS?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The figure shows that triangle QRS is a right triangle. Each of the given choices is an expression containing sin @ or cos Q.\nFor an acute angle in a right triangle, the sine of the angle is the length of the opposite leg divided by the length of the hypotenuse, and the cosine\nof the angle is the length of the adjacent leg divided by the length of the hypotenuse. It follows that sin Q = at and cos Q = ae where QR\n< RS. It's given in the figure that the length of side RS'is 18. Since only the equation sin Q = ee contains RS, an expression representing\nQS can be found by substituting 18 for R.S in this equation, which yields sin Q = oe Multiplying both sides of this equation by QS yields Q.S\n- sin Q = 18. Dividing both sides of this equation by sin Q yields QS = wey Therefore, the expression my represents the length of QS. Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect and may result from conceptual or calculation errors. Choice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 114,
+    "pdfPreview": "/qbank/math/previews/94f7c9e2.jpg",
+    "figure": "/qbank/math/figures/94f7c9e2.jpg",
+    "choices": [
+      {
+        "text": "18 cos Q"
+      },
+      {
+        "text": "18 sin Q"
+      },
+      {
+        "text": "18/cos Q"
+      },
+      {
+        "text": "18/sin Q"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "e0874bc2",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The table gives the perimeters of similar triangles TUV and XYZ, where TU corresponds to XY. The length of TU is 18. What is the length of XY?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It's given that triangle XY Z is similar to triangle TUV. Therefore, each side of triangle XY Z is k times its corresponding\nside of triangle TUV, where & is a constant. It follows that the perimeter of triangle X Y Z is k times the perimeter of triangle TUV. It's also\ngiven that TU corresponds to XY and the length of TU is 18. Let x represent the length of XY. It follows that z = 18k. The table shows that\nthe perimeters of triangles TUV and XY Z are 37 and 333, respectively. It follows that 333 = 37k, or 9 = k. Substituting 9 for kin the\nequation z = 18k yields x = (18) (9), or z = 162. Therefore, the length of XY is 162. Choice A is incorrect and may result from conceptual or calculation errors. Choice B is incorrect. This is the length of TU, not the length of XY. Choice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 115,
+    "pdfPreview": "/qbank/math/previews/e0874bc2.jpg",
+    "choices": [
+      {
+        "text": "2"
+      },
+      {
+        "text": "18"
+      },
+      {
+        "text": "55"
+      },
+      {
+        "text": "162"
+      }
+    ],
+    "answer": 3,
+    "figure": "/qbank/math/figures/e0874bc2.jpg"
+  },
+  {
+    "id": "a4bd60a3",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The perimeter of an equilateral triangle is 624 centimeters. The height of this triangle is k√3 centimeters, where k is a constant. What is the value of k?",
+    "type": "spr",
+    "explanation": "The correct answer is 104. An equilateral triangle is a triangle in which all three sides have the same length and all three angles have a measure\nof 60°. The height of the triangle, kv, is the length of the altitude from one vertex. The altitude divides the equilateral triangle into two\ncongruent 30-60-90 right triangles, where the altitude is the side across from the 60° angle in each 30-60-90 right triangle. Since the altitude has\na length of kv, it follows from the properties of 30-60-90 right triangles that the side across from each 30° angle has a length of & and each\nhypotenuse has a length of 2k. In this case, the hypotenuse of each 30-60-90 right triangle is a side of the equilateral triangle; therefore, each\nside length of the equilateral triangle is 2k. The perimeter of a triangle is the sum of the lengths of each side. It's given that the perimeter of the\nequilateral triangle is 624; therefore, 2k + 2k-+ 2k = 624, or 6k = 624. Dividing both sides of this equation by 6 yields k = 104.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 116,
+    "pdfPreview": "/qbank/math/previews/a4bd60a3.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "104"
+    ],
+    "answer": "104"
+  },
+  {
+    "id": "899c6042",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A right circular cone has a height of 22 centimeters (cm) and a base with a diameter of 6 cm. The volume of this cone is nπ cm³. What is the value of n?",
+    "type": "spr",
+    "explanation": "The correct answer is 66. It’s given that the right circular cone has a height of 22 centimeters (cm) and a base with a diameter of 6 cm. Since\nthe diameter of the base of the cone is 6 cm, the radius of the base is 3 cm. The volume V, in cm, of a right circular cone can be found using\nthe formula V = s7r’h, where A is the height, in cm, and r is the radius, in cm, of the base of the cone. Substituting 22 for h and 3 for rin\nthis formula yields V = 4n(3)7(22), or V = 66r. Therefore, the volume of the cone is 667 cm³. It’s given that the volume of the cone is na cm. Therefore, the value of n is 66.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 117,
+    "pdfPreview": "/qbank/math/previews/899c6042.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "66"
+    ],
+    "answer": "66"
+  },
+  {
+    "id": "498d6795",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In triangle ABC, angle B is a right angle. The length of side AB is 10sqrt(37) and the length of side BC is 24sqrt(37). What is the length of side AC?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The Pythagorean theorem states that for a right triangle, c² = a² + b², wherec represents the length of the hypotenuse and\naand 6 represent the lengths of the legs. It’s given that in triangle ABC, angle Bis a right angle. Therefore, triangle ABC is a right triangle,\nwhere the hypotenuse is side AC’ and the legs are sides AB and BC. It's given that the lengths of sides AB and BC are 10/37 and 24y/ 37,\n2 2 respectively. Substituting these values for a and b in the formula c² = a² + 6² yields c² = (10V 37) + (24V 37) , which is equivalent to c²\n= 100(37) + 576(37), or c² = 676(37). Taking the square root of both sides of this equation yields c = +2637. Since c represents the\nlength of the hypotenuse, side AC’, c must be positive. Therefore, the length of side AC is 26/37. 2 2 Choice A is incorrect. This is the result of solving the equation c = 24/37 — 1037, not c² = (10V 37) + (24V 37) . 2 2 Choice C is incorrect. This is the result of solving the equation c = 10/37 + 24/37, not c² = (10V 37) + (24V 37) . Choice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 118,
+    "pdfPreview": "/qbank/math/previews/498d6795.jpg",
+    "choices": [
+      {
+        "text": "14sqrt(37)"
+      },
+      {
+        "text": "26sqrt(37)"
+      },
+      {
+        "text": "34sqrt(37)"
+      },
+      {
+        "text": "sqrt(34·37)"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "740bf79f",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure above, what is the length of NQ?",
+    "type": "mc",
+    "explanation": "Choice C is correct. First, [IP is the hypotenuse of right #“s INP, whose legs have lengths 3 and 4. Therefore, (MP ye =37+4\" so (MP ye = 25 and fli = 5. Second, because M4WP corresponds to“ MiQP and because “ IPN corresponds to“ MPC) MAN is similar to #\\ AQP. The ratio of corresponding sides of similar triangles is constant, so TIN = UP’ Since dF’ = 5 and it's\nNQ 4 1² given that MiMi! = S and AIP = 4, a = 5 Solving for NQ results in iG] = S or 2.4. Choice A is incorrect and may result from setting up incorrect ratios. Choice B is incorrect and may result from setting up incorrect ratios. Choice D is incorrect and may result from setting up incorrect ratios.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 119,
+    "pdfPreview": "/qbank/math/previews/740bf79f.jpg",
+    "choices": [
+      {
+        "text": "2.2"
+      },
+      {
+        "text": "2.3"
+      },
+      {
+        "text": "2.4"
+      },
+      {
+        "text": "2.5"
+      }
+    ],
+    "answer": 2,
+    "figure": "/qbank/math/figures/740bf79f.jpg"
+  },
+  {
+    "id": "0e40dfb0",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A rectangle has a length of 3 units and a width of 39 units. Which expression gives the area, in square units, of this rectangle?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The area of a rectangle is given by “w, where 7 is the length of the rectangle and w is the width of the rectangle. It's given\nthat a rectangle has a length of 3 units and a width of 39 units. It follows that the area of the rectangle is 3- 39 square units. Therefore, the\nexpression that gives the area, in square units, of this rectangle, is 3 - 39. Choice A is incorrect. This expression gives the perimeter, in units, of this rectangle. Choice B is incorrect and may result from conceptual errors. Choice C is incorrect and may result from conceptual errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 120,
+    "pdfPreview": "/qbank/math/previews/0e40dfb0.jpg",
+    "choices": [
+      {
+        "text": "2(3 + 39)"
+      },
+      {
+        "text": "2(3 · 39)"
+      },
+      {
+        "text": "3 + 39"
+      },
+      {
+        "text": "3 · 39"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "3b225698",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Triangle XYZ is similar to triangle RST such that X, Y, and Z correspond to R, S, and T, respectively. The measure of ∠Z is 20° and 2XY = RS. What is the measure of ∠T?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It’s given that triangle XYZ is similar to triangle RST, such that X, Y, and Z correspond to R, S, and T, respectively. Since corresponding angles of similar triangles are congruent, it follows that the measure of ∠Z is congruent to the measure of ∠T. It’s given that the measure of ∠Z is 20°. Therefore, the measure of ∠T is 20°.\n\nChoice A is incorrect and may result from a conceptual error.\n\nChoice B is incorrect. This is half the measure of ∠Z.\n\nChoice D is incorrect. This is twice the measure of ∠Z.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 121,
+    "pdfPreview": "/qbank/math/previews/3b225698.jpg",
+    "choices": [
+      {
+        "text": "2°"
+      },
+      {
+        "text": "10°"
+      },
+      {
+        "text": "20°"
+      },
+      {
+        "text": "40°"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "249d3f80",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Point O is the center of a circle. The measure of arc RS on this circle is 100°. What is the measure, in degrees, of its associated angle ROS?",
+    "type": "spr",
+    "explanation": "The correct answer is 100. It's given that point O is the center of a circle and the measure of arc RS on the circle is 100°. It follows that points\nRand S lie on the circle. Therefore, OR and OS are radii of the circle. A central angle is an angle formed by two radii of a circle, with its vertex\nat the center of the circle. Therefore, 7ROS is a central angle. Because the degree measure of an arc is equal to the measure of its associated\ncentral angle, it follows that the measure, in degrees, of ∠ROS is 100.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 122,
+    "pdfPreview": "/qbank/math/previews/249d3f80.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "100"
+    ],
+    "answer": "100"
+  },
+  {
+    "id": "fc5ef8d3",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The table gives the perimeters of similar triangles TUV and XYZ, where TU corresponds to XY. The length of TU is 6. What is the length of XY?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It's given that triangle TUV is similar to triangle XY Z, and TU corresponds to XY. If two triangles are similar, then the\nratio of their perimeters is equal to the ratio of their corresponding sides. It’s given that the perimeter of triangle TUV is 50, the perimeter of\ntriangle XY Z is 150, and the length of TU is 6. Let n represent the length of XY. It follows that a = 4 or $ = Ss. Multiplying each side of\nthis equation by n yields 3 = 6. Multiplying each side of this equation by 3 yields n = 18. Therefore, the length of XY is 18. Choice A is incorrect. This is the solution to 3 = 4, not $ = £. Choice B is incorrect. This is the length of TU, not XY. Choice D is incorrect. This is the sum of the length of TU and the perimeter of triangle TUV, not the length of XY.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 123,
+    "pdfPreview": "/qbank/math/previews/fc5ef8d3.jpg",
+    "choices": [
+      {
+        "text": "2"
+      },
+      {
+        "text": "6"
+      },
+      {
+        "text": "18"
+      },
+      {
+        "text": "56"
+      }
+    ],
+    "answer": 2,
+    "figure": "/qbank/math/figures/fc5ef8d3.jpg"
+  },
+  {
+    "id": "a4c05a1b",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure shown, lines r and s are parallel, and line m intersects both lines. If y < 65, which of the following must be true?",
+    "type": "mc",
+    "explanation": "Choice B is correct. In the figure shown, the angle measuring y° is congruent to its vertical angle formed by lines s and m, so the measure of the\nvertical angle is also y°. The vertical angle forms a same-side interior angle pair with the angle measuring °. It's given that lines r and s are\nparallel. Therefore, same-side interior angles in the figure are supplementary, which means the sum of the measure of the vertical angle and the\nmeasure of the angle measuring x° is 180°, or x + y = 180. Subtracting x from both sides of this equation yields y = 180 — a. Substituting\n180 — = for yin the inequality y < 65 yields 180 — x < 65. Adding x to both sides of this inequality yields 180 < 65 + z. Subtracting 65 from\nboth sides of this inequality yields 115 < x, or x > 115. Thus, if y < 65, it must be true that x > 115. Choice A is incorrect and may result from conceptual or calculation errors. Choice C is incorrect. z + y must be equal to, not less than, 180. Choice D is incorrect. x + y must be equal to, not greater than, 180.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 124,
+    "pdfPreview": "/qbank/math/previews/a4c05a1b.jpg",
+    "figure": "/qbank/math/figures/a4c05a1b.jpg",
+    "choices": [
+      {
+        "text": "x < 115"
+      },
+      {
+        "text": "x > 115"
+      },
+      {
+        "text": "x + y < 180"
+      },
+      {
+        "text": "x + y > 180"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "38517165",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A circle has a circumference of 31π centimeters. What is the diameter, in centimeters, of the circle?",
+    "type": "spr",
+    "explanation": "The correct answer is 31. The circumference of a circle is equal to 2ar centimeters, where r represents the radius, in centimeters, of the circle,\nand the diameter of the circle is equal to 2r centimeters. It's given that a circle has a circumference of 317 centimeters. Therefore, 317 = 27r.\nDividing both sides of this equation by 7 yields 31 = 2r. Since the diameter of the circle is equal to 27 centimeters, it follows that the diameter,\nin centimeters, of the circle is 31.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 125,
+    "pdfPreview": "/qbank/math/previews/38517165.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "31"
+    ],
+    "answer": "31"
+  },
+  {
+    "id": "f88f27e5",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Intersecting lines r, s, and t are shown below.\nWhat is the value of x?",
+    "type": "spr",
+    "explanation": "The correct answer is 97. The intersecting lines form a triangle, and the angle with measure of X * ig an exterior angle of this triangle. The\nmeasure of an exterior angle of a triangle is equal to the sum of the measures of the two nonadjacent interior angles of the triangle. One of these\nangles has measure of 23° and the other, which is supplementary to the angle with measure 106°, has measure of 180° —108° = 74°.\nTherefore, the value of xis² 3+ /f4 =Q/.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 7,
+    "choices": [],
+    "acceptedAnswers": [
+      "97"
+    ],
+    "answer": "97",
+    "pdfPreview": "/qbank/math/previews/f88f27e5.jpg",
+    "figure": "/qbank/math/figures/f88f27e5.jpg"
+  },
+  {
+    "id": "947a3cde",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In the figure above, MQ and NR intersect at point P, NP = QP, and MP = PR. What is the measure, in degrees, of angle QMR? (Disregard the degree symbol when gridding your answer.)",
+    "type": "spr",
+    "explanation": "The correct answer is 30. It is given that the measure of “ GUP'R is 60)\". Angle MPR and “ QPF) are collinear and therefore are\nsupplementary angles. This means that the sum of the two angle measures is 180° and so the measure of “IWPR is 120°. The sum of\nthe angles in a triangle is 180°, Subtracting the measure of “ IP‘ from 180° yields the sum of the other angles in the triangle MPR.\nSince 180 — 120) = 60), the sum of the measures of “ QR and “NAM is 60\". Itis given that faiP = PR, so it follows that triangle\nMPR is isosceles. Therefore.” Cif² and “ MFe/4 must be congruent. Since the sum of the measure of these two angles is Bil)², it follows\nthat the measure of each angle is 30°, An alternate approach would be to use the exterior angle theorem, noting that the measure of .“ (JF is equal to the sum of the measures of\nOAR and “ MRI. Since both angles are equal, each of them has a measure of 30°.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 25,
+    "choices": [],
+    "acceptedAnswers": [
+      "30"
+    ],
+    "answer": "30",
+    "pdfPreview": "/qbank/math/previews/947a3cde.jpg",
+    "figure": "/qbank/math/figures/947a3cde.jpg"
+  },
+  {
+    "id": "ec5d4823",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "What is the volume, in cubic centimeters, of a right rectangular prism that has a length of 4 centimeters, a width of 9 centimeters, and a height of 10 centimeters?",
+    "type": "spr",
+    "explanation": "The correct answer is 360. The volume of a right rectangular prism is calculated by multiplying its dimensions: length, width, and height. Multiplying the values given for these dimensions yields a volume of (4)(9)(10) = 360 cubic centimeters.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 43,
+    "choices": [],
+    "acceptedAnswers": [
+      "360"
+    ],
+    "answer": "360",
+    "pdfPreview": "/qbank/math/previews/ec5d4823.jpg"
+  },
+  {
+    "id": "bd87bc09",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Triangle ABC above is a right triangle, and sin(B) = 5/13. What is the length of side BC?",
+    "type": "spr",
+    "explanation": "The correct answer is 24. The sine of an acute angle in a right triangle is equal to the ratio of the length of the side opposite the angle to the\nlength of the hypotenuse. In the triangle shown, the sine of angle B, or sin(8), is equal to the ratio of the length of side AC to the length of side\nAR wees AR; ; a 9 AB . . . AB. It's given that the length of side AB is 26 and that sin(8) = 73\" Therefore, 73 = 36 Multiplying both sides of this equation by\n26 yields AC = 10. By the Pythagorean Theorem, the relationship between the lengths of the sides of triangle ABC is as follows: 267 = 10° +BC4 or\n676=100+BC2. Subtracting 100 from both sides of 86 = 100+ ace yields 576 = ace. Taking the square root of both sides of\n576 = BC² yields 24 = BC.",
+    "pdf": "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf",
+    "pdfPage": 64,
+    "choices": [],
+    "acceptedAnswers": [
+      "24"
+    ],
+    "answer": "24",
+    "pdfPreview": "/qbank/math/previews/bd87bc09.jpg",
+    "figure": "/qbank/math/figures/bd87bc09.jpg"
   }
 ]

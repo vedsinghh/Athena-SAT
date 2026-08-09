@@ -2433,6 +2433,82 @@ button { cursor: pointer; }
   gap: 14px;
   min-height: calc(100vh - 120px);
 }
+.practice-pause-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 240px; /* stay in main content; don't cover sidebar */
+  z-index: 280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(120, 40, 70, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.practice-pause-card {
+  width: min(360px, 100%);
+  text-align: center;
+  padding: 28px 24px 24px;
+  border-radius: 22px;
+  background: rgba(255, 248, 251, 0.96);
+  border: 1px solid rgba(244, 200, 216, 0.95);
+  box-shadow: 0 24px 60px rgba(180, 50, 100, 0.16);
+}
+.practice-pause-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #fce7f0;
+  color: #db2777;
+}
+.practice-pause-overlay.reading .practice-pause-icon {
+  background: #fce7f0;
+  color: #db2777;
+}
+.practice-pause-card h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #9d174d;
+  letter-spacing: -0.02em;
+}
+.practice-pause-card p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #9a6b7d;
+}
+.practice-pause-resume {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 0;
+  background: #db2777;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 10px 24px rgba(219, 39, 119, 0.28);
+}
+.practice-pause-resume:hover {
+  transform: translateY(-1px);
+}
+.practice-pause-overlay.reading .practice-pause-resume {
+  background: #db2777;
+  box-shadow: 0 10px 24px rgba(219, 39, 119, 0.28);
+}
 .practice-topbar {
   display: flex;
   align-items: center;
@@ -2913,6 +2989,7 @@ button { cursor: pointer; }
   height: auto;
   object-fit: contain;
   object-position: left center;
+  align-self: center;
 }
 .practice-choice.is-correct {
   border-color: #16a34a !important;
@@ -3144,7 +3221,11 @@ body.math-reference-dragging * {
 .practice-explanation-body p {
   margin: 0 0 16px;
 }
-.practice-explanation-body p:first-child {
+.practice-explanation-body p:last-child {
+  margin-bottom: 0;
+}
+/* Divider only between correct-answer block and incorrect-choice paragraphs */
+.practice-explanation-body p:first-child:not(:last-child) {
   margin-bottom: 22px;
   padding-bottom: 14px;
   border-bottom: 1px solid rgba(18, 52, 111, 0.12);
@@ -3899,14 +3980,15 @@ body.math-reference-dragging * {
 }
 .progress-athena-img {
   position: absolute;
-  inset: 4% -4% -6% -4%;
+  /* Pull Athena left off the far-right edge; keep her tall in the corner. */
+  inset: 4% 14% -6% -22%;
   width: auto;
   height: 108%;
   max-height: none;
   max-width: none;
   display: block;
   object-fit: contain;
-  object-position: center bottom;
+  object-position: 28% bottom;
   filter: drop-shadow(0 16px 24px rgba(40, 60, 110, 0.16));
   -webkit-mask-image: linear-gradient(
     to bottom,
@@ -3925,7 +4007,8 @@ body.math-reference-dragging * {
 }
 .progress-athena-bubble {
   position: absolute;
-  left: 44%;
+  /* Nudge left much less than Athena so the bubble stays near the trophy. */
+  left: 41%;
   top: 8px;
   z-index: 5;
   max-width: min(150px, 88%);
@@ -3944,7 +4027,7 @@ body.math-reference-dragging * {
 .progress-athena-bubble::after {
   content: '';
   position: absolute;
-  left: 72%;
+  left: 78%;
   bottom: -5px;
   width: 10px;
   height: 10px;
@@ -4578,7 +4661,7 @@ body.math-reference-dragging * {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #3d6fd8, #14284f);
+  background: linear-gradient(90deg, #f472b6, #db2777);
 }
 .progress-domain-list em {
   display: block;
@@ -5372,6 +5455,7 @@ body.math-reference-dragging * {
 @media (max-width: 900px) {
   .sidebar { display: none; }
   .dashboard-main { padding-left: 24px; }
+  .practice-pause-overlay { left: 0; }
   .welcome-shell { overflow: auto; height: auto; min-height: 100vh; }
   .welcome-main { height: auto; min-height: calc(100vh - 92px); grid-template-columns: 1fr; }
   .math-top { padding-right: 0; }
