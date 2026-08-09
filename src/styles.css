@@ -5090,6 +5090,25 @@ body.math-reference-dragging * {
   gap: 10px;
   padding-bottom: 12px;
 }
+.progress-history-view-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2px;
+  padding: 12px 10px 14px;
+  border: 0;
+  border-top: 1px solid #edf0f5;
+  background: transparent;
+  color: #2f62d6;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.progress-history-view-all:hover {
+  color: #1e4bb8;
+}
 .progress-set-tile {
   position: relative;
   border: 1px solid transparent;

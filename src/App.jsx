@@ -2889,6 +2889,12 @@ const DESMOS_API_KEY = '7ad3aa8ec126436495e727c52a77826a'
 const MATH_QUESTION_BANK = mathQuestions
 const READING_QUESTION_BANK = readingQuestions
 
+/** Prefer the latest bank copy so mid-session data fixes show up after JSON reloads. */
+function refreshQuestionFromBank(question, bank) {
+  if (!question?.id || !Array.isArray(bank)) return question
+  const fresh = bank.find((q) => q.id === question.id)
+  return fresh || question
+}
 function shuffleInPlace(list) {
   for (let i = list.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -4822,7 +4828,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     )
   }
 
-  const current = questions[index]
+  const current = refreshQuestionFromBank(questions[index], MATH_QUESTION_BANK)
   const progressPct = ((index + 1) / questions.length) * 100
   const letters = ['A', 'B', 'C', 'D']
   const difficultyLabel = current?.difficulty
@@ -5357,7 +5363,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     )
   }
 
-  const current = questions[index]
+  const current = refreshQuestionFromBank(questions[index], READING_QUESTION_BANK)
   const progressPct = ((index + 1) / questions.length) * 100
   const letters = ['A', 'B', 'C', 'D']
   const difficultyLabel = current?.difficulty
@@ -5780,7 +5786,14 @@ function ProgressPage({ profile }) {
   const { streak, bestStreak } = computeStreakFromHistory(fullHistory)
   const displayBest = bestStreak
   const [expandedSetId, setExpandedSetId] = useState(null)
+  const [historyExpanded, setHistoryExpanded] = useState(false)
   const [review, setReview] = useState(null)
+  useEffect(() => {
+    setHistoryExpanded(false)
+  }, [rangeMode, customFrom, customTo])
+  const HISTORY_PREVIEW_COUNT = 5 // collapsed preview
+  const visibleHistory = historyExpanded ? history : history.slice(0, HISTORY_PREVIEW_COUNT)
+  const canExpandHistory = history.length > HISTORY_PREVIEW_COUNT
   const heatDays = rangeBounds.dayCount
     ? Math.min(30, rangeBounds.dayCount)
     : 14
@@ -6029,7 +6042,7 @@ function ProgressPage({ profile }) {
           </div>
         ) : (
           <div className="progress-history-list">
-            {history.map((entry) => (
+            {visibleHistory.map((entry) => (
               entry.type === 'set' ? (
                 <article key={entry.id} className={`progress-set-tile ${entry.subject === 'math' ? 'math' : 'reading'}`}>
                   <button
@@ -6107,6 +6120,16 @@ function ProgressPage({ profile }) {
                 </button>
               )
             ))}
+            {canExpandHistory ? (
+              <button
+                type="button"
+                className="progress-history-view-all"
+                onClick={() => setHistoryExpanded((open) => !open)}
+                aria-expanded={historyExpanded}
+              >
+                {historyExpanded ? 'Show less' : `View all (${history.length})`}
+              </button>
+            ) : null}
           </div>
         )}
       </section>
