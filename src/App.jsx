@@ -488,16 +488,17 @@ function applyPracticeSetReport(profile, {
     ? Math.round(timedSum / timed.length)
     : fallbackPerQuestion
 
+  const totalQuestions = questions.length || answeredCount
   return appendProgressHistory(next, {
     id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
     type: 'set',
     subject,
     title: isMath ? 'Math Practice Set' : 'Reading & Writing Practice Set',
-    sub: [domainLabel, difficulty, `${answeredCount} Questions`].filter(Boolean).join(' · '),
+    sub: [domainLabel, difficulty, `${totalQuestions} Questions`].filter(Boolean).join(' · '),
     meta: accuracy != null ? `Score: ${accuracy}%` : `Score: ${STAT_NA}`,
     correct,
     answered: answeredCount,
-    total: answeredCount,
+    total: totalQuestions,
     accuracy,
     elapsed: elapsed || timedSum || 0,
     avgTime,
@@ -551,6 +552,41 @@ function unlockChargeBlazeForToday() {
   } catch {
     /* ignore quota / private mode */
   }
+}
+
+/** Lifetime Athena charge blaze — unlocks for the local calendar day at 100 charge. */
+function useAthenaBlaze(profile) {
+  const lifetimeCorrect = useMemo(() => (
+    deriveProgressAnalytics(
+      profile?.progressHistory || [],
+      profile?.qbankProgress || {},
+      { heatDays: 14, allowQbankFallback: true },
+    ).correct || 0
+  ), [profile?.progressHistory, profile?.qbankProgress])
+  const lifetimeCharge = athenaChargeFromCorrect(lifetimeCorrect)
+  const [blazeActive, setBlazeActive] = useState(() => readChargeBlazeActive())
+
+  useEffect(() => {
+    if (lifetimeCharge >= 100) {
+      unlockChargeBlazeForToday()
+      setBlazeActive(true)
+      return undefined
+    }
+    setBlazeActive(readChargeBlazeActive())
+    return undefined
+  }, [lifetimeCharge])
+
+  useEffect(() => {
+    const now = new Date()
+    const midnight = new Date(now)
+    midnight.setHours(24, 0, 0, 0)
+    const timer = window.setTimeout(() => {
+      setBlazeActive(readChargeBlazeActive())
+    }, Math.max(250, midnight.getTime() - now.getTime() + 25))
+    return () => window.clearTimeout(timer)
+  }, [blazeActive])
+
+  return blazeActive
 }
 
 const GRADE_OPTIONS = [
@@ -1186,6 +1222,7 @@ function Dashboard({
 }) {
   const [page, setPage] = useState('dashboard')
   const [quickLaunch, setQuickLaunch] = useState(null)
+  const blazeActive = useAthenaBlaze(profile)
 
   const goDashboard = () => {
     setPage('dashboard')
@@ -1239,7 +1276,7 @@ function Dashboard({
   }
 
   return (
-    <div className={`dashboard-shell ${page === 'dashboard' ? 'dashboard-home' : ''}`}>
+    <div className={`dashboard-shell ${page === 'dashboard' ? 'dashboard-home' : ''} ${blazeActive ? 'athena-blaze' : ''}`}>
       <div className="dashboard-laurel dashboard-laurel-left" aria-hidden="true">❧</div>
       <div className="dashboard-laurel dashboard-laurel-right" aria-hidden="true">❧</div>
       <Sidebar
@@ -1256,7 +1293,13 @@ function Dashboard({
         <div className="dashboard-grid">
           <section className="min-w-0 relative">
             <div className="mb-5">
-              <h1 className="text-[34px] font-bold tracking-[-.04em] text-athena-navy">Welcome back, {profile.name.split(' ')[0]}! 👋</h1>
+              <h1 className="text-[34px] font-bold tracking-[-.04em] text-athena-navy">
+                Welcome back,{' '}
+                <span className={blazeActive ? 'athena-blaze-name' : undefined}>
+                  {profile.name.split(' ')[0]}
+                </span>
+                ! 👋
+              </h1>
               <p className="mt-1 text-[#687590]">Ready to reach your target score?</p>
             </div>
 
@@ -1341,7 +1384,7 @@ function Dashboard({
             onCompleteQuestion={onCompleteQuestion}
           />
         ) : page === 'Analytics' ? (
-          <ProgressPage profile={profile} />
+          <ProgressPage profile={profile} blazeActive={blazeActive} />
         ) : (
           <PlaceholderPage title={page} onGoDashboard={goDashboard} />
         )}
@@ -3119,7 +3162,11 @@ function normalizeSprAnswer(value) {
   return String(value ?? '').trim().toLowerCase().replace(/\s+/g, '')
 }
 
+const UNANSWERED_SENTINEL = '__unanswered__'
+const UNANSWERED_MC = -1
+
 function isAnswerCorrect(question, answer) {
+  if (answer === UNANSWERED_SENTINEL || answer === UNANSWERED_MC) return false
   if (answer == null || answer === '') return null
   if (question?.type === 'spr') {
     const accepted = question.acceptedAnswers?.length
@@ -3129,6 +3176,35 @@ function isAnswerCorrect(question, answer) {
     return accepted.some((item) => normalizeSprAnswer(item) === normalized)
   }
   return answer === question?.answer
+}
+
+function isQuestionAnswered(answer) {
+  return !(
+    answer == null
+    || answer === ''
+    || answer === UNANSWERED_SENTINEL
+    || answer === UNANSWERED_MC
+  )
+}
+
+/** Pick a graded-wrong placeholder so unanswered items count as incorrect. */
+function incorrectPlaceholderAnswer(question) {
+  if (question?.type === 'spr') return UNANSWERED_SENTINEL
+  return UNANSWERED_MC
+}
+
+function fillUnansweredAsIncorrect(questions, answers) {
+  const list = Array.isArray(questions) ? questions : []
+  const prev = Array.isArray(answers) ? answers : []
+  return list.map((q, i) => (
+    isQuestionAnswered(prev[i]) ? prev[i] : incorrectPlaceholderAnswer(q)
+  ))
+}
+
+function countUnanswered(questions, answers) {
+  const list = Array.isArray(questions) ? questions : []
+  const prev = Array.isArray(answers) ? answers : []
+  return list.reduce((n, _q, i) => n + (isQuestionAnswered(prev[i]) ? 0 : 1), 0)
 }
 
 function applyQuestionCompletion(profile, question, answer, subject) {
@@ -3381,12 +3457,13 @@ function normalizeChoice(choice) {
 }
 
 function SprAnswerInput({ question, value, revealAnswer, locked = false, onSubmit }) {
-  const [draft, setDraft] = useState(() => value ?? '')
-  const [checked, setChecked] = useState(() => Boolean(value))
+  const displayValue = value === UNANSWERED_SENTINEL ? '' : (value ?? '')
+  const [draft, setDraft] = useState(() => displayValue)
+  const [checked, setChecked] = useState(() => isQuestionAnswered(value))
 
   useEffect(() => {
-    setDraft(value ?? '')
-    setChecked(Boolean(value))
+    setDraft(value === UNANSWERED_SENTINEL ? '' : (value ?? ''))
+    setChecked(isQuestionAnswered(value))
   }, [question?.id, value])
 
   const submit = () => {
@@ -3398,8 +3475,9 @@ function SprAnswerInput({ question, value, revealAnswer, locked = false, onSubmi
     onSubmit?.(next)
   }
 
-  const verdict = revealAnswer && checked && draft.trim()
-    ? isAnswerCorrect(question, draft.trim())
+  const leftBlank = value === UNANSWERED_SENTINEL
+  const verdict = revealAnswer && (checked || leftBlank)
+    ? (leftBlank ? false : isAnswerCorrect(question, String(draft || '').trim()))
     : null
   const saved = !revealAnswer && checked && Boolean(String(draft || '').trim())
 
@@ -3414,7 +3492,7 @@ function SprAnswerInput({ question, value, revealAnswer, locked = false, onSubmi
           className={`practice-spr-input ${verdict == null ? (saved ? 'saved' : '') : verdict ? 'ok' : 'bad'}`}
           type="text"
           inputMode="decimal"
-          placeholder="Enter a number or fraction"
+          placeholder={leftBlank ? 'Left blank' : 'Enter a number or fraction'}
           value={draft}
           readOnly={locked}
           onChange={(e) => {
@@ -3440,7 +3518,7 @@ function SprAnswerInput({ question, value, revealAnswer, locked = false, onSubmi
       </div>
       {verdict != null && (
         <div className={`practice-spr-result ${verdict ? 'ok' : 'bad'}`}>
-          {verdict ? 'Correct' : 'Incorrect'}
+          {verdict ? 'Correct' : (leftBlank ? 'Incorrect · left blank' : 'Incorrect')}
         </div>
       )}
       {saved && (
@@ -4147,6 +4225,7 @@ function PracticeResultsModal({ open, questions, answers, onClose, onExit }) {
   }))
   const answered = graded.filter((g) => g.correct != null)
   const right = answered.filter((g) => g.correct).length
+  const total = questions.length || answered.length
   return (
     <div className="practice-modal-backdrop" onClick={onClose} role="presentation">
       <div className="practice-modal practice-results-modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
@@ -4158,8 +4237,8 @@ function PracticeResultsModal({ open, questions, answers, onClose, onExit }) {
         </div>
         <div className="practice-modal-body">
           <p className="practice-results-score">
-            {answered.length
-              ? `${right} / ${answered.length} correct · ${Math.round((right / answered.length) * 100)}%`
+            {total
+              ? `${right} / ${total} correct · ${Math.round((right / total) * 100)}%`
               : `0 / 0 correct · ${STAT_NA}`}
           </p>
           <div className="practice-results-list">
@@ -4176,6 +4255,46 @@ function PracticeResultsModal({ open, questions, answers, onClose, onExit }) {
           <button type="button" className="practice-next-btn" onClick={onExit}>Done</button>
         </div>
       </div>
+    </div>
+  )
+}
+
+function PracticeEndConfirmModal({ open, unansweredCount, total, onCancel, onConfirm, tone = 'math' }) {
+  if (!open) return null
+  const label = unansweredCount === 1 ? 'question' : 'questions'
+  return (
+    <div
+      className={`practice-pause-overlay practice-end-confirm-overlay ${tone === 'reading' ? 'reading' : ''}`}
+      onClick={onCancel}
+      role="presentation"
+    >
+      <motion.div
+        className="practice-pause-card practice-end-confirm-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="practice-end-confirm-title"
+        initial={{ opacity: 0, scale: 0.92, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="practice-pause-icon" aria-hidden="true">
+          <AlertTriangle size={28} strokeWidth={2.4} />
+        </div>
+        <h3 id="practice-end-confirm-title">Submit incomplete practice?</h3>
+        <p>
+          You still have <strong>{unansweredCount}</strong> unanswered {label}
+          {total ? ` out of ${total}` : ''}. Unanswered questions will be marked incorrect.
+        </p>
+        <div className="practice-end-confirm-actions">
+          <button type="button" className="practice-end-confirm-secondary" onClick={onCancel}>
+            Keep practicing
+          </button>
+          <button type="button" className="practice-pause-resume" onClick={onConfirm}>
+            Submit anyway
+          </button>
+        </div>
+      </motion.div>
     </div>
   )
 }
@@ -4705,6 +4824,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
   const [resultsOpen, setResultsOpen] = useState(false)
+  const [endConfirmOpen, setEndConfirmOpen] = useState(false)
   const [referenceOpen, setReferenceOpen] = useState(false)
   const [reviewMode, setReviewMode] = useState(false)
   const [elapsed, setElapsed] = useState(0)
@@ -4743,6 +4863,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     setExplainOpen(false)
     setPdfOpen(false)
     setResultsOpen(false)
+    setEndConfirmOpen(false)
     setReferenceOpen(false)
     setReviewMode(false)
     setElapsed(0)
@@ -4756,7 +4877,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   }, [index])
 
   useEffect(() => {
-    if (paused || reviewMode) return undefined
+    if (paused || reviewMode || endConfirmOpen) return undefined
     const id = setInterval(() => {
       setElapsed((t) => {
         const next = t + 1
@@ -4774,7 +4895,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [paused, reviewMode])
+  }, [paused, reviewMode, endConfirmOpen])
 
   const currentQuestionElapsed = () => {
     const times = questionTimesRef.current || []
@@ -4785,18 +4906,27 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     if (source !== 'set' || setReportedRef.current) return
     const qs = questionsRef.current || []
     if (!qs.length) return
-    const answers = answersRef.current || []
-    const hasAnswered = qs.some((q, i) => isAnswerCorrect(q, answers[i]) != null)
+    const sessionAnswers = answersRef.current || []
+    const hasAnswered = qs.some((q, i) => isAnswerCorrect(q, sessionAnswers[i]) != null)
     if (!hasAnswered) return
     setReportedRef.current = true
     onCompleteSessionRef.current?.({
       subject: 'math',
       questions: qs,
-      answers,
+      answers: sessionAnswers,
       elapsed: elapsedRef.current,
       questionTimes: questionTimesRef.current,
       config,
     })
+  }
+
+  const finishDeferredSet = (finalAnswers) => {
+    answersRef.current = finalAnswers
+    setAnswers(finalAnswers)
+    reportSetIfNeeded()
+    setEndConfirmOpen(false)
+    setResultsOpen(true)
+    setReviewMode(true)
   }
 
   const shuffleUnanswered = () => {
@@ -4902,12 +5032,19 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
 
   const handleEnd = () => {
     if (feedbackMode === 'deferred' && !reviewMode) {
-      reportSetIfNeeded()
-      setResultsOpen(true)
-      setReviewMode(true)
+      const unanswered = countUnanswered(questions, answers)
+      if (unanswered > 0) {
+        setEndConfirmOpen(true)
+        return
+      }
+      finishDeferredSet(answers)
       return
     }
     onEnd?.()
+  }
+
+  const confirmEndIncomplete = () => {
+    finishDeferredSet(fillUnansweredAsIncorrect(questions, answers))
   }
 
   return (
@@ -5160,6 +5297,14 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
         onClose={() => setResultsOpen(false)}
         onExit={() => onEnd?.()}
       />
+      <PracticeEndConfirmModal
+        open={endConfirmOpen}
+        unansweredCount={countUnanswered(questions, answers)}
+        total={questions.length}
+        onCancel={() => setEndConfirmOpen(false)}
+        onConfirm={confirmEndIncomplete}
+        tone="math"
+      />
     </div>
   )
 }
@@ -5244,6 +5389,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
   const [resultsOpen, setResultsOpen] = useState(false)
+  const [endConfirmOpen, setEndConfirmOpen] = useState(false)
   const [reviewMode, setReviewMode] = useState(false)
   const [elapsed, setElapsed] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -5279,6 +5425,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     setExplainOpen(false)
     setPdfOpen(false)
     setResultsOpen(false)
+    setEndConfirmOpen(false)
     setReviewMode(false)
     setElapsed(0)
     elapsedRef.current = 0
@@ -5291,7 +5438,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   }, [index])
 
   useEffect(() => {
-    if (paused || reviewMode) return undefined
+    if (paused || reviewMode || endConfirmOpen) return undefined
     const id = setInterval(() => {
       setElapsed((t) => {
         const next = t + 1
@@ -5309,7 +5456,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [paused, reviewMode])
+  }, [paused, reviewMode, endConfirmOpen])
 
   const currentQuestionElapsed = () => {
     const times = questionTimesRef.current || []
@@ -5320,18 +5467,27 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     if (source !== 'set' || setReportedRef.current) return
     const qs = questionsRef.current || []
     if (!qs.length) return
-    const answers = answersRef.current || []
-    const hasAnswered = qs.some((q, i) => isAnswerCorrect(q, answers[i]) != null)
+    const sessionAnswers = answersRef.current || []
+    const hasAnswered = qs.some((q, i) => isAnswerCorrect(q, sessionAnswers[i]) != null)
     if (!hasAnswered) return
     setReportedRef.current = true
     onCompleteSessionRef.current?.({
       subject: 'reading',
       questions: qs,
-      answers,
+      answers: sessionAnswers,
       elapsed: elapsedRef.current,
       questionTimes: questionTimesRef.current,
       config,
     })
+  }
+
+  const finishDeferredSet = (finalAnswers) => {
+    answersRef.current = finalAnswers
+    setAnswers(finalAnswers)
+    reportSetIfNeeded()
+    setEndConfirmOpen(false)
+    setResultsOpen(true)
+    setReviewMode(true)
   }
 
   const shuffleUnanswered = () => {
@@ -5431,12 +5587,19 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
 
   const handleEnd = () => {
     if (feedbackMode === 'deferred' && !reviewMode) {
-      reportSetIfNeeded()
-      setResultsOpen(true)
-      setReviewMode(true)
+      const unanswered = countUnanswered(questions, answers)
+      if (unanswered > 0) {
+        setEndConfirmOpen(true)
+        return
+      }
+      finishDeferredSet(answers)
       return
     }
     onEnd?.()
+  }
+
+  const confirmEndIncomplete = () => {
+    finishDeferredSet(fillUnansweredAsIncorrect(questions, answers))
   }
 
   return (
@@ -5629,6 +5792,14 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
         onClose={() => setResultsOpen(false)}
         onExit={() => onEnd?.()}
       />
+      <PracticeEndConfirmModal
+        open={endConfirmOpen}
+        unansweredCount={countUnanswered(questions, answers)}
+        total={questions.length}
+        onCancel={() => setEndConfirmOpen(false)}
+        onConfirm={confirmEndIncomplete}
+        tone="reading"
+      />
     </div>
   )
 }
@@ -5757,7 +5928,7 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
   )
 }
 
-function ProgressPage({ profile }) {
+function ProgressPage({ profile, blazeActive = false }) {
   const fullHistory = profile.progressHistory || []
   const [rangeMode, setRangeMode] = useState('3d')
   const [customFrom, setCustomFrom] = useState('')
@@ -5804,37 +5975,7 @@ function ProgressPage({ profile }) {
     }),
     [history, profile.qbankProgress, heatDays, rangeMode],
   )
-  const lifetimeAnalytics = useMemo(
-    () => deriveProgressAnalytics(fullHistory, profile.qbankProgress || {}, {
-      heatDays: 14,
-      allowQbankFallback: true,
-    }),
-    [fullHistory, profile.qbankProgress],
-  )
   const charge = athenaChargeFromCorrect(analytics.correct)
-  const lifetimeCharge = athenaChargeFromCorrect(lifetimeAnalytics.correct)
-  const [blazeActive, setBlazeActive] = useState(() => readChargeBlazeActive())
-
-  useEffect(() => {
-    if (charge >= 100 || lifetimeCharge >= 100) {
-      unlockChargeBlazeForToday()
-      setBlazeActive(true)
-      return undefined
-    }
-    setBlazeActive(readChargeBlazeActive())
-    return undefined
-  }, [charge, lifetimeCharge])
-
-  // Drop the blaze automatically at local midnight.
-  useEffect(() => {
-    const now = new Date()
-    const midnight = new Date(now)
-    midnight.setHours(24, 0, 0, 0)
-    const timer = window.setTimeout(() => {
-      setBlazeActive(readChargeBlazeActive())
-    }, Math.max(250, midnight.getTime() - now.getTime() + 25))
-    return () => window.clearTimeout(timer)
-  }, [blazeActive])
 
   const dailyAccuracy = useMemo(
     () => buildDailyAccuracySeries(history, rangeBounds, 14),
@@ -7108,6 +7249,21 @@ function Sidebar({
   )
 }
 
+const SCORE_IMPACT_SPARKS = [
+  { angle: -78, dist: 16, len: 7 },
+  { angle: -48, dist: 22, len: 9 },
+  { angle: -18, dist: 18, len: 6 },
+  { angle: 12, dist: 20, len: 8 },
+  { angle: 42, dist: 17, len: 7 },
+  { angle: 72, dist: 21, len: 9 },
+  { angle: 108, dist: 15, len: 6 },
+  { angle: 148, dist: 19, len: 8 },
+  { angle: -112, dist: 14, len: 5 },
+  { angle: -148, dist: 18, len: 7 },
+  { angle: 180, dist: 12, len: 5 },
+  { angle: -30, dist: 26, len: 5 },
+]
+
 function ScoreProgress({ profile }) {
   const min = 400, max = 1600
   const best = profileBestScore(profile) ?? 400
@@ -7121,6 +7277,7 @@ function ScoreProgress({ profile }) {
   const spearRotate = (Math.atan2(end.y - start.y, end.x - start.x) * 180) / Math.PI - 5
 
   const [spear, setSpear] = useState(() => ({ ...start, opacity: 0, rotate: spearRotate }))
+  const [impactId, setImpactId] = useState(0)
   const busyRef = useRef(false)
   const animRef = useRef([])
 
@@ -7130,6 +7287,7 @@ function ScoreProgress({ profile }) {
     animRef.current.forEach((a) => a.stop())
     animRef.current = []
 
+    setImpactId(0)
     setSpear({ ...start, opacity: 0, rotate: spearRotate })
     const fade = animate(0, 1, {
       duration: 0.08,
@@ -7147,6 +7305,7 @@ function ScoreProgress({ profile }) {
         }))
       },
       onComplete: () => {
+        setImpactId((n) => n + 1)
         busyRef.current = false
       },
     })
@@ -7206,6 +7365,32 @@ function ScoreProgress({ profile }) {
               {/* Tip sits on the path point so the throw ends on the bullseye */}
               <image href="/spear.png" x="-62" y="-7" width="68" height="14" />
             </g>
+            {impactId > 0 ? (
+              <g key={impactId} className="score-impact" transform={`translate(${end.x} ${end.y})`}>
+                <circle className="score-impact-flash" cx="0" cy="0" r="10" />
+                {SCORE_IMPACT_SPARKS.map((spark, i) => {
+                  const rad = (spark.angle * Math.PI) / 180
+                  const tx = Math.cos(rad) * spark.dist
+                  const ty = Math.sin(rad) * spark.dist
+                  const x2 = Math.cos(rad) * spark.len
+                  const y2 = Math.sin(rad) * spark.len
+                  return (
+                    <g
+                      key={i}
+                      className="score-spark"
+                      style={{
+                        '--spark-tx': `${tx}px`,
+                        '--spark-ty': `${ty}px`,
+                        animationDelay: `${i * 0.018}s`,
+                      }}
+                    >
+                      <line x1="0" y1="0" x2={x2} y2={y2} />
+                      <circle cx={x2 * 0.55} cy={y2 * 0.55} r="1.15" />
+                    </g>
+                  )
+                })}
+              </g>
+            ) : null}
           </svg>
 
           <img src="/target.png" alt="" className="score-target" />
