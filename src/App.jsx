@@ -7249,6 +7249,21 @@ function Sidebar({
   )
 }
 
+const SCORE_IMPACT_SPARKS = [
+  { angle: -78, dist: 16, len: 7 },
+  { angle: -48, dist: 22, len: 9 },
+  { angle: -18, dist: 18, len: 6 },
+  { angle: 12, dist: 20, len: 8 },
+  { angle: 42, dist: 17, len: 7 },
+  { angle: 72, dist: 21, len: 9 },
+  { angle: 108, dist: 15, len: 6 },
+  { angle: 148, dist: 19, len: 8 },
+  { angle: -112, dist: 14, len: 5 },
+  { angle: -148, dist: 18, len: 7 },
+  { angle: 180, dist: 12, len: 5 },
+  { angle: -30, dist: 26, len: 5 },
+]
+
 function ScoreProgress({ profile }) {
   const min = 400, max = 1600
   const best = profileBestScore(profile) ?? 400
@@ -7262,6 +7277,7 @@ function ScoreProgress({ profile }) {
   const spearRotate = (Math.atan2(end.y - start.y, end.x - start.x) * 180) / Math.PI - 5
 
   const [spear, setSpear] = useState(() => ({ ...start, opacity: 0, rotate: spearRotate }))
+  const [impactId, setImpactId] = useState(0)
   const busyRef = useRef(false)
   const animRef = useRef([])
 
@@ -7271,6 +7287,7 @@ function ScoreProgress({ profile }) {
     animRef.current.forEach((a) => a.stop())
     animRef.current = []
 
+    setImpactId(0)
     setSpear({ ...start, opacity: 0, rotate: spearRotate })
     const fade = animate(0, 1, {
       duration: 0.08,
@@ -7288,6 +7305,7 @@ function ScoreProgress({ profile }) {
         }))
       },
       onComplete: () => {
+        setImpactId((n) => n + 1)
         busyRef.current = false
       },
     })
@@ -7347,6 +7365,32 @@ function ScoreProgress({ profile }) {
               {/* Tip sits on the path point so the throw ends on the bullseye */}
               <image href="/spear.png" x="-62" y="-7" width="68" height="14" />
             </g>
+            {impactId > 0 ? (
+              <g key={impactId} className="score-impact" transform={`translate(${end.x} ${end.y})`}>
+                <circle className="score-impact-flash" cx="0" cy="0" r="10" />
+                {SCORE_IMPACT_SPARKS.map((spark, i) => {
+                  const rad = (spark.angle * Math.PI) / 180
+                  const tx = Math.cos(rad) * spark.dist
+                  const ty = Math.sin(rad) * spark.dist
+                  const x2 = Math.cos(rad) * spark.len
+                  const y2 = Math.sin(rad) * spark.len
+                  return (
+                    <g
+                      key={i}
+                      className="score-spark"
+                      style={{
+                        '--spark-tx': `${tx}px`,
+                        '--spark-ty': `${ty}px`,
+                        animationDelay: `${i * 0.018}s`,
+                      }}
+                    >
+                      <line x1="0" y1="0" x2={x2} y2={y2} />
+                      <circle cx={x2 * 0.55} cy={y2 * 0.55} r="1.15" />
+                    </g>
+                  )
+                })}
+              </g>
+            ) : null}
           </svg>
 
           <img src="/target.png" alt="" className="score-target" />
