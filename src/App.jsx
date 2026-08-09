@@ -533,9 +533,16 @@ const FILE_VERSION = 1
 
 function athenaChargeFromCorrect(correct) {
   const n = Math.max(0, Number(correct) || 0)
-  // Soft climb, then hard-full at 100 correct answers.
+  // Soft climb, then hard-full at 100 correct answers today.
   if (n >= 100) return 100
   return Math.round(Math.min(99, 100 * (1 - Math.exp(-n / 40))))
+}
+
+/** Graded correct answers on a local calendar day (practice sets + bank lines). */
+function countCorrectForLocalDay(history, dayKey = localDayKey()) {
+  if (!dayKey) return 0
+  const dayHistory = (history || []).filter((entry) => localDayKey(entry.createdAt) === dayKey)
+  return deriveProgressAnalytics(dayHistory, {}, { allowQbankFallback: false }).correct || 0
 }
 
 function readChargeBlazeActive() {
@@ -554,27 +561,24 @@ function unlockChargeBlazeForToday() {
   }
 }
 
-/** Lifetime Athena charge blaze — unlocks for the local calendar day at 100 charge. */
+/** Daily Athena charge blaze — unlocks for the local calendar day at 100 charge. */
 function useAthenaBlaze(profile) {
-  const lifetimeCorrect = useMemo(() => (
-    deriveProgressAnalytics(
-      profile?.progressHistory || [],
-      profile?.qbankProgress || {},
-      { heatDays: 14, allowQbankFallback: true },
-    ).correct || 0
-  ), [profile?.progressHistory, profile?.qbankProgress])
-  const lifetimeCharge = athenaChargeFromCorrect(lifetimeCorrect)
+  const dailyCorrect = useMemo(
+    () => countCorrectForLocalDay(profile?.progressHistory || []),
+    [profile?.progressHistory],
+  )
+  const dailyCharge = athenaChargeFromCorrect(dailyCorrect)
   const [blazeActive, setBlazeActive] = useState(() => readChargeBlazeActive())
 
   useEffect(() => {
-    if (lifetimeCharge >= 100) {
+    if (dailyCharge >= 100) {
       unlockChargeBlazeForToday()
       setBlazeActive(true)
       return undefined
     }
     setBlazeActive(readChargeBlazeActive())
     return undefined
-  }, [lifetimeCharge])
+  }, [dailyCharge])
 
   useEffect(() => {
     const now = new Date()
@@ -5975,7 +5979,11 @@ function ProgressPage({ profile, blazeActive = false }) {
     }),
     [history, profile.qbankProgress, heatDays, rangeMode],
   )
-  const charge = athenaChargeFromCorrect(analytics.correct)
+  const dailyCorrect = useMemo(
+    () => countCorrectForLocalDay(fullHistory),
+    [fullHistory],
+  )
+  const charge = athenaChargeFromCorrect(dailyCorrect)
 
   const dailyAccuracy = useMemo(
     () => buildDailyAccuracySeries(history, rangeBounds, 14),
@@ -6166,6 +6174,7 @@ function ProgressPage({ profile, blazeActive = false }) {
         analytics={analytics}
         heatLabel={rangeBounds.label}
         charge={charge}
+        chargeCorrect={dailyCorrect}
         blazeActive={blazeActive}
       />
 
@@ -6499,10 +6508,13 @@ function ProgressAnalytics({
   analytics,
   heatLabel = 'Last 14 days',
   charge: chargeProp,
+  chargeCorrect: chargeCorrectProp,
   blazeActive = false,
 }) {
   const a = analytics || {}
-  const questionsCorrect = a.correct || 0
+  const questionsCorrect = isValidStatNumber(chargeCorrectProp)
+    ? chargeCorrectProp
+    : (a.correct || 0)
   const charge = isValidStatNumber(chargeProp)
     ? chargeProp
     : athenaChargeFromCorrect(questionsCorrect)
@@ -6516,7 +6528,7 @@ function ProgressAnalytics({
           ? 'Warming up'
           : questionsCorrect >= 1
             ? 'Spark lit'
-            : 'Get questions right to stoke the fire'
+            : 'Get questions right today to stoke the fire'
   const mathPct = a.subject?.math?.total
     ? Math.round((a.subject.math.correct / a.subject.math.total) * 100)
     : null
