@@ -166,34 +166,32 @@ button { cursor: pointer; }
   z-index: 0;
 }
 .dashboard-shell.athena-blaze::before {
-  height: min(42vh, 420px);
+  height: min(38vh, 360px);
   background:
-    radial-gradient(ellipse 28% 90% at 8% 100%, rgba(255, 179, 71, 0.75) 0%, transparent 68%),
-    radial-gradient(ellipse 32% 100% at 22% 100%, rgba(224, 112, 32, 0.8) 0%, transparent 70%),
-    radial-gradient(ellipse 26% 85% at 38% 100%, rgba(255, 196, 96, 0.7) 0%, transparent 68%),
-    radial-gradient(ellipse 30% 95% at 55% 100%, rgba(232, 100, 30, 0.78) 0%, transparent 70%),
-    radial-gradient(ellipse 28% 88% at 72% 100%, rgba(255, 170, 70, 0.72) 0%, transparent 68%),
-    radial-gradient(ellipse 34% 105% at 90% 100%, rgba(194, 74, 18, 0.82) 0%, transparent 72%);
-  opacity: 0.85;
-  animation: athena-bg-flame 1.35s ease-in-out infinite;
+    radial-gradient(ellipse 28% 90% at 8% 100%, rgba(255, 179, 71, 0.55) 0%, transparent 68%),
+    radial-gradient(ellipse 32% 100% at 22% 100%, rgba(224, 112, 32, 0.58) 0%, transparent 70%),
+    radial-gradient(ellipse 26% 85% at 38% 100%, rgba(255, 196, 96, 0.5) 0%, transparent 68%),
+    radial-gradient(ellipse 30% 95% at 55% 100%, rgba(232, 100, 30, 0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 28% 88% at 72% 100%, rgba(255, 170, 70, 0.5) 0%, transparent 68%),
+    radial-gradient(ellipse 34% 105% at 90% 100%, rgba(194, 74, 18, 0.58) 0%, transparent 72%);
+  opacity: 0.75;
+  animation: athena-bg-flame 1.8s ease-in-out infinite;
   transform-origin: 50% 100%;
 }
 .dashboard-shell.athena-blaze::after {
-  height: min(28vh, 260px);
+  height: min(22vh, 200px);
   background:
-    radial-gradient(ellipse 20% 80% at 14% 100%, rgba(255, 241, 194, 0.55) 0%, transparent 70%),
-    radial-gradient(ellipse 24% 90% at 34% 100%, rgba(255, 210, 122, 0.5) 0%, transparent 68%),
-    radial-gradient(ellipse 22% 85% at 58% 100%, rgba(255, 244, 214, 0.48) 0%, transparent 70%),
-    radial-gradient(ellipse 26% 95% at 80% 100%, rgba(255, 179, 71, 0.52) 0%, transparent 68%);
-  opacity: 0.7;
-  animation: athena-bg-flame 0.95s ease-in-out infinite reverse;
+    radial-gradient(ellipse 20% 80% at 14% 100%, rgba(255, 241, 194, 0.35) 0%, transparent 70%),
+    radial-gradient(ellipse 24% 90% at 34% 100%, rgba(255, 210, 122, 0.32) 0%, transparent 68%),
+    radial-gradient(ellipse 22% 85% at 58% 100%, rgba(255, 244, 214, 0.3) 0%, transparent 70%),
+    radial-gradient(ellipse 26% 95% at 80% 100%, rgba(255, 179, 71, 0.34) 0%, transparent 68%);
+  opacity: 0.55;
+  animation: athena-bg-flame 1.35s ease-in-out infinite reverse;
   transform-origin: 50% 100%;
-  mix-blend-mode: screen;
 }
 @keyframes athena-bg-flame {
-  0%, 100% { transform: scaleY(1) scaleX(1); opacity: 0.72; }
-  35% { transform: scaleY(1.12) scaleX(0.97); opacity: 0.95; }
-  65% { transform: scaleY(0.9) scaleX(1.04); opacity: 0.68; }
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.85; }
 }
 
 .dashboard-laurel {
@@ -4395,7 +4393,7 @@ body.math-reference-dragging * {
   flex-direction: column;
 }
 
-/* Full Athena charge: every tile burns until local midnight (all pages) */
+/* Full Athena charge: tint tiles, keep their normal rounded shape */
 .athena-blaze .card,
 .athena-blaze .progress-summary-card,
 .athena-blaze .progress-analytics-card,
@@ -4411,16 +4409,12 @@ body.math-reference-dragging * {
 .progress-page.progress-blaze .progress-history-card,
 .progress-page.progress-blaze .progress-set-tile,
 .progress-page.progress-blaze .progress-bank-line {
-  position: relative;
-  overflow: hidden;
   border-color: #e07020 !important;
-  background:
-    linear-gradient(180deg, rgba(255, 246, 232, 0.98) 0%, #ffffff 48%),
-    #fff !important;
+  background: #fff !important;
   box-shadow:
     0 16px 45px rgba(31, 61, 125, 0.06),
     0 2px 10px rgba(31, 61, 125, 0.03),
-    inset 0 -3px 0 rgba(224, 112, 32, 0.4) !important;
+    0 0 0 1px rgba(224, 112, 32, 0.18) !important;
   animation: progress-blaze-pulse 2.4s ease-in-out infinite;
 }
 .athena-blaze .card::before,
@@ -4438,43 +4432,7 @@ body.math-reference-dragging * {
 .progress-page.progress-blaze .progress-history-card::before,
 .progress-page.progress-blaze .progress-set-tile::before,
 .progress-page.progress-blaze .progress-bank-line::before {
-  content: "";
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: 0;
-  height: 3px;
-  pointer-events: none;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 179, 71, 0.95) 22%,
-    rgba(224, 112, 32, 1) 50%,
-    rgba(255, 179, 71, 0.95) 78%,
-    transparent 100%
-  );
-  opacity: 0.9;
-  animation: progress-blaze-ember 1.6s ease-in-out infinite;
-  z-index: 2;
-}
-.athena-blaze .card > *,
-.athena-blaze .progress-summary-card > *,
-.athena-blaze .progress-analytics-card > *,
-.athena-blaze .progress-history-card > *,
-.athena-blaze .progress-set-tile > *,
-.athena-blaze .progress-bank-line > *,
-.athena-blaze .qbank-metric > *,
-.athena-blaze .math-stat > *,
-.athena-blaze .practice-question-card > *,
-.athena-blaze .practice-results-row > *,
-.progress-page.progress-blaze .progress-summary-card > *,
-.progress-page.progress-blaze .progress-analytics-card > *,
-.progress-page.progress-blaze .progress-history-card > *,
-.progress-page.progress-blaze .progress-set-tile > *,
-.progress-page.progress-blaze .progress-bank-line > * {
-  position: relative;
-  z-index: 1;
+  content: none !important;
 }
 .athena-blaze .progress-summary-label,
 .athena-blaze .progress-analytics-label,
@@ -4534,10 +4492,6 @@ body.math-reference-dragging * {
 @keyframes progress-blaze-pulse {
   0%, 100% { border-color: #e07020; }
   50% { border-color: #f0a35a; }
-}
-@keyframes progress-blaze-ember {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
 }
 .progress-analytics-hit { grid-column: span 4; }
 .progress-analytics-subjects { grid-column: span 4; }

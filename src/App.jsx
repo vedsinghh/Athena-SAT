@@ -7279,11 +7279,13 @@ function ScoreProgress({ profile }) {
   const [spear, setSpear] = useState(() => ({ ...start, opacity: 0, rotate: spearRotate }))
   const [impactId, setImpactId] = useState(0)
   const busyRef = useRef(false)
+  const sparkedRef = useRef(false)
   const animRef = useRef([])
 
   const throwSpear = () => {
     if (busyRef.current) return
     busyRef.current = true
+    sparkedRef.current = false
     animRef.current.forEach((a) => a.stop())
     animRef.current = []
 
@@ -7303,9 +7305,17 @@ function ScoreProgress({ profile }) {
           y: start.y + (end.y - start.y) * t,
           rotate: spearRotate,
         }))
+        // Tip leads the path point slightly — spark as it hits the bullseye
+        if (!sparkedRef.current && t >= 0.78) {
+          sparkedRef.current = true
+          setImpactId((n) => n + 1)
+        }
       },
       onComplete: () => {
-        setImpactId((n) => n + 1)
+        if (!sparkedRef.current) {
+          sparkedRef.current = true
+          setImpactId((n) => n + 1)
+        }
         busyRef.current = false
       },
     })
