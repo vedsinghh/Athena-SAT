@@ -18,14 +18,15 @@
     }
   },
   "Problem-Solving and Data Analysis": {
-    "total": 19,
+    "total": 162,
     "skills": {
-      "Percentages": 4,
-      "Inference from sample statistics and margin of error": 3,
-      "One-variable data: distributions and measures of center and spread": 4,
-      "Probability and conditional probability": 2,
-      "Two-variable data: models and scatterplots": 3,
-      "Ratios, rates, proportional relationships, and units": 3
+      "Percentages": 25,
+      "Inference from sample statistics and margin of error": 13,
+      "One-variable data: distributions and measures of center and spread": 35,
+      "Probability and conditional probability": 22,
+      "Two-variable data: models and scatterplots": 27,
+      "Ratios, rates, proportional relationships, and units": 37,
+      "Evaluating statistical claims: Observational studies and experiments": 3
     }
   },
   "Geometry and Trigonometry": {
