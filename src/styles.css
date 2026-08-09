@@ -4653,6 +4653,26 @@ body.math-reference-dragging * {
     ),
     #fff;
 }
+.progress-analytics-fun.charge-off {
+  background: #fff;
+}
+.progress-analytics-fun.charge-off .progress-momentum-fire {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+.progress-charge-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.progress-charge-toggle {
+  flex: 0 0 auto;
+  background: #c9d3e6;
+}
+.progress-charge-toggle.on {
+  background: #e07020;
+}
 .progress-momentum {
   margin-top: 4px;
   flex: 1;

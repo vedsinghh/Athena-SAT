@@ -529,6 +529,7 @@ function formatHistoryWhen(iso) {
 const STORAGE_KEY = 'athena_sat_profiles_react_v1'
 const ACTIVE_KEY = 'athena_sat_active_profile_react_v1'
 const CHARGE_BLAZE_DAY_KEY = 'athena_sat_charge_blaze_day_v1'
+const CHARGE_BLAZE_PREF_KEY = 'athena_sat_charge_blaze_pref_v1'
 const FILE_VERSION = 1
 
 function athenaChargeFromCorrect(correct) {
@@ -561,6 +562,24 @@ function unlockChargeBlazeForToday() {
   }
 }
 
+function readBlazePrefEnabled() {
+  try {
+    const v = localStorage.getItem(CHARGE_BLAZE_PREF_KEY)
+    if (v == null) return true
+    return v !== '0'
+  } catch {
+    return true
+  }
+}
+
+function writeBlazePrefEnabled(on) {
+  try {
+    localStorage.setItem(CHARGE_BLAZE_PREF_KEY, on ? '1' : '0')
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
 /** Daily Athena charge blaze — unlocks for the local calendar day at 100 charge. */
 function useAthenaBlaze(profile) {
   const dailyCorrect = useMemo(
@@ -568,15 +587,16 @@ function useAthenaBlaze(profile) {
     [profile?.progressHistory],
   )
   const dailyCharge = athenaChargeFromCorrect(dailyCorrect)
-  const [blazeActive, setBlazeActive] = useState(() => readChargeBlazeActive())
+  const [unlocked, setUnlocked] = useState(() => readChargeBlazeActive())
+  const [blazeEnabled, setBlazeEnabledState] = useState(() => readBlazePrefEnabled())
 
   useEffect(() => {
     if (dailyCharge >= 100) {
       unlockChargeBlazeForToday()
-      setBlazeActive(true)
+      setUnlocked(true)
       return undefined
     }
-    setBlazeActive(readChargeBlazeActive())
+    setUnlocked(readChargeBlazeActive())
     return undefined
   }, [dailyCharge])
 
@@ -585,12 +605,21 @@ function useAthenaBlaze(profile) {
     const midnight = new Date(now)
     midnight.setHours(24, 0, 0, 0)
     const timer = window.setTimeout(() => {
-      setBlazeActive(readChargeBlazeActive())
+      setUnlocked(readChargeBlazeActive())
     }, Math.max(250, midnight.getTime() - now.getTime() + 25))
     return () => window.clearTimeout(timer)
-  }, [blazeActive])
+  }, [unlocked])
 
-  return blazeActive
+  const setBlazeEnabled = (on) => {
+    writeBlazePrefEnabled(on)
+    setBlazeEnabledState(Boolean(on))
+  }
+
+  return {
+    blazeActive: blazeEnabled && unlocked,
+    blazeEnabled,
+    setBlazeEnabled,
+  }
 }
 
 const GRADE_OPTIONS = [
@@ -1226,7 +1255,8 @@ function Dashboard({
 }) {
   const [page, setPage] = useState('dashboard')
   const [quickLaunch, setQuickLaunch] = useState(null)
-  const blazeActive = useAthenaBlaze(profile)
+  const blaze = useAthenaBlaze(profile)
+  const { blazeActive, blazeEnabled, setBlazeEnabled } = blaze
 
   const goDashboard = () => {
     setPage('dashboard')
@@ -1388,7 +1418,12 @@ function Dashboard({
             onCompleteQuestion={onCompleteQuestion}
           />
         ) : page === 'Analytics' ? (
-          <ProgressPage profile={profile} blazeActive={blazeActive} />
+          <ProgressPage
+            profile={profile}
+            blazeActive={blazeActive}
+            blazeEnabled={blazeEnabled}
+            onBlazeEnabledChange={setBlazeEnabled}
+          />
         ) : (
           <PlaceholderPage title={page} onGoDashboard={goDashboard} />
         )}
@@ -5932,7 +5967,12 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
   )
 }
 
-function ProgressPage({ profile, blazeActive = false }) {
+function ProgressPage({
+  profile,
+  blazeActive = false,
+  blazeEnabled = true,
+  onBlazeEnabledChange,
+}) {
   const fullHistory = profile.progressHistory || []
   const [rangeMode, setRangeMode] = useState('3d')
   const [customFrom, setCustomFrom] = useState('')
@@ -6176,6 +6216,8 @@ function ProgressPage({ profile, blazeActive = false }) {
         charge={charge}
         chargeCorrect={dailyCorrect}
         blazeActive={blazeActive}
+        blazeEnabled={blazeEnabled}
+        onBlazeEnabledChange={onBlazeEnabledChange}
       />
 
       <section className="card progress-history-card">
@@ -6510,6 +6552,8 @@ function ProgressAnalytics({
   charge: chargeProp,
   chargeCorrect: chargeCorrectProp,
   blazeActive = false,
+  blazeEnabled = true,
+  onBlazeEnabledChange,
 }) {
   const a = analytics || {}
   const questionsCorrect = isValidStatNumber(chargeCorrectProp)
@@ -6518,17 +6562,20 @@ function ProgressAnalytics({
   const charge = isValidStatNumber(chargeProp)
     ? chargeProp
     : athenaChargeFromCorrect(questionsCorrect)
-  const mood = blazeActive || charge >= 100
-    ? 'Full blaze · locked in until midnight'
-    : questionsCorrect >= 80
-      ? 'Blazing'
-      : questionsCorrect >= 40
-        ? 'On fire'
-        : questionsCorrect >= 15
-          ? 'Warming up'
-          : questionsCorrect >= 1
-            ? 'Spark lit'
-            : 'Get questions right today to stoke the fire'
+  const displayCharge = blazeActive ? 100 : charge
+  const mood = !blazeEnabled
+    ? 'Athena charge effects are off'
+    : blazeActive || charge >= 100
+      ? 'Full blaze · locked in until midnight'
+      : questionsCorrect >= 80
+        ? 'Blazing'
+        : questionsCorrect >= 40
+          ? 'On fire'
+          : questionsCorrect >= 15
+            ? 'Warming up'
+            : questionsCorrect >= 1
+              ? 'Spark lit'
+              : 'Get questions right today to stoke the fire'
   const mathPct = a.subject?.math?.total
     ? Math.round((a.subject.math.correct / a.subject.math.total) * 100)
     : null
@@ -6616,18 +6663,30 @@ function ProgressAnalytics({
       </div>
 
       <div
-        className="card progress-analytics-card progress-analytics-fun"
+        className={`card progress-analytics-card progress-analytics-fun ${blazeEnabled ? '' : 'charge-off'}`.trim()}
         style={{
-          '--charge': blazeActive ? 100 : charge,
-          '--fire-intensity': ((blazeActive ? 100 : charge) / 100).toFixed(3),
+          '--charge': displayCharge,
+          '--fire-intensity': (displayCharge / 100).toFixed(3),
         }}
       >
-        <div className="progress-analytics-label">
-          <Flame size={15} strokeWidth={2.2} />
-          Athena charge
+        <div className="progress-charge-head">
+          <div className="progress-analytics-label">
+            <Flame size={15} strokeWidth={2.2} />
+            Athena charge
+          </div>
+          <button
+            type="button"
+            className={`math-toggle progress-charge-toggle ${blazeEnabled ? 'on' : ''}`}
+            aria-pressed={blazeEnabled}
+            aria-label={blazeEnabled ? 'Turn off Athena charge effects' : 'Turn on Athena charge effects'}
+            title={blazeEnabled ? 'Effects on' : 'Effects off'}
+            onClick={() => onBlazeEnabledChange?.(!blazeEnabled)}
+          >
+            <span />
+          </button>
         </div>
         <MomentumMeter
-          charge={blazeActive ? 100 : charge}
+          charge={displayCharge}
           questions={questionsCorrect}
           mood={mood}
         />
