@@ -1,20 +1,20 @@
 {
   "Algebra": {
-    "total": 23,
+    "total": 167,
     "skills": {
-      "Linear equations in two variables": 2,
-      "Linear equations in one variable": 5,
-      "Linear functions": 6,
-      "Systems of two linear equations in two variables": 7,
-      "Linear inequalities in one or two variables": 3
+      "Linear equations in two variables": 36,
+      "Linear equations in one variable": 33,
+      "Linear functions": 41,
+      "Systems of two linear equations in two variables": 36,
+      "Linear inequalities in one or two variables": 21
     }
   },
   "Advanced Math": {
-    "total": 27,
+    "total": 112,
     "skills": {
-      "Equivalent expressions": 7,
-      "Nonlinear equations in one variable and systems of equations in two variables": 9,
-      "Nonlinear functions": 11
+      "Equivalent expressions": 27,
+      "Nonlinear equations in one variable and systems of equations in two variables": 32,
+      "Nonlinear functions": 53
     }
   },
   "Problem-Solving and Data Analysis": {

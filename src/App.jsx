@@ -487,7 +487,31 @@ function formatHistoryWhen(iso) {
 
 const STORAGE_KEY = 'athena_sat_profiles_react_v1'
 const ACTIVE_KEY = 'athena_sat_active_profile_react_v1'
+const CHARGE_BLAZE_DAY_KEY = 'athena_sat_charge_blaze_day_v1'
 const FILE_VERSION = 1
+
+function athenaChargeFromCorrect(correct) {
+  const n = Math.max(0, Number(correct) || 0)
+  // Soft climb, then hard-full at 100 correct answers.
+  if (n >= 100) return 100
+  return Math.round(Math.min(99, 100 * (1 - Math.exp(-n / 40))))
+}
+
+function readChargeBlazeActive() {
+  try {
+    return localStorage.getItem(CHARGE_BLAZE_DAY_KEY) === localDayKey()
+  } catch {
+    return false
+  }
+}
+
+function unlockChargeBlazeForToday() {
+  try {
+    localStorage.setItem(CHARGE_BLAZE_DAY_KEY, localDayKey())
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
 
 const GRADE_OPTIONS = [
   '',
@@ -1383,6 +1407,12 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics 
   const mathPct = mathTotal ? Math.round((mathSolved / mathTotal) * 100) : 0
   const attempted = readingSolved + mathSolved
   const accuracy = deriveOverallAccuracy(progress)
+  const readingAccuracy = accuracyFromEntries(
+    Object.values(progress).filter((item) => item.subject === 'reading'),
+  )
+  const mathAccuracy = accuracyFromEntries(
+    Object.values(progress).filter((item) => item.subject === 'math'),
+  )
   const topicAccuracy = useMemo(() => {
     const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
     return deriveProgressAnalytics(history, progress, {
@@ -1478,7 +1508,19 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics 
           <div className="qbank-metric qbank-metric-green">
             <div className="qbank-metric-icon"><Target size={18} /></div>
             <div className="qbank-metric-label">Current Accuracy</div>
-            <div className="qbank-metric-value">{formatStatPct(accuracy)}</div>
+            <div className="qbank-metric-value-row">
+              <div className="qbank-metric-value">{formatStatPct(accuracy)}</div>
+              <div className="qbank-metric-split" aria-label="Accuracy by subject">
+                <span>
+                  <em>R&W</em>
+                  {formatStatPct(readingAccuracy)}
+                </span>
+                <span>
+                  <em>Math</em>
+                  {formatStatPct(mathAccuracy)}
+                </span>
+              </div>
+            </div>
           </div>
           <StreakCard profile={profile} compact />
         </div>
@@ -1636,6 +1678,11 @@ function QuestionBankSubjectPage({
     }
   }, [openMenu])
 
+  const completedIds = useMemo(
+    () => completedQuestionIds(progress, subjectKey),
+    [progress, subjectKey],
+  )
+
   const filteredTopics = useMemo(() => {
     const levels = filterDifficulties
     return topics
@@ -1648,52 +1695,65 @@ function QuestionBankSubjectPage({
               && (!filterPools.length || filterPools.includes(q.pool || DEFAULT_QUESTION_POOL))
               && (!levels.length || levels.includes(q.difficulty))
             ))
-            const total = matching.length
+            const solvedQs = matching.filter((q) => completedIds.has(String(q.id)))
+            const unsolvedQs = matching.filter((q) => !completedIds.has(String(q.id)))
+            // Scope progress numbers + practice pool to the active status slice.
+            const scoped = completedFilter === 'completed'
+              ? solvedQs
+              : completedFilter === 'not_started'
+                ? unsolvedQs
+                : matching
             const skillProgress = countSkillProgress(
               progress,
               subjectKey,
               section.name,
               skill.name,
-              matching.map((q) => q.id),
+              scoped.map((q) => q.id),
             )
             return {
               ...skill,
-              total,
+              total: scoped.length,
               done: skillProgress.done,
               accuracy: skillProgress.accuracy,
+              questionIds: scoped.map((q) => String(q.id)),
             }
           })
-          .filter((skill) => {
-            if (skill.total === 0) return false
-            if (completedFilter === 'completed') return skill.done >= skill.total
-            if (completedFilter === 'in_progress') return skill.done > 0 && skill.done < skill.total
-            if (completedFilter === 'not_started') return skill.done === 0
-            return true
-          })
+          .filter((skill) => skill.total > 0)
         return { ...section, skills }
       })
       .filter((section) => section.skills.length > 0)
-  }, [topics, questions, filterDifficulties, completedFilter, progress, subjectKey, filterPools])
+  }, [topics, questions, filterDifficulties, completedFilter, progress, subjectKey, filterPools, completedIds])
+
+  // Drop skill selections that are hidden by the active status filter.
+  useEffect(() => {
+    const visible = new Set(
+      filteredTopics.flatMap((section) => (
+        section.skills.map((skill) => `${section.id}:${skill.name}`)
+      )),
+    )
+    setSelected((prev) => {
+      const next = prev.filter((key) => visible.has(key))
+      return next.length === prev.length ? prev : next
+    })
+  }, [filteredTopics])
 
   const practicePool = useMemo(() => {
+    const visibleKeys = filteredTopics.flatMap((section) => (
+      section.skills.map((skill) => `${section.id}:${skill.name}`)
+    ))
     const skillKeys = selected.length
-      ? new Set(selected)
-      : new Set(
-        filteredTopics.flatMap((section) => (
-          section.skills.map((skill) => `${section.id}:${skill.name}`)
-        )),
-      )
-    return questions.filter((q) => {
-      if (filterPools.length && !filterPools.includes(q.pool || DEFAULT_QUESTION_POOL)) return false
-      if (filterDifficulties.length && !filterDifficulties.includes(q.difficulty)) return false
-      return filteredTopics.some((section) => (
-        section.skills.some((skill) => {
-          const key = `${section.id}:${skill.name}`
-          return skillKeys.has(key) && skill.name === q.skill && section.name === q.domain
-        })
-      ))
-    })
-  }, [selected, filteredTopics, questions, filterDifficulties, filterPools])
+      ? new Set(selected.filter((key) => visibleKeys.includes(key)))
+      : new Set(visibleKeys)
+    if (!skillKeys.size) return []
+    const allowedIds = new Set(
+      filteredTopics.flatMap((section) => (
+        section.skills
+          .filter((skill) => skillKeys.has(`${section.id}:${skill.name}`))
+          .flatMap((skill) => skill.questionIds || [])
+      )),
+    )
+    return questions.filter((q) => allowedIds.has(String(q.id)))
+  }, [selected, filteredTopics, questions])
 
   const totalSkills = filteredTopics.reduce((n, t) => n + t.skills.length, 0)
   const selectedCount = selected.length
@@ -1755,11 +1815,10 @@ function QuestionBankSubjectPage({
     : `Question Pool (${filterPools.length})`
 
   const completedLabel = {
-    all: 'Completed',
-    completed: 'Completed only',
-    in_progress: 'In progress',
-    not_started: 'Not started',
-  }[completedFilter]
+    all: 'All skills',
+    completed: 'Solved',
+    not_started: 'Unsolved',
+  }[completedFilter] || 'All skills'
 
   const startPractice = () => {
     if (!practicePool.length) return
@@ -1887,12 +1946,11 @@ function QuestionBankSubjectPage({
             <ChevronDown size={14} className={`qbm-filter-chevron ${openMenu === 'completed' ? 'open' : ''}`} />
           </button>
           {openMenu === 'completed' && (
-            <div className="qbm-filter-menu" role="menu" aria-label="Completed">
+            <div className="qbm-filter-menu" role="menu" aria-label="Skill status">
               {[
                 { id: 'all', label: 'All skills' },
-                { id: 'completed', label: 'Completed' },
-                { id: 'in_progress', label: 'In progress' },
-                { id: 'not_started', label: 'Not started' },
+                { id: 'completed', label: 'Solved' },
+                { id: 'not_started', label: 'Unsolved' },
               ].map((opt) => (
                 <button
                   key={opt.id}
@@ -1954,7 +2012,7 @@ function QuestionBankSubjectPage({
         </div>
 
         {!filteredTopics.length && (
-          <div className="qbm-empty">No skills match these filters. Try adjusting Difficulty or Completed.</div>
+          <div className="qbm-empty">No skills match these filters. Try adjusting Difficulty or Solved / Unsolved.</div>
         )}
 
         {filteredTopics.map((section) => {
@@ -3004,12 +3062,15 @@ function applyQuestionCompletion(profile, question, answer, subject) {
 
 function countSkillProgress(progress, subject, domain, skill, questionIds) {
   const idSet = new Set((questionIds || []).map(String))
-  const entries = Object.entries(progress || {}).filter(([id, item]) => (
-    item.subject === subject
-    && item.domain === domain
-    && item.skill === skill
-    && (!idSet.size || idSet.has(String(id)))
-  )).map(([, item]) => item)
+  const entries = Object.entries(progress || {})
+    .filter(([id, item]) => {
+      if (!item || item.subject !== subject) return false
+      // Prefer question-id matching so pool/difficulty filters stay accurate even
+      // when older progress rows are missing domain/skill metadata.
+      if (idSet.size) return idSet.has(String(id))
+      return item.domain === domain && item.skill === skill
+    })
+    .map(([, item]) => item)
   const done = entries.length
   return {
     done,
@@ -3363,13 +3424,16 @@ function asciiToLatex(input, { display = false } = {}) {
     .replace(/(?<![A-Za-z\\])pi\b/gi, '\\pi')
 
   // exponents: ^(expr) or ^digit(s) / ^letter — never ^2z as one token (that is x^2 z)
+  // z^(-1) → z^{-1}; also strip redundant parens if already braced: z^{(-1)} → z^{-1}
   t = t.replace(/\^\(([^)]+)\)/g, '^{$1}')
+  t = t.replace(/\^\{(\([^}]+\))\}/g, (_, inner) => `^{${inner.slice(1, -1)}}`)
   t = t.replace(/\)\^(\d+|[A-Za-z])/g, ')^{$1}')
   t = t.replace(/\^(\d+|[A-Za-z])/g, '^{$1}')
 
   // Number/id atoms may include thousands separators (1,044m) so we don't split on the comma.
   const numId = String.raw`(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)[A-Za-z]*|[A-Za-z][A-Za-z0-9]*`
   const parenGroup = String.raw`\((?:[^()]|\([^()]*\))*\)`
+  const absGroup = String.raw`\|[^|]+\|`
   const radicalLatex = String.raw`\\sqrt(?:\[[^\]]+\])?\{(?:[^{}]|\{[^{}]*\})*\}`
 
   // Map PDF/OCR cube-root corruptions, then radicals → LaTeX BEFORE slash fractions
@@ -3396,7 +3460,7 @@ function asciiToLatex(input, { display = false } = {}) {
   t = t.replace(/\\pi\s*\/\s*(\d+(?:\.\d+)?)/g, `${fracCmd}{\\pi}{$1}`)
   t = t.replace(/(\d+(?:\.\d+)?)\s*\/\s*\\pi\b/g, `${fracCmd}{$1}{\\pi}`)
 
-  // slash fractions → stacked fractions (including radical numerators)
+  // slash fractions → stacked fractions (including radical / absolute-value numerators)
   let prev = ''
   while (t !== prev) {
     prev = t
@@ -3407,6 +3471,17 @@ function asciiToLatex(input, { display = false } = {}) {
     t = t.replace(
       new RegExp(`(${radicalLatex})\\s*/\\s*(${radicalLatex}|\\d+)`, 'g'),
       (_, a, b) => `${fracCmd}{${a}}{${b}}`,
+    )
+    // |x|/a → \frac{|x|}{a}
+    t = t.replace(
+      new RegExp(`(${absGroup})\\s*/\\s*(${absGroup}|${parenGroup}|${numId})`, 'g'),
+      (_, a, b) =>
+        `${fracCmd}{${a}}{${b.startsWith('(') ? stripOuterParens(b) : b}}`,
+    )
+    t = t.replace(
+      new RegExp(`(${parenGroup}|${numId})\\s*/\\s*(${absGroup})`, 'g'),
+      (_, a, b) =>
+        `${fracCmd}{${a.startsWith('(') ? stripOuterParens(a) : a}}{${b}}`,
     )
     t = t.replace(
       new RegExp(`(${parenGroup})\\s*/\\s*(${parenGroup})`, 'g'),
@@ -3495,10 +3570,15 @@ function extractInlineMathSegments(text) {
   // Math RHS: atoms may juxtapose (7,400(0.87)^x), but spaces only around operators — never English words.
   const fnCall = String.raw`[A-Za-z]\(-?[A-Za-z0-9.]+\)`
   const radical = String.raw`(?:∛|∜|√|I√)\([^()]*\)`
+  const absGroup = String.raw`\|[^|]+\|`
   const caretExp = String.raw`(?:\^[A-Za-z0-9]+|\^\([^)]+\)|\^\{[^{}]+\})?`
-  const mathAtom = String.raw`${radical}|${fnCall}${caretExp}|\d{1,3}(?:,\d{3})+(?:\.\d+)?${caretExp}|\d+(?:\.\d+)?${caretExp}|[A-Za-z0-9]+${caretExp}|\([^()]+\)${caretExp}`
+  const mathAtom = String.raw`${radical}|${absGroup}|${fnCall}${caretExp}|\d{1,3}(?:,\d{3})+(?:\.\d+)?${caretExp}|\d+(?:\.\d+)?${caretExp}|[A-Za-z0-9]+${caretExp}|\([^()]+\)${caretExp}`
   const mathExpr = String.raw`(?:${mathAtom})+(?:\s*[+\-−*/·]\s*(?:${mathAtom})+)*`
+  // Require ≥1 operator so we don't treat bare words/ids as math.
+  const mathExprWithOp = String.raw`(?:${mathAtom})+(?:\s*[+\-−*/·]\s*(?:${mathAtom})+)+`
   const patterns = [
+    // Absolute-value fractions: |x|/a
+    new RegExp(String.raw`${absGroup}\s*/\s*(?:${absGroup}|\((?:[^()]|\([^()]*\))+\)|(?:${mathAtom})+)`, 'g'),
     // Radical fractions: ∛(…)/[…] or ∛(…)/5
     new RegExp(String.raw`${radical}\s*/\s*(?:\[[^\]]+\]|\((?:[^()]|\([^()]*\))+\)|(?:${mathAtom})+)`, 'g'),
     // Bracketed numerator fractions: [n^(14/3) · p^(5/3)] / (5np)
@@ -3510,17 +3590,26 @@ function extractInlineMathSegments(text) {
     new RegExp(String.raw`(?<![A-Za-z])y\s*=\s*${mathExpr}`, 'gi'),
     // e.g. (x + 8)^2 + (y + 8)^2 = 25  (no = inside mathExpr — avoids runaway backtracking)
     new RegExp(String.raw`(?<![A-Za-z])${mathExpr}\s*=\s*${mathExpr}`, 'g'),
+    // Operator expressions kept whole: pv - 2p + v
+    new RegExp(String.raw`(?<![A-Za-z0-9])${mathExprWithOp}(?![A-Za-z0-9])`, 'g'),
+    // Adjacent factored groups: (m^4 q^4 z^(-1))(m q^5 z^3)
+    new RegExp(String.raw`\((?:[^()]|\([^()]*\))+\)(?:\((?:[^()]|\([^()]*\))+\))+`, 'g'),
     // Parenthetical powers: (x + 8)^2 or (4.1)^{x + b}
-    /\([^()]{1,80}\)\s*(?:\^[A-Za-z0-9]+|\^\{[^{}]+\})/g,
-    // Standalone radicals
+    /\([^()]{1,80}\)\s*(?:\^[A-Za-z0-9]+|\^\([^)]+\)|\^\{[^{}]+\})/g,
+    // Standalone radicals (√(k) and ascii sqrt(k))
     new RegExp(radical, 'g'),
+    /(?:√|sqrt)\s*\([^()]*\)/gi,
     // f(-2) - f(0)
     new RegExp(String.raw`${fnCall}(?:\s*[+\-−]\s*${fnCall})+`, 'g'),
+    // Inequalities: 0 ≤ x ≤ 480, x >= 2, y ≤ -x
+    /(?:-?\d+(?:\.\d+)?|[A-Za-z])\s*(?:≤|≥|<=|>=|<|>)\s*(?:-?\d+(?:\.\d+)?|[A-Za-z])(?:\s*(?:≤|≥|<=|>=|<|>)\s*(?:-?\d+(?:\.\d+)?|[A-Za-z]))*/g,
     // Points / ordered pairs: (1, 9), (-1, 105)
     /\(\s*-?[A-Za-z0-9.]+(?:\s*,\s*-?[A-Za-z0-9.]+)+\s*\)/g,
     // p(8)^x — include trailing caret so we don't orphan ^x after bare p(8)
     new RegExp(String.raw`\b${fnCall}${caretExp}`, 'g'),
-    /\b[A-Za-z0-9]+(?:\^[A-Za-z0-9]+|\^\{[^{}]+\})+\b/g,
+    // Powered atoms, including z^(-1). No trailing \b — match may end with ')' from ^(...).
+    // Allow space-separated products: m^4 q^4 z^(-1)
+    /(?<![A-Za-z0-9])[A-Za-z0-9]+(?:\^[A-Za-z0-9]+|\^\([^)]+\)|\^\{[^{}]+\})+(?:\s+[A-Za-z0-9]+(?:\^[A-Za-z0-9]+|\^\([^)]+\)|\^\{[^{}]+\})+)*/g,
     /\b\d+[A-Za-z]\b/g,
     /\b\d[\d,]*(?:\.\d+)?\s*\/\s*\d[\d,]*(?:\.\d+)?\b/g,
     /(?:π|pi)\s*\/\s*\d[\d,]*(?:\.\d+)?/gi,
@@ -5514,6 +5603,13 @@ function ProgressPage({ profile }) {
   )
   const sets = history.filter((item) => item.type === 'set')
   const bankLines = history.filter((item) => item.type === 'bank')
+  const bankQuestionCount = bankLines.length
+  const practiceSetQuestionCount = sets.reduce((sum, item) => (
+    sum + (item.answered || item.total || item.items?.length || 0)
+  ), 0)
+  const totalQuestionCount = bankQuestionCount + practiceSetQuestionCount
+  const readingAvgTimeSec = deriveSubjectActivityStats(history, 'reading').avgTimeSec
+  const mathAvgTimeSec = deriveSubjectActivityStats(history, 'math').avgTimeSec
   const { streak, bestStreak } = computeStreakFromHistory(fullHistory)
   const displayBest = bestStreak
   const [expandedSetId, setExpandedSetId] = useState(null)
@@ -5528,6 +5624,38 @@ function ProgressPage({ profile }) {
     }),
     [history, profile.qbankProgress, heatDays, rangeMode],
   )
+  const lifetimeAnalytics = useMemo(
+    () => deriveProgressAnalytics(fullHistory, profile.qbankProgress || {}, {
+      heatDays: 14,
+      allowQbankFallback: true,
+    }),
+    [fullHistory, profile.qbankProgress],
+  )
+  const charge = athenaChargeFromCorrect(analytics.correct)
+  const lifetimeCharge = athenaChargeFromCorrect(lifetimeAnalytics.correct)
+  const [blazeActive, setBlazeActive] = useState(() => readChargeBlazeActive())
+
+  useEffect(() => {
+    if (charge >= 100 || lifetimeCharge >= 100) {
+      unlockChargeBlazeForToday()
+      setBlazeActive(true)
+      return undefined
+    }
+    setBlazeActive(readChargeBlazeActive())
+    return undefined
+  }, [charge, lifetimeCharge])
+
+  // Drop the blaze automatically at local midnight.
+  useEffect(() => {
+    const now = new Date()
+    const midnight = new Date(now)
+    midnight.setHours(24, 0, 0, 0)
+    const timer = window.setTimeout(() => {
+      setBlazeActive(readChargeBlazeActive())
+    }, Math.max(250, midnight.getTime() - now.getTime() + 25))
+    return () => window.clearTimeout(timer)
+  }, [blazeActive])
+
   const dailyAccuracy = useMemo(
     () => buildDailyAccuracySeries(history, rangeBounds, 14),
     [history, rangeBounds],
@@ -5569,7 +5697,7 @@ function ProgressPage({ profile }) {
         : 'Practice once and she lifts the cup.'
 
   return (
-    <div className="progress-page">
+    <div className={`progress-page ${blazeActive ? 'progress-blaze' : ''}`}>
       <header className="progress-hero">
         <div className="progress-hero-main">
           <div className="progress-hero-badge" aria-hidden="true">
@@ -5577,7 +5705,11 @@ function ProgressPage({ profile }) {
           </div>
           <div>
             <h1>Analytics</h1>
-            <p>Practice set reports, question bank activity, and your study streak.</p>
+            <p>
+              {blazeActive
+                ? 'Athena charge is full — every tile stays on fire until midnight.'
+                : 'Practice set reports, question bank activity, and your study streak.'}
+            </p>
           </div>
         </div>
         <div className="progress-range" role="group" aria-label="Stats time frame">
@@ -5646,14 +5778,34 @@ function ProgressPage({ profile }) {
         <div className="progress-summary-corner">
           <div className="progress-summary-stack">
             <div className="card progress-summary-card">
-              <div className="progress-summary-label">Bank Questions</div>
-              <div className="progress-summary-value">{bankLines.length}</div>
-              <div className="progress-summary-sub">Answered from Question Bank</div>
+              <div className="progress-summary-label">Total Questions</div>
+              <div className="progress-summary-value">{totalQuestionCount}</div>
+              <div className="progress-summary-breakdown">
+                <span>
+                  <em>Bank questions</em>
+                  {bankQuestionCount}
+                </span>
+                <span>
+                  <em>Practice questions</em>
+                  {practiceSetQuestionCount}
+                </span>
+              </div>
             </div>
             <div className="card progress-summary-card">
-              <div className="progress-summary-label">Practice Sets</div>
-              <div className="progress-summary-value">{sets.length}</div>
-              <div className="progress-summary-sub">Finished from Math / Reading tabs</div>
+              <div className="progress-summary-label">Average Time / Question</div>
+              <div className="progress-summary-value">
+                {formatAvgTime(analytics.avgSec)}
+              </div>
+              <div className="progress-summary-breakdown">
+                <span>
+                  <em>Reading avg</em>
+                  {formatAvgTime(readingAvgTimeSec)}
+                </span>
+                <span>
+                  <em>Math avg</em>
+                  {formatAvgTime(mathAvgTimeSec)}
+                </span>
+              </div>
             </div>
           </div>
           <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
@@ -5689,7 +5841,12 @@ function ProgressPage({ profile }) {
         </div>
       </div>
 
-      <ProgressAnalytics analytics={analytics} streak={streak} heatLabel={rangeBounds.label} />
+      <ProgressAnalytics
+        analytics={analytics}
+        heatLabel={rangeBounds.label}
+        charge={charge}
+        blazeActive={blazeActive}
+      />
 
       <section className="card progress-history-card">
         <div className="progress-history-head">
@@ -6007,17 +6164,28 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   }
 }
 
-function ProgressAnalytics({ analytics, streak, heatLabel = 'Last 14 days' }) {
+function ProgressAnalytics({
+  analytics,
+  heatLabel = 'Last 14 days',
+  charge: chargeProp,
+  blazeActive = false,
+}) {
   const a = analytics || {}
-  const charge = Math.round(
-    Math.min(
-      100,
-      (isValidStatNumber(a.accuracy) ? a.accuracy * 0.5 : 0)
-        + Math.min(25, (streak || 0) * 5)
-        + Math.min(25, (a.totalGraded || 0) * 1.5),
-    ),
-  )
-  const mood = charge >= 75 ? 'On fire' : charge >= 45 ? 'Warming up' : charge >= 20 ? 'Getting started' : 'Ready when you are'
+  const questionsCorrect = a.correct || 0
+  const charge = isValidStatNumber(chargeProp)
+    ? chargeProp
+    : athenaChargeFromCorrect(questionsCorrect)
+  const mood = blazeActive || charge >= 100
+    ? 'Full blaze · locked in until midnight'
+    : questionsCorrect >= 80
+      ? 'Blazing'
+      : questionsCorrect >= 40
+        ? 'On fire'
+        : questionsCorrect >= 15
+          ? 'Warming up'
+          : questionsCorrect >= 1
+            ? 'Spark lit'
+            : 'Get questions right to stoke the fire'
   const mathPct = a.subject?.math?.total
     ? Math.round((a.subject.math.correct / a.subject.math.total) * 100)
     : null
@@ -6077,16 +6245,24 @@ function ProgressAnalytics({ analytics, streak, heatLabel = 'Last 14 days' }) {
             <div className="progress-subject-rows">
               <div className="progress-subject-row">
                 <span className="swatch math" />
-                <div>
+                <div className="progress-subject-copy">
                   <strong>Math</strong>
-                  <em>{a.subject.math.total} answered · {formatStatPct(mathPct)}</em>
+                  <em>{a.subject.math.total} answered · {mathShare}% of mix</em>
+                </div>
+                <div className="progress-subject-acc">
+                  <span className="progress-subject-acc-value">{formatStatPct(mathPct)}</span>
+                  <span className="progress-subject-acc-label">accuracy</span>
                 </div>
               </div>
               <div className="progress-subject-row">
                 <span className="swatch reading" />
-                <div>
-                  <strong>Reading</strong>
-                  <em>{a.subject.reading.total} answered · {formatStatPct(readingPct)}</em>
+                <div className="progress-subject-copy">
+                  <strong>Reading & Writing</strong>
+                  <em>{a.subject.reading.total} answered · {readingShare}% of mix</em>
+                </div>
+                <div className="progress-subject-acc">
+                  <span className="progress-subject-acc-value">{formatStatPct(readingPct)}</span>
+                  <span className="progress-subject-acc-label">accuracy</span>
                 </div>
               </div>
             </div>
@@ -6096,15 +6272,22 @@ function ProgressAnalytics({ analytics, streak, heatLabel = 'Last 14 days' }) {
         )}
       </div>
 
-      <div className="card progress-analytics-card progress-analytics-fun">
+      <div
+        className="card progress-analytics-card progress-analytics-fun"
+        style={{
+          '--charge': blazeActive ? 100 : charge,
+          '--fire-intensity': ((blazeActive ? 100 : charge) / 100).toFixed(3),
+        }}
+      >
         <div className="progress-analytics-label">
           <Flame size={15} strokeWidth={2.2} />
           Athena charge
         </div>
-        <MomentumMeter charge={charge} mood={mood} streak={streak || 0} />
-        {a.avgSec != null ? (
-          <div className="progress-fun-pace">Avg pace ~{a.avgSec}s / question</div>
-        ) : null}
+        <MomentumMeter
+          charge={blazeActive ? 100 : charge}
+          questions={questionsCorrect}
+          mood={mood}
+        />
       </div>
 
       <div className="card progress-analytics-card progress-analytics-trend">
@@ -6476,73 +6659,77 @@ function ScoreTrendChart({ points }) {
   )
 }
 
-function MomentumMeter({ charge, mood, streak }) {
+function MomentumMeter({ charge, questions = 0, mood }) {
   const clamped = Math.max(0, Math.min(100, charge || 0))
   const size = 132
   const stroke = 12
   const r = (size - stroke) / 2
   const c = 2 * Math.PI * r
   const len = (clamped / 100) * c * 0.75 // 270° arc
-  const orbit = [0, 1, 2, 3, 4].map((i) => i < Math.min(5, streak))
+  const fireScale = 0.28 + (clamped / 100) * 1.45
+  const fireOpacity = 0.12 + (clamped / 100) * 0.88
 
   return (
-    <div className="progress-momentum">
-      <div className="progress-momentum-gauge">
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={r}
-            fill="none"
-            stroke="#e8edf5"
-            strokeWidth={stroke}
-            strokeDasharray={`${c * 0.75} ${c}`}
-            strokeLinecap="round"
-            transform={`rotate(135 ${size / 2} ${size / 2})`}
-          />
-          <motion.circle
-            cx={size / 2}
-            cy={size / 2}
-            r={r}
-            fill="none"
-            stroke="url(#athenaChargeGrad)"
-            strokeWidth={stroke}
-            strokeDasharray={`${len} ${c}`}
-            strokeLinecap="round"
-            transform={`rotate(135 ${size / 2} ${size / 2})`}
-            initial={{ strokeDasharray: `0 ${c}` }}
-            animate={{ strokeDasharray: `${len} ${c}` }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-          />
-          <defs>
-            <linearGradient id="athenaChargeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#f0a35a" />
-              <stop offset="100%" stopColor="#e07020" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <div className="progress-momentum-core">
-          <motion.div
-            className="progress-momentum-owl"
-            animate={{ y: [0, -3, 0], rotate: clamped >= 75 ? [0, -6, 6, 0] : 0 }}
-            transition={{ duration: clamped >= 75 ? 1.4 : 2.4, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            🦉
-          </motion.div>
-          <strong>{clamped}</strong>
-          <span>charge</span>
+    <div
+      className="progress-momentum"
+      style={{
+        '--fire-scale': fireScale,
+        '--fire-opacity': fireOpacity,
+      }}
+    >
+      <div className="progress-momentum-stage">
+        <div className="progress-momentum-fire" aria-hidden="true">
+          <span className="progress-flame progress-flame-a" />
+          <span className="progress-flame progress-flame-b" />
+          <span className="progress-flame progress-flame-c" />
+          <span className="progress-flame-core" />
         </div>
-      </div>
-      <div className="progress-orbit" aria-hidden="true">
-        {orbit.map((on, i) => (
-          <motion.i
-            key={i}
-            className={on ? 'on' : ''}
-            initial={{ scale: 0.6, opacity: 0.4 }}
-            animate={{ scale: on ? 1 : 0.75, opacity: on ? 1 : 0.35 }}
-            transition={{ delay: i * 0.06 }}
-          />
-        ))}
+        <div className="progress-momentum-gauge">
+          <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
+            <circle
+              cx={size / 2}
+              cy={size / 2}
+              r={r}
+              fill="none"
+              stroke="#e8edf5"
+              strokeWidth={stroke}
+              strokeDasharray={`${c * 0.75} ${c}`}
+              strokeLinecap="round"
+              transform={`rotate(135 ${size / 2} ${size / 2})`}
+            />
+            <motion.circle
+              cx={size / 2}
+              cy={size / 2}
+              r={r}
+              fill="none"
+              stroke="url(#athenaChargeGrad)"
+              strokeWidth={stroke}
+              strokeDasharray={`${len} ${c}`}
+              strokeLinecap="round"
+              transform={`rotate(135 ${size / 2} ${size / 2})`}
+              initial={{ strokeDasharray: `0 ${c}` }}
+              animate={{ strokeDasharray: `${len} ${c}` }}
+              transition={{ duration: 1, ease: 'easeOut' }}
+            />
+            <defs>
+              <linearGradient id="athenaChargeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#f0a35a" />
+                <stop offset="100%" stopColor="#e07020" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div className="progress-momentum-core">
+            <motion.div
+              className="progress-momentum-owl"
+              animate={{ y: [0, -3, 0], rotate: clamped >= 70 ? [0, -6, 6, 0] : 0 }}
+              transition={{ duration: clamped >= 70 ? 1.4 : 2.4, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              🦉
+            </motion.div>
+            <strong>{questions}</strong>
+            <span>correct</span>
+          </div>
+        </div>
       </div>
       <p className="progress-momentum-hint">{mood}</p>
     </div>
