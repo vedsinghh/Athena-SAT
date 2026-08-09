@@ -4393,7 +4393,7 @@ body.math-reference-dragging * {
   flex-direction: column;
 }
 
-/* Full Athena charge: orange burn on tiles, shape stays a normal rounded rect */
+/* Full Athena charge: orange border only — no glow (glow skewed tile sizing) */
 .athena-blaze .card,
 .athena-blaze .progress-summary-card,
 .athena-blaze .progress-analytics-card,
@@ -4409,18 +4409,9 @@ body.math-reference-dragging * {
 .progress-page.progress-blaze .progress-history-card,
 .progress-page.progress-blaze .progress-set-tile,
 .progress-page.progress-blaze .progress-bank-line {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
   border-color: #e07020 !important;
-  background:
-    linear-gradient(180deg, rgba(255, 244, 228, 0.98) 0%, rgba(255, 255, 255, 0.99) 52%),
-    #fff !important;
-  box-shadow:
-    0 16px 45px rgba(31, 61, 125, 0.06),
-    0 0 28px rgba(224, 112, 32, 0.32),
-    0 0 0 1px rgba(224, 112, 32, 0.28),
-    inset 0 -6px 18px rgba(224, 112, 32, 0.16);
+  background: #fff !important;
+  box-shadow: 0 16px 45px rgba(31, 61, 125, 0.06), 0 2px 10px rgba(31, 61, 125, 0.03) !important;
   animation: progress-blaze-pulse 2.4s ease-in-out infinite;
 }
 .athena-blaze .card::before,
@@ -4438,38 +4429,7 @@ body.math-reference-dragging * {
 .progress-page.progress-blaze .progress-history-card::before,
 .progress-page.progress-blaze .progress-set-tile::before,
 .progress-page.progress-blaze .progress-bank-line::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 46%;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 48% 90% at 18% 100%, rgba(255, 179, 71, 0.55) 0%, transparent 72%),
-    radial-gradient(ellipse 58% 100% at 50% 100%, rgba(224, 112, 32, 0.5) 0%, transparent 70%),
-    radial-gradient(ellipse 46% 90% at 82% 100%, rgba(255, 196, 96, 0.48) 0%, transparent 72%);
-  opacity: 0.8;
-  animation: progress-blaze-ember 1.45s ease-in-out infinite;
-  z-index: 0;
-}
-.athena-blaze .card > *,
-.athena-blaze .progress-summary-card > *,
-.athena-blaze .progress-analytics-card > *,
-.athena-blaze .progress-history-card > *,
-.athena-blaze .progress-set-tile > *,
-.athena-blaze .progress-bank-line > *,
-.athena-blaze .qbank-metric > *,
-.athena-blaze .math-stat > *,
-.athena-blaze .practice-question-card > *,
-.athena-blaze .practice-results-row > *,
-.progress-page.progress-blaze .progress-summary-card > *,
-.progress-page.progress-blaze .progress-analytics-card > *,
-.progress-page.progress-blaze .progress-history-card > *,
-.progress-page.progress-blaze .progress-set-tile > *,
-.progress-page.progress-blaze .progress-bank-line > * {
-  position: relative;
-  z-index: 1;
+  content: none !important;
 }
 .athena-blaze .progress-summary-label,
 .athena-blaze .progress-analytics-label,
@@ -4527,12 +4487,8 @@ body.math-reference-dragging * {
   content: none !important;
 }
 @keyframes progress-blaze-pulse {
-  0%, 100% { border-color: #e07020; box-shadow: 0 16px 45px rgba(31, 61, 125, 0.06), 0 0 28px rgba(224, 112, 32, 0.28), 0 0 0 1px rgba(224, 112, 32, 0.28), inset 0 -6px 18px rgba(224, 112, 32, 0.16); }
-  50% { border-color: #f0a35a; box-shadow: 0 16px 45px rgba(31, 61, 125, 0.06), 0 0 36px rgba(240, 163, 90, 0.42), 0 0 0 1px rgba(240, 163, 90, 0.4), inset 0 -6px 20px rgba(240, 163, 90, 0.22); }
-}
-@keyframes progress-blaze-ember {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 0.95; }
+  0%, 100% { border-color: #e07020; }
+  50% { border-color: #f0a35a; }
 }
 .progress-analytics-hit { grid-column: span 4; }
 .progress-analytics-subjects { grid-column: span 4; }
