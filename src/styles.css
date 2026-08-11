@@ -2919,6 +2919,15 @@ button { cursor: pointer; }
 .practice-prompt p:last-child {
   margin-bottom: 0;
 }
+.sat-underline,
+.practice-passage-text u,
+.practice-passage-body u,
+.practice-prompt u {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+  text-decoration-skip-ink: none;
+}
 .practice-eq-line {
   font-family: "STIX Two Text", "Times New Roman", Times, serif;
   font-size: 1.05em;
@@ -3637,6 +3646,33 @@ body.math-reference-dragging * {
   line-height: 1;
   flex-shrink: 0;
   transition: .15s;
+}
+.practice-choice-check {
+  height: 28px;
+  min-width: 52px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1.5px solid #7eb6f5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8f3fc;
+  color: #2f62d6;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: .15s;
+}
+.practice-choice-check:hover {
+  border-color: #2f62d6;
+  background: #2f62d6;
+  color: #fff;
+}
+.practice-choice.stacked .practice-choice-check {
+  align-self: center;
+  height: 30px;
 }
 .practice-choice-x:hover {
   border-color: #e25555;

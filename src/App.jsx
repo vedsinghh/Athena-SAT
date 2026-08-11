@@ -114,36 +114,36 @@ function formatAvgTime(seconds) {
   return `${m}:${String(s).padStart(2, '0')}`
 }
 
-/** Prefer latest qbankProgress correctness when available (history may only store first attempt). */
-function resolveAttemptCorrect(progress, subject, questionId, fallbackCorrect) {
-  if (questionId == null || questionId === '' || !progress) {
-    return Boolean(fallbackCorrect)
-  }
-  const row = progress[String(questionId)]
-  if (row && row.subject === subject && typeof row.correct === 'boolean') {
-    return row.correct
-  }
-  return Boolean(fallbackCorrect)
-}
-
-/** Aggregate accuracy / answered / avg time from progress history for a subject. */
-function deriveSubjectActivityStats(history, subject, { dayKey = null, progress = null } = {}) {
-  let correct = 0
-  let answered = 0
-  let timeSum = 0
-  let timeCount = 0
-
+/**
+ * Walk graded attempts newest-first; each questionId is counted once (latest wins).
+ * History is stored newest-first. Legacy set rows without items are passed through as bulk.
+ * Pass { byDay: true } to dedupe per calendar day instead of globally.
+ */
+function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
+  const seen = new Set()
   ;(history || []).forEach((entry) => {
-    if (entry?.subject !== subject) return
-    if (dayKey && localDayKey(entry.createdAt) !== dayKey) return
+    if (!entry) return
+    const subject = entry.subject === 'math' ? 'math' : entry.subject === 'reading' ? 'reading' : null
+    if (!subject) return
 
     if (entry.type === 'bank') {
-      answered += 1
-      if (resolveAttemptCorrect(progress, subject, entry.questionId, entry.correct)) correct += 1
-      if (isValidStatNumber(entry.elapsed) && entry.elapsed > 0) {
-        timeSum += entry.elapsed
-        timeCount += 1
-      }
+      if (entry.correct == null || entry.questionId == null || entry.questionId === '') return
+      const day = localDayKey(entry.createdAt) || ''
+      const key = byDay
+        ? `${day}:${subject}:${String(entry.questionId)}`
+        : `${subject}:${String(entry.questionId)}`
+      if (seen.has(key)) return
+      seen.add(key)
+      visit({
+        subject,
+        questionId: String(entry.questionId),
+        correct: Boolean(entry.correct),
+        createdAt: entry.createdAt,
+        elapsed: entry.elapsed,
+        domain: String(entry.sub || '').split(' · ')[0] || null,
+        source: 'bank',
+        entry,
+      })
       return
     }
 
@@ -153,33 +153,91 @@ function deriveSubjectActivityStats(history, subject, { dayKey = null, progress 
       : []
 
     if (items.length) {
-      let itemTimeCount = 0
       items.forEach((item) => {
-        answered += 1
-        if (resolveAttemptCorrect(progress, subject, item.questionId, item.correct)) correct += 1
-        if (isValidStatNumber(item.elapsed) && item.elapsed > 0) {
-          timeSum += item.elapsed
-          itemTimeCount += 1
+        if (item.questionId == null || item.questionId === '') {
+          visit({
+            subject,
+            questionId: null,
+            correct: Boolean(item.correct),
+            createdAt: entry.createdAt,
+            elapsed: item.elapsed,
+            domain: item.domain || null,
+            source: 'set',
+            entry,
+            item,
+          })
+          return
         }
+        const day = localDayKey(entry.createdAt) || ''
+        const key = byDay
+          ? `${day}:${subject}:${String(item.questionId)}`
+          : `${subject}:${String(item.questionId)}`
+        if (seen.has(key)) return
+        seen.add(key)
+        visit({
+          subject,
+          questionId: String(item.questionId),
+          correct: Boolean(item.correct),
+          createdAt: entry.createdAt,
+          elapsed: item.elapsed,
+          domain: item.domain || null,
+          source: 'set',
+          entry,
+          item,
+        })
       })
-      if (!itemTimeCount && isValidStatNumber(entry.elapsed) && entry.elapsed > 0) {
-        timeSum += entry.elapsed
-        timeCount += items.length
-      } else {
-        timeCount += itemTimeCount
+      return
+    }
+
+    // Legacy set summary without per-question items — no id-level dedupe possible.
+    visit({
+      subject,
+      questionId: null,
+      correct: null,
+      createdAt: entry.createdAt,
+      elapsed: entry.elapsed,
+      domain: null,
+      source: 'set-bulk',
+      entry,
+      bulkCorrect: Number(entry.correct) || 0,
+      bulkTotal: Number(entry.total) || Number(entry.answered) || 0,
+    })
+  })
+}
+
+/** Aggregate accuracy / answered / avg time from progress history for a subject. */
+function deriveSubjectActivityStats(history, subject, { dayKey = null, progress = null } = {}) {
+  let correct = 0
+  let answered = 0
+  let timeSum = 0
+  let timeCount = 0
+
+  forEachUniqueGradedAttempt(history, (row) => {
+    if (row.subject !== subject) return
+    if (dayKey && localDayKey(row.createdAt) !== dayKey) return
+
+    if (row.source === 'set-bulk') {
+      const count = row.bulkTotal || 0
+      if (!count) return
+      answered += count
+      correct += row.bulkCorrect || 0
+      if (isValidStatNumber(row.elapsed) && row.elapsed > 0) {
+        timeSum += row.elapsed
+        timeCount += count
       }
       return
     }
 
-    const count = Number(entry.answered) || Number(entry.total) || 0
-    if (!count) return
-    answered += count
-    correct += Number(entry.correct) || 0
-    if (isValidStatNumber(entry.elapsed) && entry.elapsed > 0) {
-      timeSum += entry.elapsed
-      timeCount += count
+    answered += 1
+    if (row.correct) correct += 1
+    if (isValidStatNumber(row.elapsed) && row.elapsed > 0) {
+      timeSum += row.elapsed
+      timeCount += 1
     }
-  })
+  }, { byDay: Boolean(dayKey) })
+
+  // Keep progress arg accepted for call-site compatibility (unique history is source of truth).
+  void progress
 
   return {
     answered,
@@ -221,7 +279,8 @@ function getProgressRangeBounds(mode, customFrom, customTo) {
     const customEnd = customTo ? endOfLocalDay(`${customTo}T12:00:00`) : end
     let dayCount = null
     if (start && customEnd) {
-      dayCount = Math.max(1, Math.round((customEnd - start) / 86400000) + 1)
+      const endDay = startOfLocalDay(customEnd)
+      dayCount = Math.max(1, Math.round((endDay - start) / 86400000) + 1)
     }
     return { start, end: customEnd, dayCount, label: 'Custom range' }
   }
@@ -263,28 +322,30 @@ function buildDailyAccuracySeries(history, bounds, maxDays = 14) {
     byDay.set(key, cur)
   }
 
-  list.forEach((entry) => {
-    if (entry.type === 'set') {
-      const items = entry.items || []
-      if (items.length) {
-        items.forEach((item) => bump(entry.createdAt, item.correct))
-      } else if (isValidStatNumber(entry.correct) && isValidStatNumber(entry.total)) {
-        const key = localDayKey(entry.createdAt)
-        if (!key) return
-        const cur = byDay.get(key) || { correct: 0, total: 0 }
-        cur.correct += entry.correct
-        cur.total += entry.total
-        byDay.set(key, cur)
-      }
-    } else if (entry.type === 'bank') {
-      bump(entry.createdAt, entry.correct)
+  forEachUniqueGradedAttempt(list, (row) => {
+    if (row.source === 'set-bulk') {
+      const key = localDayKey(row.createdAt)
+      if (!key || !row.bulkTotal) return
+      const cur = byDay.get(key) || { correct: 0, total: 0 }
+      cur.correct += row.bulkCorrect || 0
+      cur.total += row.bulkTotal
+      byDay.set(key, cur)
+      return
     }
-  })
+    bump(row.createdAt, row.correct)
+  }, { byDay: true })
 
   const end = bounds?.end ? startOfLocalDay(bounds.end) : startOfLocalDay(new Date())
   let dayCount = bounds?.dayCount
   if (!dayCount) {
-    dayCount = Math.min(maxDays, Math.max(3, byDay.size || 3))
+    const keys = [...byDay.keys()].sort()
+    if (keys.length) {
+      const earliest = startOfLocalDay(`${keys[0]}T12:00:00`)
+      if (earliest) {
+        dayCount = Math.max(3, Math.round((end - earliest) / 86400000) + 1)
+      }
+    }
+    if (!dayCount) dayCount = Math.max(3, byDay.size || 3)
   }
   dayCount = Math.min(dayCount, maxDays)
 
@@ -398,7 +459,7 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
       && String(entry.questionId) === qid,
   )
 
-  // Upsert so re-checks in Question Bank update today's accuracy to match overall progress.
+  // Upsert so re-checks in Question Bank refresh today's activity and match overall progress.
   if (existingIdx >= 0) {
     const prev = history[existingIdx]
     const nextEntry = {
@@ -408,8 +469,12 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
       difficulty: question.difficulty || prev.difficulty || null,
       sub: [question.domain, question.skill || question.topic].filter(Boolean).join(' · ') || prev.sub,
       elapsed: timeSpent ?? prev.elapsed ?? null,
+      createdAt: new Date().toISOString(),
     }
-    const progressHistory = history.map((entry, i) => (i === existingIdx ? nextEntry : entry))
+    const progressHistory = [
+      nextEntry,
+      ...history.filter((_, i) => i !== existingIdx),
+    ]
     const activity = progressHistory.map(historyToActivityItem).slice(0, 40)
     return applyStreakFromHistory({
       ...profile,
@@ -712,6 +777,7 @@ function reconcileBankHistoryWithProgress(profile) {
   const progress = profile.qbankProgress || {}
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
   let changed = false
+  // Only sync bank attempt lines to latest progress. Never rewrite historical practice-set scores.
   const nextHistory = history.map((entry) => {
     if (entry?.type !== 'bank' || entry.questionId == null) return entry
     const row = progress[String(entry.questionId)]
@@ -719,29 +785,6 @@ function reconcileBankHistoryWithProgress(profile) {
     if (Boolean(entry.correct) === row.correct) return entry
     changed = true
     return { ...entry, correct: row.correct }
-  }).map((entry) => {
-    if (entry?.type !== 'set' || !Array.isArray(entry.items) || !entry.items.length) return entry
-    let itemsChanged = false
-    const items = entry.items.map((item) => {
-      if (!item || item.questionId == null || item.correct == null) return item
-      const row = progress[String(item.questionId)]
-      if (!row || row.subject !== entry.subject || typeof row.correct !== 'boolean') return item
-      if (Boolean(item.correct) === row.correct) return item
-      itemsChanged = true
-      return { ...item, correct: row.correct }
-    })
-    if (!itemsChanged) return entry
-    changed = true
-    const correctCount = items.filter((item) => item && item.correct).length
-    const answeredCount = items.filter((item) => item && item.correct != null).length
-    return {
-      ...entry,
-      items,
-      correct: correctCount,
-      answered: answeredCount,
-      total: answeredCount,
-      accuracy: answeredCount ? Math.round((correctCount / answeredCount) * 100) : entry.accuracy,
-    }
   })
   if (!changed) return profile
   return applyStreakFromHistory({
@@ -836,9 +879,17 @@ export default function App() {
     [profiles, activeId]
   )
 
-  const persistProfiles = (next) => {
-    setProfiles(next)
-    saveProfiles(next)
+  const persistProfiles = (nextOrUpdater) => {
+    if (typeof nextOrUpdater === 'function') {
+      setProfiles((prev) => {
+        const next = nextOrUpdater(prev)
+        saveProfiles(next)
+        return next
+      })
+      return
+    }
+    setProfiles(nextOrUpdater)
+    saveProfiles(nextOrUpdater)
   }
 
   const openProfile = (profile) => {
@@ -938,7 +989,7 @@ export default function App() {
               onUpdateProfile={updateProfile}
               onDeleteProfile={deleteProfile}
               onCompleteQuestion={(question, answer, subject, meta) => {
-                persistProfiles(profiles.map((p) => {
+                persistProfiles((prev) => prev.map((p) => {
                   if (p.id !== activeId) return p
                   let next = p
                   // Generated practice sets defer progress until the session ends.
@@ -954,7 +1005,7 @@ export default function App() {
                 }))
               }}
               onCompleteSession={(payload) => {
-                persistProfiles(profiles.map((p) => (
+                persistProfiles((prev) => prev.map((p) => (
                   p.id === activeId ? applyPracticeSetReport(p, payload) : p
                 )))
               }}
@@ -2001,7 +2052,7 @@ function QuestionBankSubjectPage({
       pools: [...filterPools],
       domain: domains.length === 1 ? domains[0] : `${domains.length} Domains`,
       topic: skills.length === 1 ? skills[0] : `${skills.length} skills`,
-      feedbackMode: 'immediate',
+      feedbackMode: 'confirm',
       source: 'bank',
     })
   }
@@ -3300,7 +3351,17 @@ function countSkillProgress(progress, subject, domain, skill, questionIds) {
   }
 }
 
-function shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce = [], questionTimes = [], wrongAttempts = []) {
+function shuffleSessionUnanswered(
+  questions,
+  answers,
+  eliminated,
+  index,
+  missedOnce = [],
+  questionTimes = [],
+  wrongAttempts = [],
+  answerConfirmed = [],
+  pendingSelections = [],
+) {
   const answeredIdx = []
   const unansweredIdx = []
   questions.forEach((_, i) => {
@@ -3318,6 +3379,8 @@ function shuffleSessionUnanswered(questions, answers, eliminated, index, missedO
   const nextMissedOnce = order.map((i) => Boolean(missedOnce[i]))
   const nextQuestionTimes = order.map((i) => Number(questionTimes[i]) || 0)
   const nextWrongAttempts = order.map((i) => (wrongAttempts[i] ? [...wrongAttempts[i]] : []))
+  const nextAnswerConfirmed = order.map((i) => Boolean(answerConfirmed[i]))
+  const nextPendingSelections = order.map((i) => (pendingSelections[i] == null ? null : pendingSelections[i]))
   // If the current question is already answered, stay on it. Otherwise keep the same
   // slot index so the visible question changes with the shuffle (following the old id
   // would leave the same stem on screen and feel like shuffle did nothing).
@@ -3334,6 +3397,8 @@ function shuffleSessionUnanswered(questions, answers, eliminated, index, missedO
     missedOnce: nextMissedOnce,
     questionTimes: nextQuestionTimes,
     wrongAttempts: nextWrongAttempts,
+    answerConfirmed: nextAnswerConfirmed,
+    pendingSelections: nextPendingSelections,
     index: nextIndex,
   }
 }
@@ -3343,7 +3408,6 @@ function PracticeQuestionBankMenu({
   index,
   answers,
   missedOnce = [],
-  revealResults = true,
   onJump,
   onShuffleUnanswered,
 }) {
@@ -3373,8 +3437,8 @@ function PracticeQuestionBankMenu({
     const mapped = questions.map((question, i) => {
       const answer = answers[i]
       const answered = !(answer == null || answer === '')
-      const correct = revealResults ? isAnswerCorrect(question, answer) : null
-      const retried = revealResults && Boolean(missedOnce[i]) && correct === true
+      const correct = answered ? isAnswerCorrect(question, answer) : null
+      const retried = Boolean(missedOnce[i]) && correct === true
       return {
         i,
         n: question.bankNumber || question.practiceIndex || (i + 1),
@@ -3389,7 +3453,7 @@ function PracticeQuestionBankMenu({
     const answeredItems = mapped.filter((item) => item.answered)
     const unanswered = mapped.filter((item) => !item.answered)
     return [...answeredItems, ...unanswered]
-  }, [questions, answers, missedOnce, groupAnswered, revealResults])
+  }, [questions, answers, missedOnce, groupAnswered])
 
   return (
     <div className={`practice-qbank ${open ? 'open' : ''}`} ref={wrapRef}>
@@ -3430,31 +3494,20 @@ function PracticeQuestionBankMenu({
           </div>
 
           <div className="practice-qbank-legend">
-            {revealResults ? (
-              <>
-                <span><i className="leg-correct" /><em>Correct</em></span>
-                <span><i className="leg-incorrect" /><em>Incorrect</em></span>
-                <span><i className="leg-retry" /><em>Correct (incorrect attempts)</em></span>
-              </>
-            ) : (
-              <>
-                <span><i className="leg-answered" /><em>Answered</em></span>
-                <span><i className="leg-unanswered" /><em>Unanswered</em></span>
-              </>
-            )}
+            <span><i className="leg-correct" /><em>Correct</em></span>
+            <span><i className="leg-incorrect" /><em>Incorrect</em></span>
+            <span><i className="leg-retry" /><em>Correct (incorrect attempts)</em></span>
           </div>
 
           <div className="practice-qbank-grid">
             {items.map((item) => {
-              const status = !revealResults
-                ? (item.answered ? 'answered' : 'unanswered')
-                : item.retried
-                  ? 'retry'
-                  : item.correct === true
-                    ? 'correct'
-                    : item.correct === false
-                      ? 'incorrect'
-                      : 'unanswered'
+              const status = item.retried
+                ? 'retry'
+                : item.correct === true
+                  ? 'correct'
+                  : item.correct === false
+                    ? 'incorrect'
+                    : 'unanswered'
               return (
                 <button
                   key={item.i}
@@ -3797,6 +3850,17 @@ function isRomanStatementLine(line) {
   return /^(I{1,3}|IV|VI{0,3}|IX|X+)\.\s+\S/.test(String(line || '').trim())
 }
 
+/** Hyphenated English appositions/compounds — not math subtraction (e.g. Neolithic-period, grid-cell). */
+function isProseDashExpression(text) {
+  const t = String(text || '').trim()
+  if (!t) return false
+  if (/[+=*/^×÷·]/.test(t)) return false
+  if (/\d/.test(t)) return false
+  if (!/[-−–—]/.test(t)) return false
+  // Both sides of the dash should be alphabetic words (ASCII or Latin-extended).
+  return /[\p{L}]{2,}\s*[-−–—]\s*[\p{L}]{2,}/u.test(t)
+}
+
 function extractInlineMathSegments(text) {
   const s = String(text ?? '')
   // Don't math-ify transcribed table blocks.
@@ -3863,6 +3927,8 @@ function extractInlineMathSegments(text) {
         const start = m.index
         const end = start + m[0].length
         if (!m[0].trim()) continue
+        // Hyphenated English (appositions, compound words) is not subtraction.
+        if (isProseDashExpression(m[0])) continue
         hits.push({ start, end, text: m[0] })
         // Guard against zero-length matches
         if (m[0].length === 0) re.lastIndex += 1
@@ -3911,13 +3977,34 @@ function renderProseWithMath(text) {
   return nodes
 }
 
+/** Render College Board underlined spans stored as <u>...</u> in question JSON. */
+function renderTextWithUnderlines(text, { withMath = true } = {}) {
+  const raw = String(text ?? '')
+  if (!raw) return null
+  const renderChunk = (chunk) => (withMath ? renderProseWithMath(chunk) : chunk)
+  if (!/<u[\s>]/i.test(raw)) return renderChunk(raw)
+  const parts = raw.split(/(<u>[\s\S]*?<\/u>)/gi)
+  return parts.map((part, i) => {
+    const match = part.match(/^<u>([\s\S]*?)<\/u>$/i)
+    if (match) {
+      return (
+        <u key={`u${i}`} className="sat-underline">
+          {renderChunk(match[1])}
+        </u>
+      )
+    }
+    return <span key={`t${i}`}>{renderChunk(part)}</span>
+  })
+}
+
 /** Style leftover numbers / single-letter variables in prose (explanations, prompts). */
 function wrapMathTokens(text) {
   const raw = String(text ?? '')
   if (!raw) return null
   // Numbers (incl. thousands / decimals / %); lowercase vars b–z; π.
-  // Skip lone "a" (article) and A–D after "Choice ".
-  const re = /(\d{1,3}(?:,\d{3})+(?:\.\d+)?%?|\d+(?:\.\d+)?%?|π|(?<![A-Za-z])[b-z](?![A-Za-z]))/g
+  // Skip lone "a" (article). Treat any Unicode letter as a letter so names like
+  // Çayönü don't get carved into math-var spans on their ASCII characters.
+  const re = /(\d{1,3}(?:,\d{3})+(?:\.\d+)?%?|\d+(?:\.\d+)?%?|π|(?<!\p{L})[b-z](?!\p{L}))/gu
   const nodes = []
   let last = 0
   let m
@@ -4191,9 +4278,16 @@ function MathReferenceModal({ open, onClose }) {
 }
 
 
+function normalizePdfAssetPath(pdf) {
+  return String(pdf || '')
+    .replace(/\.\s+(pdf|png|jpe?g|gif|webp|svg)\b/gi, '.$1')
+    .trim()
+}
+
 function PracticePdfPanel({ pdf, pdfPage, pdfPreview }) {
-  if (!pdfPreview && !(pdf && pdfPage)) return null
-  const fullSrc = pdf && pdfPage ? `${pdf}#page=${pdfPage}` : null
+  const pdfPath = normalizePdfAssetPath(pdf)
+  if (!pdfPreview && !(pdfPath && pdfPage)) return null
+  const fullSrc = pdfPath && pdfPage ? `${pdfPath}#page=${pdfPage}` : null
   return (
     <div className="practice-pdf-inline">
       <div className="practice-pdf-inline-bar">
@@ -4231,8 +4325,9 @@ function PracticePdfPanel({ pdf, pdfPage, pdfPreview }) {
 
 /** Full PDF page iframe (used by Reading — no cropped preview). */
 function PracticePdfFramePanel({ pdf, pdfPage, tone = 'math' }) {
-  if (!pdf || !pdfPage) return null
-  const src = `${pdf}#page=${pdfPage}`
+  const pdfPath = normalizePdfAssetPath(pdf)
+  if (!pdfPath || !pdfPage) return null
+  const src = `${pdfPath}#page=${pdfPage}`
   const outlineClass = tone === 'reading'
     ? 'practice-outline-btn compact reading-outline-btn'
     : 'practice-outline-btn compact'
@@ -4338,14 +4433,14 @@ function PracticeEndConfirmModal({ open, unansweredCount, total, onCancel, onCon
   )
 }
 
-function renderPromptLine(line, equations) {
+function renderPromptLine(line, equations, { withMath = true } = {}) {
   const raw = String(line)
   if (/\{\{eq:\d+\}\}/.test(raw)) {
     const parts = raw.split(/\{\{eq:(\d+)\}\}/)
     const nodes = []
     for (let i = 0; i < parts.length; i += 1) {
       if (i % 2 === 0) {
-        if (parts[i]) nodes.push(<span key={`t${i}`}>{renderProseWithMath(parts[i])}</span>)
+        if (parts[i]) nodes.push(<span key={`t${i}`}>{renderTextWithUnderlines(parts[i], { withMath })}</span>)
       } else {
         const src = equations[Number(parts[i])]
         if (src) {
@@ -4357,10 +4452,10 @@ function renderPromptLine(line, equations) {
     }
     return nodes
   }
-  if (looksLikeEquation(raw)) {
+  if (withMath && looksLikeEquation(raw)) {
     return <KatexHtml latex={asciiToLatex(raw, { display: true })} display />
   }
-  return renderProseWithMath(raw)
+  return renderTextWithUnderlines(raw, { withMath })
 }
 
 /** If OCR split the italic source mid-sentence into the passage, rejoin it. */
@@ -4482,6 +4577,8 @@ function parsePassageSections(passage) {
 function PassageSections({ passage, className = '' }) {
   const sections = parsePassageSections(passage)
   if (!sections.length) return null
+  // Reading passages are prose — never run KaTeX / math-token heuristics on them.
+  const render = (text) => renderTextWithUnderlines(text, { withMath: false })
 
   return (
     <div className={className || undefined}>
@@ -4489,10 +4586,10 @@ function PassageSections({ passage, className = '' }) {
         if (section.type === 'notes') {
           return (
             <div key={i} className="practice-passage-notes">
-              <p className="practice-passage-notes-intro">{section.intro}</p>
+              <p className="practice-passage-notes-intro">{render(section.intro)}</p>
               <ul className="practice-passage-notes-list">
                 {section.notes.map((note, j) => (
-                  <li key={j}>{note}</li>
+                  <li key={j}>{render(note)}</li>
                 ))}
               </ul>
             </div>
@@ -4501,7 +4598,7 @@ function PassageSections({ passage, className = '' }) {
         if (section.type === 'intro') {
           return (
             <p key={i} className="practice-passage-intro">
-              {section.text}
+              {render(section.text)}
             </p>
           )
         }
@@ -4509,11 +4606,11 @@ function PassageSections({ passage, className = '' }) {
           return (
             <div key={i} className="practice-passage-text-block">
               <div className="practice-passage-text-label">{section.label}</div>
-              {section.body ? <p>{section.body}</p> : null}
+              {section.body ? <p>{render(section.body)}</p> : null}
             </div>
           )
         }
-        return <p key={i}>{section.text}</p>
+        return <p key={i}>{render(section.text)}</p>
       })}
     </div>
   )
@@ -4690,7 +4787,7 @@ function PracticeTable({ table }) {
   )
 }
 
-function PracticeQuestionBody({ question, hideFigure = false, hidePassage = false }) {
+function PracticeQuestionBody({ question, hideFigure = false, hidePassage = false, withMath = true }) {
   const figure = hideFigure ? null : (question.figure || null)
   const equations = Array.isArray(question.equations) ? question.equations : []
   const passage = hidePassage ? null : question.passage
@@ -4718,14 +4815,14 @@ function PracticeQuestionBody({ question, hideFigure = false, hidePassage = fals
               <p
                 key={i}
                 className={
-                  looksLikeEquation(line)
+                  withMath && looksLikeEquation(line)
                     ? 'practice-eq-line'
                     : isRomanStatementLine(line)
                       ? 'practice-statement-line'
                       : undefined
                 }
               >
-                {renderPromptLine(line, equations)}
+                {renderPromptLine(line, equations, { withMath })}
               </p>
             )
           })}
@@ -4753,26 +4850,32 @@ function PracticeChoiceList({
   locked = false,
   onSelect,
   onEliminate,
+  onCheck,
+  pendingConfirm = false,
   wrongAttempts = [],
   revealCorrect = true,
+  withMath = true,
 }) {
   const showFeedback = Boolean(reveal) && ((selected != null && selected !== '') || wrongAttempts.length > 0)
   const correctIdx = typeof question.answer === 'number' ? question.answer : null
   const choices = question.choices?.length ? question.choices : ['', '', '', '']
   const wrongSet = new Set(wrongAttempts)
+  const showCheck = Boolean(pendingConfirm) && typeof onCheck === 'function'
+  const renderChoiceText = (text) =>
+    withMath ? renderMathText(text, { asEquation: true }) : renderTextWithUnderlines(text, { withMath: false })
 
   return (
     <div className="practice-choices">
       {choices.map((choice, i) => {
         const { image } = normalizeChoice(choice)
         const text = choiceDisplayText(choice)
-        const stacked = text ? splitStackedChoiceEquations(text) : null
+        const stacked = withMath && text ? splitStackedChoiceEquations(text) : null
         const isSelected = selected === i
         const crossed = (eliminated || []).includes(i)
         let state = ''
         if (showFeedback && correctIdx != null) {
           if (revealCorrect && i === correctIdx) state = 'is-correct'
-          else if (wrongSet.has(i) || (isSelected && i !== correctIdx)) state = 'is-wrong'
+          else if (wrongSet.has(i) || (isSelected && i !== correctIdx && !pendingConfirm)) state = 'is-wrong'
         }
         return (
           <div
@@ -4793,18 +4896,32 @@ function PracticeChoiceList({
                   <span className="practice-choice-text practice-choice-stack math-text">
                     {stacked.map((line, li) => (
                       <span key={`${question.id}-${letters[i]}-L${li}`} className="practice-choice-eq-line">
-                        {renderMathText(line, { asEquation: true })}
+                        {renderChoiceText(line)}
                       </span>
                     ))}
                   </span>
                 ) : null}
                 {!stacked && text ? (
-                  <span className="practice-choice-text math-text">{renderMathText(text, { asEquation: true })}</span>
+                  <span className={`practice-choice-text ${withMath ? 'math-text' : ''}`}>{renderChoiceText(text)}</span>
                 ) : null}
                 {!text && image ? <img src={image} alt="" className="practice-choice-image" /> : null}
                 {!text && !image ? <span className="practice-choice-text">{letters[i]}</span> : null}
               </span>
             </button>
+            {showCheck && isSelected ? (
+              <button
+                type="button"
+                className="practice-choice-check"
+                aria-label="Check answer"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onCheck()
+                }}
+              >
+                Check
+              </button>
+            ) : null}
             <button
               type="button"
               className={`practice-choice-x ${crossed ? 'on' : ''}`}
@@ -4859,6 +4976,8 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   })
   const [eliminated, setEliminated] = useState(() => Array(config.count || 0).fill(null).map(() => []))
   const [wrongAttempts, setWrongAttempts] = useState(() => Array(config.count || 0).fill(null).map(() => []))
+  const [answerConfirmed, setAnswerConfirmed] = useState(() => Array(config.count || 0).fill(false))
+  const [pendingSelections, setPendingSelections] = useState(() => Array(config.count || 0).fill(null))
   const [missedOnce, setMissedOnce] = useState(() => Array(config.count || 0).fill(false))
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
@@ -4894,6 +5013,12 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     setAnswers(seeded)
     answersRef.current = seeded
     setEliminated(Array(builtQuestions.length).fill(null).map(() => []))
+    setWrongAttempts(Array(builtQuestions.length).fill(null).map(() => []))
+    setAnswerConfirmed(seeded.map((value, i) => {
+      const q = builtQuestions[i]
+      return value != null && value !== '' && isAnswerCorrect(q, value) === true
+    }))
+    setPendingSelections(Array(builtQuestions.length).fill(null))
     setMissedOnce(Array(builtQuestions.length).fill(false))
     const times = Array(builtQuestions.length).fill(0)
     setQuestionTimes(times)
@@ -4969,7 +5094,9 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   }
 
   const shuffleUnanswered = () => {
-    const next = shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts)
+    const next = shuffleSessionUnanswered(
+      questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts, answerConfirmed, pendingSelections,
+    )
     setSessionQuestions(next.questions)
     setAnswers(next.answers)
     answersRef.current = next.answers
@@ -4978,6 +5105,8 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     setQuestionTimes(next.questionTimes)
     questionTimesRef.current = next.questionTimes
     setWrongAttempts(next.wrongAttempts)
+    setAnswerConfirmed(next.answerConfirmed)
+    setPendingSelections(next.pendingSelections)
     setIndex(next.index)
   }
 
@@ -5010,17 +5139,34 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       ? 3
       : 2
 
+  const confirmMode = feedbackMode === 'confirm' && !reviewMode
   const revealFeedback = feedbackMode === 'immediate' || reviewMode
+    || (confirmMode && (answerConfirmed[index] || (wrongAttempts[index] || []).length > 0))
   const answersLocked = source === 'set' && reviewMode
-  const answered = answers[index] != null && answers[index] !== ''
+  const pendingChoice = confirmMode ? pendingSelections[index] : null
+  const gradedAnswer = answers[index]
+  const selectedAnswer = confirmMode ? (pendingChoice ?? gradedAnswer) : gradedAnswer
+  const answered = selectedAnswer != null && selectedAnswer !== ''
   const wrongTried = wrongAttempts[index] || []
   const choiceCount = Array.isArray(current?.choices) ? current.choices.length : 4
-  const bankGradual = source === 'bank' && feedbackMode === 'immediate' && !reviewMode && current?.type !== 'spr'
+  const bankGradual = source === 'bank'
+    && (feedbackMode === 'immediate' || feedbackMode === 'confirm')
+    && !reviewMode
+    && current?.type !== 'spr'
+  const confirmedHere = !confirmMode || Boolean(answerConfirmed[index])
   const revealCorrect = !bankGradual
-    || isAnswerCorrect(current, answers[index]) === true
+    || (confirmedHere && isAnswerCorrect(current, gradedAnswer) === true)
     || wrongTried.length >= Math.max(0, choiceCount - 1)
   const choicesLocked = answersLocked || (bankGradual && revealCorrect)
-  const verdict = revealFeedback && answered ? isAnswerCorrect(current, answers[index]) : null
+  const pendingConfirm = confirmMode
+    && pendingChoice != null
+    && pendingChoice !== ''
+    && !wrongTried.includes(pendingChoice)
+    && !answersLocked
+    && !(answerConfirmed[index] && isAnswerCorrect(current, gradedAnswer) === true)
+  const verdict = revealFeedback && gradedAnswer != null && gradedAnswer !== '' && !pendingConfirm && confirmedHere
+    ? isAnswerCorrect(current, gradedAnswer)
+    : null
 
   const recordAnswer = (value) => {
     if (choicesLocked) return
@@ -5056,7 +5202,35 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   }
 
   const selectChoice = (choiceIdx) => {
+    if (choicesLocked) return
+    if (confirmMode) {
+      setPendingSelections((prev) => {
+        const next = [...prev]
+        next[index] = choiceIdx
+        return next
+      })
+      return
+    }
     recordAnswer(choiceIdx)
+  }
+
+  const checkAnswer = () => {
+    if (!confirmMode || answersLocked) return
+    const value = pendingSelections[index]
+    if (value == null || value === '') return
+    if (wrongTried.includes(value)) return
+    if (answerConfirmed[index] && isAnswerCorrect(current, gradedAnswer) === true) return
+    recordAnswer(value)
+    setAnswerConfirmed((prev) => {
+      const next = [...prev]
+      next[index] = true
+      return next
+    })
+    setPendingSelections((prev) => {
+      const next = [...prev]
+      next[index] = null
+      return next
+    })
   }
 
   const toggleEliminate = (choiceIdx) => {
@@ -5245,21 +5419,32 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
                   value={answers[index] ?? ''}
                   revealAnswer={revealFeedback}
                   locked={answersLocked}
-                  onSubmit={(value) => recordAnswer(value)}
+                  onSubmit={(value) => {
+                    recordAnswer(value)
+                    if (confirmMode) {
+                      setAnswerConfirmed((prev) => {
+                        const next = [...prev]
+                        next[index] = true
+                        return next
+                      })
+                    }
+                  }}
                 />
               ) : (
                 <PracticeChoiceList
                   question={current}
                   letters={letters}
-                  selected={answers[index]}
+                  selected={selectedAnswer}
                   eliminated={eliminated[index]}
                   feedbackMode={feedbackMode}
                   reveal={revealFeedback}
                   locked={choicesLocked}
                   wrongAttempts={wrongTried}
                   revealCorrect={revealCorrect}
+                  pendingConfirm={pendingConfirm}
                   onSelect={selectChoice}
                   onEliminate={toggleEliminate}
+                  onCheck={checkAnswer}
                 />
               )}
             </>
@@ -5274,14 +5459,13 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
             index={index}
             answers={answers}
             missedOnce={missedOnce}
-            revealResults={revealFeedback}
             onJump={setIndex}
             onShuffleUnanswered={choicesLocked && source === 'set' ? undefined : shuffleUnanswered}
           />
           <button
             type="button"
             className="practice-outline-btn"
-            disabled={bankGradual ? !revealCorrect : (!answered || !revealFeedback)}
+            disabled={bankGradual ? !revealCorrect : (!answered || !revealFeedback || pendingConfirm)}
             onClick={() => setExplainOpen(true)}
           >
             <List size={15} />
@@ -5424,6 +5608,8 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   })
   const [eliminated, setEliminated] = useState(() => Array(config.count || 0).fill(null).map(() => []))
   const [wrongAttempts, setWrongAttempts] = useState(() => Array(config.count || 0).fill(null).map(() => []))
+  const [answerConfirmed, setAnswerConfirmed] = useState(() => Array(config.count || 0).fill(false))
+  const [pendingSelections, setPendingSelections] = useState(() => Array(config.count || 0).fill(null))
   const [missedOnce, setMissedOnce] = useState(() => Array(config.count || 0).fill(false))
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
@@ -5456,6 +5642,12 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     setAnswers(seeded)
     answersRef.current = seeded
     setEliminated(Array(builtQuestions.length).fill(null).map(() => []))
+    setWrongAttempts(Array(builtQuestions.length).fill(null).map(() => []))
+    setAnswerConfirmed(seeded.map((value, i) => {
+      const q = builtQuestions[i]
+      return value != null && value !== '' && isAnswerCorrect(q, value) === true
+    }))
+    setPendingSelections(Array(builtQuestions.length).fill(null))
     setMissedOnce(Array(builtQuestions.length).fill(false))
     const times = Array(builtQuestions.length).fill(0)
     setQuestionTimes(times)
@@ -5530,7 +5722,9 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   }
 
   const shuffleUnanswered = () => {
-    const next = shuffleSessionUnanswered(questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts)
+    const next = shuffleSessionUnanswered(
+      questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts, answerConfirmed, pendingSelections,
+    )
     setSessionQuestions(next.questions)
     setAnswers(next.answers)
     answersRef.current = next.answers
@@ -5539,6 +5733,8 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     setQuestionTimes(next.questionTimes)
     questionTimesRef.current = next.questionTimes
     setWrongAttempts(next.wrongAttempts)
+    setAnswerConfirmed(next.answerConfirmed)
+    setPendingSelections(next.pendingSelections)
     setIndex(next.index)
   }
 
@@ -5571,20 +5767,45 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       ? 3
       : 2
 
+  const confirmMode = feedbackMode === 'confirm' && !reviewMode
   const revealFeedback = feedbackMode === 'immediate' || reviewMode
+    || (confirmMode && (answerConfirmed[index] || (wrongAttempts[index] || []).length > 0))
   const answersLocked = source === 'set' && reviewMode
-  const answered = answers[index] != null && answers[index] !== ''
+  const pendingChoice = confirmMode ? pendingSelections[index] : null
+  const gradedAnswer = answers[index]
+  const selectedAnswer = confirmMode ? (pendingChoice ?? gradedAnswer) : gradedAnswer
+  const answered = selectedAnswer != null && selectedAnswer !== ''
   const wrongTried = wrongAttempts[index] || []
   const choiceCount = Array.isArray(current?.choices) ? current.choices.length : 4
-  const bankGradual = source === 'bank' && feedbackMode === 'immediate' && !reviewMode && current?.type !== 'spr'
+  const bankGradual = source === 'bank'
+    && (feedbackMode === 'immediate' || feedbackMode === 'confirm')
+    && !reviewMode
+    && current?.type !== 'spr'
+  const confirmedHere = !confirmMode || Boolean(answerConfirmed[index])
   const revealCorrect = !bankGradual
-    || isAnswerCorrect(current, answers[index]) === true
+    || (confirmedHere && isAnswerCorrect(current, gradedAnswer) === true)
     || wrongTried.length >= Math.max(0, choiceCount - 1)
   const choicesLocked = answersLocked || (bankGradual && revealCorrect)
-  const verdict = revealFeedback && answered ? isAnswerCorrect(current, answers[index]) : null
+  const pendingConfirm = confirmMode
+    && pendingChoice != null
+    && pendingChoice !== ''
+    && !wrongTried.includes(pendingChoice)
+    && !answersLocked
+    && !(answerConfirmed[index] && isAnswerCorrect(current, gradedAnswer) === true)
+  const verdict = revealFeedback && gradedAnswer != null && gradedAnswer !== '' && !pendingConfirm && confirmedHere
+    ? isAnswerCorrect(current, gradedAnswer)
+    : null
 
   const selectChoice = (choiceIdx) => {
     if (choicesLocked) return
+    if (confirmMode) {
+      setPendingSelections((prev) => {
+        const next = [...prev]
+        next[index] = choiceIdx
+        return next
+      })
+      return
+    }
     setAnswers((prev) => {
       const next = [...prev]
       next[index] = choiceIdx
@@ -5612,6 +5833,51 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       elapsed: currentQuestionElapsed(),
     })
     if (source === 'bank') loggedQuestionsRef.current.add(qid)
+  }
+
+  const checkAnswer = () => {
+    if (!confirmMode || answersLocked) return
+    const choiceIdx = pendingSelections[index]
+    if (choiceIdx == null || choiceIdx === '') return
+    if (wrongTried.includes(choiceIdx)) return
+    if (answerConfirmed[index] && isAnswerCorrect(current, gradedAnswer) === true) return
+    if (!current) return
+    setAnswers((prev) => {
+      const next = [...prev]
+      next[index] = choiceIdx
+      answersRef.current = next
+      return next
+    })
+    if (isAnswerCorrect(current, choiceIdx) === false) {
+      setWrongAttempts((prev) => {
+        const next = prev.map((row) => [...(row || [])])
+        if (!next[index].includes(choiceIdx)) next[index] = [...next[index], choiceIdx]
+        return next
+      })
+      setMissedOnce((prev) => {
+        const next = [...prev]
+        next[index] = true
+        return next
+      })
+    }
+    const qid = String(current.id)
+    onCompleteQuestion?.(current, choiceIdx, 'reading', {
+      source,
+      logHistory: source === 'bank',
+      updateProgress: source === 'bank',
+      elapsed: currentQuestionElapsed(),
+    })
+    if (source === 'bank') loggedQuestionsRef.current.add(qid)
+    setAnswerConfirmed((prev) => {
+      const next = [...prev]
+      next[index] = true
+      return next
+    })
+    setPendingSelections((prev) => {
+      const next = [...prev]
+      next[index] = null
+      return next
+    })
   }
 
   const toggleEliminate = (choiceIdx) => {
@@ -5747,20 +6013,23 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
             </div>
           </div>
 
-          <PracticeQuestionBody question={current} hideFigure hidePassage />
+          <PracticeQuestionBody question={current} hideFigure hidePassage withMath={false} />
 
           <PracticeChoiceList
             question={current}
             letters={letters}
-            selected={answers[index]}
+            selected={selectedAnswer}
             eliminated={eliminated[index]}
             feedbackMode={feedbackMode}
             reveal={revealFeedback}
             locked={choicesLocked}
             wrongAttempts={wrongTried}
             revealCorrect={revealCorrect}
+            pendingConfirm={pendingConfirm}
             onSelect={selectChoice}
             onEliminate={toggleEliminate}
+            onCheck={checkAnswer}
+            withMath={false}
           />
         </div>
       </div>
@@ -5772,14 +6041,13 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
             index={index}
             answers={answers}
             missedOnce={missedOnce}
-            revealResults={revealFeedback}
             onJump={setIndex}
             onShuffleUnanswered={choicesLocked && source === 'set' ? undefined : shuffleUnanswered}
           />
           <button
             type="button"
             className="practice-outline-btn reading-outline-btn"
-            disabled={bankGradual ? !revealCorrect : (!answered || !revealFeedback)}
+            disabled={bankGradual ? !revealCorrect : (!answered || !revealFeedback || pendingConfirm)}
             onClick={() => setExplainOpen(true)}
           >
             <List size={15} />
@@ -5924,7 +6192,7 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
                 )
               ) : (
                 <>
-                  <PracticeQuestionBody question={question} />
+                  <PracticeQuestionBody question={question} withMath={!isReading} />
                   {question.type === 'spr' ? (
                     <SprAnswerInput
                       key={`${question.id}-review`}
@@ -5943,6 +6211,7 @@ function ProgressQuestionReview({ open, subject, questionId, answer, onClose }) 
                       reveal
                       onSelect={() => {}}
                       onEliminate={() => {}}
+                      withMath={!isReading}
                     />
                   )}
                   {question.explanation ? (
@@ -6010,8 +6279,8 @@ function ProgressPage({
   const visibleHistory = historyExpanded ? history : history.slice(0, HISTORY_PREVIEW_COUNT)
   const canExpandHistory = history.length > HISTORY_PREVIEW_COUNT
   const heatDays = rangeBounds.dayCount
-    ? Math.min(30, rangeBounds.dayCount)
-    : 14
+    ? Math.min(90, rangeBounds.dayCount)
+    : (rangeMode === 'all' ? 90 : 14)
   const analytics = useMemo(
     () => deriveProgressAnalytics(history, profile.qbankProgress || {}, {
       heatDays,
@@ -6025,9 +6294,10 @@ function ProgressPage({
   )
   const charge = athenaChargeFromCorrect(dailyCorrect)
 
+  const dailyAccuracyMaxDays = rangeMode === 'all' ? 90 : (rangeBounds.dayCount || 14)
   const dailyAccuracy = useMemo(
-    () => buildDailyAccuracySeries(history, rangeBounds, 14),
-    [history, rangeBounds],
+    () => buildDailyAccuracySeries(history, rangeBounds, dailyAccuracyMaxDays),
+    [history, rangeBounds, dailyAccuracyMaxDays],
   )
 
   const weekDays = useMemo(() => {
@@ -6341,7 +6611,6 @@ function ProgressPage({
 function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   const list = Array.isArray(history) ? history : []
   const sets = list.filter((e) => e.type === 'set')
-  const bank = list.filter((e) => e.type === 'bank')
   const heatSpan = Math.max(1, options.heatDays || 14)
 
   let correct = 0
@@ -6378,55 +6647,59 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     dayTime.set(key, cur)
   }
 
-  sets.forEach((entry) => {
-    const sub = entry.subject === 'math' ? 'math' : 'reading'
-    const items = entry.items || []
-    let itemTimeSum = 0
-    items.forEach((item) => {
-      if (item.correct == null) return
-      if (item.correct) {
-        correct += 1
-        subject[sub].correct += 1
-      } else {
-        incorrect += 1
+  const dayCounts = new Map()
+  // Per-day unique questions → heatmap + study time (time spent still counts each day).
+  forEachUniqueGradedAttempt(list, (row) => {
+    const sub = row.subject
+    if (row.source === 'set-bulk') {
+      if (isValidStatNumber(row.elapsed) && row.elapsed > 0) {
+        addStudySeconds(row.createdAt, sub, row.elapsed)
       }
-      subject[sub].total += 1
-      bumpDomain(item.domain, item.correct)
-      bumpTopic(sub, item.domain, item.correct)
-      if (isValidStatNumber(item.elapsed) && item.elapsed > 0) {
-        times.push(item.elapsed)
-        itemTimeSum += item.elapsed
-        addStudySeconds(entry.createdAt, sub, item.elapsed)
-      }
-    })
-    if (!items.length && isValidStatNumber(entry.correct) && isValidStatNumber(entry.total)) {
-      correct += entry.correct
-      incorrect += Math.max(0, entry.total - entry.correct)
-      subject[sub].correct += entry.correct
-      subject[sub].total += entry.total
+      const key = localDayKey(row.createdAt)
+      if (key && row.bulkTotal) dayCounts.set(key, (dayCounts.get(key) || 0) + row.bulkTotal)
+      return
     }
-    if (!itemTimeSum && isValidStatNumber(entry.elapsed) && entry.elapsed > 0) {
-      addStudySeconds(entry.createdAt, sub, entry.elapsed)
+    if (isValidStatNumber(row.elapsed) && row.elapsed > 0) {
+      times.push(row.elapsed)
+      addStudySeconds(row.createdAt, sub, row.elapsed)
     }
-  })
+    const key = localDayKey(row.createdAt)
+    if (key) dayCounts.set(key, (dayCounts.get(key) || 0) + 1)
+  }, { byDay: true })
 
-  bank.forEach((entry) => {
-    const sub = entry.subject === 'math' ? 'math' : 'reading'
-    if (entry.correct == null) return
-    if (entry.correct) {
+  // Global latest-wins → accuracy totals and topic/domain breakdown (no double-count on retry).
+  forEachUniqueGradedAttempt(list, (row) => {
+    const sub = row.subject
+    if (row.source === 'set-bulk') {
+      correct += row.bulkCorrect || 0
+      incorrect += Math.max(0, (row.bulkTotal || 0) - (row.bulkCorrect || 0))
+      subject[sub].correct += row.bulkCorrect || 0
+      subject[sub].total += row.bulkTotal || 0
+      return
+    }
+    if (row.correct) {
       correct += 1
       subject[sub].correct += 1
     } else {
       incorrect += 1
     }
     subject[sub].total += 1
-    const domainGuess = String(entry.sub || '').split(' · ')[0] || null
-    bumpDomain(domainGuess, entry.correct)
-    bumpTopic(sub, domainGuess, entry.correct)
-    if (isValidStatNumber(entry.elapsed) && entry.elapsed > 0) {
-      times.push(entry.elapsed)
-      addStudySeconds(entry.createdAt, sub, entry.elapsed)
-    }
+    bumpDomain(row.domain, row.correct)
+    bumpTopic(sub, row.domain, row.correct)
+  })
+
+  // Set-level elapsed fallback when items have no timing (unique set entries only).
+  const timedSetIds = new Set()
+  sets.forEach((entry) => {
+    const items = entry.items || []
+    const hasItemTime = items.some((item) => isValidStatNumber(item?.elapsed) && item.elapsed > 0)
+    if (hasItemTime) return
+    if (!isValidStatNumber(entry.elapsed) || entry.elapsed <= 0) return
+    const id = entry.id || entry.createdAt
+    if (timedSetIds.has(id)) return
+    timedSetIds.add(id)
+    const sub = entry.subject === 'math' ? 'math' : 'reading'
+    addStudySeconds(entry.createdAt, sub, entry.elapsed)
   })
 
   // Prefer live qbank domain stats when history has no domain labels yet (all-time only).
@@ -6480,13 +6753,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     math: buildTopicList('math', MATH_DOMAIN_NAMES),
   }
 
-  // Activity heatmap for the selected span
-  const dayCounts = new Map()
-  list.forEach((e) => {
-    const key = localDayKey(e.createdAt)
-    if (!key) return
-    dayCounts.set(key, (dayCounts.get(key) || 0) + 1)
-  })
+  // Activity heatmap: unique graded questions per day
   const heatDays = []
   const today = new Date()
   const todayKey = localDayKey(today)
@@ -7575,6 +7842,25 @@ function AccuracyCard({ profile, onOpen }) {
   const incorrect = Math.max(0, entries.length - correct)
   const accuracy = deriveOverallAccuracy(profile.qbankProgress)
   const hasData = isValidStatNumber(accuracy)
+  const todayKey = localDayKey()
+  const todayStats = useMemo(() => {
+    let todayCorrect = 0
+    let todayTotal = 0
+    forEachUniqueGradedAttempt(profile.progressHistory || [], (row) => {
+      if (localDayKey(row.createdAt) !== todayKey) return
+      if (row.source === 'set-bulk') {
+        todayTotal += row.bulkTotal || 0
+        todayCorrect += row.bulkCorrect || 0
+        return
+      }
+      todayTotal += 1
+      if (row.correct) todayCorrect += 1
+    }, { byDay: true })
+    return {
+      accuracy: todayTotal ? Math.round((todayCorrect / todayTotal) * 100) : null,
+      total: todayTotal,
+    }
+  }, [profile.progressHistory, todayKey])
 
   return (
     <button
@@ -7587,7 +7873,7 @@ function AccuracyCard({ profile, onOpen }) {
       <div className="text-sm font-bold text-athena-navy">Overall Accuracy</div>
       <div className="mt-1 text-[42px] font-bold leading-none text-athena-green">{formatStatPct(accuracy)}</div>
       <div className="mt-2 text-sm text-[#66738c]">
-        Today: {STAT_NA}
+        Today: {todayStats.total ? formatStatPct(todayStats.accuracy) : STAT_NA}
       </div>
       {hasData ? (
         <AccuracyPie correct={correct} incorrect={incorrect} />

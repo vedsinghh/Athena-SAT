@@ -275,7 +275,8 @@ def split_passage_and_prompt(body: str) -> tuple[str, str]:
     stem_starts = (
         "Which choice", "As used in", "The writer", "The student", "Based on",
         "According to", "What is the", "What choice", "Which quotation",
-        "Which finding", "Which statement", "Which of the following", "The text",
+        "Which finding", "Which statement", "Which of the following", "Which detail",
+        "Taken together", "The text",
         "How does", "Why does",
     )
     for i, line in enumerate(lines):
