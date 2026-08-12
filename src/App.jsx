@@ -6,7 +6,7 @@ import {
   ChevronDown, ChevronRight, ClipboardList, Clock, ExternalLink, Filter,
   Flame, FunctionSquare, Highlighter, Home, Import, Lightbulb, List, Pause, Play, PenLine, Radical, Save,
   Settings, Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, XCircle, CheckCircle2, Check,
-  FileText, Vault, Building2, ChevronUp, ListFilter
+  FileText, Vault, Building2, ChevronUp, ListFilter, Info, Flag
 } from 'lucide-react'
 import mathQuestions from './data/mathQuestions.json'
 import readingQuestions from './data/readingQuestions.json'
@@ -141,6 +141,7 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
         createdAt: entry.createdAt,
         elapsed: entry.elapsed,
         domain: String(entry.sub || '').split(' · ')[0] || null,
+        skill: String(entry.sub || '').split(' · ').slice(1).join(' · ').trim() || null,
         source: 'bank',
         entry,
       })
@@ -162,6 +163,7 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
             createdAt: entry.createdAt,
             elapsed: item.elapsed,
             domain: item.domain || null,
+            skill: item.skill || null,
             source: 'set',
             entry,
             item,
@@ -181,6 +183,7 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
           createdAt: entry.createdAt,
           elapsed: item.elapsed,
           domain: item.domain || null,
+          skill: item.skill || null,
           source: 'set',
           entry,
           item,
@@ -253,6 +256,46 @@ function localDayKey(value = new Date()) {
   const m = String(d.getMonth() + 1).padStart(2, '0')
   const day = String(d.getDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
+}
+
+const DAILY_TIPS = [
+  'On Reading, eliminate choices that go beyond the passage — stick to what the text actually supports.',
+  'When two Math answers look close, plug them back into the question instead of re-solving from scratch.',
+  'Flag hard questions early, keep moving, then return with fresh eyes and leftover time.',
+  'For grammar, read the sentence out loud in your head — awkward phrasing often marks the wrong choice.',
+  'On data questions, check units and what the axes actually measure before calculating.',
+  'Treat every “according to the text” question as an evidence hunt: find the line, then pick the match.',
+  'If you’re stuck on Algebra, rewrite the equation cleaner — one careful rearrange beats three rushed guesses.',
+  'Use process of elimination aggressively: crossing out one bad option raises your odds immediately.',
+  'For vocab-in-context, swap each choice into the sentence and keep the one that preserves the author’s tone.',
+  'Don’t leave blanks — a reasoned guess beats an empty answer every time.',
+  'On multi-step Math, jot intermediate results so you don’t lose them mid-solve.',
+  'Skim the question stem before a long passage so you know what to hunt for while reading.',
+  'When a chart and text disagree in your head, trust the labels — reread titles, keys, and footnotes.',
+  'Practice in short focused bursts: fifteen strong questions beat an hour of distracted grinding.',
+  'On Command of Evidence, pick the choice that best supports the claim you just selected — not a related fact.',
+  'Estimate first on word problems. If your answer is wildly off your estimate, you likely misread a detail.',
+  'Save calculator time for messy arithmetic; simple fractions and percents are often faster by hand.',
+  'Transition questions hinge on the relationship between sentences — addition, contrast, cause, or example.',
+  'If two answers both seem right, look for the one that is more precise and fully answers the prompt.',
+  'End each session by reviewing misses: note the trap you fell for so it doesn’t catch you twice.',
+  'Underline the ask in the stem (“which…”, “except”, “most nearly”) so you don’t solve the wrong problem.',
+  'For geometry, sketch even when a figure is given — marking known lengths unlocks the next step.',
+  'On paired Reading questions, lock the first answer with evidence before you look at the second.',
+  'Keep an eye on absolute words like “always” and “never” — they’re often too strong for SAT passages.',
+  'Build Athena charge with accuracy first; rushing for volume usually costs more points than it gains.',
+  'When stuck between two Math forms, convert both to the same format (decimals, fractions, or simplified).',
+  'For Standard English Conventions, check agreement and punctuation across the whole underlined span.',
+  'Use today’s weakest domain for a quick set — targeted practice beats random volume for score gains.',
+]
+
+function dailyTipForDay(dayKey = localDayKey()) {
+  const key = dayKey || localDayKey() || '1970-01-01'
+  let hash = 0
+  for (let i = 0; i < key.length; i += 1) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0
+  }
+  return DAILY_TIPS[hash % DAILY_TIPS.length]
 }
 
 function startOfLocalDay(value = new Date()) {
@@ -1185,6 +1228,8 @@ function PeeringAthena({ pageKey }) {
           // Keep page heroes (Progress / Reading / etc.) clear of peeks.
           if (
             el.classList.contains('progress-summary-card')
+            || el.classList.contains('subject-qbank-shortcut')
+            || el.closest('.subject-qbank-shortcut')
             || el.closest('.progress-hero')
             || el.closest('.math-top')
             || el.closest('.qbank-hero')
@@ -1344,6 +1389,7 @@ function Dashboard({
       shuffle: true,
       feedbackMode: 'deferred',
       source: 'set',
+      pools: [...QUESTION_POOLS],
       excludeIds: [...completedQuestionIds(profile.qbankProgress, 'math')],
       sessionKey: `quick-math-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
@@ -1362,10 +1408,37 @@ function Dashboard({
       shuffle: true,
       feedbackMode: 'deferred',
       source: 'set',
+      pools: [...QUESTION_POOLS],
       excludeIds: [...completedQuestionIds(profile.qbankProgress, 'reading')],
       sessionKey: `quick-reading-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
     setPage('Reading')
+  }
+
+  const launchDomainPractice = (domainName, { count = 10 } = {}) => {
+    if (!domainName) return
+    const subject = MATH_DOMAIN_NAMES.includes(domainName)
+      ? 'math'
+      : READING_DOMAIN_NAMES.includes(domainName)
+        ? 'reading'
+        : null
+    if (!subject) return
+    setQuickLaunch({
+      subject,
+      domains: [domainName],
+      domain: domainName,
+      topic: domainName,
+      difficulty: ['Easy', 'Medium', 'Hard'],
+      difficulties: ['Easy', 'Medium', 'Hard'],
+      pools: [...QUESTION_POOLS],
+      count,
+      shuffle: true,
+      feedbackMode: 'deferred',
+      source: 'set',
+      excludeIds: [...completedQuestionIds(profile.qbankProgress, subject)],
+      sessionKey: `quick-${subject}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    })
+    setPage(subject === 'math' ? 'Math' : 'Reading')
   }
 
   return (
@@ -1482,6 +1555,7 @@ function Dashboard({
             blazeActive={blazeActive}
             blazeEnabled={blazeEnabled}
             onBlazeEnabledChange={setBlazeEnabled}
+            onQuickDomainPractice={launchDomainPractice}
           />
         ) : (
           <PlaceholderPage title={page} onGoDashboard={goDashboard} />
@@ -1636,13 +1710,21 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics 
   const mathAccuracy = accuracyFromEntries(
     Object.values(progress).filter((item) => item.subject === 'math'),
   )
-  const topicAccuracy = useMemo(() => {
+  const accuracyAnalytics = useMemo(() => {
     const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
     return deriveProgressAnalytics(history, progress, {
       heatDays: 14,
       allowQbankFallback: true,
-    }).topicAccuracy
+    })
   }, [profile.progressHistory, progress])
+  const readingSkills = useMemo(
+    () => (accuracyAnalytics.skills || []).filter((s) => READING_DOMAIN_NAMES.includes(s.domain)),
+    [accuracyAnalytics],
+  )
+  const mathSkills = useMemo(
+    () => (accuracyAnalytics.skills || []).filter((s) => MATH_DOMAIN_NAMES.includes(s.domain)),
+    [accuracyAnalytics],
+  )
 
   return (
     <div className="qbank-page">
@@ -1749,8 +1831,20 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics 
         </div>
 
         <div className="progress-topic-grid qbank-topic-grid">
-          <TopicAccuracyCard title="English" domains={topicAccuracy?.reading || []} />
-          <TopicAccuracyCard title="Math" domains={topicAccuracy?.math || []} />
+          <TopicAccuracyCard
+            title="English"
+            domainNames={READING_DOMAIN_NAMES}
+            skills={readingSkills}
+            openFirstDomain={false}
+            rangeLabel="All time"
+          />
+          <TopicAccuracyCard
+            title="Math"
+            domainNames={MATH_DOMAIN_NAMES}
+            skills={mathSkills}
+            openFirstDomain={false}
+            rangeLabel="All time"
+          />
         </div>
       </section>
     </div>
@@ -2373,34 +2467,24 @@ function ReadingPage({
   initialSession = null,
   onInitialSessionConsumed,
 }) {
-  const reading = deriveSubjectStats(
-    profile.qbankProgress,
-    'reading',
-    READING_DOMAIN_NAMES,
-    readingQuestions,
-  )
-  const history = profile.progressHistory || []
-  const overallActivity = deriveSubjectActivityStats(history, 'reading', {
-    progress: profile.qbankProgress,
-  })
-  const todayActivity = deriveSubjectActivityStats(history, 'reading', {
-    dayKey: localDayKey(),
-    progress: profile.qbankProgress,
-  })
-  const domains = reading.domains.map((d) => ({
-    ...d,
-    icon: d.name.includes('Information') ? Lightbulb
-      : d.name.includes('Craft') ? Highlighter
-      : d.name.includes('Expression') ? PenLine
-      : SpellCheck2,
-  }))
-  const [shuffle, setShuffle] = useState(false)
   const [filterDomains, setFilterDomains] = useState(['Information and Ideas'])
   const [filterDifficulties, setFilterDifficulties] = useState(['Medium'])
   const [questionCount, setQuestionCount] = useState('20')
+  const [filterPools, setFilterPools] = useState(() => [...QUESTION_POOLS])
+  const [poolMenuOpen, setPoolMenuOpen] = useState(false)
   const [session, setSession] = useState(() => initialSession || null)
   const [athenaFactOpen, setAthenaFactOpen] = useState(false)
   const athenaFactRef = useRef(null)
+  const poolFilterRef = useRef(null)
+  const [statsRangeMode, setStatsRangeMode] = useState('3d')
+
+  const {
+    weakestDomain,
+    attemptsLabel: weakestAttemptsLabel,
+    skills: rangedSkills,
+    domains: rangedDomains,
+  } = useSubjectRangeStats(profile, 'reading', READING_DOMAIN_NAMES, statsRangeMode)
+  const availablePools = useMemo(() => availableQuestionPools(readingQuestions), [])
 
   useEffect(() => {
     if (!initialSession) return undefined
@@ -2427,6 +2511,24 @@ function ReadingPage({
     }
   }, [athenaFactOpen])
 
+  useEffect(() => {
+    if (!poolMenuOpen) return undefined
+    const onPointerDown = (e) => {
+      if (poolFilterRef.current && !poolFilterRef.current.contains(e.target)) {
+        setPoolMenuOpen(false)
+      }
+    }
+    const onKey = (e) => {
+      if (e.key === 'Escape') setPoolMenuOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [poolMenuOpen])
+
   const toggleDomain = (name) => {
     setFilterDomains((prev) => {
       if (prev.includes(name)) {
@@ -2447,41 +2549,15 @@ function ReadingPage({
     })
   }
 
-  const stats = [
-    {
-      label: 'Accuracy',
-      value: formatStatPct(reading.accuracy),
-      sub: isValidStatNumber(todayActivity.accuracy)
-        ? `${todayActivity.accuracy}% today`
-        : 'N/A today',
-      icon: <Target size={18} />,
-      tone: 'purple',
-    },
-    {
-      label: 'Questions Answered',
-      value: reading.answered,
-      sub: `${todayActivity.answered} today`,
-      icon: <ClipboardList size={18} />,
-      tone: 'blue',
-    },
-    {
-      label: 'Avg. Time / Question',
-      value: formatAvgTime(overallActivity.avgTimeSec),
-      sub: isValidStatNumber(todayActivity.avgTimeSec)
-        ? `${formatAvgTime(todayActivity.avgTimeSec)} today`
-        : 'N/A today',
-      icon: <Clock size={18} />,
-      tone: 'green',
-    },
-    {
-      label: 'Weakest Domain',
-      value: reading.weakestDomain || 'Not enough data',
-      sub: reading.weakestDomain ? 'Improve here!' : 'Need attempts in 2+ domains',
-      icon: <AlertTriangle size={18} />,
-      tone: 'danger',
-      compact: true,
-    },
-  ]
+  const togglePool = (pool) => {
+    setFilterPools((prev) => {
+      if (prev.includes(pool)) {
+        if (prev.length === 1) return prev
+        return prev.filter((p) => p !== pool)
+      }
+      return [...prev, pool]
+    })
+  }
 
   const startPractice = () => {
     const primary = filterDomains[0] || 'Information and Ideas'
@@ -2491,12 +2567,31 @@ function ReadingPage({
       topic: filterDomains.length > 1 ? filterDomains.join(' · ') : primary,
       difficulty: [...filterDifficulties],
       difficulties: [...filterDifficulties],
+      pools: [...filterPools],
       count: Number(questionCount) || 20,
-      shuffle: Boolean(shuffle),
+      shuffle: true,
       feedbackMode: 'deferred',
       source: 'set',
       excludeIds: [...completedQuestionIds(profile.qbankProgress, 'reading')],
       sessionKey: `reading-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    })
+  }
+
+  const startQuickDomainPractice = (domainName, count = 10) => {
+    if (!domainName) return
+    setSession({
+      domains: [domainName],
+      domain: domainName,
+      topic: domainName,
+      difficulty: ['Easy', 'Medium', 'Hard'],
+      difficulties: ['Easy', 'Medium', 'Hard'],
+      pools: [...filterPools],
+      count,
+      shuffle: true,
+      feedbackMode: 'deferred',
+      source: 'set',
+      excludeIds: [...completedQuestionIds(profile.qbankProgress, 'reading')],
+      sessionKey: `reading-quick-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
   }
 
@@ -2514,7 +2609,7 @@ function ReadingPage({
 
   return (
     <div className="math-page reading-page">
-      <div className="math-shell">
+      <div className="math-shell math-shell-focus">
         <div className="math-primary">
           <div className="reading-athena-layer" ref={athenaFactRef}>
             <div className="math-mascot reading-mascot">
@@ -2578,8 +2673,8 @@ function ReadingPage({
                   <Filter size={20} strokeWidth={2.3} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-athena-navy">Practice with Filters</h3>
-                  <p className="mt-0.5 text-sm text-[#6b7894]">Customize your practice and generate the perfect set of questions.</p>
+                  <h3>Practice with Filters</h3>
+                  <p>Customize your practice and generate the perfect set of questions.</p>
                 </div>
               </div>
 
@@ -2587,18 +2682,18 @@ function ReadingPage({
                 <div className="math-filter-block math-filter-domains">
                   <div className="math-filter-label">1. Domain</div>
                   <div className="math-domain-multi" role="group" aria-label="Domains">
-                    {domains.map((d) => {
-                      const on = filterDomains.includes(d.name)
+                    {READING_DOMAIN_NAMES.map((name) => {
+                      const on = filterDomains.includes(name)
                       return (
                         <button
-                          key={d.name}
+                          key={name}
                           type="button"
                           className={`math-domain-chip reading-chip ${on ? 'on' : ''}`}
                           aria-pressed={on}
-                          onClick={() => toggleDomain(d.name)}
+                          onClick={() => toggleDomain(name)}
                         >
                           {on && <Check size={13} strokeWidth={2.6} />}
-                          <span>{d.name}</span>
+                          <span>{name}</span>
                         </button>
                       )
                     })}
@@ -2641,20 +2736,17 @@ function ReadingPage({
                   <p className="math-filter-hint">Choose how many questions to include.</p>
                 </div>
 
-                <div className="math-filter-block math-filter-shuffle">
-                  <div>
-                    <div className="math-filter-label">4. Shuffle Questions</div>
-                    <p className="math-filter-hint">Randomly pull from every domain and difficulty you selected.</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setShuffle((v) => !v)}
-                    className={`math-toggle reading-toggle ${shuffle ? 'on' : ''}`}
-                    aria-pressed={shuffle}
-                    aria-label="Shuffle Questions"
-                  >
-                    <span />
-                  </button>
+                <div className="math-filter-block math-filter-pool" ref={poolFilterRef}>
+                  <div className="math-filter-label">4. Question Bank</div>
+                  <PracticePoolDropdown
+                    accent="reading"
+                    pools={availablePools}
+                    selected={filterPools}
+                    onToggle={togglePool}
+                    open={poolMenuOpen}
+                    onOpenChange={setPoolMenuOpen}
+                  />
+                  <p className="math-filter-hint">Select one or more banks to practice from.</p>
                 </div>
               </div>
 
@@ -2663,52 +2755,17 @@ function ReadingPage({
                 Generate Practice
               </button>
             </div>
-
-            <div className="card math-domains-card">
-              <h3 className="text-lg font-bold text-athena-navy">Accuracy by Domain</h3>
-              <div className="math-domains-list">
-                {domains.map((d) => {
-                  const Icon = d.icon
-                  return (
-                  <div key={d.name} className="math-domain-row">
-                    <div className="math-domain-icon reading-domain-icon">
-                      <Icon size={18} strokeWidth={2.2} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="mb-1.5 flex items-center justify-between gap-3 text-sm">
-                        <span className="min-w-0 truncate font-semibold text-athena-navy">{d.name}</span>
-                        <span className="flex shrink-0 items-center gap-3">
-                          <span className="text-xs font-semibold text-[#7a869e]">{d.done}/{d.total}</span>
-                          <span className="font-bold reading-pct">{formatStatPct(d.pct)}</span>
-                        </span>
-                      </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-[#e8edf5]">
-                        <motion.div
-                          className="h-full rounded-full reading-bar-fill"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${d.pct ?? 0}%` }}
-                          transition={{ duration: 0.8 }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )})}
-              </div>
-            </div>
           </div>
         </div>
 
         <aside className="math-side">
-          {stats.map((s) => (
-            <div key={s.label} className={`card math-stat math-stat-${s.tone}`}>
-              <div className="math-stat-top">
-                <div className={`text-xs font-semibold ${s.tone === 'danger' ? 'text-[#c0352b]' : 'text-[#6b7894]'}`}>{s.label}</div>
-                <div className="math-stat-icon">{s.icon}</div>
-              </div>
-              <div className={`math-stat-value ${s.compact ? 'compact' : ''}`}>{s.value}</div>
-              <div className="math-stat-sub">{s.sub}</div>
-            </div>
-          ))}
+          <SubjectWeakestDomainCard
+            weakestDomain={weakestDomain}
+            onQuickPractice={startQuickDomainPractice}
+            rangeMode={statsRangeMode}
+            onRangeModeChange={setStatsRangeMode}
+            attemptsLabel={weakestAttemptsLabel}
+          />
           <button
             type="button"
             className="card quick-action-btn subject-qbank-shortcut reading"
@@ -2718,6 +2775,16 @@ function ReadingPage({
             <span className="quick-action-label">Reading Question Bank</span>
           </button>
         </aside>
+      </div>
+
+      <div className="math-accuracy-below">
+        <SubjectAccuracyBreakdown
+          accent="reading"
+          domains={rangedDomains}
+          skills={rangedSkills}
+          rangeMode={statsRangeMode}
+          onRangeModeChange={setStatsRangeMode}
+        />
       </div>
     </div>
   )
@@ -2731,32 +2798,22 @@ function MathPage({
   initialSession = null,
   onInitialSessionConsumed,
 }) {
-  const math = deriveSubjectStats(
-    profile.qbankProgress,
-    'math',
-    MATH_DOMAIN_NAMES,
-    mathQuestions,
-  )
-  const history = profile.progressHistory || []
-  const overallActivity = deriveSubjectActivityStats(history, 'math', {
-    progress: profile.qbankProgress,
-  })
-  const todayActivity = deriveSubjectActivityStats(history, 'math', {
-    dayKey: localDayKey(),
-    progress: profile.qbankProgress,
-  })
-  const domains = math.domains.map((d) => ({
-    ...d,
-    icon: d.name === 'Algebra' ? FunctionSquare
-      : d.name === 'Advanced Math' ? Radical
-      : d.name.includes('Data') ? BarChart3
-      : Triangle,
-  }))
-  const [shuffle, setShuffle] = useState(false)
   const [filterDomains, setFilterDomains] = useState(['Algebra'])
   const [filterDifficulties, setFilterDifficulties] = useState(['Medium'])
   const [questionCount, setQuestionCount] = useState('20')
+  const [filterPools, setFilterPools] = useState(() => [...QUESTION_POOLS])
+  const [poolMenuOpen, setPoolMenuOpen] = useState(false)
   const [session, setSession] = useState(() => initialSession || null)
+  const poolFilterRef = useRef(null)
+  const [statsRangeMode, setStatsRangeMode] = useState('3d')
+
+  const {
+    weakestDomain,
+    attemptsLabel: weakestAttemptsLabel,
+    skills: rangedSkills,
+    domains: rangedDomains,
+  } = useSubjectRangeStats(profile, 'math', MATH_DOMAIN_NAMES, statsRangeMode)
+  const availablePools = useMemo(() => availableQuestionPools(mathQuestions), [])
 
   useEffect(() => {
     if (!initialSession) return undefined
@@ -2764,6 +2821,24 @@ function MathPage({
     onInitialSessionConsumed?.()
     return undefined
   }, [initialSession, onInitialSessionConsumed])
+
+  useEffect(() => {
+    if (!poolMenuOpen) return undefined
+    const onPointerDown = (e) => {
+      if (poolFilterRef.current && !poolFilterRef.current.contains(e.target)) {
+        setPoolMenuOpen(false)
+      }
+    }
+    const onKey = (e) => {
+      if (e.key === 'Escape') setPoolMenuOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [poolMenuOpen])
 
   const toggleDomain = (name) => {
     setFilterDomains((prev) => {
@@ -2785,41 +2860,15 @@ function MathPage({
     })
   }
 
-  const stats = [
-    {
-      label: 'Accuracy',
-      value: formatStatPct(math.accuracy),
-      sub: isValidStatNumber(todayActivity.accuracy)
-        ? `${todayActivity.accuracy}% today`
-        : 'N/A today',
-      icon: <Target size={18} />,
-      tone: 'green',
-    },
-    {
-      label: 'Questions Answered',
-      value: math.answered,
-      sub: `${todayActivity.answered} today`,
-      icon: <ClipboardList size={18} />,
-      tone: 'blue',
-    },
-    {
-      label: 'Avg. Time / Question',
-      value: formatAvgTime(overallActivity.avgTimeSec),
-      sub: isValidStatNumber(todayActivity.avgTimeSec)
-        ? `${formatAvgTime(todayActivity.avgTimeSec)} today`
-        : 'N/A today',
-      icon: <Clock size={18} />,
-      tone: 'purple',
-    },
-    {
-      label: 'Weakest Domain',
-      value: math.weakestDomain || 'Not enough data',
-      sub: math.weakestDomain ? 'Improve here!' : 'Need attempts in 2+ domains',
-      icon: <AlertTriangle size={18} />,
-      tone: 'danger',
-      compact: true,
-    },
-  ]
+  const togglePool = (pool) => {
+    setFilterPools((prev) => {
+      if (prev.includes(pool)) {
+        if (prev.length === 1) return prev
+        return prev.filter((p) => p !== pool)
+      }
+      return [...prev, pool]
+    })
+  }
 
   const startPractice = () => {
     const primary = filterDomains[0] || 'Algebra'
@@ -2829,12 +2878,31 @@ function MathPage({
       topic: filterDomains.length > 1 ? filterDomains.join(' · ') : (primary === 'Algebra' ? 'Linear Equations' : 'Core Skills'),
       difficulty: [...filterDifficulties],
       difficulties: [...filterDifficulties],
+      pools: [...filterPools],
       count: Number(questionCount) || 20,
-      shuffle: Boolean(shuffle),
+      shuffle: true,
       feedbackMode: 'deferred',
       source: 'set',
       excludeIds: [...completedQuestionIds(profile.qbankProgress, 'math')],
       sessionKey: `math-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    })
+  }
+
+  const startQuickDomainPractice = (domainName, count = 10) => {
+    if (!domainName) return
+    setSession({
+      domains: [domainName],
+      domain: domainName,
+      topic: domainName,
+      difficulty: ['Easy', 'Medium', 'Hard'],
+      difficulties: ['Easy', 'Medium', 'Hard'],
+      pools: [...filterPools],
+      count,
+      shuffle: true,
+      feedbackMode: 'deferred',
+      source: 'set',
+      excludeIds: [...completedQuestionIds(profile.qbankProgress, 'math')],
+      sessionKey: `math-quick-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
   }
 
@@ -2852,7 +2920,7 @@ function MathPage({
 
   return (
     <div className="math-page">
-      <div className="math-shell">
+      <div className="math-shell math-shell-focus">
         <div className="math-primary">
           <div className="math-mascot" aria-hidden="true">
             <img src="/athena-math.png" alt="" className="math-athena" />
@@ -2880,8 +2948,8 @@ function MathPage({
                   <Filter size={20} strokeWidth={2.3} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-athena-navy">Practice with Filters</h3>
-                  <p className="mt-0.5 text-sm text-[#6b7894]">Customize your practice and generate the perfect set of questions.</p>
+                  <h3>Practice with Filters</h3>
+                  <p>Customize your practice and generate the perfect set of questions.</p>
                 </div>
               </div>
 
@@ -2889,18 +2957,18 @@ function MathPage({
                 <div className="math-filter-block math-filter-domains">
                   <div className="math-filter-label">1. Domain</div>
                   <div className="math-domain-multi" role="group" aria-label="Domains">
-                    {domains.map((d) => {
-                      const on = filterDomains.includes(d.name)
+                    {MATH_DOMAIN_NAMES.map((name) => {
+                      const on = filterDomains.includes(name)
                       return (
                         <button
-                          key={d.name}
+                          key={name}
                           type="button"
                           className={`math-domain-chip ${on ? 'on' : ''}`}
                           aria-pressed={on}
-                          onClick={() => toggleDomain(d.name)}
+                          onClick={() => toggleDomain(name)}
                         >
                           {on && <Check size={13} strokeWidth={2.6} />}
-                          <span>{d.name}</span>
+                          <span>{name}</span>
                         </button>
                       )
                     })}
@@ -2943,20 +3011,17 @@ function MathPage({
                   <p className="math-filter-hint">Choose how many questions to include.</p>
                 </div>
 
-                <div className="math-filter-block math-filter-shuffle">
-                  <div>
-                    <div className="math-filter-label">4. Shuffle Questions</div>
-                    <p className="math-filter-hint">Randomly pull from every domain and difficulty you selected.</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setShuffle((v) => !v)}
-                    className={`math-toggle ${shuffle ? 'on' : ''}`}
-                    aria-pressed={shuffle}
-                    aria-label="Shuffle Questions"
-                  >
-                    <span />
-                  </button>
+                <div className="math-filter-block math-filter-pool" ref={poolFilterRef}>
+                  <div className="math-filter-label">4. Question Bank</div>
+                  <PracticePoolDropdown
+                    accent="math"
+                    pools={availablePools}
+                    selected={filterPools}
+                    onToggle={togglePool}
+                    open={poolMenuOpen}
+                    onOpenChange={setPoolMenuOpen}
+                  />
+                  <p className="math-filter-hint">Select one or more banks to practice from.</p>
                 </div>
               </div>
 
@@ -2965,52 +3030,17 @@ function MathPage({
                 Generate Practice
               </button>
             </div>
-
-            <div className="card math-domains-card">
-              <h3 className="text-lg font-bold text-athena-navy">Accuracy by Domain</h3>
-              <div className="math-domains-list">
-                {domains.map((d) => {
-                  const Icon = d.icon
-                  return (
-                  <div key={d.name} className="math-domain-row">
-                    <div className="math-domain-icon">
-                      <Icon size={18} strokeWidth={2.2} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="mb-1.5 flex items-center justify-between gap-3 text-sm">
-                        <span className="min-w-0 truncate font-semibold text-athena-navy">{d.name}</span>
-                        <span className="flex shrink-0 items-center gap-3">
-                          <span className="text-xs font-semibold text-[#7a869e]">{d.done}/{d.total}</span>
-                          <span className="font-bold text-athena-green">{formatStatPct(d.pct)}</span>
-                        </span>
-                      </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-[#e8edf5]">
-                        <motion.div
-                          className="h-full rounded-full bg-athena-green"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${d.pct ?? 0}%` }}
-                          transition={{ duration: 0.8 }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )})}
-              </div>
-            </div>
           </div>
         </div>
 
         <aside className="math-side">
-          {stats.map((s) => (
-            <div key={s.label} className={`card math-stat math-stat-${s.tone}`}>
-              <div className="math-stat-top">
-                <div className={`text-xs font-semibold ${s.tone === 'danger' ? 'text-[#c0352b]' : 'text-[#6b7894]'}`}>{s.label}</div>
-                <div className="math-stat-icon">{s.icon}</div>
-              </div>
-              <div className={`math-stat-value ${s.compact ? 'compact' : ''}`}>{s.value}</div>
-              <div className="math-stat-sub">{s.sub}</div>
-            </div>
-          ))}
+          <SubjectWeakestDomainCard
+            weakestDomain={weakestDomain}
+            onQuickPractice={startQuickDomainPractice}
+            rangeMode={statsRangeMode}
+            onRangeModeChange={setStatsRangeMode}
+            attemptsLabel={weakestAttemptsLabel}
+          />
           <button
             type="button"
             className="card quick-action-btn subject-qbank-shortcut math"
@@ -3020,6 +3050,16 @@ function MathPage({
             <span className="quick-action-label">Math Question Bank</span>
           </button>
         </aside>
+      </div>
+
+      <div className="math-accuracy-below">
+        <SubjectAccuracyBreakdown
+          accent="math"
+          domains={rangedDomains}
+          skills={rangedSkills}
+          rangeMode={statsRangeMode}
+          onRangeModeChange={setStatsRangeMode}
+        />
       </div>
     </div>
   )
@@ -3369,6 +3409,7 @@ function shuffleSessionUnanswered(
   wrongAttempts = [],
   answerConfirmed = [],
   pendingSelections = [],
+  flagged = [],
 ) {
   const answeredIdx = []
   const unansweredIdx = []
@@ -3389,6 +3430,7 @@ function shuffleSessionUnanswered(
   const nextWrongAttempts = order.map((i) => (wrongAttempts[i] ? [...wrongAttempts[i]] : []))
   const nextAnswerConfirmed = order.map((i) => Boolean(answerConfirmed[i]))
   const nextPendingSelections = order.map((i) => (pendingSelections[i] == null ? null : pendingSelections[i]))
+  const nextFlagged = order.map((i) => Boolean(flagged[i]))
   // If the current question is already answered, stay on it. Otherwise keep the same
   // slot index so the visible question changes with the shuffle (following the old id
   // would leave the same stem on screen and feel like shuffle did nothing).
@@ -3407,6 +3449,7 @@ function shuffleSessionUnanswered(
     wrongAttempts: nextWrongAttempts,
     answerConfirmed: nextAnswerConfirmed,
     pendingSelections: nextPendingSelections,
+    flagged: nextFlagged,
     index: nextIndex,
   }
 }
@@ -3416,9 +3459,14 @@ function PracticeQuestionBankMenu({
   index,
   answers,
   missedOnce = [],
+  flagged = [],
+  revealResults = false,
+  showFlags = false,
+  variant = 'bank',
   onJump,
   onShuffleUnanswered,
 }) {
+  const isSet = variant === 'set'
   const [open, setOpen] = useState(false)
   const [groupAnswered, setGroupAnswered] = useState(true)
   const wrapRef = useRef(null)
@@ -3445,32 +3493,35 @@ function PracticeQuestionBankMenu({
     const mapped = questions.map((question, i) => {
       const answer = answers[i]
       const answered = !(answer == null || answer === '')
-      const correct = answered ? isAnswerCorrect(question, answer) : null
-      const retried = Boolean(missedOnce[i]) && correct === true
+      const correct = revealResults && answered ? isAnswerCorrect(question, answer) : null
+      const retried = revealResults && Boolean(missedOnce[i]) && correct === true
       return {
         i,
-        n: question.bankNumber || question.practiceIndex || (i + 1),
+        n: isSet ? (i + 1) : (question.bankNumber || question.practiceIndex || (i + 1)),
         answered,
         correct,
         retried,
+        flagged: Boolean(flagged[i]),
       }
     })
 
-    if (!groupAnswered) return mapped
+    if (isSet || !groupAnswered) return mapped
     // Keep completed / answered at the front; labels keep original bank numbers
     const answeredItems = mapped.filter((item) => item.answered)
     const unanswered = mapped.filter((item) => !item.answered)
     return [...answeredItems, ...unanswered]
-  }, [questions, answers, missedOnce, groupAnswered])
+  }, [questions, answers, missedOnce, flagged, groupAnswered, revealResults, isSet])
+
+  const title = isSet ? 'Practice Set' : 'Question Bank'
 
   return (
     <div className={`practice-qbank ${open ? 'open' : ''}`} ref={wrapRef}>
       {open && (
-        <div className="practice-qbank-panel" role="dialog" aria-label="Question Bank">
+        <div className="practice-qbank-panel" role="dialog" aria-label={title}>
           <div className="practice-qbank-header">
-            <h3>Question Bank</h3>
+            <h3>{title}</h3>
             <div className="practice-qbank-header-actions">
-              {typeof onShuffleUnanswered === 'function' && (
+              {!isSet && typeof onShuffleUnanswered === 'function' ? (
                 <button
                   type="button"
                   className="practice-qbank-group-btn"
@@ -3480,20 +3531,22 @@ function PracticeQuestionBankMenu({
                   <Shuffle size={14} strokeWidth={2.2} />
                   Shuffle
                 </button>
-              )}
-              <button
-                type="button"
-                className={`practice-qbank-group-btn ${groupAnswered ? 'on' : ''}`}
-                aria-pressed={groupAnswered}
-                onClick={() => setGroupAnswered((v) => !v)}
-              >
-                <ListFilter size={14} strokeWidth={2.2} />
-                Group Answered
-              </button>
+              ) : null}
+              {!isSet ? (
+                <button
+                  type="button"
+                  className={`practice-qbank-group-btn ${groupAnswered ? 'on' : ''}`}
+                  aria-pressed={groupAnswered}
+                  onClick={() => setGroupAnswered((v) => !v)}
+                >
+                  <ListFilter size={14} strokeWidth={2.2} />
+                  Group Answered
+                </button>
+              ) : null}
               <button
                 type="button"
                 className="practice-qbank-close"
-                aria-label="Close question bank"
+                aria-label={`Close ${title.toLowerCase()}`}
                 onClick={() => setOpen(false)}
               >
                 <X size={18} strokeWidth={2.2} />
@@ -3502,32 +3555,52 @@ function PracticeQuestionBankMenu({
           </div>
 
           <div className="practice-qbank-legend">
-            <span><i className="leg-correct" /><em>Correct</em></span>
-            <span><i className="leg-incorrect" /><em>Incorrect</em></span>
-            <span><i className="leg-retry" /><em>Correct (incorrect attempts)</em></span>
+            {revealResults ? (
+              <>
+                <span><i className="leg-correct" /><em>Correct</em></span>
+                <span><i className="leg-incorrect" /><em>Incorrect</em></span>
+                <span><i className="leg-retry" /><em>Correct (incorrect attempts)</em></span>
+              </>
+            ) : (
+              <>
+                <span><i className="leg-answered" /><em>Answered</em></span>
+                <span><i className="leg-unanswered" /><em>Unanswered</em></span>
+                {showFlags ? (
+                  <span className="practice-qbank-legend-flag">
+                    <Flag size={12} strokeWidth={2.4} />
+                    <em>Flagged</em>
+                  </span>
+                ) : null}
+              </>
+            )}
           </div>
 
           <div className="practice-qbank-grid">
             {items.map((item) => {
-              const status = item.retried
-                ? 'retry'
-                : item.correct === true
-                  ? 'correct'
-                  : item.correct === false
-                    ? 'incorrect'
-                    : 'unanswered'
+              const status = !revealResults
+                ? (item.answered ? 'answered' : 'unanswered')
+                : item.retried
+                  ? 'retry'
+                  : item.correct === true
+                    ? 'correct'
+                    : item.correct === false
+                      ? 'incorrect'
+                      : 'unanswered'
               return (
                 <button
                   key={item.i}
                   type="button"
-                  className={`practice-qbank-cell ${status} ${item.i === index ? 'current' : ''}`}
+                  className={`practice-qbank-cell ${status} ${item.i === index ? 'current' : ''} ${showFlags && item.flagged ? 'flagged' : ''}`}
                   onClick={() => {
                     onJump(item.i)
                     setOpen(false)
                   }}
                 >
                   {item.n}
-                  {item.retried ? (
+                  {showFlags && item.flagged ? (
+                    <Flag size={10} className="practice-qbank-cell-flag" strokeWidth={2.6} />
+                  ) : null}
+                  {revealResults && item.retried ? (
                     <Check size={10} className="practice-qbank-cell-check" strokeWidth={3} />
                   ) : null}
                 </button>
@@ -3546,6 +3619,84 @@ function PracticeQuestionBankMenu({
         <span>{index + 1} of {questions.length}</span>
         {open ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
       </button>
+    </div>
+  )
+}
+
+function PracticeSetCheckPage({
+  questions,
+  answers,
+  flagged = [],
+  onJump,
+  onBack,
+  onSubmit,
+  tone = 'math',
+}) {
+  const items = questions.map((question, i) => {
+    const answer = answers[i]
+    const answered = !(answer == null || answer === '')
+    return {
+      i,
+      n: i + 1,
+      answered,
+      flagged: Boolean(flagged[i]),
+    }
+  })
+  const answeredCount = items.filter((item) => item.answered).length
+  const unansweredCount = items.length - answeredCount
+  const flaggedCount = items.filter((item) => item.flagged).length
+
+  return (
+    <div className={`practice-check-page ${tone === 'reading' ? 'reading' : ''}`}>
+      <div className="card practice-check-card">
+        <div className="practice-check-head">
+          <h2>Check Your Work</h2>
+          <p>
+            Review every question before submitting. Jump back to any item — flagged and
+            unanswered questions are called out below.
+          </p>
+        </div>
+
+        <div className="practice-check-legend" aria-hidden="true">
+          <span><i className="leg-answered" /><em>Answered</em></span>
+          <span><i className="leg-unanswered" /><em>Unanswered</em></span>
+          <span className="practice-qbank-legend-flag">
+            <Flag size={12} strokeWidth={2.4} />
+            <em>Flagged</em>
+          </span>
+        </div>
+
+        <div className="practice-check-grid" role="list">
+          {items.map((item) => (
+            <button
+              key={item.i}
+              type="button"
+              role="listitem"
+              className={`practice-check-cell ${item.answered ? 'answered' : 'unanswered'} ${item.flagged ? 'flagged' : ''}`}
+              onClick={() => onJump(item.i)}
+              aria-label={`Question ${item.n}${item.answered ? ', answered' : ', unanswered'}${item.flagged ? ', flagged' : ''}`}
+            >
+              <span>{item.n}</span>
+              {item.flagged ? <Flag size={12} className="practice-check-cell-flag" strokeWidth={2.6} /> : null}
+            </button>
+          ))}
+        </div>
+
+        <div className="practice-check-summary">
+          <span><strong>{answeredCount}</strong> answered</span>
+          <span><strong>{unansweredCount}</strong> unanswered</span>
+          <span><strong>{flaggedCount}</strong> flagged</span>
+        </div>
+
+        <div className="practice-check-actions">
+          <button type="button" className="practice-check-back" onClick={onBack}>
+            Back to questions
+          </button>
+          <button type="button" className="practice-check-submit" onClick={onSubmit}>
+            Submit answers
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
@@ -4893,9 +5044,9 @@ function PracticeChoiceList({
             <button
               type="button"
               className="practice-choice-main"
-              disabled={locked || wrongSet.has(i)}
+              disabled={locked || (showFeedback && wrongSet.has(i))}
               onClick={() => {
-                if (!locked && !wrongSet.has(i)) onSelect(i)
+                if (!locked && !(showFeedback && wrongSet.has(i))) onSelect(i)
               }}
             >
               <span className="practice-choice-letter">{letters[i]}</span>
@@ -5013,14 +5164,14 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   const builtQuestions = useMemo(
     () => buildPracticeQuestions(
       config.count,
-      config.shuffle,
+      config.source === 'bank' ? Boolean(config.shuffle) : true,
       config.domains,
       config.difficulties || config.difficulty,
       config.questions,
       config.pools,
       excludeIds,
     ),
-    [config.sessionKey, config.count, config.shuffle, config.domains, config.difficulties, config.difficulty, config.questions, config.pools, excludeIds],
+    [config.sessionKey, config.count, config.shuffle, config.source, config.domains, config.difficulties, config.difficulty, config.questions, config.pools, excludeIds],
   )
   const [sessionQuestions, setSessionQuestions] = useState(null)
   const questions = sessionQuestions || builtQuestions
@@ -5043,10 +5194,12 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   const [answerConfirmed, setAnswerConfirmed] = useState(() => Array(config.count || 0).fill(false))
   const [pendingSelections, setPendingSelections] = useState(() => Array(config.count || 0).fill(null))
   const [missedOnce, setMissedOnce] = useState(() => Array(config.count || 0).fill(false))
+  const [flagged, setFlagged] = useState(() => Array(config.count || 0).fill(false))
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
   const [resultsOpen, setResultsOpen] = useState(false)
   const [endConfirmOpen, setEndConfirmOpen] = useState(false)
+  const [checkPageOpen, setCheckPageOpen] = useState(false)
   const [referenceOpen, setReferenceOpen] = useState(false)
   const [reviewMode, setReviewMode] = useState(false)
   const [elapsed, setElapsed] = useState(0)
@@ -5084,6 +5237,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     }))
     setPendingSelections(Array(builtQuestions.length).fill(null))
     setMissedOnce(Array(builtQuestions.length).fill(false))
+    setFlagged(Array(builtQuestions.length).fill(false))
     const times = Array(builtQuestions.length).fill(0)
     setQuestionTimes(times)
     questionTimesRef.current = times
@@ -5092,6 +5246,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     setPdfOpen(false)
     setResultsOpen(false)
     setEndConfirmOpen(false)
+    setCheckPageOpen(false)
     setReferenceOpen(false)
     setReviewMode(false)
     setElapsed(0)
@@ -5105,7 +5260,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   }, [index])
 
   useEffect(() => {
-    if (paused || reviewMode || endConfirmOpen) return undefined
+    if (paused || reviewMode || endConfirmOpen || checkPageOpen) return undefined
     const id = setInterval(() => {
       setElapsed((t) => {
         const next = t + 1
@@ -5123,7 +5278,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [paused, reviewMode, endConfirmOpen])
+  }, [paused, reviewMode, endConfirmOpen, checkPageOpen])
 
   const currentQuestionElapsed = () => {
     const times = questionTimesRef.current || []
@@ -5153,13 +5308,14 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     setAnswers(finalAnswers)
     reportSetIfNeeded()
     setEndConfirmOpen(false)
+    setCheckPageOpen(false)
     setResultsOpen(true)
     setReviewMode(true)
   }
 
   const shuffleUnanswered = () => {
     const next = shuffleSessionUnanswered(
-      questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts, answerConfirmed, pendingSelections,
+      questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts, answerConfirmed, pendingSelections, flagged,
     )
     setSessionQuestions(next.questions)
     setAnswers(next.answers)
@@ -5171,6 +5327,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
     setWrongAttempts(next.wrongAttempts)
     setAnswerConfirmed(next.answerConfirmed)
     setPendingSelections(next.pendingSelections)
+    setFlagged(next.flagged)
     setIndex(next.index)
   }
 
@@ -5241,14 +5398,16 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       return next
     })
     if (!current) return
-    if (typeof value === 'number' && isAnswerCorrect(current, value) === false) {
+    // Only lock out wrong picks when feedback is live (bank gradual / confirm).
+    // Deferred practice lets students freely change answers until submit.
+    if (feedbackMode !== 'deferred' && typeof value === 'number' && isAnswerCorrect(current, value) === false) {
       setWrongAttempts((prev) => {
         const next = prev.map((row) => [...(row || [])])
         if (!next[index].includes(value)) next[index] = [...next[index], value]
         return next
       })
     }
-    if (isAnswerCorrect(current, value) === false) {
+    if (feedbackMode !== 'deferred' && isAnswerCorrect(current, value) === false) {
       setMissedOnce((prev) => {
         const next = [...prev]
         next[index] = true
@@ -5309,19 +5468,77 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
 
   const handleEnd = () => {
     if (feedbackMode === 'deferred' && !reviewMode) {
-      const unanswered = countUnanswered(questions, answers)
-      if (unanswered > 0) {
-        setEndConfirmOpen(true)
-        return
-      }
-      finishDeferredSet(answers)
+      setCheckPageOpen(true)
       return
     }
     onEnd?.()
   }
 
+  const submitFromCheckPage = () => {
+    const unanswered = countUnanswered(questions, answers)
+    if (unanswered > 0) {
+      setEndConfirmOpen(true)
+      return
+    }
+    finishDeferredSet(answers)
+  }
+
   const confirmEndIncomplete = () => {
     finishDeferredSet(fillUnansweredAsIncorrect(questions, answers))
+  }
+
+  const toggleFlag = () => {
+    if (reviewMode || answersLocked) return
+    setFlagged((prev) => {
+      const next = [...prev]
+      next[index] = !next[index]
+      return next
+    })
+  }
+
+  const setFlagSupport = feedbackMode === 'deferred' && source === 'set' && !reviewMode
+  const isLastQuestion = index >= questions.length - 1
+
+  if (checkPageOpen && setFlagSupport) {
+    return (
+      <div className="practice-page">
+        <div className="practice-topbar">
+          <div className="practice-topic">
+            <div className="practice-topic-domain">{config.domain}</div>
+            <div className="practice-topic-sub">{config.topic || 'Practice set'}</div>
+          </div>
+          <div className="practice-meta-right">
+            <div className="practice-timer">
+              <Clock size={15} />
+              <div>
+                <div className="practice-timer-value">{formatElapsed(elapsed)}</div>
+                <div className="practice-timer-label">Time Elapsed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <PracticeSetCheckPage
+          questions={questions}
+          answers={answers}
+          flagged={flagged}
+          tone="math"
+          onJump={(i) => {
+            setIndex(i)
+            setCheckPageOpen(false)
+          }}
+          onBack={() => setCheckPageOpen(false)}
+          onSubmit={submitFromCheckPage}
+        />
+        <PracticeEndConfirmModal
+          open={endConfirmOpen}
+          unansweredCount={countUnanswered(questions, answers)}
+          total={questions.length}
+          onCancel={() => setEndConfirmOpen(false)}
+          onConfirm={confirmEndIncomplete}
+          tone="math"
+        />
+      </div>
+    )
   }
 
   return (
@@ -5432,6 +5649,17 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
           <div className="practice-q-toolbar">
             <div className="practice-q-left">
               <PracticeQuestionNumber number={index + 1} question={current} />
+              {setFlagSupport ? (
+                <button
+                  type="button"
+                  className={`practice-flag-btn ${flagged[index] ? 'on' : ''}`}
+                  aria-pressed={Boolean(flagged[index])}
+                  onClick={toggleFlag}
+                >
+                  <Flag size={15} strokeWidth={2.3} />
+                  {flagged[index] ? 'Flagged' : 'Mark for Review'}
+                </button>
+              ) : null}
               {verdict != null && (
                 <span className={`practice-verdict ${verdict ? 'ok' : 'bad'}`}>
                   {verdict ? 'Correct' : 'Incorrect'}
@@ -5523,8 +5751,12 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
             index={index}
             answers={answers}
             missedOnce={missedOnce}
+            flagged={flagged}
+            showFlags={setFlagSupport}
+            revealResults={source === 'bank' || reviewMode}
+            variant={source === 'set' ? 'set' : 'bank'}
             onJump={setIndex}
-            onShuffleUnanswered={choicesLocked && source === 'set' ? undefined : shuffleUnanswered}
+            onShuffleUnanswered={source === 'set' || choicesLocked ? undefined : shuffleUnanswered}
           />
           <button
             type="button"
@@ -5548,10 +5780,16 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
           <button
             type="button"
             className="practice-next-btn"
-            disabled={index >= questions.length - 1}
-            onClick={() => setIndex((i) => Math.min(questions.length - 1, i + 1))}
+            disabled={!setFlagSupport && isLastQuestion}
+            onClick={() => {
+              if (isLastQuestion && setFlagSupport) {
+                setCheckPageOpen(true)
+                return
+              }
+              setIndex((i) => Math.min(questions.length - 1, i + 1))
+            }}
           >
-            Next <ChevronRight size={16} />
+            {isLastQuestion && setFlagSupport ? 'Review' : <>Next <ChevronRight size={16} /></>}
           </button>
           <button
             type="button"
@@ -5645,14 +5883,14 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   const builtQuestions = useMemo(
     () => buildReadingQuestions(
       config.count,
-      config.shuffle,
+      config.source === 'bank' ? Boolean(config.shuffle) : true,
       config.domains,
       config.difficulties || config.difficulty,
       config.questions,
       config.pools,
       excludeIds,
     ),
-    [config.sessionKey, config.count, config.shuffle, config.domains, config.difficulties, config.difficulty, config.questions, config.pools, excludeIds],
+    [config.sessionKey, config.count, config.shuffle, config.source, config.domains, config.difficulties, config.difficulty, config.questions, config.pools, excludeIds],
   )
   const [sessionQuestions, setSessionQuestions] = useState(null)
   const questions = sessionQuestions || builtQuestions
@@ -5675,10 +5913,12 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   const [answerConfirmed, setAnswerConfirmed] = useState(() => Array(config.count || 0).fill(false))
   const [pendingSelections, setPendingSelections] = useState(() => Array(config.count || 0).fill(null))
   const [missedOnce, setMissedOnce] = useState(() => Array(config.count || 0).fill(false))
+  const [flagged, setFlagged] = useState(() => Array(config.count || 0).fill(false))
   const [explainOpen, setExplainOpen] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
   const [resultsOpen, setResultsOpen] = useState(false)
   const [endConfirmOpen, setEndConfirmOpen] = useState(false)
+  const [checkPageOpen, setCheckPageOpen] = useState(false)
   const [reviewMode, setReviewMode] = useState(false)
   const [elapsed, setElapsed] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -5713,6 +5953,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     }))
     setPendingSelections(Array(builtQuestions.length).fill(null))
     setMissedOnce(Array(builtQuestions.length).fill(false))
+    setFlagged(Array(builtQuestions.length).fill(false))
     const times = Array(builtQuestions.length).fill(0)
     setQuestionTimes(times)
     questionTimesRef.current = times
@@ -5721,6 +5962,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     setPdfOpen(false)
     setResultsOpen(false)
     setEndConfirmOpen(false)
+    setCheckPageOpen(false)
     setReviewMode(false)
     setElapsed(0)
     elapsedRef.current = 0
@@ -5733,7 +5975,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   }, [index])
 
   useEffect(() => {
-    if (paused || reviewMode || endConfirmOpen) return undefined
+    if (paused || reviewMode || endConfirmOpen || checkPageOpen) return undefined
     const id = setInterval(() => {
       setElapsed((t) => {
         const next = t + 1
@@ -5751,7 +5993,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [paused, reviewMode, endConfirmOpen])
+  }, [paused, reviewMode, endConfirmOpen, checkPageOpen])
 
   const currentQuestionElapsed = () => {
     const times = questionTimesRef.current || []
@@ -5781,13 +6023,14 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     setAnswers(finalAnswers)
     reportSetIfNeeded()
     setEndConfirmOpen(false)
+    setCheckPageOpen(false)
     setResultsOpen(true)
     setReviewMode(true)
   }
 
   const shuffleUnanswered = () => {
     const next = shuffleSessionUnanswered(
-      questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts, answerConfirmed, pendingSelections,
+      questions, answers, eliminated, index, missedOnce, questionTimes, wrongAttempts, answerConfirmed, pendingSelections, flagged,
     )
     setSessionQuestions(next.questions)
     setAnswers(next.answers)
@@ -5799,6 +6042,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
     setWrongAttempts(next.wrongAttempts)
     setAnswerConfirmed(next.answerConfirmed)
     setPendingSelections(next.pendingSelections)
+    setFlagged(next.flagged)
     setIndex(next.index)
   }
 
@@ -5877,7 +6121,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       return next
     })
     if (!current) return
-    if (isAnswerCorrect(current, choiceIdx) === false) {
+    if (feedbackMode !== 'deferred' && isAnswerCorrect(current, choiceIdx) === false) {
       setWrongAttempts((prev) => {
         const next = prev.map((row) => [...(row || [])])
         if (!next[index].includes(choiceIdx)) next[index] = [...next[index], choiceIdx]
@@ -5956,19 +6200,77 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
 
   const handleEnd = () => {
     if (feedbackMode === 'deferred' && !reviewMode) {
-      const unanswered = countUnanswered(questions, answers)
-      if (unanswered > 0) {
-        setEndConfirmOpen(true)
-        return
-      }
-      finishDeferredSet(answers)
+      setCheckPageOpen(true)
       return
     }
     onEnd?.()
   }
 
+  const submitFromCheckPage = () => {
+    const unanswered = countUnanswered(questions, answers)
+    if (unanswered > 0) {
+      setEndConfirmOpen(true)
+      return
+    }
+    finishDeferredSet(answers)
+  }
+
   const confirmEndIncomplete = () => {
     finishDeferredSet(fillUnansweredAsIncorrect(questions, answers))
+  }
+
+  const toggleFlag = () => {
+    if (reviewMode || answersLocked) return
+    setFlagged((prev) => {
+      const next = [...prev]
+      next[index] = !next[index]
+      return next
+    })
+  }
+
+  const setFlagSupport = feedbackMode === 'deferred' && source === 'set' && !reviewMode
+  const isLastQuestion = index >= questions.length - 1
+
+  if (checkPageOpen && setFlagSupport) {
+    return (
+      <div className="practice-page reading-practice">
+        <div className="practice-topbar">
+          <div className="practice-topic">
+            <div className="practice-topic-domain">{config.domain}</div>
+            <div className="practice-topic-sub">{config.topic || 'Practice set'}</div>
+          </div>
+          <div className="practice-meta-right">
+            <div className="practice-timer">
+              <Clock size={15} />
+              <div>
+                <div className="practice-timer-value">{formatElapsed(elapsed)}</div>
+                <div className="practice-timer-label">Time Elapsed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <PracticeSetCheckPage
+          questions={questions}
+          answers={answers}
+          flagged={flagged}
+          tone="reading"
+          onJump={(i) => {
+            setIndex(i)
+            setCheckPageOpen(false)
+          }}
+          onBack={() => setCheckPageOpen(false)}
+          onSubmit={submitFromCheckPage}
+        />
+        <PracticeEndConfirmModal
+          open={endConfirmOpen}
+          unansweredCount={countUnanswered(questions, answers)}
+          total={questions.length}
+          onCancel={() => setEndConfirmOpen(false)}
+          onConfirm={confirmEndIncomplete}
+          tone="reading"
+        />
+      </div>
+    )
   }
 
   return (
@@ -6053,6 +6355,17 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
           <div className="practice-q-toolbar">
             <div className="practice-q-left">
               <PracticeQuestionNumber number={index + 1} question={current} tone="reading" />
+              {setFlagSupport ? (
+                <button
+                  type="button"
+                  className={`practice-flag-btn reading ${flagged[index] ? 'on' : ''}`}
+                  aria-pressed={Boolean(flagged[index])}
+                  onClick={toggleFlag}
+                >
+                  <Flag size={15} strokeWidth={2.3} />
+                  {flagged[index] ? 'Flagged' : 'Mark for Review'}
+                </button>
+              ) : null}
               {verdict != null && (
                 <span className={`practice-verdict ${verdict ? 'ok' : 'bad'}`}>
                   {verdict ? 'Correct' : 'Incorrect'}
@@ -6105,8 +6418,12 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
             index={index}
             answers={answers}
             missedOnce={missedOnce}
+            flagged={flagged}
+            showFlags={setFlagSupport}
+            revealResults={source === 'bank' || reviewMode}
+            variant={source === 'set' ? 'set' : 'bank'}
             onJump={setIndex}
-            onShuffleUnanswered={choicesLocked && source === 'set' ? undefined : shuffleUnanswered}
+            onShuffleUnanswered={source === 'set' || choicesLocked ? undefined : shuffleUnanswered}
           />
           <button
             type="button"
@@ -6130,10 +6447,16 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
           <button
             type="button"
             className="practice-next-btn reading-next-btn"
-            disabled={index >= questions.length - 1}
-            onClick={() => setIndex((i) => Math.min(questions.length - 1, i + 1))}
+            disabled={!setFlagSupport && isLastQuestion}
+            onClick={() => {
+              if (isLastQuestion && setFlagSupport) {
+                setCheckPageOpen(true)
+                return
+              }
+              setIndex((i) => Math.min(questions.length - 1, i + 1))
+            }}
           >
-            Next <ChevronRight size={16} />
+            {isLastQuestion && setFlagSupport ? 'Review' : <>Next <ChevronRight size={16} /></>}
           </button>
           <button
             type="button"
@@ -6305,6 +6628,7 @@ function ProgressPage({
   blazeActive = false,
   blazeEnabled = true,
   onBlazeEnabledChange,
+  onQuickDomainPractice,
 }) {
   const fullHistory = profile.progressHistory || []
   const [rangeMode, setRangeMode] = useState('3d')
@@ -6347,7 +6671,7 @@ function ProgressPage({
   useEffect(() => {
     setHistoryExpanded(false)
   }, [rangeMode, customFrom, customTo])
-  const HISTORY_PREVIEW_COUNT = 5 // collapsed preview
+  const HISTORY_PREVIEW_COUNT = 3 // collapsed preview
   const visibleHistory = historyExpanded ? history : history.slice(0, HISTORY_PREVIEW_COUNT)
   const canExpandHistory = history.length > HISTORY_PREVIEW_COUNT
   const heatDays = rangeBounds.dayCount
@@ -6409,6 +6733,34 @@ function ProgressPage({
         ? 'Nice practice day!'
         : 'Practice once and she lifts the cup.'
 
+  const isTodayRange = rangeMode === 'today'
+  const todayStudyDay = useMemo(() => {
+    const todayKey = localDayKey(new Date())
+    return (analytics.studyDays || []).find((d) => d.key === todayKey)
+      || (analytics.studyDays || [])[(analytics.studyDays || []).length - 1]
+      || { mathSec: 0, readingSec: 0, totalSec: todayStudySec || 0 }
+  }, [analytics.studyDays, todayStudySec])
+  const studyMathSec = todayStudyDay.mathSec || 0
+  const studyReadingSec = todayStudyDay.readingSec || 0
+  const studyTotalSec = todayStudySec || todayStudyDay.totalSec || studyMathSec + studyReadingSec
+  const weakestDomain = useMemo(() => {
+    const ranked = [...(analytics.domains || [])]
+      .filter((d) => d.total > 0 && isValidStatNumber(d.pct))
+      .sort((a, b) => a.pct - b.pct || b.total - a.total)
+    const domain = ranked[0] || null
+    if (!domain) return null
+    const weakestSkill = [...(analytics.skills || [])]
+      .filter((s) => s.domain === domain.name && s.total > 0 && isValidStatNumber(s.pct))
+      .sort((a, b) => a.pct - b.pct || b.total - a.total)[0] || null
+    return { ...domain, weakestSkill }
+  }, [analytics.domains, analytics.skills])
+  const weakestAttemptsLabel = isTodayRange ? 'today' : (rangeBounds.label || 'in range').toLowerCase()
+  const streakMilestone = [3, 7, 14, 30, 60, 100].find((n) => n > streak) || null
+  const streakMilestonePct = streakMilestone
+    ? Math.max(4, Math.min(100, Math.round((streak / streakMilestone) * 100)))
+    : 100
+  const practicedToday = weekDays.some((d) => d.isToday && d.active)
+
   return (
     <div className={`progress-page ${blazeActive ? 'progress-blaze' : ''}`}>
       <header className="progress-hero">
@@ -6421,7 +6773,9 @@ function ProgressPage({
             <p>
               {blazeActive
                 ? 'Athena charge is full — every tile stays on fire until midnight.'
-                : 'Practice set reports, question bank activity, and your study streak.'}
+                : rangeMode === 'today'
+                  ? 'Your practice day at a glance — questions, time, accuracy, and charge.'
+                  : 'Practice set reports, question bank activity, and your study streak.'}
             </p>
           </div>
         </div>
@@ -6464,112 +6818,421 @@ function ProgressPage({
         </div>
       </header>
 
-      <div className="progress-summary">
-        <div className="card progress-summary-card progress-summary-streak">
-          <div className="progress-summary-label">Current Streak</div>
-          <div className="progress-summary-value accent-orange">{streak}<span>days</span></div>
-          <div className="progress-week">
-            {weekDays.map((d) => (
-              <div key={d.key} className={`progress-week-day ${d.active ? 'on' : ''} ${d.isToday ? 'today' : ''}`}>
-                <span>{d.label}</span>
-                <i>{d.active ? '✓' : ''}</i>
+      <>
+        <div className={`progress-summary ${isTodayRange ? 'today-range' : 'range-view'}`}>
+          {isTodayRange ? (
+            <div className="card progress-summary-card progress-summary-streak">
+              <div className="progress-streak-top">
+                <div className="progress-summary-label">
+                  <Flame size={13} strokeWidth={2.2} />
+                  Current streak
+                </div>
+                <div className="progress-summary-value accent-orange">{streak}<span>days</span></div>
+                <div className="progress-week">
+                  {weekDays.map((d) => (
+                    <div key={d.key} className={`progress-week-day ${d.active ? 'on' : ''} ${d.isToday ? 'today' : ''}`}>
+                      <span>{d.label}</span>
+                      <i>{d.active ? '✓' : ''}</i>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
-          <div className="progress-summary-best">
-            Best streak <strong>{displayBest}</strong> day{displayBest === 1 ? '' : 's'}
-          </div>
-        </div>
-        <div className="card progress-summary-card progress-summary-accuracy">
-          <div className="progress-summary-label">
-            <BarChart3 size={13} strokeWidth={2.2} />
-            Daily accuracy
-          </div>
-          <div className="progress-summary-sub progress-summary-range-note">{rangeBounds.label}</div>
-          <ProgressDailyAccuracyChart days={dailyAccuracy} />
-        </div>
-        <div className="progress-summary-corner">
-          <div className="progress-summary-stack">
-            <div className="card progress-summary-card">
-              <div className="progress-summary-label">Total Questions</div>
-              <div className="progress-summary-value">{totalQuestionCount}</div>
-              <div className="progress-summary-breakdown">
-                <span>
-                  <em>Bank questions</em>
-                  {bankQuestionCount}
-                </span>
-                <span>
-                  <em>Practice questions</em>
-                  {practiceSetQuestionCount}
-                </span>
+              <div className="progress-streak-foot">
+                {streakMilestone ? (
+                  <div className="progress-streak-next">
+                    <div className="progress-streak-next-head">
+                      <em>Next milestone</em>
+                      <strong>{streak}/{streakMilestone}</strong>
+                    </div>
+                    <div className="progress-streak-next-bar" aria-hidden="true">
+                      <i style={{ width: `${streakMilestonePct}%` }} />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="progress-streak-next">
+                    <div className="progress-streak-next-head">
+                      <em>Milestone</em>
+                      <strong>Maxed</strong>
+                    </div>
+                  </div>
+                )}
+                <div className="progress-summary-best">
+                  Best streak <strong>{displayBest}</strong> day{displayBest === 1 ? '' : 's'}
+                </div>
+                <div className="progress-streak-note">
+                  {practicedToday
+                    ? 'Practiced today — streak is safe.'
+                    : streak > 0
+                      ? 'Practice today to keep the streak alive.'
+                      : 'Practice once to start a streak.'}
+                </div>
               </div>
             </div>
-            <div className="card progress-summary-card progress-summary-avg-time">
-              <div className="progress-summary-label">Average Time / Question</div>
-              <div className="progress-summary-value">
-                {formatAvgTime(analytics.avgSec)}
+          ) : (
+            <div className="card progress-summary-card progress-summary-accuracy">
+              <div className="progress-summary-label">
+                <BarChart3 size={13} strokeWidth={2.2} />
+                Daily accuracy
               </div>
-              <div className="progress-summary-breakdown">
-                <span>
-                  <em>Reading avg</em>
-                  {formatAvgTime(readingAvgTimeSec)}
-                </span>
-                <span>
-                  <em>Math avg</em>
-                  {formatAvgTime(mathAvgTimeSec)}
-                </span>
-                {rangeMode === 'today' ? (
+              <div className="progress-summary-sub progress-summary-range-note">{rangeBounds.label}</div>
+              <ProgressDailyAccuracyChart days={dailyAccuracy} />
+            </div>
+          )}
+          {isTodayRange ? (
+            <div className="progress-today-mini-grid progress-today-mini-grid-focus" aria-label="Today's study stats">
+              <div className="card progress-summary-card progress-today-mini progress-today-mini-study">
+                <div className="progress-summary-label">
+                  <Clock size={13} strokeWidth={2.2} />
+                  Study time
+                </div>
+                <div className="progress-summary-value">{formatStudyDuration(studyTotalSec)}</div>
+                <div className="progress-summary-breakdown">
                   <span>
-                    <em>Time today</em>
-                    {formatStudyDuration(todayStudySec)}
+                    <em>Math</em>
+                    {formatStudyDuration(studyMathSec)}
                   </span>
+                  <span>
+                    <em>Reading</em>
+                    {formatStudyDuration(studyReadingSec)}
+                  </span>
+                </div>
+                {studyTotalSec > 0 ? (
+                  <div className="progress-today-time-bar" aria-hidden="true">
+                    <i className="math" style={{ width: `${Math.round((studyMathSec / studyTotalSec) * 100)}%` }} />
+                    <i className="reading" style={{ width: `${Math.round((studyReadingSec / studyTotalSec) * 100)}%` }} />
+                  </div>
+                ) : (
+                  <div className="progress-summary-sub">Timed practice will show up here.</div>
+                )}
+              </div>
+
+              <div className="card progress-summary-card progress-today-mini progress-today-mini-charge">
+                <div className="progress-summary-label">
+                  <Flame size={13} strokeWidth={2.2} />
+                  To full charge
+                </div>
+                <div className="progress-summary-value">
+                  {blazeActive || dailyCorrect >= 100 ? '0' : Math.max(0, 100 - dailyCorrect)}
+                </div>
+                <div className="progress-summary-sub">
+                  {blazeActive || dailyCorrect >= 100
+                    ? 'Full blaze until midnight'
+                    : `${dailyCorrect} correct so far`}
+                </div>
+              </div>
+
+              <div className="card progress-summary-card progress-summary-daily-tip progress-today-mini-tip">
+                <div className="progress-summary-label">
+                  <Lightbulb size={13} strokeWidth={2.2} />
+                  Daily tip
+                </div>
+                <p className="progress-daily-tip-text">{dailyTipForDay()}</p>
+              </div>
+
+              <div className="card progress-summary-card progress-today-mini-weakest">
+                <div className="progress-today-weakest-main">
+                  <div className="progress-summary-label">
+                    <ListFilter size={13} strokeWidth={2.2} />
+                    Weakest domain
+                  </div>
+                  {weakestDomain ? (
+                    <>
+                      <div className="progress-summary-value progress-today-domain-name">
+                        {weakestDomain.name}
+                      </div>
+                      <div className="progress-summary-sub">
+                        {formatStatPct(weakestDomain.pct)} · {weakestDomain.total} attempt{weakestDomain.total === 1 ? '' : 's'} {weakestAttemptsLabel}
+                      </div>
+                      {weakestDomain.weakestSkill ? (
+                        <div className="progress-today-weakest-skill">
+                          <em>Weakest topic</em>
+                          <strong>{weakestDomain.weakestSkill.name}</strong>
+                          <span>
+                            {formatStatPct(weakestDomain.weakestSkill.pct)} · {weakestDomain.weakestSkill.total} attempt{weakestDomain.weakestSkill.total === 1 ? '' : 's'}
+                          </span>
+                        </div>
+                      ) : null}
+                    </>
+                  ) : (
+                    <>
+                      <div className="progress-summary-value progress-today-domain-name">—</div>
+                      <div className="progress-summary-sub">Practice more domains to unlock a focus target</div>
+                    </>
+                  )}
+                </div>
+                <div className="progress-today-weakest-actions">
+                  <span className="progress-today-weakest-actions-label">
+                    {weakestDomain?.name
+                      ? `Quick practice · ${weakestDomain.name}`
+                      : 'Quick practice'}
+                  </span>
+                  <div className="progress-today-weakest-btns">
+                    <button
+                      type="button"
+                      className="progress-today-practice-btn"
+                      disabled={!weakestDomain}
+                      onClick={() => onQuickDomainPractice?.(weakestDomain?.name, { count: 5 })}
+                    >
+                      <Sparkles size={14} strokeWidth={2.2} />
+                      5 questions
+                    </button>
+                    <button
+                      type="button"
+                      className="progress-today-practice-btn"
+                      disabled={!weakestDomain}
+                      onClick={() => onQuickDomainPractice?.(weakestDomain?.name, { count: 10 })}
+                    >
+                      <ClipboardList size={14} strokeWidth={2.2} />
+                      10 questions
+                    </button>
+                    <button
+                      type="button"
+                      className="progress-today-practice-btn primary"
+                      disabled={!weakestDomain}
+                      onClick={() => onQuickDomainPractice?.(weakestDomain?.name, { count: 15 })}
+                    >
+                      <Target size={14} strokeWidth={2.2} />
+                      15-question set
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="card progress-summary-card progress-summary-total progress-today-mini-total">
+                <div className="progress-summary-label">
+                  <ClipboardList size={13} strokeWidth={2.2} />
+                  Total questions
+                </div>
+                <div className="progress-summary-value">{totalQuestionCount}</div>
+                {totalQuestionCount > 0 ? (
+                  <div className="progress-total-bar" aria-hidden="true">
+                    <i
+                      className="bank"
+                      style={{ width: `${Math.round((bankQuestionCount / totalQuestionCount) * 100)}%` }}
+                    />
+                    <i
+                      className="practice"
+                      style={{ width: `${Math.round((practiceSetQuestionCount / totalQuestionCount) * 100)}%` }}
+                    />
+                  </div>
                 ) : null}
+                <div className="progress-total-stats">
+                  <span className="bank">
+                    <em>Bank</em>
+                    <strong>{bankQuestionCount}</strong>
+                  </span>
+                  <span className="practice">
+                    <em>Practice</em>
+                    <strong>{practiceSetQuestionCount}</strong>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="progress-athena" aria-label={`Athena: ${athenaCheer}`}>
-            <motion.div
-              className="progress-athena-bubble"
-              initial={{ opacity: 0, y: 8, scale: 0.92, x: '-50%' }}
-              animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
-              transition={{ delay: 0.25, duration: 0.45, ease: 'easeOut' }}
-            >
-              {athenaCheer}
-            </motion.div>
-            <motion.img
-              src="/athena-progress.png"
-              alt=""
-              className="progress-athena-img"
-              draggable={false}
-              initial={{ opacity: 0, y: 28, rotate: -4 }}
-              animate={{
-                opacity: 1,
-                y: [0, -10, 0],
-                rotate: [-2, 2, -2],
-              }}
-              transition={{
-                opacity: { duration: 0.5, ease: 'easeOut' },
-                y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
-                rotate: { duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
-              }}
-            />
-            <span className="progress-athena-spark s1" aria-hidden="true" />
-            <span className="progress-athena-spark s2" aria-hidden="true" />
-            <span className="progress-athena-spark s3" aria-hidden="true" />
-          </div>
+          ) : null}
+          {isTodayRange ? (
+            <div className="progress-athena progress-athena-tile" aria-label={`Athena: ${athenaCheer}`}>
+              <motion.div
+                className="progress-athena-bubble"
+                initial={{ opacity: 0, y: 8, scale: 0.92, x: '-50%' }}
+                animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
+                transition={{ delay: 0.25, duration: 0.45, ease: 'easeOut' }}
+              >
+                {athenaCheer}
+              </motion.div>
+              <motion.img
+                src="/athena-progress.png"
+                alt=""
+                className="progress-athena-img"
+                draggable={false}
+                initial={{ opacity: 0, y: 28, rotate: -4 }}
+                animate={{
+                  opacity: 1,
+                  y: [0, -10, 0],
+                  rotate: [-2, 2, -2],
+                }}
+                transition={{
+                  opacity: { duration: 0.5, ease: 'easeOut' },
+                  y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
+                  rotate: { duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
+                }}
+              />
+              <span className="progress-athena-spark s1" aria-hidden="true" />
+              <span className="progress-athena-spark s2" aria-hidden="true" />
+              <span className="progress-athena-spark s3" aria-hidden="true" />
+            </div>
+          ) : (
+            <>
+              <div className="card progress-summary-card progress-range-weakest">
+                <div className="progress-today-weakest-main">
+                  <div className="progress-summary-label">
+                    <ListFilter size={13} strokeWidth={2.2} />
+                    Weakest domain
+                  </div>
+                  {weakestDomain ? (
+                    <>
+                      <div className="progress-summary-value progress-today-domain-name">
+                        {weakestDomain.name}
+                      </div>
+                      <div className="progress-summary-sub">
+                        {formatStatPct(weakestDomain.pct)} · {weakestDomain.total} attempt{weakestDomain.total === 1 ? '' : 's'} {weakestAttemptsLabel}
+                      </div>
+                      {weakestDomain.weakestSkill ? (
+                        <div className="progress-today-weakest-skill">
+                          <em>Weakest topic</em>
+                          <strong>{weakestDomain.weakestSkill.name}</strong>
+                          <span>
+                            {formatStatPct(weakestDomain.weakestSkill.pct)} · {weakestDomain.weakestSkill.total} attempt{weakestDomain.weakestSkill.total === 1 ? '' : 's'}
+                          </span>
+                        </div>
+                      ) : null}
+                    </>
+                  ) : (
+                    <>
+                      <div className="progress-summary-value progress-today-domain-name">—</div>
+                      <div className="progress-summary-sub">Practice more domains to unlock a focus target</div>
+                    </>
+                  )}
+                </div>
+                <div className="progress-today-weakest-actions">
+                  <span className="progress-today-weakest-actions-label">
+                    {weakestDomain?.name
+                      ? `Quick practice · ${weakestDomain.name}`
+                      : 'Quick practice'}
+                  </span>
+                  <div className="progress-today-weakest-btns">
+                    <button
+                      type="button"
+                      className="progress-today-practice-btn"
+                      disabled={!weakestDomain}
+                      onClick={() => onQuickDomainPractice?.(weakestDomain?.name, { count: 5 })}
+                    >
+                      <Sparkles size={14} strokeWidth={2.2} />
+                      5 questions
+                    </button>
+                    <button
+                      type="button"
+                      className="progress-today-practice-btn"
+                      disabled={!weakestDomain}
+                      onClick={() => onQuickDomainPractice?.(weakestDomain?.name, { count: 10 })}
+                    >
+                      <ClipboardList size={14} strokeWidth={2.2} />
+                      10 questions
+                    </button>
+                    <button
+                      type="button"
+                      className="progress-today-practice-btn primary"
+                      disabled={!weakestDomain}
+                      onClick={() => onQuickDomainPractice?.(weakestDomain?.name, { count: 15 })}
+                    >
+                      <Target size={14} strokeWidth={2.2} />
+                      15-question set
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="progress-summary-corner">
+                <div className="progress-summary-stack">
+                  <div className="card progress-summary-card progress-summary-daily-tip progress-summary-streak-compact">
+                    <div className="progress-summary-label">
+                      <Flame size={13} strokeWidth={2.2} />
+                      Current streak
+                    </div>
+                    <div className="progress-summary-value accent-orange">{streak}<span>days</span></div>
+                    <div className="progress-week progress-week-compact">
+                      {weekDays.map((d) => (
+                        <div key={d.key} className={`progress-week-day ${d.active ? 'on' : ''} ${d.isToday ? 'today' : ''}`}>
+                          <span>{d.label}</span>
+                          <i>{d.active ? '✓' : ''}</i>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="progress-summary-best">
+                      Best <strong>{displayBest}</strong> day{displayBest === 1 ? '' : 's'}
+                    </div>
+                  </div>
+                  <div className="card progress-summary-card progress-summary-total">
+                    <div className="progress-summary-label">
+                      <ClipboardList size={13} strokeWidth={2.2} />
+                      Total questions
+                    </div>
+                    <div className="progress-summary-value">{totalQuestionCount}</div>
+                    {totalQuestionCount > 0 ? (
+                      <div className="progress-total-bar" aria-hidden="true">
+                        <i
+                          className="bank"
+                          style={{ width: `${Math.round((bankQuestionCount / totalQuestionCount) * 100)}%` }}
+                        />
+                        <i
+                          className="practice"
+                          style={{ width: `${Math.round((practiceSetQuestionCount / totalQuestionCount) * 100)}%` }}
+                        />
+                      </div>
+                    ) : null}
+                    <div className="progress-total-stats">
+                      <span className="bank">
+                        <em>Bank</em>
+                        <strong>{bankQuestionCount}</strong>
+                      </span>
+                      <span className="practice">
+                        <em>Practice</em>
+                        <strong>{practiceSetQuestionCount}</strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="progress-athena progress-athena-tile" aria-label={`Athena: ${athenaCheer}`}>
+                  <motion.div
+                    className="progress-athena-bubble"
+                    initial={{ opacity: 0, y: 8, scale: 0.92, x: '-50%' }}
+                    animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
+                    transition={{ delay: 0.25, duration: 0.45, ease: 'easeOut' }}
+                  >
+                    {athenaCheer}
+                  </motion.div>
+                  <motion.img
+                    src="/athena-progress.png"
+                    alt=""
+                    className="progress-athena-img"
+                    draggable={false}
+                    initial={{ opacity: 0, y: 28, rotate: -4 }}
+                    animate={{
+                      opacity: 1,
+                      y: [0, -10, 0],
+                      rotate: [-2, 2, -2],
+                    }}
+                    transition={{
+                      opacity: { duration: 0.5, ease: 'easeOut' },
+                      y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
+                      rotate: { duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.45 },
+                    }}
+                  />
+                  <span className="progress-athena-spark s1" aria-hidden="true" />
+                  <span className="progress-athena-spark s2" aria-hidden="true" />
+                  <span className="progress-athena-spark s3" aria-hidden="true" />
+                </div>
+              </div>
+            </>
+          )}
         </div>
-      </div>
 
-      <ProgressAnalytics
-        analytics={analytics}
-        heatLabel={rangeBounds.label}
-        showStudyCharts={rangeMode !== 'today'}
-        charge={charge}
-        chargeCorrect={dailyCorrect}
-        blazeActive={blazeActive}
-        blazeEnabled={blazeEnabled}
-        onBlazeEnabledChange={onBlazeEnabledChange}
-      />
+        <ProgressAnalytics
+          analytics={analytics}
+          heatLabel={rangeBounds.label}
+          showHeat={!isTodayRange}
+          showPace
+          paceLabel={isTodayRange ? 'Pace today' : 'Pace'}
+          showDomains={false}
+          showOutcomes={isTodayRange}
+          mathAvgSec={mathAvgTimeSec}
+          readingAvgSec={readingAvgTimeSec}
+          showStudyCharts={!isTodayRange}
+          charge={charge}
+          chargeCorrect={dailyCorrect}
+          blazeActive={blazeActive}
+          blazeEnabled={blazeEnabled}
+          onBlazeEnabledChange={onBlazeEnabledChange}
+        />
+      </>
 
       <section className="card progress-history-card">
         <div className="progress-history-head">
@@ -6712,6 +7375,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   let incorrect = 0
   const subject = { math: { correct: 0, total: 0 }, reading: { correct: 0, total: 0 } }
   const domainMap = new Map()
+  const skillMap = new Map()
   const topicMap = new Map()
   const times = []
   const dayTime = new Map()
@@ -6722,6 +7386,15 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     cur.total += 1
     if (isCorrect) cur.correct += 1
     domainMap.set(name, cur)
+  }
+
+  const bumpSkill = (domain, skill, isCorrect) => {
+    if (!domain || !skill || isCorrect == null) return
+    const key = `${domain}::${skill}`
+    const cur = skillMap.get(key) || { domain, name: skill, correct: 0, total: 0 }
+    cur.total += 1
+    if (isCorrect) cur.correct += 1
+    skillMap.set(key, cur)
   }
 
   const bumpTopic = (sub, name, isCorrect) => {
@@ -6780,6 +7453,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     }
     subject[sub].total += 1
     bumpDomain(row.domain, row.correct)
+    bumpSkill(row.domain, row.skill, row.correct)
     bumpTopic(sub, row.domain, row.correct)
   })
 
@@ -6803,6 +7477,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
       if (!item?.domain || item.correct == null) return
       const sub = item.subject === 'math' ? 'math' : 'reading'
       bumpDomain(item.domain, Boolean(item.correct))
+      bumpSkill(item.domain, item.skill || item.topic, Boolean(item.correct))
       bumpTopic(sub, item.domain, Boolean(item.correct))
     })
   }
@@ -6828,6 +7503,14 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
       ...d,
       pct: Math.round((d.correct / d.total) * 100),
     }))
+
+  const skills = [...skillMap.values()]
+    .filter((s) => s.total > 0)
+    .map((s) => ({
+      ...s,
+      pct: Math.round((s.correct / s.total) * 100),
+    }))
+    .sort((a, b) => a.pct - b.pct || b.total - a.total)
 
   const buildTopicList = (sub, names) => names
     .map((name) => {
@@ -6913,6 +7596,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     subject,
     scoreTrend,
     domains,
+    skills,
     topicAccuracy,
     studyDays,
     studyTotalSec,
@@ -6932,6 +7616,13 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
 function ProgressAnalytics({
   analytics,
   heatLabel = 'Last 14 days',
+  showHeat = true,
+  showPace = false,
+  paceLabel = 'Pace',
+  showDomains = true,
+  showOutcomes = false,
+  mathAvgSec = null,
+  readingAvgSec = null,
   showStudyCharts = true,
   charge: chargeProp,
   chargeCorrect: chargeCorrectProp,
@@ -6970,6 +7661,19 @@ function ProgressAnalytics({
     ? Math.round(((a.subject?.math?.total || 0) / a.totalGraded) * 100)
     : 0
   const readingShare = a.totalGraded ? 100 - mathShare : 0
+  const paceMath = isValidStatNumber(mathAvgSec) ? mathAvgSec : null
+  const paceReading = isValidStatNumber(readingAvgSec) ? readingAvgSec : null
+  const paceMax = Math.max(paceMath || 0, paceReading || 0, 1)
+  const heatCount = a.heatDays?.length || 0
+  const heatCols = heatCount <= 1
+    ? 1
+    : heatCount <= 7
+      ? heatCount
+      : heatCount <= 14
+        ? 7
+        : heatCount <= 21
+          ? 7
+          : 6
 
   return (
     <section className="progress-analytics" aria-label="Progress analytics">
@@ -7057,6 +7761,7 @@ function ProgressAnalytics({
           <div className="progress-analytics-label">
             <Flame size={15} strokeWidth={2.2} />
             Athena charge
+            <AthenaChargeInfo />
           </div>
           <button
             type="button"
@@ -7093,62 +7798,137 @@ function ProgressAnalytics({
         )}
       </div>
 
-      <div className="card progress-analytics-card progress-analytics-domains">
-        <div className="progress-analytics-label">
-          <ListFilter size={15} strokeWidth={2.2} />
-          Domain focus
+      {showDomains ? (
+        <div className="card progress-analytics-card progress-analytics-domains">
+          <div className="progress-analytics-label">
+            <ListFilter size={15} strokeWidth={2.2} />
+            Domain focus
+          </div>
+          {a.domains?.length ? (
+            <ul className="progress-domain-list">
+              {a.domains.map((d) => (
+                <li key={d.name}>
+                  <div className="progress-domain-top">
+                    <span>{d.name}</span>
+                    <strong>{d.pct}%</strong>
+                  </div>
+                  <div className="progress-domain-track">
+                    <motion.i
+                      initial={{ width: 0 }}
+                      animate={{ width: `${d.pct}%` }}
+                      transition={{ duration: 0.65, ease: 'easeOut' }}
+                    />
+                  </div>
+                  <em>{d.total} attempt{d.total === 1 ? '' : 's'}</em>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="progress-analytics-empty">Domain stats appear as you practice by skill.</div>
+          )}
         </div>
-        {a.domains?.length ? (
-          <ul className="progress-domain-list">
-            {a.domains.map((d) => (
-              <li key={d.name}>
-                <div className="progress-domain-top">
-                  <span>{d.name}</span>
-                  <strong>{d.pct}%</strong>
-                </div>
-                <div className="progress-domain-track">
-                  <motion.i
-                    initial={{ width: 0 }}
-                    animate={{ width: `${d.pct}%` }}
-                    transition={{ duration: 0.65, ease: 'easeOut' }}
-                  />
-                </div>
-                <em>{d.total} attempt{d.total === 1 ? '' : 's'}</em>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="progress-analytics-empty">Domain stats appear as you practice by skill.</div>
-        )}
-      </div>
+      ) : showPace ? (
+        <ProgressPaceCard
+          className="progress-analytics-domains"
+          label={paceLabel}
+          mathSec={paceMath}
+          readingSec={paceReading}
+          paceMax={paceMax}
+          overallSec={a.avgSec}
+          mathTotal={a.subject?.math?.total || 0}
+          readingTotal={a.subject?.reading?.total || 0}
+        />
+      ) : null}
 
-      <div className="card progress-analytics-card progress-analytics-heat">
-        <div className="progress-analytics-label">
-          <CalendarDays size={15} strokeWidth={2.2} />
-          Activity · {heatLabel}
+      {showHeat ? (
+        <div className="card progress-analytics-card progress-analytics-heat">
+          <div className="progress-analytics-label">
+            <CalendarDays size={15} strokeWidth={2.2} />
+            Activity · {heatLabel}
+          </div>
+          <div
+            className="progress-heat"
+            role="img"
+            aria-label={`Activity over ${heatLabel}`}
+            style={{ '--heat-cols': heatCols }}
+          >
+            {a.heatDays?.map((d) => {
+              const level = d.count === 0 ? 0 : Math.min(4, Math.ceil((d.count / a.heatMax) * 4))
+              return (
+                <div
+                  key={d.key}
+                  className={`progress-heat-cell lv${level}`}
+                  title={`${d.label}: ${d.count} activit${d.count === 1 ? 'y' : 'ies'}`}
+                />
+              )
+            })}
+          </div>
+          <div className="progress-heat-legend">
+            <span>Less</span>
+            <i className="lv0" /><i className="lv1" /><i className="lv2" /><i className="lv3" /><i className="lv4" />
+            <span>More</span>
+          </div>
         </div>
-        <div className="progress-heat" role="img" aria-label={`Activity over ${heatLabel}`}>
-          {a.heatDays?.map((d) => {
-            const level = d.count === 0 ? 0 : Math.min(4, Math.ceil((d.count / a.heatMax) * 4))
-            return (
+      ) : null}
+
+      {showOutcomes ? (
+        <div className="card progress-analytics-card progress-analytics-heat progress-analytics-outcomes">
+          <div className="progress-analytics-label">
+            <Target size={15} strokeWidth={2.2} />
+            Outcomes today
+          </div>
+          {a.totalGraded ? (
+            <>
               <div
-                key={d.key}
-                className={`progress-heat-cell lv${level}`}
-                title={`${d.label}: ${d.count} activit${d.count === 1 ? 'y' : 'ies'}`}
-              />
-            )
-          })}
+                className="progress-outcomes-visual"
+                role="img"
+                aria-label={`${a.correct} correct, ${a.incorrect} incorrect`}
+              >
+                <div className="progress-outcomes-col">
+                  <motion.i
+                    className="ok"
+                    initial={{ height: 0 }}
+                    animate={{
+                      height: `${Math.max(8, Math.round((a.correct / Math.max(a.totalGraded, 1)) * 100))}%`,
+                    }}
+                    transition={{ duration: 0.7, ease: 'easeOut' }}
+                  />
+                  <strong>{a.correct}</strong>
+                  <span>Correct</span>
+                </div>
+                <div className="progress-outcomes-col">
+                  <motion.i
+                    className="bad"
+                    initial={{ height: 0 }}
+                    animate={{
+                      height: `${Math.max(8, Math.round((a.incorrect / Math.max(a.totalGraded, 1)) * 100))}%`,
+                    }}
+                    transition={{ duration: 0.7, ease: 'easeOut', delay: 0.08 }}
+                  />
+                  <strong>{a.incorrect}</strong>
+                  <span>Miss</span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="progress-analytics-empty">Graded answers will chart correct vs miss.</div>
+          )}
         </div>
-        <div className="progress-heat-legend">
-          <span>Less</span>
-          <i className="lv0" /><i className="lv1" /><i className="lv2" /><i className="lv3" /><i className="lv4" />
-          <span>More</span>
-        </div>
-      </div>
+      ) : null}
 
       <div className="progress-topic-grid">
-        <TopicAccuracyCard title="English" domains={a.topicAccuracy?.reading || []} />
-        <TopicAccuracyCard title="Math" domains={a.topicAccuracy?.math || []} />
+        <TopicAccuracyCard
+          title="English"
+          domainNames={READING_DOMAIN_NAMES}
+          domains={a.topicAccuracy?.reading || []}
+          rangeLabel={heatLabel}
+        />
+        <TopicAccuracyCard
+          title="Math"
+          domainNames={MATH_DOMAIN_NAMES}
+          domains={a.topicAccuracy?.math || []}
+          rangeLabel={heatLabel}
+        />
       </div>
 
       {showStudyCharts ? (
@@ -7173,51 +7953,703 @@ function ProgressAnalytics({
   )
 }
 
-function TopicAccuracyCard({ title, domains }) {
-  const rows = Array.isArray(domains) ? domains : []
+function AthenaChargeInfo() {
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef(null)
+  const btnRef = useRef(null)
+  const popRef = useRef(null)
+  const [pos, setPos] = useState({ top: 0, left: 0, width: 260 })
+
+  useEffect(() => {
+    if (!open) return undefined
+    const place = () => {
+      const btn = btnRef.current
+      if (!btn) return
+      const rect = btn.getBoundingClientRect()
+      const width = Math.min(280, Math.max(220, window.innerWidth - 24))
+      let left = rect.left
+      if (left + width > window.innerWidth - 12) {
+        left = Math.max(12, window.innerWidth - width - 12)
+      }
+      if (left < 12) left = 12
+      let top = rect.bottom + 8
+      const estimatedHeight = 180
+      if (top + estimatedHeight > window.innerHeight - 12) {
+        top = Math.max(12, rect.top - estimatedHeight - 8)
+      }
+      setPos({ top, left, width })
+    }
+    place()
+    const onPointer = (event) => {
+      const t = event.target
+      if (wrapRef.current?.contains(t) || popRef.current?.contains(t)) return
+      setOpen(false)
+    }
+    const onKey = (event) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('resize', place)
+    window.addEventListener('scroll', place, true)
+    document.addEventListener('mousedown', onPointer)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('resize', place)
+      window.removeEventListener('scroll', place, true)
+      document.removeEventListener('mousedown', onPointer)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  return (
+    <div className={`progress-charge-info ${open ? 'open' : ''}`} ref={wrapRef}>
+      <button
+        ref={btnRef}
+        type="button"
+        className="progress-charge-info-btn"
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        aria-label="What is Athena charge?"
+        title="What is Athena charge?"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <Info size={14} strokeWidth={2.3} />
+      </button>
+      {open
+        ? createPortal(
+          <div
+            ref={popRef}
+            className="progress-charge-info-pop"
+            role="dialog"
+            aria-label="Athena charge explained"
+            style={{ top: pos.top, left: pos.left, width: pos.width }}
+          >
+            <strong>What is Athena charge?</strong>
+            <p>
+              Charge fills as you get questions right today. It climbs quickly at first, then
+              slows, and hits full blaze at 100 correct answers.
+            </p>
+            <p>
+              When charge is full, Athena blaze stays on until midnight — tiles light up with
+              fire accents. Use the toggle to turn those effects off anytime.
+            </p>
+          </div>,
+          document.body,
+        )
+        : null}
+    </div>
+  )
+}
+
+function ProgressPaceCard({
+  className = '',
+  label = 'Pace',
+  mathSec,
+  readingSec,
+  paceMax,
+  overallSec = null,
+  mathTotal = 0,
+  readingTotal = 0,
+}) {
+  const hasPace = mathSec != null || readingSec != null
+  const overall = isValidStatNumber(overallSec)
+    ? overallSec
+    : [mathSec, readingSec].filter((v) => v != null).length
+      ? Math.round(
+        ([mathSec, readingSec].filter((v) => v != null).reduce((s, v) => s + v, 0))
+          / [mathSec, readingSec].filter((v) => v != null).length,
+      )
+      : null
+  const faster = mathSec != null && readingSec != null
+    ? mathSec === readingSec
+      ? 'Math and Reading are tied'
+      : mathSec < readingSec
+        ? `Math is ${formatAvgTime(readingSec - mathSec)} faster`
+        : `Reading is ${formatAvgTime(mathSec - readingSec)} faster`
+    : 'Average time per graded question'
+
+  return (
+    <div className={`card progress-analytics-card progress-analytics-pace ${className}`.trim()}>
+      <div className="progress-analytics-label">
+        <Clock size={15} strokeWidth={2.2} />
+        {label}
+      </div>
+      {hasPace ? (
+        <div className="progress-pace-body">
+          <div className="progress-pace-hero">
+            <strong>{formatAvgTime(overall)}</strong>
+            <span>overall avg / question</span>
+          </div>
+          <div className="progress-pace-rows">
+            <div className="progress-pace-row">
+              <div className="progress-pace-top">
+                <span><i className="swatch math" /> Math</span>
+                <strong>{formatAvgTime(mathSec)}</strong>
+              </div>
+              <div className="progress-pace-track" aria-hidden="true">
+                <motion.i
+                  className="math"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${mathSec != null ? Math.round((mathSec / paceMax) * 100) : 0}%` }}
+                  transition={{ duration: 0.7, ease: 'easeOut' }}
+                />
+              </div>
+              <em>{mathTotal} timed</em>
+            </div>
+            <div className="progress-pace-row">
+              <div className="progress-pace-top">
+                <span><i className="swatch reading" /> Reading & Writing</span>
+                <strong>{formatAvgTime(readingSec)}</strong>
+              </div>
+              <div className="progress-pace-track" aria-hidden="true">
+                <motion.i
+                  className="reading"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${readingSec != null ? Math.round((readingSec / paceMax) * 100) : 0}%` }}
+                  transition={{ duration: 0.7, ease: 'easeOut', delay: 0.08 }}
+                />
+              </div>
+              <em>{readingTotal} timed</em>
+            </div>
+          </div>
+          <p className="progress-pace-note">{faster}</p>
+        </div>
+      ) : (
+        <div className="progress-analytics-empty">Timed answers will show your pace by subject.</div>
+      )}
+    </div>
+  )
+}
+
+function groupSkillsByDomain(domainNames, skills) {
+  const names = Array.isArray(domainNames) ? domainNames : []
+  const list = Array.isArray(skills) ? skills : []
+  return names
+    .map((name) => {
+      const topics = list
+        .filter((s) => s.domain === name && s.total > 0 && isValidStatNumber(s.pct))
+        .sort((a, b) => a.pct - b.pct || b.total - a.total || a.name.localeCompare(b.name))
+      if (!topics.length) return null
+      const total = topics.reduce((sum, t) => sum + t.total, 0)
+      const correct = topics.reduce((sum, t) => sum + (t.correct || 0), 0)
+      return {
+        name,
+        total,
+        correct,
+        pct: total ? Math.round((correct / total) * 100) : null,
+        topics,
+      }
+    })
+    .filter(Boolean)
+}
+
+function TopicAccuracyCard({
+  title,
+  domainNames = [],
+  skills = [],
+  domains,
+  openFirstDomain = true,
+  openWeakestDomain = false,
+  showRangeFilter = false,
+  rangeMode = '3d',
+  onRangeModeChange,
+  rangeLabel = '',
+}) {
+  // Legacy `domains` prop: flat domain rows without topics.
+  // When domainNames are provided, always show every domain (N/A if no data).
+  const groups = Array.isArray(skills) && skills.length
+    ? groupSkillsByDomain(domainNames, skills)
+    : (() => {
+        const byName = new Map(
+          (Array.isArray(domains) ? domains : [])
+            .filter((d) => d?.name)
+            .map((d) => [d.name, d]),
+        )
+        const names = domainNames.length
+          ? domainNames
+          : [...byName.keys()]
+        return names.map((name) => {
+          const d = byName.get(name)
+          if (d && d.total > 0 && isValidStatNumber(d.pct)) {
+            return { ...d, topics: [] }
+          }
+          return {
+            name,
+            total: 0,
+            correct: 0,
+            pct: null,
+            topics: [],
+          }
+        })
+      })()
+
+  const topicRows = groups.flatMap((g) => g.topics || [])
+  const hasTopics = topicRows.length > 0
+  const [openDomains, setOpenDomains] = useState({})
+  const firstDomainName = groups[0]?.name
+  const weakestDomainName = (() => {
+    let minPct = null
+    for (const d of groups) {
+      if (!(d.total > 0) || !isValidStatNumber(d.pct)) continue
+      minPct = minPct == null ? d.pct : Math.min(minPct, d.pct)
+    }
+    if (minPct == null) return null
+    return groups.find((d) => d.total > 0 && d.pct === minPct)?.name ?? null
+  })()
+  const defaultOpenDomainName = openWeakestDomain
+    ? weakestDomainName
+    : openFirstDomain
+      ? firstDomainName
+      : null
+
+  const isDomainOpen = (name) => {
+    if (Object.prototype.hasOwnProperty.call(openDomains, name)) {
+      return openDomains[name] !== false
+    }
+    return Boolean(defaultOpenDomainName) && name === defaultOpenDomainName
+  }
+
+  const toggleDomain = (name) => {
+    setOpenDomains((prev) => {
+      const currentlyOpen = Object.prototype.hasOwnProperty.call(prev, name)
+        ? prev[name] !== false
+        : (Boolean(defaultOpenDomainName) && name === defaultOpenDomainName)
+      return { ...prev, [name]: !currentlyOpen }
+    })
+  }
+
+  const domainWeakestPct = groups.reduce((min, d) => {
+    if (!isValidStatNumber(d.pct) || !(d.total > 0)) return min
+    return min == null ? d.pct : Math.min(min, d.pct)
+  }, null)
+  const domainStrongestPct = groups.reduce((max, d) => {
+    if (!isValidStatNumber(d.pct) || !(d.total > 0)) return max
+    return max == null ? d.pct : Math.max(max, d.pct)
+  }, null)
+  const weakestDomains = new Set(
+    domainWeakestPct == null
+      ? []
+      : groups.filter((d) => d.total > 0 && d.pct === domainWeakestPct).map((d) => d.name),
+  )
+  const strongestDomains = new Set(
+    domainStrongestPct == null || domainStrongestPct === domainWeakestPct
+      ? []
+      : groups.filter((d) => d.total > 0 && d.pct === domainStrongestPct).map((d) => d.name),
+  )
+
+  const topicWeakestPct = topicRows.reduce((min, d) => {
+    if (!isValidStatNumber(d.pct) || !(d.total > 0)) return min
+    return min == null ? d.pct : Math.min(min, d.pct)
+  }, null)
+  const topicStrongestPct = topicRows.reduce((max, d) => {
+    if (!isValidStatNumber(d.pct) || !(d.total > 0)) return max
+    return max == null ? d.pct : Math.max(max, d.pct)
+  }, null)
+  const weakestTopics = new Set(
+    topicWeakestPct == null
+      ? []
+      : topicRows
+        .filter((d) => d.total > 0 && d.pct === topicWeakestPct)
+        .map((d) => `${d.domain}::${d.name}`),
+  )
+  const strongestTopics = new Set(
+    topicStrongestPct == null || topicStrongestPct === topicWeakestPct
+      ? []
+      : topicRows
+        .filter((d) => d.total > 0 && d.pct === topicStrongestPct)
+        .map((d) => `${d.domain}::${d.name}`),
+  )
+
+  const renderMeterRow = (row, key, { weakest, strongest, highlight = false } = {}) => {
+    const hasData = row.total > 0 && isValidStatNumber(row.pct)
+    const tone = topicAccuracyTone(row.pct)
+    const rowClass = [
+      highlight
+        ? (weakest ? 'is-weakest' : strongest ? 'is-strongest' : undefined)
+        : (weakest ? 'is-weakest-text' : strongest ? 'is-strongest-text' : undefined),
+      hasData ? undefined : 'is-empty',
+    ].filter(Boolean).join(' ') || undefined
+    return (
+      <li key={key} className={rowClass}>
+        <div className="progress-topic-copy">
+          <strong>{row.name}</strong>
+          <em>
+            {hasData
+              ? `${row.total} attempt${row.total === 1 ? '' : 's'}`
+              : 'No attempts yet'}
+            {weakest ? ' · weakest' : ''}
+            {strongest ? ' · strongest' : ''}
+          </em>
+        </div>
+        <div className="progress-topic-meter">
+          <div className="progress-topic-track" aria-hidden="true">
+            <span className="seg low" />
+            <span className="seg mid" />
+            <span className="seg high" />
+            {hasData ? (
+              <i
+                className={`thumb ${tone}`}
+                style={{ left: `${Math.max(0, Math.min(100, row.pct))}%` }}
+              />
+            ) : null}
+          </div>
+          <strong className={`progress-topic-pct ${tone}`}>
+            {hasData ? `${row.pct}%` : 'N/A'}
+          </strong>
+        </div>
+      </li>
+    )
+  }
+
   return (
     <div className="card progress-topic-card">
       <div className="progress-topic-head">
         <div>
           <h3>{title}</h3>
-          <p>Accuracy by topic</p>
+          <p>
+            {hasTopics ? 'Accuracy by domain & topic' : 'Accuracy by domain'}
+            {rangeLabel ? ` (${rangeLabel})` : ''}
+          </p>
         </div>
-        <div className="progress-topic-legend" aria-hidden="true">
-          <span><i className="high" /> ≥ 85%</span>
-          <span><i className="mid" /> 60 – 84%</span>
-          <span><i className="low" /> &lt; 60%</span>
+        <div className="progress-topic-head-right">
+          {showRangeFilter ? (
+            <div className="subject-accuracy-range" role="group" aria-label="Accuracy time range">
+              {SUBJECT_WEAKEST_RANGE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  className={`subject-weakest-range-pill ${rangeMode === opt.id ? 'on' : ''}`}
+                  aria-pressed={rangeMode === opt.id}
+                  onClick={() => onRangeModeChange?.(opt.id)}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          ) : null}
+          <div className="progress-topic-legend" aria-hidden="true">
+            <span><i className="high" /> ≥ 85%</span>
+            <span><i className="mid" /> 60 – 84%</span>
+            <span><i className="low" /> &lt; 60%</span>
+          </div>
         </div>
       </div>
-      {rows.length ? (
-        <ul className="progress-topic-list">
-          {rows.map((d) => {
-            const tone = topicAccuracyTone(d.pct)
-            return (
-              <li key={d.name}>
-                <div className="progress-topic-copy">
-                  <strong>{d.name}</strong>
-                  <em>{d.total} attempt{d.total === 1 ? '' : 's'}</em>
-                </div>
-                <div className="progress-topic-meter">
-                  <div className="progress-topic-track" aria-hidden="true">
-                    <span className="seg low" />
-                    <span className="seg mid" />
-                    <span className="seg high" />
-                    <i
-                      className={`thumb ${tone}`}
-                      style={{ left: `${Math.max(0, Math.min(100, d.pct))}%` }}
-                    />
-                  </div>
-                  <strong className={`progress-topic-pct ${tone}`}>{d.pct}%</strong>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
+      {groups.length ? (
+        hasTopics ? (
+          <div className="progress-domain-topic-groups">
+            {groups.map((group) => {
+              const topics = group.topics || []
+              const domainWeakest = weakestDomains.has(group.name)
+              const domainStrongest = !domainWeakest && strongestDomains.has(group.name)
+              const isOpen = isDomainOpen(group.name)
+              const domainClass = [
+                'progress-domain-topic-label',
+                domainWeakest ? 'is-weakest' : '',
+                domainStrongest ? 'is-strongest' : '',
+                isOpen ? 'is-open' : '',
+              ].filter(Boolean).join(' ')
+              return (
+                <section key={group.name} className="progress-domain-topic-group">
+                  <button
+                    type="button"
+                    className={domainClass}
+                    aria-expanded={isOpen}
+                    onClick={() => toggleDomain(group.name)}
+                  >
+                    <div className="progress-domain-topic-label-main">
+                      <ChevronDown
+                        size={16}
+                        strokeWidth={2.4}
+                        className={`progress-domain-topic-chevron ${isOpen ? 'open' : ''}`}
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <strong>{group.name}</strong>
+                        <em>
+                          {group.total} attempt{group.total === 1 ? '' : 's'}
+                          {topics.length ? ` · ${topics.length} topic${topics.length === 1 ? '' : 's'}` : ''}
+                          {domainWeakest ? ' · weakest' : ''}
+                          {domainStrongest ? ' · strongest' : ''}
+                        </em>
+                      </div>
+                    </div>
+                    {isValidStatNumber(group.pct) ? (
+                      <span className={`progress-topic-pct ${topicAccuracyTone(group.pct)}`}>{group.pct}%</span>
+                    ) : null}
+                  </button>
+                  {isOpen ? (
+                    <ul className="progress-topic-list">
+                      {topics.map((topic) => {
+                        const key = `${topic.domain || group.name}::${topic.name}`
+                        return renderMeterRow(topic, key, {
+                          weakest: weakestTopics.has(key),
+                          strongest: strongestTopics.has(key),
+                          highlight: false,
+                        })
+                      })}
+                    </ul>
+                  ) : null}
+                </section>
+              )
+            })}
+          </div>
+        ) : (
+          <ul className="progress-topic-list progress-topic-list-clean">
+            {groups.map((group) => renderMeterRow(group, group.name))}
+          </ul>
+        )
       ) : (
-        <div className="progress-analytics-empty">Practice {title.toLowerCase()} topics to unlock accuracy by domain.</div>
+        <div className="progress-analytics-empty">Practice {title.toLowerCase()} to unlock accuracy by domain.</div>
       )}
     </div>
+  )
+}
+
+function availableQuestionPools(questions = []) {
+  const fromData = [...new Set(questions.map((q) => q.pool).filter(Boolean))]
+  return [...new Set([...QUESTION_POOLS, ...fromData])]
+}
+
+function PracticePoolDropdown({
+  pools,
+  selected,
+  onToggle,
+  accent = 'math',
+  open,
+  onOpenChange,
+}) {
+  const allSelected = pools.length > 0 && pools.every((pool) => selected.includes(pool))
+  const label = allSelected
+    ? 'All question banks'
+    : selected.length === 1
+      ? selected[0]
+      : `Question banks (${selected.length})`
+
+  return (
+    <div className={`qbm-filter-dd math-pool-dd ${accent} ${open ? 'open' : ''}`}>
+      <button
+        type="button"
+        className={`qbm-filter-btn ${!allSelected || open ? 'active' : ''}`}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        onClick={() => onOpenChange?.(!open)}
+      >
+        <Vault size={15} />
+        <span className="math-pool-dd-label">{label}</span>
+        <ChevronDown size={14} className={`qbm-filter-chevron ${open ? 'open' : ''}`} />
+      </button>
+      {open ? (
+        <div className="qbm-filter-menu qbm-filter-menu-wide" role="menu" aria-label="Question Bank">
+          {pools.map((pool) => {
+            const on = selected.includes(pool)
+            return (
+              <button
+                key={pool}
+                type="button"
+                role="menuitemcheckbox"
+                aria-checked={on}
+                className={`qbm-filter-option ${on ? 'on' : ''}`}
+                onClick={() => onToggle?.(pool)}
+              >
+                <span className={`qbm-filter-check ${on ? 'on' : ''}`}>
+                  {on ? <Check size={12} strokeWidth={3} /> : null}
+                </span>
+                {pool}
+              </button>
+            )
+          })}
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+function pickWeakestDomainFocus(domains = [], skills = []) {
+  const ranked = [...domains]
+    .filter((d) => (d.done ?? d.total ?? 0) > 0 && isValidStatNumber(d.pct))
+    .sort((a, b) => a.pct - b.pct || (b.done ?? b.total ?? 0) - (a.done ?? a.total ?? 0))
+  const domain = ranked[0] || null
+  if (!domain) return null
+  const weakestSkill = [...skills]
+    .filter((s) => s.domain === domain.name && s.total > 0 && isValidStatNumber(s.pct))
+    .sort((a, b) => a.pct - b.pct || b.total - a.total)[0] || null
+  return {
+    name: domain.name,
+    pct: domain.pct,
+    total: domain.done ?? domain.total ?? 0,
+    weakestSkill,
+  }
+}
+
+const SUBJECT_WEAKEST_RANGE_OPTIONS = [
+  { id: 'today', label: 'Today' },
+  { id: '3d', label: '3d' },
+  { id: '7d', label: '7d' },
+  { id: '30d', label: '30d' },
+  { id: 'all', label: 'All' },
+]
+
+function useSubjectRangeStats(profile, subject, domainNames, rangeMode) {
+  const rangeBounds = useMemo(() => getProgressRangeBounds(rangeMode), [rangeMode])
+  const rangedHistory = useMemo(
+    () => filterHistoryByRange(profile?.progressHistory || [], rangeBounds),
+    [profile?.progressHistory, rangeBounds],
+  )
+  const analytics = useMemo(
+    () => deriveProgressAnalytics(rangedHistory, profile?.qbankProgress || {}, {
+      heatDays: rangeBounds.dayCount || 14,
+      allowQbankFallback: rangeMode === 'all',
+      fromFirstActivity: rangeMode === 'all',
+    }),
+    [rangedHistory, profile?.qbankProgress, rangeBounds.dayCount, rangeMode],
+  )
+  const allowed = useMemo(() => new Set(domainNames), [domainNames])
+  const skills = useMemo(
+    () => (analytics.skills || []).filter((s) => allowed.has(s.domain)),
+    [analytics.skills, allowed],
+  )
+  const domains = useMemo(
+    () => (analytics.topicAccuracy?.[subject] || [])
+      .filter((d) => allowed.has(d.name))
+      .map((d) => ({
+        name: d.name,
+        total: d.total,
+        correct: d.correct,
+        pct: d.pct,
+        done: d.total,
+      })),
+    [analytics.topicAccuracy, subject, allowed],
+  )
+  const weakestDomain = useMemo(
+    () => pickWeakestDomainFocus(domains, skills),
+    [domains, skills],
+  )
+  const attemptsLabel = rangeMode === 'today'
+    ? 'today'
+    : (rangeBounds.label || 'in range').toLowerCase()
+  return { weakestDomain, attemptsLabel, skills, domains }
+}
+
+function SubjectWeakestDomainCard({
+  weakestDomain,
+  onQuickPractice,
+  rangeMode = '3d',
+  onRangeModeChange,
+  attemptsLabel = '',
+}) {
+  return (
+    <div className="card progress-summary-card progress-range-weakest subject-weakest-card">
+      <div className="progress-today-weakest-main">
+        <div className="subject-weakest-head">
+          <div className="progress-summary-label">
+            <ListFilter size={13} strokeWidth={2.2} />
+            Weakest domain
+          </div>
+          <div className="subject-weakest-range" role="group" aria-label="Weakest domain time range">
+            {SUBJECT_WEAKEST_RANGE_OPTIONS.map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                className={`subject-weakest-range-pill ${rangeMode === opt.id ? 'on' : ''}`}
+                aria-pressed={rangeMode === opt.id}
+                onClick={() => onRangeModeChange?.(opt.id)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        {weakestDomain ? (
+          <>
+            <div className="progress-summary-value progress-today-domain-name">
+              {weakestDomain.name}
+            </div>
+            <div className="progress-summary-sub">
+              {formatStatPct(weakestDomain.pct)} · {weakestDomain.total} attempt{weakestDomain.total === 1 ? '' : 's'}
+              {attemptsLabel ? ` ${attemptsLabel}` : ''}
+            </div>
+            {weakestDomain.weakestSkill ? (
+              <div className="progress-today-weakest-skill">
+                <em>Weakest topic</em>
+                <strong>{weakestDomain.weakestSkill.name}</strong>
+                <span>
+                  {formatStatPct(weakestDomain.weakestSkill.pct)} · {weakestDomain.weakestSkill.total} attempt{weakestDomain.weakestSkill.total === 1 ? '' : 's'}
+                </span>
+              </div>
+            ) : null}
+          </>
+        ) : (
+          <>
+            <div className="progress-summary-value progress-today-domain-name">—</div>
+            <div className="progress-summary-sub">Practice more domains to unlock a focus target</div>
+          </>
+        )}
+      </div>
+      <div className="progress-today-weakest-actions">
+        <span className="progress-today-weakest-actions-label">
+          {weakestDomain?.name
+            ? `Quick practice · ${weakestDomain.name}`
+            : 'Quick practice'}
+        </span>
+        <div className="progress-today-weakest-btns">
+          <button
+            type="button"
+            className="progress-today-practice-btn"
+            disabled={!weakestDomain}
+            onClick={() => onQuickPractice?.(weakestDomain?.name, 5)}
+          >
+            <Sparkles size={14} strokeWidth={2.2} />
+            5 questions
+          </button>
+          <button
+            type="button"
+            className="progress-today-practice-btn"
+            disabled={!weakestDomain}
+            onClick={() => onQuickPractice?.(weakestDomain?.name, 10)}
+          >
+            <ClipboardList size={14} strokeWidth={2.2} />
+            10 questions
+          </button>
+          <button
+            type="button"
+            className="progress-today-practice-btn primary"
+            disabled={!weakestDomain}
+            onClick={() => onQuickPractice?.(weakestDomain?.name, 15)}
+          >
+            <Target size={14} strokeWidth={2.2} />
+            15-question set
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SubjectAccuracyBreakdown({
+  accent = 'math',
+  domains = [],
+  skills = [],
+  rangeMode = '3d',
+  onRangeModeChange,
+}) {
+  const isReading = accent === 'reading'
+  const domainNames = isReading ? READING_DOMAIN_NAMES : MATH_DOMAIN_NAMES
+  const subject = isReading ? 'reading' : 'math'
+  const rangeLabel = getProgressRangeBounds(rangeMode).label
+
+  return (
+    <TopicAccuracyCard
+      key={`${subject}-${rangeMode}`}
+      title={isReading ? 'Reading & Writing' : 'Math'}
+      domainNames={domainNames}
+      skills={skills}
+      domains={domains}
+      openFirstDomain={false}
+      openWeakestDomain
+      showRangeFilter
+      rangeMode={rangeMode}
+      onRangeModeChange={onRangeModeChange}
+      rangeLabel={rangeLabel}
+    />
   )
 }
 
@@ -7455,16 +8887,32 @@ function ProgressDailyAccuracyChart({ days }) {
     )
   }
 
+  const dense = series.length > 10
+  const labelStep = series.length <= 7
+    ? 1
+    : series.length <= 14
+      ? 2
+      : series.length <= 21
+        ? 3
+        : 5
+
   return (
-    <div className="progress-daily" role="img" aria-label="Daily accuracy">
+    <div className={`progress-daily ${dense ? 'dense' : ''}`.trim()} role="img" aria-label="Daily accuracy">
       <div className="progress-daily-bars">
-        {series.map((d) => {
+        {series.map((d, i) => {
           const height = d.pct == null ? 0 : Math.max(8, d.pct)
           const tone = d.pct == null ? 'empty' : d.pct >= 85 ? 'high' : d.pct >= 60 ? 'mid' : 'low'
+          const showPct = !dense && d.pct != null
+          const showLabel = i % labelStep === 0 || i === series.length - 1
+          const dayLabel = series.length <= 7 ? d.label : d.key.slice(8)
           return (
-            <div key={d.key} className="progress-daily-col" title={d.total ? `${d.label}: ${d.pct}% (${d.correct}/${d.total})` : `${d.label}: no answers`}>
-              <span className="progress-daily-pct">
-                {d.pct == null ? '—' : `${d.pct}%`}
+            <div
+              key={d.key}
+              className="progress-daily-col"
+              title={d.total ? `${d.label}: ${d.pct}% (${d.correct}/${d.total})` : `${d.label}: no answers`}
+            >
+              <span className={`progress-daily-pct ${showPct ? '' : 'is-hidden'}`.trim()}>
+                {showPct ? `${d.pct}%` : '\u00A0'}
               </span>
               <div className="progress-daily-track">
                 <motion.span
@@ -7474,8 +8922,8 @@ function ProgressDailyAccuracyChart({ days }) {
                   transition={{ duration: 0.55, ease: 'easeOut' }}
                 />
               </div>
-              <span className="progress-daily-label">
-                {series.length <= 7 ? d.label : d.key.slice(8)}
+              <span className={`progress-daily-label ${showLabel ? '' : 'is-hidden'}`.trim()}>
+                {showLabel ? dayLabel : '\u00A0'}
               </span>
             </div>
           )
@@ -7551,51 +8999,55 @@ function ScoreTrendChart({ points }) {
 
   return (
     <div className="progress-trend">
-      <svg
-        viewBox={`0 0 ${w} ${h}`}
-        preserveAspectRatio="none"
-        className="progress-trend-svg"
-        role="img"
-        aria-label="Score trend"
-      >        <defs>
-          <linearGradient id="progressTrendFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#2F62D6" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#2F62D6" stopOpacity="0.02" />
-          </linearGradient>
-        </defs>
-        {[25, 50, 75].map((tick) => {
-          const y = padY + (1 - (tick - min) / span) * (h - padY * 2)
-          if (tick < min || tick > max) return null
-          return <line key={tick} x1={padX} x2={w - padX} y1={y} y2={y} className="progress-trend-grid" />
-        })}
-        <motion.path
-          d={area}
-          fill="url(#progressTrendFill)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        />
-        <motion.path
-          d={line}
-          fill="none"
-          stroke="#2F62D6"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 0.9, ease: 'easeOut' }}
-        />
-        {coords.map((c) => (
-          <circle
-            key={`${c.when}-${c.x}`}
-            cx={c.x}
-            cy={c.y}
-            r={c.subject === 'math' ? 3.5 : 3.5}
-            className={c.subject === 'math' ? 'dot-math' : 'dot-reading'}
+      <div className="progress-trend-plot">
+        <svg
+          viewBox={`0 0 ${w} ${h}`}
+          preserveAspectRatio="none"
+          className="progress-trend-svg"
+          role="img"
+          aria-label="Score trend"
+        >
+          <defs>
+            <linearGradient id="progressTrendFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#2F62D6" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="#2F62D6" stopOpacity="0.02" />
+            </linearGradient>
+          </defs>
+          {[25, 50, 75].map((tick) => {
+            const y = padY + (1 - (tick - min) / span) * (h - padY * 2)
+            if (tick < min || tick > max) return null
+            return <line key={tick} x1={padX} x2={w - padX} y1={y} y2={y} className="progress-trend-grid" />
+          })}
+          <motion.path
+            d={area}
+            fill="url(#progressTrendFill)"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           />
-        ))}
-      </svg>
+          <motion.path
+            d={line}
+            fill="none"
+            stroke="#2F62D6"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.55, ease: 'easeOut' }}
+          />
+        </svg>
+        <div className="progress-trend-dots" aria-hidden="true">
+          {coords.map((c) => (
+            <i
+              key={`${c.when}-${c.x}`}
+              className={c.subject === 'math' ? 'dot-math' : 'dot-reading'}
+              style={{ left: `${(c.x / w) * 100}%`, top: `${(c.y / h) * 100}%` }}
+              title={`${c.accuracy}%`}
+            />
+          ))}
+        </div>
+      </div>
       <div className="progress-trend-footer">
         <span>{points.length} sets</span>
         <strong className={delta >= 0 ? 'up' : 'down'}>
