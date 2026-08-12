@@ -6791,6 +6791,17 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   const studyAvgSec = studyDays.length ? Math.round(studyTotalSec / studyDays.length) : 0
   const studyMaxSec = Math.max(studyAvgSec, ...studyDays.map((d) => d.totalSec), 1)
 
+  const questionDays = studyDays.map((d) => ({
+    key: d.key,
+    label: d.label,
+    count: dayCounts.get(d.key) || 0,
+  }))
+  const questionTotal = questionDays.reduce((sum, d) => sum + d.count, 0)
+  const questionAvg = questionDays.length
+    ? Math.round((questionTotal / questionDays.length) * 10) / 10
+    : 0
+  const questionMax = Math.max(1, Math.ceil(questionAvg), ...questionDays.map((d) => d.count))
+
   const avgSec = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : null
 
   return {
@@ -6806,6 +6817,10 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     studyTotalSec,
     studyAvgSec,
     studyMaxSec,
+    questionDays,
+    questionTotal,
+    questionAvg,
+    questionMax,
     heatDays,
     heatMax,
     avgSec,
@@ -7034,13 +7049,22 @@ function ProgressAnalytics({
         <TopicAccuracyCard title="Math" domains={a.topicAccuracy?.math || []} />
       </div>
 
-      <DailyStudyTimeCard
-        days={a.studyDays || []}
-        totalSec={a.studyTotalSec || 0}
-        avgSec={a.studyAvgSec || 0}
-        maxSec={a.studyMaxSec || 1}
-        rangeLabel={heatLabel}
-      />
+      <div className="progress-study-grid">
+        <DailyStudyTimeCard
+          days={a.studyDays || []}
+          totalSec={a.studyTotalSec || 0}
+          avgSec={a.studyAvgSec || 0}
+          maxSec={a.studyMaxSec || 1}
+          rangeLabel={heatLabel}
+        />
+        <QuestionsPerDayCard
+          days={a.questionDays || []}
+          total={a.questionTotal || 0}
+          avg={a.questionAvg || 0}
+          max={a.questionMax || 1}
+          rangeLabel={heatLabel}
+        />
+      </div>
     </section>
   )
 }
@@ -7161,6 +7185,121 @@ function DailyStudyTimeCard({ days, totalSec, avgSec, maxSec, rangeLabel }) {
         </div>
       ) : (
         <div className="progress-analytics-empty">Timed practice will show up here as daily study bars.</div>
+      )}
+    </div>
+  )
+}
+
+function formatQuestionCount(n) {
+  if (!isValidStatNumber(n)) return '0'
+  const rounded = Math.round(n * 10) / 10
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1)
+}
+
+function QuestionsPerDayCard({ days, total, avg, max, rangeLabel }) {
+  const series = Array.isArray(days) ? days : []
+  const hasData = series.some((d) => (d.count || 0) > 0)
+  const w = 320
+  const h = 168
+  const padX = 14
+  const padY = 18
+  const ceiling = Math.max(1, max || 1)
+  const avgY = padY + (1 - Math.min(1, (avg || 0) / ceiling)) * (h - padY * 2)
+  const coords = series.map((d, i) => {
+    const x = series.length === 1
+      ? w / 2
+      : padX + (i / Math.max(1, series.length - 1)) * (w - padX * 2)
+    const y = padY + (1 - Math.min(1, (d.count || 0) / ceiling)) * (h - padY * 2)
+    return { x, y, ...d }
+  })
+  const line = coords.map((c, i) => `${i === 0 ? 'M' : 'L'}${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(' ')
+  const area = coords.length
+    ? `${line} L${coords[coords.length - 1].x},${h - 2} L${coords[0].x},${h - 2} Z`
+    : ''
+
+  return (
+    <div className="card progress-study-card progress-questions-card">
+      <div className="progress-study-head">
+        <div>
+          <h3>Questions per day</h3>
+          <p>Unique graded questions. The dashed line is your daily average.</p>
+        </div>
+      </div>
+      <div className="progress-study-metrics">
+        <div>
+          <strong>{formatQuestionCount(total)}</strong>
+          <span>{rangeLabel || 'This range'}</span>
+        </div>
+        <div>
+          <strong>{formatQuestionCount(avg)}</strong>
+          <span>per day</span>
+        </div>
+      </div>
+      {hasData ? (
+        <div className="progress-questions-chart" role="img" aria-label="Questions completed per day">
+          <svg
+            viewBox={`0 0 ${w} ${h}`}
+            preserveAspectRatio="none"
+            className="progress-questions-svg"
+          >
+            <defs>
+              <linearGradient id="questionsPerDayFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#2F62D6" stopOpacity="0.22" />
+                <stop offset="100%" stopColor="#2F62D6" stopOpacity="0.02" />
+              </linearGradient>
+            </defs>
+            <line
+              x1={padX}
+              x2={w - padX}
+              y1={avgY}
+              y2={avgY}
+              className="progress-questions-avg-line"
+            />
+            <text x={w - padX} y={Math.max(12, avgY - 6)} textAnchor="end" className="progress-questions-avg-label">
+              Average {formatQuestionCount(avg)}
+            </text>
+            {area ? (
+              <motion.path
+                d={area}
+                fill="url(#questionsPerDayFill)"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.45 }}
+              />
+            ) : null}
+            {line ? (
+              <motion.path
+                d={line}
+                fill="none"
+                stroke="#2F62D6"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.85, ease: 'easeOut' }}
+              />
+            ) : null}
+            {coords.map((c) => (
+              <circle
+                key={c.key}
+                cx={c.x}
+                cy={c.y}
+                r="4"
+                className="progress-questions-dot"
+              >
+                <title>{`${c.label}: ${c.count} question${c.count === 1 ? '' : 's'}`}</title>
+              </circle>
+            ))}
+          </svg>
+          <div className="progress-study-labels progress-questions-labels">
+            {series.map((d) => (
+              <span key={d.key} className="progress-study-label">{d.label}</span>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="progress-analytics-empty">Graded practice will show up here as a daily line.</div>
       )}
     </div>
   )
