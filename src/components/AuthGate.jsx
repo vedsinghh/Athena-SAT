@@ -74,9 +74,17 @@ export default function AuthGate({ onSignIn, onSignUp, error, configured }) {
     <div className="welcome-shell auth-landing">
       <header className="welcome-header">
         <Brand />
-        <div className="rounded-full border border-[#d5deef] px-4 py-2 text-xs font-bold tracking-[.12em] text-[#62718f]">
+        <button
+          type="button"
+          className="welcome-badge rounded-full border border-[#d5deef] px-4 py-2 text-xs font-bold tracking-[.12em] text-[#62718f] transition hover:border-athena-blue hover:text-athena-blue"
+          onClick={() => {
+            setMode('signup')
+            setLocalError('')
+            setInfo('')
+          }}
+        >
           FREE TO START
-        </div>
+        </button>
       </header>
 
       <main className="auth-landing-main">
@@ -197,6 +205,9 @@ export default function AuthGate({ onSignIn, onSignUp, error, configured }) {
           </form>
         </motion.section>
       </main>
+      <footer className="auth-copyright">
+        © {new Date().getFullYear()} Athena SAT. All rights reserved.
+      </footer>
       <div className="greek-key" />
     </div>
   )

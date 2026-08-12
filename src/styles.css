@@ -99,6 +99,10 @@ button { cursor: pointer; }
 
 /* Auth landing — SAT prep pitch */
 .auth-landing {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
   background:
     radial-gradient(ellipse 70% 55% at 12% 72%, rgba(49, 91, 183, 0.10) 0%, transparent 58%),
     radial-gradient(ellipse 55% 45% at 88% 18%, rgba(212, 168, 67, 0.12) 0%, transparent 52%),
@@ -107,10 +111,13 @@ button { cursor: pointer; }
 .auth-landing-main {
   position: relative;
   z-index: 2;
-  height: calc(100vh - 92px);
+  flex: 1;
+  min-height: 0;
+  height: auto;
   max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
-  padding: 20px clamp(24px, 3.5vw, 56px) 44px;
+  padding: 20px clamp(24px, 3.5vw, 56px) 24px;
   display: grid;
   grid-template-columns: minmax(220px, 0.9fr) minmax(260px, 1.05fr) minmax(320px, 0.95fr);
   gap: clamp(20px, 2.5vw, 40px);
@@ -125,8 +132,8 @@ button { cursor: pointer; }
   height: 100%;
 }
 .auth-pitch-athena {
-  height: min(68vh, 560px);
-  max-height: calc(100vh - 140px);
+  height: min(62vh, 520px);
+  max-height: 100%;
   transform: none;
 }
 .auth-pitch-copy {
@@ -180,6 +187,18 @@ button { cursor: pointer; }
   max-width: 420px;
   padding: 28px 32px 24px;
 }
+.auth-copyright {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 18px 20px 36px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #7a869e;
+}
 
 @media (max-width: 1100px) {
   .auth-landing-main {
@@ -195,22 +214,41 @@ button { cursor: pointer; }
 }
 
 @media (max-width: 900px) {
+  .auth-landing {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
   .auth-landing-main {
     height: auto;
-    min-height: calc(100vh - 92px);
+    min-height: 0;
+    flex: 0 0 auto;
     grid-template-columns: 1fr;
-    padding-bottom: 56px;
+    padding-bottom: 24px;
+  }
+  .auth-form-col {
+    order: -1;
+    height: auto;
+  }
+  .auth-pitch-copy {
+    order: 0;
+    text-align: center;
+    margin: 0 auto;
   }
   .auth-pitch-visual {
     min-height: auto;
-    order: -1;
+    order: 1;
+    width: 100%;
+    overflow: visible;
   }
-  .auth-pitch-athena {
-    height: min(36vh, 320px);
-  }
-  .auth-pitch-copy {
-    text-align: center;
-    margin: 0 auto;
+  .auth-landing .auth-pitch-athena,
+  .auth-landing .welcome-athena.auth-pitch-athena {
+    height: min(58vh, 480px);
+    width: auto;
+    max-width: min(108%, 460px);
+    max-height: none;
+    margin-bottom: -12px;
+    transform: none;
   }
   .auth-pitch-sub {
     margin-left: auto;
@@ -224,6 +262,98 @@ button { cursor: pointer; }
   }
   .auth-card {
     max-width: 100%;
+  }
+  .auth-copyright {
+    padding: 48px 20px 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .welcome-header {
+    height: 64px;
+    padding: 0 16px;
+  }
+  .welcome-header .brand-serif {
+    font-size: 20px;
+    letter-spacing: 0.14em;
+  }
+  .welcome-header .text-4xl {
+    font-size: 1.65rem;
+  }
+  .welcome-badge {
+    display: none;
+  }
+  .welcome-shell::after {
+    display: none;
+  }
+  .welcome-main {
+    min-height: calc(100vh - 64px);
+    padding: 16px 16px 36px;
+    gap: 12px;
+  }
+  .welcome-main > section:first-child {
+    order: 1;
+    min-height: 0;
+  }
+  .welcome-main > section:last-child {
+    order: 0;
+  }
+  .welcome-athena {
+    height: min(28vh, 220px);
+    transform: none;
+  }
+  .speech-bubble,
+  .laurel {
+    display: none;
+  }
+  .auth-landing-main {
+    min-height: calc(100vh - 64px);
+    padding: 16px 16px 24px;
+    gap: 18px;
+  }
+  .auth-landing .auth-pitch-athena,
+  .auth-landing .welcome-athena.auth-pitch-athena {
+    height: min(62vh, 520px);
+    width: auto;
+    max-width: min(115%, 480px);
+    max-height: none;
+    margin-bottom: -20px;
+  }
+  .auth-pitch-headline {
+    font-size: 22px;
+  }
+  .auth-pitch-sub {
+    font-size: 14px;
+  }
+  .auth-pitch-points {
+    gap: 8px;
+  }
+  .auth-pitch-points li {
+    font-size: 13px;
+  }
+  .auth-card {
+    padding: 22px 18px 18px;
+  }
+  .profile-card {
+    padding: 24px 18px 20px;
+    border-radius: 22px;
+  }
+  .profile-edit-modal {
+    width: min(100%, 420px);
+    max-height: min(92vh, 720px);
+    overflow: auto;
+    padding: 20px 16px 16px;
+    border-radius: 20px;
+  }
+  .profile-edit-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-edit-actions {
+    flex-direction: column-reverse;
+  }
+  .profile-edit-cancel,
+  .profile-edit-save {
+    width: 100%;
   }
 }
 
@@ -551,6 +681,12 @@ button { cursor: pointer; }
   background: color-mix(in srgb, var(--page-cream) 94%, #ffffff);
   border-right: 1px solid #ebe6dc;
 }
+.sidebar-brand-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
 .sidebar-brand {
   display: flex;
   width: 100%;
@@ -561,6 +697,15 @@ button { cursor: pointer; }
   background: transparent;
   text-align: left;
   cursor: pointer;
+}
+.sidebar-close {
+  display: none;
+}
+.sidebar-backdrop {
+  display: none;
+}
+.mobile-topbar {
+  display: none;
 }
 .sidebar-brand .brand-serif {
   font-size: 22px;
@@ -4485,7 +4630,11 @@ body.math-reference-dragging * {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.practice-flag-label-short {
+  display: none;
 }
 .practice-flag-btn:hover {
   border-color: #f0b45a;
@@ -4737,6 +4886,38 @@ body.math-reference-dragging * {
   }
   .math-top { min-height: 0; padding-right: 0; }
   .math-mascot { display: none; }
+  .reading-page .math-mascot.reading-mascot {
+    display: block;
+    right: max(-4px, env(safe-area-inset-right) * -1);
+    top: -6px;
+    width: 132px;
+    height: 118px;
+  }
+  .reading-page .reading-athena {
+    left: 0;
+    bottom: -10px;
+    height: 128px;
+  }
+  .reading-page .reading-mascot-deco {
+    display: none;
+  }
+  .reading-page .math-top {
+    padding-right: 118px;
+    min-height: 88px;
+  }
+  .reading-page .athena-book-hotspot {
+    right: 10px;
+    top: 4px;
+    width: 78px;
+    height: 70px;
+  }
+  .reading-page .athena-fact-bubble {
+    right: 12px;
+    left: 12px;
+    top: 118px;
+    width: auto;
+    max-width: none;
+  }
   .qbank-subjects { grid-template-columns: 1fr; }
   .qbank-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .qbm-hero { padding-right: 0; }
@@ -7374,9 +7555,9 @@ body.math-reference-dragging * {
     grid-template-columns: 1fr;
     min-height: 0;
   }
-  .progress-athena {
-    min-height: 240px;
-    order: -1;
+  .progress-athena,
+  .progress-today-athena {
+    display: none;
   }
   .progress-analytics-hit,
   .progress-analytics-subjects,
@@ -7807,11 +7988,275 @@ body.math-reference-dragging * {
 }
 
 @media (max-width: 900px) {
-  .sidebar { display: none; }
-  .dashboard-main { padding-left: 24px; }
+  .mobile-topbar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 22;
+    height: 56px;
+    align-items: center;
+    gap: 10px;
+    padding: 0 max(12px, env(safe-area-inset-left)) 0 max(12px, env(safe-area-inset-right));
+    padding-top: env(safe-area-inset-top);
+    min-height: calc(56px + env(safe-area-inset-top));
+    background: color-mix(in srgb, var(--page-cream) 94%, #ffffff);
+    border-bottom: 1px solid #ebe6dc;
+  }
+  .mobile-topbar-menu,
+  .mobile-topbar-avatar {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: #12346f;
+  }
+  .mobile-topbar-menu:hover,
+  .mobile-topbar-avatar:hover {
+    background: rgba(18, 52, 111, 0.06);
+  }
+  .mobile-topbar-brand {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    padding: 0;
+  }
+  .mobile-topbar-brand > div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .mobile-topbar-brand .brand-serif {
+    font-size: 18px;
+    letter-spacing: 0.14em;
+  }
+  .mobile-topbar-brand .text-4xl {
+    font-size: 1.5rem;
+  }
+  .mobile-topbar-brand .h-10 {
+    position: absolute;
+    right: calc(100% + 4px);
+    top: 50%;
+    transform: translateY(-50%);
+    height: 2rem;
+    width: 2rem;
+  }
+  .mobile-topbar-avatar {
+    border-radius: 999px;
+    background: linear-gradient(135deg, #5e84e5, #2f62d6);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 28;
+    background: rgba(18, 32, 64, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .sidebar-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sidebar {
+    display: flex;
+    z-index: 30;
+    width: min(300px, 86vw);
+    transform: translateX(-105%);
+    transition: transform 0.22s ease;
+    box-shadow: 8px 0 32px rgba(18, 40, 79, 0.12);
+    padding-top: max(18px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    pointer-events: none;
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  .sidebar-close {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-top: 6px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 10px;
+    background: #efebe3;
+    color: #12346f;
+  }
+  .dashboard-main {
+    padding: 20px max(14px, env(safe-area-inset-right)) 48px max(14px, env(safe-area-inset-left));
+  }
   .practice-pause-overlay { left: 0; }
   .welcome-shell { overflow: auto; height: auto; min-height: 100vh; }
   .welcome-main { height: auto; min-height: calc(100vh - 92px); grid-template-columns: 1fr; }
   .math-top { padding-right: 0; }
   .math-mascot { display: none; }
+  .reading-page .math-mascot.reading-mascot {
+    display: block;
+    right: max(-4px, env(safe-area-inset-right) * -1);
+    top: -6px;
+    width: 132px;
+    height: 118px;
+  }
+  .reading-page .reading-athena {
+    left: 0;
+    bottom: -10px;
+    height: 128px;
+  }
+  .reading-page .reading-mascot-deco {
+    display: none;
+  }
+  .reading-page .math-top {
+    padding-right: 118px;
+    min-height: 88px;
+  }
+  .reading-page .athena-book-hotspot {
+    right: 10px;
+    top: 4px;
+    width: 78px;
+    height: 70px;
+  }
+  .reading-page .athena-fact-bubble {
+    right: 12px;
+    left: 12px;
+    top: 118px;
+    width: auto;
+    max-width: none;
+  }
+  .progress-athena,
+  .progress-today-athena {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .dashboard-grid > aside {
+    grid-template-columns: 1fr;
+  }
+  .math-side {
+    grid-template-columns: 1fr;
+  }
+  .qbank-metrics {
+    grid-template-columns: 1fr;
+  }
+  .progress-hero h1 {
+    font-size: 28px;
+  }
+  .practice-split {
+    min-height: 0;
+    gap: 12px;
+  }
+  .practice-split > .practice-question-card {
+    order: -1;
+  }
+  .practice-passage-card {
+    min-height: 220px;
+    padding: 14px 14px;
+  }
+  .practice-calc-card,
+  .practice-question-card {
+    min-height: 0;
+  }
+  .practice-topbar {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .practice-meta-right {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .practice-footer {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .practice-footer-left,
+  .practice-footer-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .practice-desmos-host {
+    height: 260px;
+  }
+  .subject-laurel {
+    display: none;
+  }
+  .card {
+    padding: 16px;
+  }
+  .score-card {
+    min-height: 0;
+  }
+  .score-stage {
+    min-height: 210px;
+    height: 210px;
+  }
+  .score-stats {
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 12px;
+    width: calc(100% - 8px);
+    justify-content: center;
+  }
+  .score-stat {
+    min-width: 0;
+    flex: 1;
+  }
+  .score-stat-value {
+    font-size: 28px;
+  }
+  .score-playfield {
+    min-height: 120px;
+  }
+  .score-athena {
+    max-height: 110px;
+  }
+  .practice-q-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .practice-q-left,
+  .practice-q-right {
+    flex-wrap: wrap;
+    gap: 6px;
+    max-width: 100%;
+  }
+  .practice-flag-btn {
+    max-width: 100%;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+  .practice-flag-btn .practice-flag-label {
+    display: none;
+  }
+  .practice-flag-btn .practice-flag-label-short {
+    display: inline;
+  }
+  .practice-topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .practice-progress-block {
+    min-width: 0;
+    width: 100%;
+  }
+  .math-top h1,
+  .reading-page .math-top h1 {
+    font-size: 28px;
+  }
 }

@@ -4,7 +4,7 @@ import { AnimatePresence, animate, motion } from 'framer-motion'
 import {
   AlertTriangle, ArrowUpLeft, BarChart3, BookOpen, Calculator, CalendarDays,
   ChevronDown, ChevronRight, ClipboardList, Clock, ExternalLink, Filter,
-  Flame, FunctionSquare, Highlighter, Home, KeyRound, Lightbulb, List, LogOut, Pause, Play, PenLine, Radical,
+  Flame, FunctionSquare, Highlighter, Home, KeyRound, Lightbulb, List, LogOut, Menu, Pause, Play, PenLine, Radical,
   Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, XCircle, CheckCircle2, Check,
   FileText, Vault, Building2, ChevronUp, ListFilter, Info, Flag
 } from 'lucide-react'
@@ -1522,16 +1522,33 @@ function Dashboard({
 }) {
   const [page, setPage] = useState('dashboard')
   const [quickLaunch, setQuickLaunch] = useState(null)
+  const [navOpen, setNavOpen] = useState(false)
   const blaze = useAthenaBlaze(profile)
   const { blazeActive, blazeEnabled, setBlazeEnabled } = blaze
+
+  useEffect(() => {
+    if (!navOpen) return undefined
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKey = (e) => {
+      if (e.key === 'Escape') setNavOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [navOpen])
 
   const goDashboard = () => {
     setPage('dashboard')
     setQuickLaunch(null)
+    setNavOpen(false)
     onGoDashboard()
   }
 
   const navigate = (key) => {
+    setNavOpen(false)
     if (key === 'dashboard') goDashboard()
     else {
       setQuickLaunch(null)
@@ -1607,10 +1624,39 @@ function Dashboard({
     <div className={`dashboard-shell ${page === 'dashboard' ? 'dashboard-home' : ''} ${blazeActive ? 'athena-blaze' : ''}`}>
       <div className="dashboard-laurel dashboard-laurel-left" aria-hidden="true">❧</div>
       <div className="dashboard-laurel dashboard-laurel-right" aria-hidden="true">❧</div>
+      <header className="mobile-topbar">
+        <button
+          type="button"
+          className="mobile-topbar-menu"
+          aria-label="Open navigation"
+          aria-expanded={navOpen}
+          onClick={() => setNavOpen(true)}
+        >
+          <Menu size={22} strokeWidth={2} />
+        </button>
+        <button type="button" className="mobile-topbar-brand" onClick={goDashboard}>
+          <Brand />
+        </button>
+        <button
+          type="button"
+          className="mobile-topbar-avatar"
+          aria-label="Open profile menu"
+          onClick={() => setNavOpen(true)}
+        >
+          {profile.name?.[0]?.toUpperCase() || 'A'}
+        </button>
+      </header>
+      <div
+        className={`sidebar-backdrop ${navOpen ? 'open' : ''}`}
+        onClick={() => setNavOpen(false)}
+        aria-hidden={!navOpen}
+      />
       <Sidebar
         page={page}
         profile={profile}
         accountEmail={accountEmail}
+        mobileOpen={navOpen}
+        onMobileClose={() => setNavOpen(false)}
         onNavigate={navigate}
         onSignOut={onSignOut}
         onChangePassword={onChangePassword}
@@ -1622,7 +1668,7 @@ function Dashboard({
         <div className="dashboard-grid">
           <section className="min-w-0 relative">
             <div className="mb-5">
-              <h1 className="text-[34px] font-bold tracking-[-.04em] text-athena-navy">
+              <h1 className="text-[28px] font-bold tracking-[-.04em] text-athena-navy sm:text-[34px]">
                 Welcome back,{' '}
                 <span className={blazeActive ? 'athena-blaze-name' : undefined}>
                   {profile.name.split(' ')[0]}
@@ -1632,12 +1678,12 @@ function Dashboard({
               <p className="mt-1 text-[#687590]">Ready to reach your target score?</p>
             </div>
 
-            <div className="grid grid-cols-[1.55fr_.7fr] gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.55fr_.7fr]">
               <ScoreProgress profile={profile} />
               <AccuracyCard profile={profile} onOpen={() => setPage('Analytics')} />
             </div>
 
-            <div className="mt-4 relative grid grid-cols-2 gap-4">
+            <div className="mt-4 relative grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="subject-laurel" aria-hidden="true">❧</div>
               <SectionCard
                 title="Reading"
@@ -1655,7 +1701,7 @@ function Dashboard({
               />
             </div>
 
-            <div className="mt-4 grid grid-cols-[1.15fr_.85fr] gap-4">
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-[1.15fr_.85fr]">
               <RecentActivity profile={profile} onViewAll={() => setPage('Analytics')} />
               <QuickActions
                 onOpenReadingBank={() => setPage('Question Bank Reading')}
@@ -5527,7 +5573,9 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   const [reviewMode, setReviewMode] = useState(false)
   const [elapsed, setElapsed] = useState(0)
   const [paused, setPaused] = useState(false)
-  const [calcOpen, setCalcOpen] = useState(true)
+  const [calcOpen, setCalcOpen] = useState(() => (
+    typeof window === 'undefined' || window.matchMedia('(min-width: 901px)').matches
+  ))
   const [calcMode, setCalcMode] = useState('calculator')
   const [questionTimes, setQuestionTimes] = useState(() => Array(config.count || 0).fill(0))
   const loggedQuestionsRef = useRef(new Set())
@@ -5980,7 +6028,8 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
                   onClick={toggleFlag}
                 >
                   <Flag size={15} strokeWidth={2.3} />
-                  {flagged[index] ? 'Flagged' : 'Mark for Review'}
+                  <span className="practice-flag-label">{flagged[index] ? 'Flagged' : 'Mark for Review'}</span>
+                  <span className="practice-flag-label-short" aria-hidden="true">{flagged[index] ? 'Flagged' : 'Flag'}</span>
                 </button>
               ) : null}
               {verdict != null && (
@@ -6686,7 +6735,8 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
                   onClick={toggleFlag}
                 >
                   <Flag size={15} strokeWidth={2.3} />
-                  {flagged[index] ? 'Flagged' : 'Mark for Review'}
+                  <span className="practice-flag-label">{flagged[index] ? 'Flagged' : 'Mark for Review'}</span>
+                  <span className="practice-flag-label-short" aria-hidden="true">{flagged[index] ? 'Flagged' : 'Flag'}</span>
                 </button>
               ) : null}
               {verdict != null && (
@@ -9461,6 +9511,8 @@ function Sidebar({
   page,
   profile,
   accountEmail,
+  mobileOpen = false,
+  onMobileClose,
   onNavigate,
   onSignOut,
   onChangePassword,
@@ -9504,15 +9556,27 @@ function Sidebar({
   }
 
   return (
-    <aside className="sidebar">
-      <button
-        type="button"
-        className="sidebar-brand"
-        onClick={() => onNavigate('dashboard')}
-        title="Dashboard"
-      >
-        <Brand />
-      </button>
+    <aside className={`sidebar ${mobileOpen ? 'mobile-open' : ''}`}>
+      <div className="sidebar-brand-row">
+        <button
+          type="button"
+          className="sidebar-brand"
+          onClick={() => onNavigate('dashboard')}
+          title="Dashboard"
+        >
+          <Brand />
+        </button>
+        {onMobileClose && (
+          <button
+            type="button"
+            className="sidebar-close"
+            aria-label="Close navigation"
+            onClick={onMobileClose}
+          >
+            <X size={20} strokeWidth={2} />
+          </button>
+        )}
+      </div>
 
       <nav className="sidebar-nav">
         {items.map(([label, Icon, key]) => (
