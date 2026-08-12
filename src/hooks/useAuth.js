@@ -60,6 +60,20 @@ export function useAuth() {
     return data
   }
 
+  const signInWithGoogle = async () => {
+    setError('')
+    if (!supabase) throw new Error('Supabase is not configured')
+    const siteUrl = getSiteUrl()
+    const { error: err } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: siteUrl ? { redirectTo: `${siteUrl}/` } : undefined,
+    })
+    if (err) {
+      setError(err.message)
+      throw err
+    }
+  }
+
   const signOut = async () => {
     setError('')
     if (!supabase) return
@@ -104,6 +118,7 @@ export function useAuth() {
     configured: isSupabaseConfigured,
     signIn,
     signUp,
+    signInWithGoogle,
     signOut,
     updatePassword,
   }

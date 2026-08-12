@@ -907,7 +907,7 @@ function makeStarterProfile({ name, grade, goalScore, bestScore, school, testDat
 }
 
 export default function App() {
-  const { user, loading: authLoading, error: authError, configured, signIn, signUp, signOut, updatePassword } = useAuth()
+  const { user, loading: authLoading, error: authError, configured, signIn, signUp, signInWithGoogle, signOut, updatePassword } = useAuth()
   const [screen, setScreen] = useState('welcome')
   const [toast, setToast] = useState('')
 
@@ -1064,7 +1064,7 @@ export default function App() {
   if (!user) {
     return (
       <div className="min-h-screen bg-white text-[#14284f]">
-        <AuthGate onSignIn={signIn} onSignUp={signUp} error={authError} configured={configured} />
+        <AuthGate onSignIn={signIn} onSignUp={signUp} onSignInWithGoogle={signInWithGoogle} error={authError} configured={configured} />
         <AnimatePresence>
           {toast && (
             <motion.div
