@@ -2878,6 +2878,63 @@ button { cursor: pointer; }
   color: #fff;
   font-size: 14px;
   font-weight: 800;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.practice-q-number:hover {
+  filter: brightness(1.08);
+}
+.practice-q-number:focus-visible {
+  outline: 2px solid #2f62d6;
+  outline-offset: 2px;
+}
+.practice-q-meta {
+  position: relative;
+}
+.practice-q-meta-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  min-width: 220px;
+  max-width: min(320px, 70vw);
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #e4ebf6;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(20, 40, 79, 0.14);
+}
+.practice-q-meta-row {
+  display: grid;
+  gap: 2px;
+}
+.practice-q-meta-row span {
+  font-size: 11px;
+  font-weight: 650;
+  color: #7a869e;
+}
+.practice-q-meta-row strong {
+  font-size: 13px;
+  font-weight: 750;
+  color: #14284f;
+  line-height: 1.35;
+}
+.practice-q-meta-id {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #eef2f8;
+}
+.practice-q-meta-id span {
+  font-size: 10px;
+}
+.practice-q-meta-id strong {
+  font-size: 11px;
+  font-weight: 650;
+  color: #687590;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
 }
 .practice-mark-btn {
   display: inline-flex;
@@ -4258,6 +4315,19 @@ body.math-reference-dragging * {
   font-weight: 800;
   color: #14284f;
   line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.progress-summary-avg-time {
+  padding: 14px 16px 12px;
+}
+.progress-summary-avg-time .progress-summary-value {
+  font-size: 30px;
+  margin-top: 4px;
+}
+.progress-summary-avg-time .progress-summary-breakdown {
+  margin-top: 8px;
+  gap: 3px;
 }
 .progress-summary-value span {
   margin-left: 8px;
@@ -5083,48 +5153,49 @@ body.math-reference-dragging * {
   gap: 14px;
 }
 .progress-study-card {
-  padding: 20px 22px 18px;
+  padding: 16px 18px 14px;
   min-height: 0;
 }
 .progress-study-head h3 {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   color: #14284f;
   letter-spacing: -0.03em;
 }
 .progress-study-head p {
-  margin-top: 4px;
-  font-size: 13px;
+  margin-top: 3px;
+  font-size: 12px;
   color: #7a869e;
   max-width: 42ch;
 }
 .progress-study-metrics {
-  margin-top: 16px;
+  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
+  gap: 24px;
 }
 .progress-study-metrics strong {
   display: block;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
   color: #14284f;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 .progress-study-metrics span {
   display: block;
-  margin-top: 5px;
-  font-size: 13px;
+  margin-top: 4px;
+  font-size: 12px;
   color: #8a95a8;
 }
 .progress-study-chart {
-  margin-top: 18px;
+  margin-top: 12px;
 }
 .progress-study-plot {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 .progress-study-tracks {
   position: relative;
@@ -5133,14 +5204,14 @@ body.math-reference-dragging * {
   grid-auto-columns: minmax(0, 1fr);
   gap: 10px;
   align-items: end;
-  min-height: 160px;
-  padding-top: 10px;
+  min-height: 118px;
+  padding-top: 8px;
 }
 .progress-study-track {
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 160px;
+  height: 118px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -5156,7 +5227,7 @@ body.math-reference-dragging * {
   overflow: hidden;
   min-height: 6px;
 }
-.progress-study-stack .math { display: block; width: 100%; background: #5b9ee8; }
+.progress-study-stack .math { display: block; width: 100%; background: #18a05e; }
 .progress-study-stack .reading { display: block; width: 100%; background: #7c3aed; }
 .progress-study-labels {
   display: grid;
@@ -5195,7 +5266,7 @@ body.math-reference-dragging * {
   padding: 0 4px;
 }
 .progress-study-swatches {
-  margin-top: 12px;
+  margin-top: 10px;
   display: flex;
   gap: 14px;
   font-size: 12px;
@@ -5213,35 +5284,68 @@ body.math-reference-dragging * {
   border-radius: 3px;
   display: block;
 }
-.progress-study-swatches i.math { background: #5b9ee8; }
+.progress-study-swatches i.math { background: #18a05e; }
 .progress-study-swatches i.reading { background: #7c3aed; }
 
 .progress-questions-chart {
-  margin-top: 18px;
+  margin-top: 12px;
+}
+.progress-questions-plot {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 12% 0%, rgba(224, 112, 32, 0.12), transparent 55%),
+    radial-gradient(100% 70% at 88% 10%, rgba(24, 160, 94, 0.12), transparent 50%),
+    linear-gradient(180deg, #f7f9fd 0%, #ffffff 70%);
+}
+.progress-questions-glow {
+  position: absolute;
+  inset: auto 18% -30% 18%;
+  height: 55%;
+  background: radial-gradient(ellipse at center, rgba(47, 98, 214, 0.16), transparent 70%);
+  pointer-events: none;
 }
 .progress-questions-svg {
   display: block;
   width: 100%;
-  height: 168px;
+  height: 100%;
+  position: relative;
+  z-index: 1;
 }
-.progress-questions-avg-line {
-  stroke: #c5cedc;
-  stroke-width: 1.5;
-  stroke-dasharray: 4 4;
+.progress-questions-marker {
+  position: absolute;
+  z-index: 3;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #2f62d6, #18a05e);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(20, 40, 79, 0.18);
+  pointer-events: auto;
 }
-.progress-questions-avg-label {
-  fill: #8a95a8;
-  font-size: 11px;
-  font-weight: 700;
-  font-family: inherit;
+.progress-questions-marker.peak {
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  background: linear-gradient(145deg, #e07020, #f59e0b);
+  box-shadow: 0 0 0 3px rgba(224, 112, 32, 0.18), 0 2px 6px rgba(20, 40, 79, 0.16);
 }
-.progress-questions-dot {
-  fill: #2F62D6;
-  stroke: #fff;
-  stroke-width: 1.5;
+.progress-questions-marker.empty {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: #c5cedc;
+  box-shadow: none;
 }
 .progress-questions-labels {
   margin-top: 6px;
+}
+.progress-questions-plot .progress-study-avg {
+  z-index: 2;
 }
 
 @media (max-width: 1100px) {

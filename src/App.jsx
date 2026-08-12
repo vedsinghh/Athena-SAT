@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, animate, motion } from 'framer-motion'
 import {
@@ -283,6 +283,14 @@ function getProgressRangeBounds(mode, customFrom, customTo) {
       dayCount = Math.max(1, Math.round((endDay - start) / 86400000) + 1)
     }
     return { start, end: customEnd, dayCount, label: 'Custom range' }
+  }
+  if (mode === 'today') {
+    return {
+      start: startOfLocalDay(new Date()),
+      end,
+      dayCount: 1,
+      label: 'Today',
+    }
   }
   const days = mode === '30d' ? 30 : mode === '3d' ? 3 : 7
   const start = startOfLocalDay(new Date())
@@ -4941,6 +4949,62 @@ function PracticeChoiceList({
   )
 }
 
+function PracticeQuestionNumber({ number, question, tone = 'math' }) {
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef(null)
+  const bank = question?.pool || DEFAULT_QUESTION_POOL
+
+  useEffect(() => {
+    setOpen(false)
+  }, [number, question?.id])
+
+  useEffect(() => {
+    if (!open) return undefined
+    const onPointer = (event) => {
+      if (!wrapRef.current?.contains(event.target)) setOpen(false)
+    }
+    const onKey = (event) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onPointer)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onPointer)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  return (
+    <div className={`practice-q-meta ${open ? 'open' : ''}`} ref={wrapRef}>
+      <button
+        type="button"
+        className={`practice-q-number ${tone === 'reading' ? 'reading-q-number' : ''}`}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        aria-label={`Question ${number} details`}
+        title="Question details"
+        onClick={() => setOpen((v) => !v)}
+      >
+        {number}
+      </button>
+      {open ? (
+        <div className="practice-q-meta-pop" role="dialog" aria-label="Question details">
+          <div className="practice-q-meta-row">
+            <span>Question bank</span>
+            <strong>{bank}</strong>
+          </div>
+          {question?.id ? (
+            <div className="practice-q-meta-row practice-q-meta-id">
+              <span>Question ID</span>
+              <strong>{question.id}</strong>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
 function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSession }) {
   const excludeIds = useMemo(
     () => (config.excludeIds instanceof Set ? config.excludeIds : new Set(config.excludeIds || [])),
@@ -5367,7 +5431,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
         <div className="card practice-question-card">
           <div className="practice-q-toolbar">
             <div className="practice-q-left">
-              <span className="practice-q-number">{index + 1}</span>
+              <PracticeQuestionNumber number={index + 1} question={current} />
               {verdict != null && (
                 <span className={`practice-verdict ${verdict ? 'ok' : 'bad'}`}>
                   {verdict ? 'Correct' : 'Incorrect'}
@@ -5988,7 +6052,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
         <div className="card practice-question-card">
           <div className="practice-q-toolbar">
             <div className="practice-q-left">
-              <span className="practice-q-number reading-q-number">{index + 1}</span>
+              <PracticeQuestionNumber number={index + 1} question={current} tone="reading" />
               {verdict != null && (
                 <span className={`practice-verdict ${verdict ? 'ok' : 'bad'}`}>
                   {verdict ? 'Correct' : 'Incorrect'}
@@ -6267,6 +6331,14 @@ function ProgressPage({
   const mathAvgTimeSec = deriveSubjectActivityStats(history, 'math', {
     progress: profile.qbankProgress,
   }).avgTimeSec
+  const todayStudySec = useMemo(() => {
+    const todayBounds = getProgressRangeBounds('today')
+    return deriveProgressAnalytics(
+      filterHistoryByRange(fullHistory, todayBounds),
+      {},
+      { heatDays: 1, allowQbankFallback: false },
+    ).studyTotalSec || 0
+  }, [fullHistory])
   const { streak, bestStreak } = computeStreakFromHistory(fullHistory)
   const displayBest = bestStreak
   const [expandedSetId, setExpandedSetId] = useState(null)
@@ -6280,10 +6352,11 @@ function ProgressPage({
   const canExpandHistory = history.length > HISTORY_PREVIEW_COUNT
   const heatDays = rangeBounds.dayCount
     ? Math.min(90, rangeBounds.dayCount)
-    : (rangeMode === 'all' ? 90 : 14)
+    : (rangeMode === 'all' ? null : 14)
   const analytics = useMemo(
     () => deriveProgressAnalytics(history, profile.qbankProgress || {}, {
       heatDays,
+      fromFirstActivity: rangeMode === 'all',
       allowQbankFallback: rangeMode === 'all',
     }),
     [history, profile.qbankProgress, heatDays, rangeMode],
@@ -6315,6 +6388,7 @@ function ProgressPage({
   }, [fullHistory])
 
   const rangeOptions = [
+    { id: 'today', label: 'Today' },
     { id: '3d', label: '3d' },
     { id: '7d', label: '7d' },
     { id: '30d', label: '30d' },
@@ -6430,7 +6504,7 @@ function ProgressPage({
                 </span>
               </div>
             </div>
-            <div className="card progress-summary-card">
+            <div className="card progress-summary-card progress-summary-avg-time">
               <div className="progress-summary-label">Average Time / Question</div>
               <div className="progress-summary-value">
                 {formatAvgTime(analytics.avgSec)}
@@ -6444,6 +6518,12 @@ function ProgressPage({
                   <em>Math avg</em>
                   {formatAvgTime(mathAvgTimeSec)}
                 </span>
+                {rangeMode === 'today' ? (
+                  <span>
+                    <em>Time today</em>
+                    {formatStudyDuration(todayStudySec)}
+                  </span>
+                ) : null}
               </div>
             </div>
           </div>
@@ -6483,6 +6563,7 @@ function ProgressPage({
       <ProgressAnalytics
         analytics={analytics}
         heatLabel={rangeBounds.label}
+        showStudyCharts={rangeMode !== 'today'}
         charge={charge}
         chargeCorrect={dailyCorrect}
         blazeActive={blazeActive}
@@ -6607,11 +6688,25 @@ function ProgressPage({
   )
 }
 
+function daysFromFirstActivity(today, dayCounts, dayTime) {
+  const keys = new Set()
+  dayCounts.forEach((count, key) => {
+    if (count > 0) keys.add(key)
+  })
+  dayTime.forEach((times, key) => {
+    if ((times.math || 0) + (times.reading || 0) > 0) keys.add(key)
+  })
+  if (!keys.size) return 1
+  const earliest = startOfLocalDay(`${[...keys].sort()[0]}T12:00:00`)
+  const end = startOfLocalDay(today)
+  if (!earliest || !end) return 1
+  return Math.max(1, Math.round((end - earliest) / 86400000) + 1)
+}
+
 /** Aggregate charts for the Progress analytics tiles. */
 function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   const list = Array.isArray(history) ? history : []
   const sets = list.filter((e) => e.type === 'set')
-  const heatSpan = Math.max(1, options.heatDays || 14)
 
   let correct = 0
   let incorrect = 0
@@ -6757,6 +6852,12 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   const heatDays = []
   const today = new Date()
   const todayKey = localDayKey(today)
+  const activitySpan = daysFromFirstActivity(today, dayCounts, dayTime)
+  const chartSpan = options.fromFirstActivity
+    ? activitySpan
+    : Math.max(1, options.heatDays || 14)
+  // Heatmap stays compact even when all-time charts stretch from first activity.
+  const heatSpan = Math.max(1, options.heatDays ?? Math.min(activitySpan, 90))
   for (let i = heatSpan - 1; i >= 0; i -= 1) {
     const d = new Date(today)
     d.setDate(today.getDate() - i)
@@ -6770,7 +6871,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   const heatMax = Math.max(1, ...heatDays.map((d) => d.count))
 
   const studyDays = []
-  for (let i = heatSpan - 1; i >= 0; i -= 1) {
+  for (let i = chartSpan - 1; i >= 0; i -= 1) {
     const d = new Date(today)
     d.setDate(today.getDate() - i)
     const key = localDayKey(d)
@@ -6831,6 +6932,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
 function ProgressAnalytics({
   analytics,
   heatLabel = 'Last 14 days',
+  showStudyCharts = true,
   charge: chargeProp,
   chargeCorrect: chargeCorrectProp,
   blazeActive = false,
@@ -7049,22 +7151,24 @@ function ProgressAnalytics({
         <TopicAccuracyCard title="Math" domains={a.topicAccuracy?.math || []} />
       </div>
 
-      <div className="progress-study-grid">
-        <DailyStudyTimeCard
-          days={a.studyDays || []}
-          totalSec={a.studyTotalSec || 0}
-          avgSec={a.studyAvgSec || 0}
-          maxSec={a.studyMaxSec || 1}
-          rangeLabel={heatLabel}
-        />
-        <QuestionsPerDayCard
-          days={a.questionDays || []}
-          total={a.questionTotal || 0}
-          avg={a.questionAvg || 0}
-          max={a.questionMax || 1}
-          rangeLabel={heatLabel}
-        />
-      </div>
+      {showStudyCharts ? (
+        <div className="progress-study-grid">
+          <DailyStudyTimeCard
+            days={a.studyDays || []}
+            totalSec={a.studyTotalSec || 0}
+            avgSec={a.studyAvgSec || 0}
+            maxSec={a.studyMaxSec || 1}
+            rangeLabel={heatLabel}
+          />
+          <QuestionsPerDayCard
+            days={a.questionDays || []}
+            total={a.questionTotal || 0}
+            avg={a.questionAvg || 0}
+            max={a.questionMax || 1}
+            rangeLabel={heatLabel}
+          />
+        </div>
+      ) : null}
     </section>
   )
 }
@@ -7173,8 +7277,10 @@ function DailyStudyTimeCard({ days, totalSec, avgSec, maxSec, rangeLabel }) {
               })}
             </div>
             <div className="progress-study-labels">
-              {series.map((d) => (
-                <span key={d.key} className="progress-study-label">{d.label}</span>
+              {series.map((d, i) => (
+                <span key={d.key} className="progress-study-label">
+                  {shouldShowDayLabel(i, series.length) ? d.label : ''}
+                </span>
               ))}
             </div>
           </div>
@@ -7196,15 +7302,39 @@ function formatQuestionCount(n) {
   return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1)
 }
 
+function shouldShowDayLabel(index, total) {
+  if (total <= 10) return true
+  if (index === 0 || index === total - 1) return true
+  const step = Math.ceil(total / 6)
+  return index % step === 0
+}
+
+function buildSmoothLinePath(coords) {
+  if (!coords.length) return ''
+  if (coords.length === 1) {
+    return `M${coords[0].x.toFixed(1)},${coords[0].y.toFixed(1)}`
+  }
+  let d = `M${coords[0].x.toFixed(1)},${coords[0].y.toFixed(1)}`
+  for (let i = 0; i < coords.length - 1; i += 1) {
+    const a = coords[i]
+    const b = coords[i + 1]
+    const mx = (a.x + b.x) / 2
+    d += ` C${mx.toFixed(1)},${a.y.toFixed(1)} ${mx.toFixed(1)},${b.y.toFixed(1)} ${b.x.toFixed(1)},${b.y.toFixed(1)}`
+  }
+  return d
+}
+
 function QuestionsPerDayCard({ days, total, avg, max, rangeLabel }) {
+  const gradId = useId().replace(/:/g, '')
   const series = Array.isArray(days) ? days : []
   const hasData = series.some((d) => (d.count || 0) > 0)
   const w = 320
-  const h = 168
-  const padX = 14
-  const padY = 18
+  const h = 120
+  const padX = 12
+  const padY = 14
   const ceiling = Math.max(1, max || 1)
-  const avgY = padY + (1 - Math.min(1, (avg || 0) / ceiling)) * (h - padY * 2)
+  const avgRatio = Math.min(1, (avg || 0) / ceiling)
+  const avgPct = ((padY + avgRatio * (h - padY * 2)) / h) * 100
   const coords = series.map((d, i) => {
     const x = series.length === 1
       ? w / 2
@@ -7212,10 +7342,11 @@ function QuestionsPerDayCard({ days, total, avg, max, rangeLabel }) {
     const y = padY + (1 - Math.min(1, (d.count || 0) / ceiling)) * (h - padY * 2)
     return { x, y, ...d }
   })
-  const line = coords.map((c, i) => `${i === 0 ? 'M' : 'L'}${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(' ')
+  const line = buildSmoothLinePath(coords)
   const area = coords.length
     ? `${line} L${coords[coords.length - 1].x},${h - 2} L${coords[0].x},${h - 2} Z`
     : ''
+  const peak = Math.max(...coords.map((c) => c.count || 0), 0)
 
   return (
     <div className="card progress-study-card progress-questions-card">
@@ -7237,64 +7368,72 @@ function QuestionsPerDayCard({ days, total, avg, max, rangeLabel }) {
       </div>
       {hasData ? (
         <div className="progress-questions-chart" role="img" aria-label="Questions completed per day">
-          <svg
-            viewBox={`0 0 ${w} ${h}`}
-            preserveAspectRatio="none"
-            className="progress-questions-svg"
-          >
-            <defs>
-              <linearGradient id="questionsPerDayFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#2F62D6" stopOpacity="0.22" />
-                <stop offset="100%" stopColor="#2F62D6" stopOpacity="0.02" />
-              </linearGradient>
-            </defs>
-            <line
-              x1={padX}
-              x2={w - padX}
-              y1={avgY}
-              y2={avgY}
-              className="progress-questions-avg-line"
-            />
-            <text x={w - padX} y={Math.max(12, avgY - 6)} textAnchor="end" className="progress-questions-avg-label">
-              Average {formatQuestionCount(avg)}
-            </text>
-            {area ? (
-              <motion.path
-                d={area}
-                fill="url(#questionsPerDayFill)"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.45 }}
-              />
-            ) : null}
-            {line ? (
-              <motion.path
-                d={line}
-                fill="none"
-                stroke="#2F62D6"
-                strokeWidth="2.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.85, ease: 'easeOut' }}
-              />
-            ) : null}
-            {coords.map((c) => (
-              <circle
-                key={c.key}
-                cx={c.x}
-                cy={c.y}
-                r="4"
-                className="progress-questions-dot"
-              >
-                <title>{`${c.label}: ${c.count} question${c.count === 1 ? '' : 's'}`}</title>
-              </circle>
-            ))}
-          </svg>
+          <div className="progress-questions-plot">
+            <div className="progress-questions-glow" aria-hidden="true" />
+            <div className="progress-study-avg" style={{ bottom: `${avgPct}%` }}>
+              <em>Average {formatQuestionCount(avg)}</em>
+            </div>
+            <svg
+              viewBox={`0 0 ${w} ${h}`}
+              preserveAspectRatio="none"
+              className="progress-questions-svg"
+            >
+              <defs>
+                <linearGradient id={`qFill-${gradId}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.35" />
+                  <stop offset="45%" stopColor="#2f62d6" stopOpacity="0.18" />
+                  <stop offset="100%" stopColor="#18a05e" stopOpacity="0.04" />
+                </linearGradient>
+                <linearGradient id={`qStroke-${gradId}`} x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#e07020" />
+                  <stop offset="55%" stopColor="#2f62d6" />
+                  <stop offset="100%" stopColor="#18a05e" />
+                </linearGradient>
+              </defs>
+              {area ? (
+                <motion.path
+                  d={area}
+                  fill={`url(#qFill-${gradId})`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.45 }}
+                />
+              ) : null}
+              {line ? (
+                <motion.path
+                  d={line}
+                  fill="none"
+                  stroke={`url(#qStroke-${gradId})`}
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.85, ease: 'easeOut' }}
+                />
+              ) : null}
+            </svg>
+            {coords.map((c) => {
+              if (!c.count && coords.length > 14) return null
+              const isPeak = peak > 0 && c.count === peak
+              return (
+                <span
+                  key={c.key}
+                  className={`progress-questions-marker${isPeak ? ' peak' : ''}${c.count ? '' : ' empty'}`}
+                  style={{
+                    left: `${(c.x / w) * 100}%`,
+                    top: `${(c.y / h) * 100}%`,
+                  }}
+                  title={`${c.label}: ${c.count} question${c.count === 1 ? '' : 's'}`}
+                />
+              )
+            })}
+          </div>
           <div className="progress-study-labels progress-questions-labels">
-            {series.map((d) => (
-              <span key={d.key} className="progress-study-label">{d.label}</span>
+            {series.map((d, i) => (
+              <span key={d.key} className="progress-study-label">
+                {shouldShowDayLabel(i, series.length) ? d.label : ''}
+              </span>
             ))}
           </div>
         </div>
