@@ -111,39 +111,11 @@ export default function AuthGate({ onSignIn, onSignUp, error, configured }) {
           />
         </motion.div>
 
-        <motion.div
-          className="auth-pitch-copy"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.1, ease: 'easeOut' }}
-        >
-          <h1 className="auth-pitch-headline">
-            Digital SAT prep that tracks every point.
-          </h1>
-          <p className="auth-pitch-sub">
-            Practice with real digital SAT–style Math and Reading &amp; Writing questions, run timed sets, and climb toward your goal score—synced across devices.
-          </p>
-          <ul className="auth-pitch-points">
-            <li>
-              <Calculator size={18} strokeWidth={1.9} />
-              <span>Real digital SAT–style questions</span>
-            </li>
-            <li>
-              <BookOpen size={18} strokeWidth={1.9} />
-              <span>Question bank with skills &amp; domains</span>
-            </li>
-            <li>
-              <Target size={18} strokeWidth={1.9} />
-              <span>Score goals, streaks &amp; analytics</span>
-            </li>
-          </ul>
-        </motion.div>
-
         <motion.section
           className="auth-form-col"
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.14, ease: 'easeOut' }}
+          transition={{ duration: 0.45, delay: 0.12, ease: 'easeOut' }}
         >
           <form onSubmit={submit} className="profile-card auth-card">
             <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-[#eef3ff] text-athena-blue">
@@ -210,6 +182,34 @@ export default function AuthGate({ onSignIn, onSignUp, error, configured }) {
             </p>
           </form>
         </motion.section>
+
+        <motion.div
+          className="auth-pitch-copy"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.14, ease: 'easeOut' }}
+        >
+          <h1 className="auth-pitch-headline">
+            Digital SAT prep that tracks every point.
+          </h1>
+          <p className="auth-pitch-sub">
+            Practice with real digital SAT–style Math and Reading &amp; Writing questions, run timed sets, and climb toward your goal score—synced across devices.
+          </p>
+          <ul className="auth-pitch-points">
+            <li>
+              <Calculator size={18} strokeWidth={1.9} />
+              <span>Real digital SAT–style questions</span>
+            </li>
+            <li>
+              <BookOpen size={18} strokeWidth={1.9} />
+              <span>Question bank with skills &amp; domains</span>
+            </li>
+            <li>
+              <Target size={18} strokeWidth={1.9} />
+              <span>Score goals, streaks &amp; analytics</span>
+            </li>
+          </ul>
+        </motion.div>
       </main>
       <footer className="auth-copyright">
         © {new Date().getFullYear()} Athena SAT. All rights reserved.

@@ -1,5 +1,5 @@
 Confirm signup subject:
-Welcome to Athena SAT — confirm your account 🦉
+Confirm your account
 
 Reset password subject:
 Reset your Athena SAT password
