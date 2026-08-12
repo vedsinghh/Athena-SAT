@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { BookOpen, Calculator, Target, UserRound } from 'lucide-react'
+import PasswordRequirements from './PasswordRequirements'
+import { isPasswordValid, passwordValidationMessage } from '../lib/passwordRules'
 
 function Brand() {
   return (
@@ -47,9 +49,12 @@ export default function AuthGate({ onSignIn, onSignUp, error, configured }) {
       setLocalError('Enter email and password.')
       return
     }
-    if (password.length < 6) {
-      setLocalError('Password must be at least 6 characters.')
-      return
+    if (mode === 'signup') {
+      const message = passwordValidationMessage(password)
+      if (message) {
+        setLocalError(message)
+        return
+      }
     }
     setBusy(true)
     try {
@@ -169,9 +174,10 @@ export default function AuthGate({ onSignIn, onSignUp, error, configured }) {
                   autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="At least 6 characters"
+                  placeholder={mode === 'signin' ? 'Your password' : 'Create a strong password'}
                 />
               </Field>
+              {mode === 'signup' && <PasswordRequirements password={password} />}
             </div>
 
             {showError && <p className="mt-2 text-sm font-medium text-red-500">{showError}</p>}
@@ -179,7 +185,7 @@ export default function AuthGate({ onSignIn, onSignUp, error, configured }) {
 
             <button
               type="submit"
-              disabled={busy}
+              disabled={busy || (mode === 'signup' && !isPasswordValid(password))}
               className="mt-5 h-13 w-full rounded-full bg-athena-blue py-3.5 text-[17px] font-bold text-white shadow-lg shadow-blue-100 transition hover:-translate-y-0.5 disabled:opacity-60"
             >
               {busy ? 'Please wait…' : mode === 'signin' ? 'Sign In' : 'Create free account'}

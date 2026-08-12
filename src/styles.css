@@ -397,6 +397,40 @@ button { cursor: pointer; }
   width: 100%; height: 100%; border: none; outline: none; background: transparent;
   color: #14284f; font-size: 15px;
 }
+.password-requirements {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.password-requirement {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8a95a8;
+  line-height: 1.3;
+}
+.password-requirement.met {
+  color: #1b2d53;
+}
+.password-requirement-icon {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 2px solid #c5cfe0;
+  background: transparent;
+  color: #fff;
+}
+.password-requirement.met .password-requirement-icon {
+  border-color: #18a05e;
+  background: #18a05e;
+}
 .greek-key {
   position: absolute; left: 0; right: 0; bottom: 0; height: 34px; opacity: .42;
   background:

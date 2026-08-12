@@ -14,7 +14,9 @@ import mathSkillCounts from './data/mathSkillCounts.json'
 import readingSkillCounts from './data/readingSkillCounts.json'
 import katex from 'katex'
 import AuthGate from './components/AuthGate'
+import PasswordRequirements from './components/PasswordRequirements'
 import { useAuth } from './hooks/useAuth'
+import { isPasswordValid, passwordValidationMessage } from './lib/passwordRules'
 import { useProfiles } from './hooks/useProfiles'
 import { writeLocalProfiles } from './lib/profileStorage'
 import { restoreAthenaExport } from './lib/restoreAthenaExport'
@@ -1927,7 +1929,8 @@ function ChangePasswordModal({ open, onClose, onSubmit }) {
   const submit = async (e) => {
     e.preventDefault()
     if (!currentPassword) return setError('Enter your current password.')
-    if (newPassword.length < 6) return setError('New password must be at least 6 characters.')
+    const passwordMessage = passwordValidationMessage(newPassword)
+    if (passwordMessage) return setError(passwordMessage)
     if (newPassword !== confirmPassword) return setError('New passwords do not match.')
     if (newPassword === currentPassword) return setError('New password must be different from the current one.')
     setError('')
@@ -1976,9 +1979,10 @@ function ChangePasswordModal({ open, onClose, onSubmit }) {
               autoComplete="new-password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="At least 6 characters"
+              placeholder="Create a strong password"
             />
           </Field>
+          <PasswordRequirements password={newPassword} />
           <Field label="Confirm new password">
             <input
               type="password"
@@ -1994,7 +1998,7 @@ function ChangePasswordModal({ open, onClose, onSubmit }) {
 
         <div className="profile-edit-actions">
           <button type="button" className="profile-edit-cancel" onClick={onClose} disabled={busy}>Cancel</button>
-          <button type="submit" className="profile-edit-save" disabled={busy}>
+          <button type="submit" className="profile-edit-save" disabled={busy || !isPasswordValid(newPassword)}>
             {busy ? 'Updating…' : 'Update password'}
           </button>
         </div>

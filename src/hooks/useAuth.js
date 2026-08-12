@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { isSupabaseConfigured, supabase } from '../lib/supabase'
+import { getSiteUrl, isSupabaseConfigured, supabase } from '../lib/supabase'
 
 export function useAuth() {
   const [session, setSession] = useState(null)
@@ -46,7 +46,12 @@ export function useAuth() {
   const signUp = async (email, password) => {
     setError('')
     if (!supabase) throw new Error('Supabase is not configured')
-    const { data, error: err } = await supabase.auth.signUp({ email, password })
+    const siteUrl = getSiteUrl()
+    const { data, error: err } = await supabase.auth.signUp({
+      email,
+      password,
+      options: siteUrl ? { emailRedirectTo: `${siteUrl}/` } : undefined,
+    })
     if (err) {
       setError(err.message)
       throw err
