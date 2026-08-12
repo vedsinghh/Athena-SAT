@@ -1,0 +1,22 @@
+Choice C is correct. To express the sum of the two rational expressions on the left-hand side of the equation as the single rational expression on
+the right-hand side of the equation, the expressions on the left-hand side must have the same denominator. Multiplying the first expression by
+ results in 
+, and multiplying the second expression by 
+ results in 
+, so the given equation can
+be rewritten as 
+, or 
+.
+Since the two rational expressions on the left-hand side of the equation have the same denominator as the rational expression on the right-hand
+side of the equation, it follows that 
+. Combining like terms on the left-hand side yields 
+, so it
+follows that 
+ and 
+. Therefore, the value of 
+ is 
+.
+Choice A is incorrect and may result from an error when determining the sign of either r or t. Choice B is incorrect and may result from not
+distributing the 2 and 3 to their respective terms in 
+. Choice D is incorrect and may
+result from a calculation error.

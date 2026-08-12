@@ -1,0 +1,36 @@
+Question ID: f46139df
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Two-variable data:
+Models and scatterplots
+Medium
+Question
+The scatterplot shows the relationship between two variables, 
+ and 
+. A line of best fit for the data is also shown.
+At 
+, which of the following is closest to the y-value predicted by the line of best fit?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: C
+Rationale
+Choice C is correct. On the line of best fit, an x-value of 
+ corresponds to a y-value between 
+ and 
+. Therefore, at 
+, 
+ is closest
+to the y-value predicted by the line of best fit.
+Choice A is incorrect and may result from conceptual errors.
+Choice B is incorrect and may result from conceptual errors.
+Choice D is incorrect and may result from conceptual errors.

@@ -1,0 +1,25 @@
+{
+  "id": "263f9937",
+  "prompt": "A culture of bacteria is growing at an exponential rate, as shown in the table above. At this rate, on which day would the number of bacteria per\nmilliliter reach 5,12 x 10°?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "5"
+    },
+    {
+      "text": "9"
+    },
+    {
+      "text": "11"
+    },
+    {
+      "text": "12"
+    }
+  ],
+  "answer": 3,
+  "explanation": "Choice D is correct. The number of bacteria per milliliter is doubling each day. For example, from day 1 to day 2, the number of bacteria increased\nfrom 2.5 × 10\n5 to 5.0 × 10\n5\n. At the end of day 3 there are 10\n6 bacteria per milliliter. At the end of day 4, there will be 10\n6 × 2 bacteria per milliliter.\nAt the end of day 5, there will be (10\n6 × 2) × 2, or 10\n6 × (2\n2\n) bacteria per milliliter, and so on. At the end of day d, the number of bacteria will be 10\n6\n× (2\nd – 3\n). If the number of bacteria per milliliter will reach 5.12 × 10\n8 at the end of day d, then the equation must hold. Since 5.12 × 10\n8 can be rewritten as 512 × 10\n6\n, the equation is equivalent to . Rewriting 512 as 2\n9 gives d – 3 = 9, so d\n= 12. The number of bacteria per milliliter would reach 5.12 × 10\n8\nat the end of day 12.\nChoices A, B, and C are incorrect. Given the growth rate of the bacteria, the number of bacteria will not reach 5.12 × 10\n8 per milliliter by the end of\nany of these days.",
+  "pdfPage": 82,
+  "type": "mc",
+  "kind": null
+}

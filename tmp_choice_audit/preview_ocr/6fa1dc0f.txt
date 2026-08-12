@@ -1,0 +1,12 @@
+Question
+
+Line r in the xy-plane has a slope of 4 and passes through the point (0, 6). Which equation defines line r?
+Answer
+
+Ay=-—6r+4
+
+By=6r+4
+
+C.y=4r—-6
+
+Dy = 40 +6

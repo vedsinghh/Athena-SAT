@@ -1,0 +1,52 @@
+Question ID: 93724cc6
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Percentages
+Easy
+Question
+ is 
+ of what number?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: D
+Rationale
+Choice D is correct. Let 
+ represent the number that 
+ is 
+ of. It follows that 
+. Multiplying each side of this equation by 
+ yields
+. Multiplying each side of this equation by 
+ yields 
+. Dividing each side of this equation by 
+ yields 
+.
+Therefore, 
+ is 
+ of 
+.
+Choice A is incorrect. 
+ of 
+ is 
+, not 
+.
+Choice B is incorrect. 
+ of 
+ is 
+, not 
+.
+Choice C is incorrect. 
+ of 
+ is 
+, not 
+.

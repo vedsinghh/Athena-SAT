@@ -1,0 +1,17 @@
+Question
+
+3a+4b=25
+
+A shipping company charged a customer $25 to ship some small boxes and some large boxes. The equation above represents the relationship
+between a, the number of small boxes, and b, the number of large boxes, the customer had shipped. If the customer had 3 small boxes shipped,
+how many large boxes were shipped?
+
+Answer
+
+A.3
+
+B.4
+
+c.5
+
+D.6

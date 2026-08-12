@@ -1,0 +1,25 @@
+{
+  "id": "788bfd56",
+  "prompt": "The function f is defined by f(x) = 4+ /ax. What is the value of f(144)?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "0"
+    },
+    {
+      "text": "16"
+    },
+    {
+      "text": "40"
+    },
+    {
+      "text": "76"
+    }
+  ],
+  "answer": 1,
+  "explanation": "Choice B is correct. The value of is the value of when . It's given that the function is defined by .\nSubstituting for in this equation yields . Since the positive square root of is , it follows that this equation can\nbe rewritten as , or . Therefore, the value of is .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect. This is the value of , not .\n\nChoice D is incorrect. This is the value of , not .",
+  "pdfPage": 63,
+  "type": "mc",
+  "kind": null
+}

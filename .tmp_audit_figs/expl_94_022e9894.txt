@@ -1,0 +1,6 @@
+The correct answer is 324. It’s given that 1,250 people attended the first information session, and that 72% of the people who attended the first
+information session attended the second information session. Therefore, the number of people who attended the first and second information
+sessions can be found by calculating 72% of 1,250, which is equal to 1, 250(72), or 900. It’s also given that 36% of the people who attended
+the first and second information sessions attended the third information session. Since 900 people attended the first and second information
+sessions, the number of people who attended the first, second, and third information sessions can be found by calculating 36% of 900, which is
+equal to 900(3%,), or 324. Therefore, 324 people attended all three information sessions.

@@ -1,0 +1,51 @@
+Question ID: b5bc47d5
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Ratios, rates,
+propor tional
+relationships, and units
+Hard
+Question
+In a scale model of an office building, a length of 
+ inch is equivalent to a length of 
+ feet in the actual office building. If a length in the actual
+office building measures 
+ feet, which expression represents the corresponding length, in inches, in the model in terms of 
+?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: C
+Rationale
+Choice C is correct. It’s given that in a scale model, a length of 
+ inch is equivalent to a length of 
+ feet in the actual office building. This means
+that the ratio of a length, in feet, in the actual office building to the corresponding length, in inches, in the model is 
+ to 
+. Therefore, the length,
+in inches, in the model corresponding to a length in the actual office building of 
+ feet can be found by dividing 
+ by 
+. Dividing by 
+ is
+equivalent to multiplying by 
+, so the corresponding length, in inches, in the model in terms of 
+ can be represented by the expression 
+.
+Choice A is incorrect and may result from conceptual errors.
+Choice B is incorrect and may result from conceptual errors.
+Choice D is incorrect. This expression represents the corresponding length, in inches, in the model in terms of 
+ for a model where 
+ inch in the
+model is equivalent to a length of 
+, not 
+, feet in the actual building.

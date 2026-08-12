@@ -1,0 +1,9 @@
+Choice B is correct. The height of each bar in the graph shown represents the number of containers that contain the number of walnuts specified
+at the bottom of the bar. The bar for 78 walnuts has a height of 7. Therefore, 7 of these containers of walnuts contain exactly 78 walnuts.
+Choice A is incorrect. This is the number of containers that contain exactly 75 walnuts, not 78 walnuts.
+
+Choice C is incorrect. This is the total number of containers of walnuts represented in the bar graph, not the number that contain exactly 78
+walnuts.
+
+Choice D is incorrect. This is the number of walnuts in a container that contains exactly 78 walnuts, not the number of containers that contain
+exactly 78 walnuts.

@@ -1,0 +1,12 @@
+Question
+
+At how many points do the graphs of the equations y = x + 20 and y = 87 intersect in the xy-plane?
+Answer
+
+A.0
+
+B.1
+
+c.2
+
+D.8

@@ -1,0 +1,6 @@
+Choice C is correct. The total cost to purchase the shirt is the $20 cost of the shirt plus the 5% sales tax. The value of the 5% sales tax on the $20
+shirt is equivalent tol) .05)¢ $ 20), or $1. Therefore, the total cost to purchase the shirt is $0 + $1, or $21.
+
+Choice A is incorrect and may result from neglecting to multiply by $20 when finding the value of the sales tax. Choice B is incorrect and may
+result from dividing by 10, instead of by 100, and then neglecting to multiply by $20 when finding the sales tax. Choice D is incorrect and may
+result from interpreting the sales tax of 5% as $5.

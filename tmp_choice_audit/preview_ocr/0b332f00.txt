@@ -1,0 +1,2 @@
+Question
+The function g is defined by g(a) = 62. For what value of xis g(x) = 54?

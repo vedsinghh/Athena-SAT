@@ -1,0 +1,2 @@
+Question
+The function f is defined by f(x) = 4x. For what value of x does f(x) = 8?

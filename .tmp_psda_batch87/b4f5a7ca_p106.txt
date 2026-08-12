@@ -1,0 +1,31 @@
+Question ID: b4f5a7ca
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Evaluating statistical
+claims: Observational
+studies and experiments
+Medium
+Question
+A survey was conducted using a sample of history professors selected at random from the California State Universities. The professors surveyed
+were asked to name the publishers of their current texts. What is the largest population to which the results of the survey can be generalized?
+Answer
+A. All professors in the United States
+B. All history professors in the United States
+C. All history professors at all California State Universities
+D. All professors at all California State Universities
+Correct Answer: C
+Rationale
+Choice C is correct. Selecting a sample at random when conducting a survey allows the results to be generalized to the population from which
+the sample was selected, but not beyond this population. In this situation, the population that the sample was selected from is history professors
+from the California State Universities. Therefore, the largest population to which the results of the survey can be generalized is all history
+professors at all California State Universities.
+Choices A, B, and D are incorrect. Since the sample was selected at random from history professors from the California State Universities, the
+results of the survey can’t be generalized to all professors in the United States, all history professors in the United States, or all professors at all
+California State Universities. All three of these populations may use different texts and therefore may name different publishers.

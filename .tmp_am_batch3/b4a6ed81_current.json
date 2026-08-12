@@ -1,0 +1,12 @@
+{
+  "id": "b4a6ed81",
+  "prompt": "The expression 90y° — 54y* is equivalent to ry*(15y — 9), where r is a constant. What is the value of r?",
+  "equations": null,
+  "figure": null,
+  "choices": [],
+  "answer": "6",
+  "explanation": "The correct answer is . Applying the distributive property to the expression yields . Since is\nequivalent to , it follows that is also equivalent to . Since these expressions are equivalent, it follows\nthat corresponding coefficients are equivalent. Therefore, and . Solving either of these equations for will yield the value\nof . Dividing both sides of by yields . Therefore, the value of is .",
+  "pdfPage": 76,
+  "type": "spr",
+  "kind": null
+}

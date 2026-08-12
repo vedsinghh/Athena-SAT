@@ -1,0 +1,37 @@
+Question ID: d230e963
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Two-variable data:
+Models and scatterplots
+Easy
+Question
+The scatterplot shows the relationship between two variables, 
+ and 
+. A line of best fit is also shown.
+Which of the following equations best represents the line of best fit shown?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: A
+Rationale
+Choice A is correct. The line of best fit shown intersects the y-axis at a positive y-value and has a positive slope. The graph of an equation of the
+form 
+, where 
+ and 
+ are constants, intersects the y-axis at a y-value of 
+ and has a slope of 
+. Of the given choices, only choice A
+represents a line that intersects the y-axis at a positive y-value, 
+, and has a positive slope, 
+.
+Choice B is incorrect. This equation represents a line that has a negative slope, not a positive slope.
+Choice C is incorrect. This equation represents a line that intersects the y-axis at a negative y-value, not a positive y-value.

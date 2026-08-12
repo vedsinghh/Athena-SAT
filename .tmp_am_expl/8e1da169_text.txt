@@ -1,0 +1,28 @@
+Choice B is correct. It's given that 
+, which can be rewritten as 
+. Since the coefficient of
+the 
+-term is positive, the graph of 
+ in the xy-plane opens upward and reaches its minimum value at its ver tex. For an equation in the
+form 
+, where 
+, 
+, and 
+ are constants, the x-coordinate of the ver tex is 
+. For the equation 
+, 
+, 
+, and 
+. It follows that the x-coordinate of the ver tex is 
+, or 
+. Therefore, 
+ reaches its minimum
+when the value of 
+ is 
+.
+Choice A is incorrect. This is one of the x-coordinates of the x-intercepts of the graph of 
+ in the xy-plane.
+Choice C is incorrect. This is one of the x-coordinates of the x-intercepts of the graph of 
+ in the xy-plane.
+Choice D is incorrect. This is the y-coordinate of the ver tex of the graph of 
+ in the xy-plane.

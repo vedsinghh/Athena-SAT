@@ -1,0 +1,12 @@
+Question
+
+The function f is defined by f(x) = 4x — 3. What is the value of f(10)?
+Answer
+
+A. —30
+
+B. 37
+
+c. 40
+
+D. 43

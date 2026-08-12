@@ -1,0 +1,51 @@
+Question ID: e03f3477
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Inference from sample
+statistics and margin of
+error
+Medium
+Question
+A sample consisting of 
+ adults who own televisions was selected at random for a study. Based on the sample, it is estimated that 
+ of all
+adults who own televisions use their televisions to watch nature shows, with an associated margin of error of 
+. Which of the following is
+the most plausible conclusion about all adults who own televisions?
+Answer
+A. More than 
+ of all adults who own televisions use their televisions to watch nature shows.
+B. Between 
+ and 
+ of all adults who own televisions use their televisions to watch nature shows. 
+C. Since the sample included adults who own televisions and not just those who use their televisions to watch nature shows, no conclusion can
+be made.
+D. Since the sample did not include all the people who watch nature shows, no conclusion can be made.
+Correct Answer: B
+Rationale
+Choice B is correct. It's given that based on a sample selected at random, it's estimated that 
+ of all adults who own televisions use their
+televisions to watch nature shows, with an associated margin of error of 
+. Subtracting the margin of error from the estimate and adding
+the margin of error to the estimate gives an interval of plausible values for the true percentage of adults who own televisions who use their
+televisions to watch nature shows. This means it's plausible that between 
+, or 
+, and 
+, or 
+, of all
+adults who own televisions use their televisions to watch nature shows. Therefore, of the given choices, the most plausible conclusion is that
+between 
+ and 
+ of all adults who own televisions use their televisions to watch nature shows.
+Choice A is incorrect and may result from conceptual errors.
+Choice C is incorrect. To make a plausible conclusion about all adults who own televisions, the sample must be selected at random from all
+adults who own televisions, not just those who use their televisions to watch nature shows.
+Choice D is incorrect. Since the sample was selected at random from all adults who own televisions, a plausible conclusion can be made about
+all adults who own televisions.

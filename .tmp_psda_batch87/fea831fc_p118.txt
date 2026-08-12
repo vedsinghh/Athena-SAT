@@ -1,0 +1,25 @@
+Question ID: fea831fc
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Ratios, rates,
+propor tional
+relationships, and units
+Medium
+Question
+On April 18, 1775, Paul Revere set off on his midnight ride from Charlestown to Lexington. If he had ridden straight to Lexington without stopping,
+he would have traveled 11 miles in 26 minutes. In such a ride, what would the average speed of his horse have been, to the nearest tenth of a
+mile per hour?
+Rationale
+The correct answer is 25.4. The average speed is the total distance divided by the total time. The total distance is 11 miles and the total time is
+26 minutes. Thus, the average speed is 
+ miles per minute. The question asks for the average speed in miles per hour, and there are 60
+minutes in an hour; conver ting miles per minute to miles per hour gives the following:
+Therefore, to the nearest tenth of a mile per hour, the average speed of Paul Revere’s ride would have been 25.4 miles per hour. Note that 25.4
+and 127/5 are examples of ways to enter a correct answer.

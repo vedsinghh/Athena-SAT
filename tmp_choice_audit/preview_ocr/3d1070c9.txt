@@ -1,0 +1,12 @@
+Question
+
+The function f is defined by f(x) = 252 + 30. What is the value of f(a) when x = 2?
+Answer
+
+A.50
+
+B.57
+
+Cc. 80
+
+D.110

@@ -1,0 +1,3 @@
+a0
+Choice A is correct. The average can be found by dividing the total number of boxes sold by the number of students, which is 70 =.
+Choices B, C, and D are incorrect. Each results from choosing measures that require the results of individual students, which are not given.

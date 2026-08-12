@@ -1,0 +1,169 @@
+[
+  {
+    "id": "3f5a3602",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "What system of linear equations is represented by the lines shown?",
+    "ocr": "Question | Jy | 10 | of | 1 IT tt tt UY | Lief | tT TT tT TT | Nef | tt tt tt Tt | ERNE | Be aNE Eee | Pt NEE TT TT | SECON | CBD | CATES NTE | Pec t | PEST. | -2-10] 1 2 3 4 5 6 7 BNO | LCEEECLLEEEEN | What system of linear equat"
+  },
+  {
+    "id": "edc1b7b7",
+    "issues": [
+      "duplicate-eq-in-stem"
+    ],
+    "prompt": "2(8x) + 4(7y) = 12\n-2(8x) + 4(7y) = 12\nThe solution to the given system of equations is (x, y). What is the value of 8x ",
+    "ocr": "Question | 2(8x) + 4(7y) = 12 | \u20142(8x) + 4(7y) = 12 | The solution to the given system of equations is (zx, y). What is the value of 8a + 7y? | "
+  },
+  {
+    "id": "fa80893a",
+    "issues": [
+      "hollow-spr"
+    ],
+    "prompt": "If 2x + 3 = 9, what is the value of 6x - 1?",
+    "ocr": "Question | If 22 + 3 = 9, what is the value of 62 \u2014 1? | "
+  },
+  {
+    "id": "4becad44",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "3x = 36y - 45\nOne of the two equations in a system of linear equations is given. The system has no solution. Which equat",
+    "ocr": "Question | 3x = 36y \u2014 45 | One of the two equations in a system of linear equations is given. The system has no solution. Which equation could be the second equation in | this system? | Answer | A.x=4y | B. fa = "
+  },
+  {
+    "id": "520c8177",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "A veterinarian recommends that each day a certain rabbit should eat 25 calories per pound of the rabbit's weight, plus a",
+    "ocr": "Question |  | A veterinarian recommends that each day a certain rabbit should eat 25 calories per pound of the rabbit's weight, plus an additional 11 calories. | Which equation represents this situation, wh"
+  },
+  {
+    "id": "3cdbf026",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "The graph of the equation ax + ky = 6 is a line in the xy-plane, where a and k are constants. If the line contains the p",
+    "ocr": "Question |  | The graph of the equation @x + ky = 6 is a line in the xy-plane, where a and k are constants. If the line contains the points (-2, \u20146)and | (0, = 3), what is the value of k ? |  | Answer |  | A.-2 |  | B."
+  },
+  {
+    "id": "608eeb6e",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "5x = 15\n-4x + y = -2\nThe solution to the given system of equations is (x, y). What is the value of x + y?",
+    "ocr": "Question | 5a = 15 |  | \u201442 +y = \u20142 | The solution to the given system of equations is (x, y). What is the value of x + y? | Answer | A.\u2014-17 | B. \u201413 | C.13 | D.17 | "
+  },
+  {
+    "id": "be9cb6a2",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "The cost of renting a backhoe for up to 10 days is $270 for the first day and $135 for each additional day. Which of the",
+    "ocr": "Question |  | The cost of renting a backhoe for up to 10 days is $270 for the first day and $135 for each additional day. Which of the following equations | gives the cost y, in dollars, of renting the back"
+  },
+  {
+    "id": "05417146",
+    "issues": [
+      "known-ocr-junk-in-json",
+      "ocr-choice-3",
+      "choice-num-mismatch"
+    ],
+    "prompt": "w+ 7 = 357\nwt = 357 What value of w is the solution to the given equation?",
+    "ocr": "Question | w+ 7 = 357 | What value of w is the solution to the given equation? | Answer | A.51 | B. 350 | C. 364 | D. 3,577 | "
+  },
+  {
+    "id": "6863c7ce",
+    "issues": [
+      "known-ocr-junk-in-json",
+      "duplicate-eq-in-stem",
+      "bad-choice-0",
+      "bad-choice-1",
+      "bad-choice-3",
+      "6863-broken-choices"
+    ],
+    "prompt": "d= 16t\nd= 16t The given equation represents the distance d, in inches, where t represents the number of seconds since an",
+    "ocr": "Question | d= 16t | The given equation represents the distance d, in inches, where t represents the number of seconds since an object started moving. Which of the | following is the best interpretation of 1"
+  },
+  {
+    "id": "51aabd93",
+    "issues": [
+      "duplicate-eq-in-stem"
+    ],
+    "prompt": "(p+3)+8=10\n(p+3)+8=10 What value of p is the solution to the given equation?",
+    "ocr": "Question | (p+3)+8=10 | What value of pis the solution to the given equation? | Answer | A.-1 | B.5 | c.15 | D. 21 | "
+  },
+  {
+    "id": "d11910d6",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "The graph of the linear function f is shown. What is the y-intercept of the graph of y = f(x)?",
+    "ocr": "Question | J |  | COCs | LETT TTT et TT TT | LETT TT Tet TTT | LETT ETT eT TT | LETT TTT TTT | LIT ET TT TT | eet | LETT TTT gy er | LETT TTT er | ees GE | Lt LT iit | Cer aaa |  | The graph of the linear function f is shown. What"
+  },
+  {
+    "id": "6105234d",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "John paid a total of $165 for a microscope by making a down payment of $37 plus p monthly payments of $16 each.\nWhich of",
+    "ocr": "Question |  | John paid a total of $165 for a microscope by making a down payment of $37 plus p monthly payments of $16 each. Which of the following | equations represents this situation? |  | Answer |  | A. 16p \u2014 "
+  },
+  {
+    "id": "f305b5ca",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "Lorenzo purchased a box of cereal and some strawberries at the grocery store. Lorenzo paid $2 for the box of\ncereal and ",
+    "ocr": "Question |  | Lorenzo purchased a box of cereal and some strawberries at the grocery store. Lorenzo paid $2 for the box of cereal and $1.90 per pound for | the strawberries. If Lorenzo paid a total of $9.60"
+  },
+  {
+    "id": "4d8ccb96",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "A chemist studying the impact of salt on a process mixes x kilograms of a low-salt mixture, which is 2% salt by weight, ",
+    "ocr": "Question |  | A chemist studying the impact of salt on a process mixes z kilograms of a low-salt mixture, which is 2% salt by weight, with y kilograms of a | high-salt mixture, which is 96% salt by weight, "
+  },
+  {
+    "id": "2f0a43b2",
+    "issues": [
+      "hollow-spr"
+    ],
+    "prompt": "If x/8 = 5, what is the value of 8/x?",
+    "ocr": "Question | If = = 5, what is the value of So | "
+  },
+  {
+    "id": "ebf8d2b7",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "A machine makes large boxes or small boxes, one at a time, for a total of 700 minutes each day. It takes the\nmachine 10 ",
+    "ocr": "Question |  | A machine makes large boxes or small boxes, one at a time, for a total of 700 minutes each day. It takes the machine 10 minutes to make a large | box or 5 minutes to make a small box. Which eq"
+  },
+  {
+    "id": "40ba6288",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "If 32 = 30, what is the value of 3x - 12?",
+    "ocr": "Question |  | If 3x = 30, what is the value of 3a \u2014 12? | Answer |  | A.\u20142 |  | B. 18 |  | C. 22 |  | D. 42 | "
+  },
+  {
+    "id": "12ee1edc",
+    "issues": [
+      "duplicate-eq-in-stem"
+    ],
+    "prompt": "(b-2)x =8\n(b-2)x =8 In the given equation, b is a constant. If the equation has no solution, what is the value of b ?",
+    "ocr": "Question |  | (b\u2014-2)x=8 |  | In the given equation, b is a constant. If the equation has no solution, what is the value of b ? | Answer |  | A.2 |  | B.4 |  | C.6 |  | D.10 | "
+  },
+  {
+    "id": "ee439cff",
+    "issues": [
+      "choice-num-mismatch"
+    ],
+    "prompt": "On a car trip, Rhett and Jessica each drove for part of the trip, and the total distance they drove was under 220 miles.",
+    "ocr": "Question |  | On acar trip, Rhett and Jessica each drove for part of the trip, and the total distance they drove was under 220 miles. Rhett drove at an average | speed of 35 miles per hour (mph), and Jessic"
+  }
+]

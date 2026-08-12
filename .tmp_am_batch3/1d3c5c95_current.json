@@ -1,0 +1,25 @@
+{
+  "id": "1d3c5c95",
+  "prompt": "An entomologist recommended a program to reduce a certain invasive beetle population in an area. The given function estimates this beetle\nspecies’ population x years after 2012, where x < 7. Which of the following is the best interpretation of 4,000 in this context?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "The estimated initial beetle population for this species and area in"
+    },
+    {
+      "text": "The estimated beetle population for this species and area years after"
+    },
+    {
+      "text": "The estimated percent decrease in the beetle population for this species and area each year after"
+    },
+    {
+      "text": "The estimated percent decrease in the beetle population for this species and area every years after"
+    }
+  ],
+  "answer": 0,
+  "explanation": "Choice A is correct. For an exponential function in the form , where and are positive constants and , the initial value of\n, or the value of when , is and the value of decreases by each time increases by . Therefore, the initial\nvalue of the function , or the value of when , is . Therefore, the best interpretation of in this\ncontext is the estimated initial beetle population for this species and area in .\n\nChoice B is incorrect. The estimated beetle population for this species and area years after is , or approximately , not\n.\n\nChoice C is incorrect. The estimated percent decrease in the beetle population for this species and area each year after is ,\nor , not .\n\nChoice D is incorrect. The estimated percent decrease in the beetle population for this species and area every years after is , or approximately , not .",
+  "pdfPage": 53,
+  "type": "mc",
+  "kind": null
+}

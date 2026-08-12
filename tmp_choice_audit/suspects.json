@@ -1,0 +1,132 @@
+[
+  {
+    "n": 34,
+    "id": "ee846db7",
+    "issues": [
+      "num-B:7.3!=7.304"
+    ],
+    "prompt": "Astore sells two different-sized containers of a certain Greek yogurt. The store's sales of this Greek yogurt totaled\n1,277.94 dollars last ",
+    "pchoices": [
+      "5.48",
+      "7.304",
+      "",
+      "5.482"
+    ],
+    "jchoices": [
+      "5.48",
+      "7.3",
+      "7.30",
+      "5.482"
+    ],
+    "body": "A store sells two different-sized containers of a certain Greek yogurt. The store's sales of this Greek yogurt totaled 1,277.94 dollars last month.\nThe equation"
+  },
+  {
+    "n": 55,
+    "id": "05417146",
+    "issues": [
+      "json-junk"
+    ],
+    "prompt": "w+ 7 = 357\nwt = 357 What value of w is the solution to the given equation?",
+    "pchoices": [
+      "51",
+      "350",
+      "364",
+      "3,577"
+    ],
+    "jchoices": [
+      "51",
+      "350",
+      "364",
+      "3577"
+    ],
+    "body": "w+ 7 = 357\nWhat value of w is the solution to the given equation?"
+  },
+  {
+    "n": 59,
+    "id": "6863c7ce",
+    "issues": [
+      "json-junk",
+      "dup-eq",
+      "prose-A",
+      "prose-B"
+    ],
+    "prompt": "d= 16t\nd= 16t The given equation represents the distance d, in inches, where t represents the number of seconds since an\nobject started movi",
+    "pchoices": [
+      "The object moved a total of 16 inches.",
+      "The object moved a total of 16\u00a2 inches.",
+      "The object is moving at a rate of 16 inches per second.",
+      "The object is moving at a rate of + inches per second."
+    ],
+    "jchoices": [
+      "The object moveda total of 16 inches.",
+      "The object moveda total of 16t inches.",
+      "The object is moving at a rate of 16 inches per se",
+      "The object is moving at a rate of * inches per sec"
+    ],
+    "body": "d= 16t\nThe given equation represents the distance d, in inches, where t represents the number of seconds since an object started moving. Which of the\nfollowing "
+  },
+  {
+    "n": 61,
+    "id": "51aabd93",
+    "issues": [
+      "dup-eq"
+    ],
+    "prompt": "(p+3)+8=10\n(p+3)+8=10 What value of p is the solution to the given equation?",
+    "pchoices": [
+      "-1",
+      "5",
+      "",
+      "21"
+    ],
+    "jchoices": [
+      "-1",
+      "5",
+      "15",
+      "21"
+    ],
+    "body": "(p+3)+8=10\nWhat value of pis the solution to the given equation?"
+  },
+  {
+    "n": 123,
+    "id": "40ba6288",
+    "issues": [
+      "json-junk",
+      "preview-has-3x=30"
+    ],
+    "prompt": "If 32 = 30, what is the value of 3x - 12?",
+    "pchoices": [
+      "\u20142",
+      "18",
+      "22",
+      "42"
+    ],
+    "jchoices": [
+      "-2",
+      "18",
+      "22",
+      "42"
+    ],
+    "body": "If 3x = 30, what is the value of 3a \u2014 12?"
+  },
+  {
+    "n": 124,
+    "id": "12ee1edc",
+    "issues": [
+      "dup-eq"
+    ],
+    "prompt": "(b-2)x =8\n(b-2)x =8 In the given equation, b is a constant. If the equation has no solution, what is the value of b ?",
+    "pchoices": [
+      "2",
+      "4",
+      "6",
+      "10"
+    ],
+    "jchoices": [
+      "2",
+      "4",
+      "6",
+      "10"
+    ],
+    "body": "(b\u2014-2)x=8\n\nIn the given equation, b is a constant. If the equation has no solution, what is the value of b ?"
+  }
+]

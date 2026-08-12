@@ -1,0 +1,11 @@
+Choice C is correct. If one of these students is selected at random, the probability of selecting a student whose vote for the new mascot was for
+alion is given by the number of votes for a lion divided by the total number of votes. The given table indicates that the number of votes for a lion
+is 20 votes, and the total number of votes is 80 votes. The table gives the distribution of votes for 80 students, and the table shows a total of 80
+votes were counted. It follows that each of the 80 students voted exactly once. Thus, the probability of selecting a student whose vote for the
+new mascot was for a lion is 2%, or +.
+
+Choice A is incorrect and may result from conceptual or computational errors.
+
+Choice B is incorrect and may result from conceptual or computational errors.
+
+Choice D is incorrect and may result from conceptual or computational errors.

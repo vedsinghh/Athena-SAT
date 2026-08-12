@@ -1,0 +1,7 @@
+Choice C is correct. Of the 1,300,000 units sold during the first month, 15% were returned, so ‘al 300,000)(0.4 5) = 195,000 units were
+returned during the first month. If the units were sold and returned at the same rate for the next 5 months, then a total of
+
+(195,000}(6) = 1,170,000 smartphone units were returned during the 6-month period.
+
+Choice A is incorrect. This is the number of units that were returned in 1 month. Choice B is incorrect. This is the number of units that were
+returned in 5 months. Choice D is incorrect. This is the number of units sold and not returned during the first 6 months.

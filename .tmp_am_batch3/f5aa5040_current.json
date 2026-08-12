@@ -1,0 +1,12 @@
+{
+  "id": "f5aa5040",
+  "prompt": "In the xy-plane, a line with equation 2y = c for some constant c intersects a parabola at exactly one point. If the parabola has equation\ny = —2x? + 92, what is the value of c?",
+  "equations": null,
+  "figure": null,
+  "choices": [],
+  "answer": "20.25",
+  "explanation": "The correct answer is . The given linear equation is . Dividing both sides of this equation by yields . Substituting for in the\nequation of the parabola yields . Adding and to both sides of this equation yields . Since it’s\ngiven that the line and the parabola intersect at exactly one point, the equation must have exactly one solution. An equation\nof the form , where , , and are constants, has exactly one solution when the discriminant, , is equal to .\nIn the equation , where , , and , the discriminant is . Setting the discriminant equal\nto yields , or . Adding to both sides of this equation yields . Dividing both sides of this\nequation by yields . Note that 81/4 and 20.25 are examples of ways to enter a correct answer.",
+  "pdfPage": 93,
+  "type": "spr",
+  "kind": null
+}

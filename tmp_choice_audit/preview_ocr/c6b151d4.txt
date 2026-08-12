@@ -1,0 +1,10 @@
+Question
+
+A total of 364 paper straws of equal length were used to construct two types of polygons: triangles and rectangles. The triangles and rectangles
+were constructed so that no two polygons had a common side. The equation 32 + 4y = 364 represents this situation, where x is the number of
+triangles constructed and y is the number of rectangles constructed. What is the best interpretation of (x, y) = (24, 73) in this context?
+Answer
+
+A. If 24 triangles were constructed, then 73 rectangles were constructed.
+
+B. If 24 triangles were constructed, then 73 paper straws were used.

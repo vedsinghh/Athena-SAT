@@ -1,0 +1,10 @@
+Question
+ax + by = 72
+6x + 2by = 56
+In the given system of equations, a and b are constants. The graphs of these equations in the xy-plane intersect at the point (4, y). What is the
+value of a?
+Answer
+A.3
+B.4
+c.6
+D.14

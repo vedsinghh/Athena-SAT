@@ -1,0 +1,25 @@
+{
+  "id": "781c2f6e",
+  "prompt": "The function f is defined by f(x) = a(2.2\" + 2.2\"), where a and 0 are integer constants and 0 < a < 6. The functions g and / are equivalen\nto function f, where & and m are constants. Which of the following equations displays the y-coordinate of the y-intercept of the graph of y\n= f(a) in the xy-plane as a constant or coefficient? 1. g(a) = a(2.2” + k) I. A(z) = a(2.2)” +m",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "I only"
+    },
+    {
+      "text": "II only"
+    },
+    {
+      "text": "I and II"
+    },
+    {
+      "text": "Neither I nor II"
+    }
+  ],
+  "answer": 3,
+  "explanation": "Choice D is correct. A y-intercept of a graph in the xy-plane is a point where the graph intersects the y-axis, or a point where . Substituting for in the equation defining function yields , or . So, the y-coordinate of the y-intercept of the\ngraph is , or equivalently, . It's given that function is equivalent to function , where . It follows that . Since can't be equal to , the coefficient can't be equal to . Since , the constant , which is equal to ,\ncan't be equal to . Therefore, function doesn't display the y-coordinate of the y-intercept of the graph of in the xy-plane as\na constant or coefficient. It's also given that function is equivalent to function , where . The equation defining can be rewritten\nas . It follows that . Since can't be equal to , the coefficient can't be equal to .\nSince , the constant , which is equal to , can't be equal to . Therefore, function doesn't display the y-coordinate of\nthe y-intercept of the graph of in the xy-plane as a constant or coefficient. Thus, neither function nor function displays the y-\ncoordinate of the y-intercept of the graph of in the xy-plane as a constant or coefficient.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.",
+  "pdfPage": 37,
+  "type": "mc",
+  "kind": null
+}

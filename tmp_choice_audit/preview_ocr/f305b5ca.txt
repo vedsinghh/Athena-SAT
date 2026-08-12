@@ -1,0 +1,15 @@
+Question
+
+Lorenzo purchased a box of cereal and some strawberries at the grocery store. Lorenzo paid $2 for the box of cereal and $1.90 per pound for
+the strawberries. If Lorenzo paid a total of $9.60 for the box of cereal and the strawberries, which of the following equations can be used to find
+p, the number of pounds of strawberries Lorenzo purchased? (Assume there is no sales tax.)
+
+Answer
+
+A.1.90p + 2 = 9.60
+
+B. 1.90p — 2 = 9.60
+
+C.1.90 + 2p = 9.60
+
+D. 1.90 — 2p = 9.60

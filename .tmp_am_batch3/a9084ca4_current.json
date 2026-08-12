@@ -1,0 +1,25 @@
+{
+  "id": "a9084ca4",
+  "prompt": "The given function f models the number of advertisements a company sent to its clients each year, where x represents the number of years\nsince 1997, and0 < «<5. If y= f(a) is graphed in the xy-plane, which of the following is the best interpretation of the y-intercept of the\ngraph in this context?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "The minimum estimated number of adver tisements the company sent to its clients during the years was ."
+    },
+    {
+      "text": "The minimum estimated number of adver tisements the company sent to its clients during the years was ."
+    },
+    {
+      "text": "The estimated number of adver tisements the company sent to its clients in was ."
+    },
+    {
+      "text": "The estimated number of adver tisements the company sent to its clients in was ."
+    }
+  ],
+  "answer": 3,
+  "explanation": "Choice D is correct. The y-intercept of a graph in the xy-plane is the point where . For the given function , the y-intercept of the graph of in the xy-plane can be found by substituting for in the equation , which gives . This is\nequivalent to , or . Therefore, the y-intercept of the graph of is . It’s given that the function models the number of adver tisements a company sent to its clients each year. Therefore, represents the estimated number of\nadver tisements the company sent to its clients each year. It's also given that represents the number of years since . Therefore, represents years since , or . Thus, the best interpretation of the y-intercept of the graph of is that the estimated number of\nadver tisements the company sent to its clients in was .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.",
+  "pdfPage": 34,
+  "type": "mc",
+  "kind": null
+}

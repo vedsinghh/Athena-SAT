@@ -1,0 +1,29 @@
+Choice D is correct. The y-intercept of a graph in the xy-plane is the point where 
+. For the given function 
+, the y-intercept of the graph of 
+ in the xy-plane can be found by substituting 
+ for 
+ in the equation 
+, which gives 
+. This is
+equivalent to 
+, or 
+. Therefore, the y-intercept of the graph of 
+ is 
+. It’s given that the function 
+models the number of adver tisements a company sent to its clients each year. Therefore, 
+ represents the estimated number of
+adver tisements the company sent to its clients each year. It's also given that 
+ represents the number of years since 
+. Therefore, 
+represents 
+ years since 
+, or 
+. Thus, the best interpretation of the y-intercept of the graph of 
+ is that the estimated number of
+adver tisements the company sent to its clients in 
+ was 
+.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.

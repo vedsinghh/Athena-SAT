@@ -1,0 +1,21 @@
+Question
+f(x) = 39
+
+For the given linear function f, which table gives three values of x and their corresponding values of f(a)?
+
+Answer
+
+A
+| o | o |
+| 1 | o |
+| 2 | 0 |
+
+7
+| o | 39 |
+
+c.
+| o | o |
+
+D
+| 0 | 39 |
+|} 1 | o |

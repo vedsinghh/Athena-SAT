@@ -1,0 +1,9 @@
+Question
+y = 12% — 20
+y = 28
+What is the solution (a, y) to the given system of equations?
+Answer
+A. (4, 28)
+B. (20, 28)
+C. (28, 4)
+D. (28, 20)

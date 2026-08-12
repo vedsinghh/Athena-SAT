@@ -1,0 +1,4 @@
+Question
+—xty=-35
+x+3y=9.5
+If (x, y) satisfies the system of equations above, what is the value of y ?

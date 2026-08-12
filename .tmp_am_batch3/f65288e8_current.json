@@ -1,0 +1,28 @@
+{
+  "id": "f65288e8",
+  "prompt": "{{eq:0}}\n{{eq:1}}\nIf x is a solution to the given equation, which of the following is a possible value of x +3?",
+  "equations": [
+    "/qbank/math/equations/f65288e8_0.jpg",
+    "/qbank/math/equations/f65288e8_1.jpg"
+  ],
+  "figure": null,
+  "choices": [
+    {
+      "text": "2"
+    },
+    {
+      "text": "2"
+    },
+    {
+      "text": "2"
+    },
+    {
+      "text": "2"
+    }
+  ],
+  "answer": 0,
+  "explanation": "Choice A is correct. The given equation can be rewritten as . Multiplying both sides of this equation by yields\n. Dividing both sides of this equation by 4 yields . Taking the square root of both sides of this equation yields or . Therefore, a possible value of is .\nChoices B, C, and D are incorrect and may result from computational or conceptual errors.",
+  "pdfPage": 62,
+  "type": "mc",
+  "kind": null
+}

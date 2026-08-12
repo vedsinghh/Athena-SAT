@@ -1,0 +1,12 @@
+Question
+2x — y > 883
+For which of the following tables are all the values of x and their corresponding values of ¥ solutions to the given inequality?
+Answer
+A
+| 440 | 0 |
+B
+| 440 | 0 |
+c.
+| 442 | 0 |
+D
+| 442 | 0 |

@@ -1,0 +1,44 @@
+Question ID: bb7c8186
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Percentages
+Easy
+Question
+What is 
+ of 
+?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: A
+Rationale
+Choice A is correct. 
+ of 
+ can be calculated by multiplying 
+ by 
+, which yields 
+, or 
+.
+Choice B is incorrect. This is 
+, not 
+, of 
+.
+Choice C is incorrect. This is 
+ less than 
+, not 
+ of 
+.
+Choice D is incorrect. This is 
+ greater than 
+, not 
+ of 
+.

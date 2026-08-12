@@ -1,0 +1,14 @@
+Question
+
+During a portion of a flight, a small airplane's cruising speed varied between 150 miles per hour and 170 miles per hour. Which inequality best
+represents this situation, where s is the cruising speed, in miles per hour, during this portion of the flight?
+
+Answer
+
+A.s < 20
+
+B.s < 150
+
+C.s<170
+
+D.150<s<170

@@ -1,0 +1,30 @@
+The correct answer is 
+. An expression of the form 
+, where 
+ is an integer greater than 
+ and 
+, is equivalent to 
+. Therefore, the
+given expression, where 
+, is equivalent to 
+. Applying proper ties of exponents, this expression can be rewritten as 
+, or 
+, which can be rewritten as 
+, or 
+. It's given that the expression 
+ is
+equivalent to 
+, where 
+. It follows that 
+ is equivalent to 
+. Therefore, 
+. Dividing both sides of this
+equation by 
+ yields 
+, or 
+. Thus, the value of 
+ for which the given expression is equivalent to 
+, where 
+, is 
+.
+Note that 4/225, .0177, .0178, 0.017, and 0.018 are examples of ways to enter a correct answer.

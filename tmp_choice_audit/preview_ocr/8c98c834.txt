@@ -1,0 +1,14 @@
+Question
+
+The equation y = 0.1 models the relationship between the number of different pieces of music a certain pianist practices, y, during an x-
+minute practice session. How many pieces did the pianist practice if the session lasted 30 minutes?
+
+Answer
+
+A.1
+
+B.3
+
+Cc. 10
+
+D. 30

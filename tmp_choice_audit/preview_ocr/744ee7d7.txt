@@ -1,0 +1,23 @@
+Question
+y
+
+| | tt tT
+| | tt tt
+eee
+| | tt tt
+| | ff |
+| | [| | |
+| | | tT | | rT
+15 10 5 0 5 10 15
+
+The shaded region shown in the graph represents all the solutions to which inequality?
+
+Answer
+
+A.x < 36
+
+B.x > 36
+
+C.y< 36
+
+D.y> 36

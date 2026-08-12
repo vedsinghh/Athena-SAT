@@ -1,0 +1,12 @@
+Question
+
+How many solutions does the equation 10(152 — 9) = —15(6 — 10z) have?
+Answer
+
+A. Exactly one
+
+B. Exactly two
+
+C. Infinitely many
+
+D. Zero

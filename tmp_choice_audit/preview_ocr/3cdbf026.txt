@@ -1,0 +1,14 @@
+Question
+
+The graph of the equation @x + ky = 6 is a line in the xy-plane, where a and k are constants. If the line contains the points (-2, —6)and
+(0, = 3), what is the value of k ?
+
+Answer
+
+A.-2
+
+B.—1
+
+C.2
+
+D.3

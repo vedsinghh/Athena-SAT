@@ -1,0 +1,27 @@
+Question ID: 74dee52b
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Two-variable data:
+Models and scatterplots
+Easy
+Question
+The line graph shows the number of graduates from the classes of 2001 through 2007 at a cer tain school who enrolled in college within 24
+months of graduation. Of the following, which class had the fewest graduates who enrolled in college within 24 months of graduation?
+Answer
+A. 2002
+B. 2004
+C. 2005
+D. 2007
+Correct Answer: A
+Rationale
+Choice A is correct. The year with the fewest graduates who enrolled in college within 24 months of graduation is the point with the lowest value
+on the ver tical axis. This occurs at 2002.
+Choice B, C, and D are incorrect. The years 2004, 2005, and 2007 each had a greater number of graduates who enrolled in college within 24
+months of graduation than did the year 2002.

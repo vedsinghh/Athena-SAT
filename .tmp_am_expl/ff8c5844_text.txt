@@ -1,0 +1,45 @@
+Choice D is correct. It's given that function 
+ is exponential. Therefore, an equation defining 
+ can be written in the form 
+, where 
+and 
+ are constants. The table shows that when 
+, 
+. Substituting 
+ for 
+ and 
+ for 
+ in the equation 
+ yields 
+, which is equivalent to 
+. Substituting 
+ for 
+ in the equation 
+ yields 
+. The table also shows that when
+, 
+. Substituting 
+ for 
+ and 
+ for 
+ in the equation 
+ yields 
+, which is equivalent to 
+.
+Substituting 
+ for 
+ in the equation 
+ yields 
+.
+Choice A is incorrect. For this function, 
+ is equal to 
+, not 
+.
+Choice B is incorrect. For this function, 
+ is equal to 
+, not 
+.
+Choice C is incorrect. For this function, 
+ is equal to 
+, not 
+.

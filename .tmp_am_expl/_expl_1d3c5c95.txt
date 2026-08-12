@@ -1,0 +1,39 @@
+Choice A is correct. For an exponential function in the form 
+, where 
+ and 
+ are positive constants and 
+, the initial value of
+, or the value of 
+ when 
+, is 
+ and the value of 
+ decreases by 
+ each time 
+ increases by 
+. Therefore, the initial
+value of the function 
+, or the value of 
+ when 
+, is 
+. Therefore, the best interpretation of 
+ in this
+context is the estimated initial beetle population for this species and area in 
+.
+Choice B is incorrect. The estimated beetle population for this species and area 
+ years after 
+ is 
+, or approximately 
+, not
+.
+Choice C is incorrect. The estimated percent decrease in the beetle population for this species and area each year after 
+ is 
+,
+or 
+, not 
+.
+Choice D is incorrect. The estimated percent decrease in the beetle population for this species and area every 
+ years after 
+ is 
+, or approximately 
+, not 
+.

@@ -1,0 +1,14 @@
+Question
+
+The total cost f(z), in dollars, to lease a car for 36 months from a particular car dealership is given by f(a) = 36a + 1,000, where z is the
+monthly payment, in dollars. What is the total cost to lease a car when the monthly payment is $400?
+
+Answer
+
+A. $13,400
+
+B. $13,000
+
+c. $15,400
+
+D. $37,400

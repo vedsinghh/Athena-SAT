@@ -1,0 +1,25 @@
+{
+  "id": "f89af023",
+  "prompt": "A rectangular volleyball cour t has an area of 162 square meters. If the length of the cour t is twice the width, what is the width of the cour t, in\nmeters?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "9"
+    },
+    {
+      "text": "18"
+    },
+    {
+      "text": "27"
+    },
+    {
+      "text": "54"
+    }
+  ],
+  "answer": 0,
+  "explanation": "Choice A is correct. It’s given that the volleyball cour t is rectangular and has an area of 162 square meters. The formula for the area of a\nrectangle is , where A is the area, is the length, and w is the width of the rectangle. It’s also given that the length of the volleyball\ncour t is twice the width, thus . Substituting the given value into the formula for the area of a rectangle and using the relationship\nbetween length and width for this rectangle yields . This equation can be rewritten as . Dividing both sides of this\nequation by 2 yields . Taking the square root of both sides of this equation yields . Since the width of a rectangle is a positive\nnumber, the width of the volleyball cour t is 9 meters.\n\nChoice B is incorrect because this is the length of the rectangle.\n\nChoice C is incorrect because this is the result of using 162 as the perimeter\nrather than the area.\n\nChoice D is incorrect because this is the result of calculating w in the equation instead of\n.",
+  "pdfPage": 68,
+  "type": "mc",
+  "kind": null
+}

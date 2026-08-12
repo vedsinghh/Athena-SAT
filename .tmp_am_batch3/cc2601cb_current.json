@@ -1,0 +1,12 @@
+{
+  "id": "cc2601cb",
+  "prompt": "The x-intercept of the graph shown is (z, 0). What is the value of x?",
+  "equations": null,
+  "figure": "/qbank/math/figures/cc2601cb.jpg",
+  "choices": [],
+  "answer": "7",
+  "explanation": "The correct answer is . It’s given that the x-intercept of the graph shown is . The graph passes through the point . Therefore, the\nvalue of is .",
+  "pdfPage": 91,
+  "type": "spr",
+  "kind": null
+}

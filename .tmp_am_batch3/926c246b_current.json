@@ -1,0 +1,25 @@
+{
+  "id": "926c246b",
+  "prompt": "The equation above estimates the global data traffic D, in terabytes, for the year that is t years after 2010. What is the best interpretation of the\nnumber 5,640 in this context?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "The estimated amount of increase of data traffic, in terabytes, each year"
+    },
+    {
+      "text": "The estimated percent increase in the data traffic, in terabytes, each year"
+    },
+    {
+      "text": "The estimated data traffic, in terabytes, for the year that is t years after 2010"
+    },
+    {
+      "text": "The estimated data traffic, in terabytes, in 2010"
+    }
+  ],
+  "answer": 3,
+  "explanation": "Choice D is correct. Since t represents the number of years after 2010, the estimated data traffic, in terabytes, in 2010 can be calculated using\nthe given equation when . Substituting 0 for t in the given equation yields , or . Thus, 5,640\nrepresents the estimated data traffic, in terabytes, in 2010.\n\nChoice A is incorrect. Since the equation is exponential, the amount of increase of data traffic each year isn’t constant.\n\nChoice B is incorrect.\nAccording to the equation, the percent increase in data traffic each year is 90%.\n\nChoice C is incorrect. The estimated data traffic, in terabytes, for\nthe year that is t years after 2010 is represented by D, not the number 5,640.",
+  "pdfPage": 85,
+  "type": "mc",
+  "kind": null
+}

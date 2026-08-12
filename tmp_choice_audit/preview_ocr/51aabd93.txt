@@ -1,0 +1,8 @@
+Question
+(p+3)+8=10
+What value of pis the solution to the given equation?
+Answer
+A.-1
+B.5
+c.15
+D. 21

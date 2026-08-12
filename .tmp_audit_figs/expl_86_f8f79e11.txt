@@ -1,0 +1,8 @@
+Choice D is correct. The given estimated mean has an associated margin of error because from sample data, the population mean can't be
+determined precisely. Rather, from the sample mean, an interval can be determined within which it’s plausible that the population’s mean is likely
+to lie. Since the estimated mean is 4.5 miles with an associated margin of error of 0.5 miles, it follows that between 4.5 —(.5 miles and
+
+4 &+(.5 miles, or between 4 and 5 miles, is plausibly the mean distance hiked for all visitors.
+
+Choices A, B, and C are incorrect. Based on the estimated mean, no determination can be made about the number of miles hiked for all visitors
+to the park.

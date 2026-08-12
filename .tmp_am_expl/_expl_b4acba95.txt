@@ -1,0 +1,24 @@
+Choice A is correct. The number of solutions of a quadratic equation of the form 
+, where 
+, 
+, and 
+ are constants, can be
+determined by the value of the discriminant, 
+. If the value of the discriminant is positive, then the quadratic equation has exactly two
+distinct real solutions. If the value of the discriminant is equal to zero, then the quadratic equation has exactly one real solution. If the value of
+the discriminant is negative, then the quadratic equation has zero real solutions. In the given equation, 
+, 
+, 
+,
+and 
+. Substituting these values for 
+, 
+, and 
+ in 
+ yields 
+, or 
+. Since the value of its discriminant is
+positive, the given equation has exactly two distinct real solutions.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

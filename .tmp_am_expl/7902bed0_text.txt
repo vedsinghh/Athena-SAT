@@ -1,0 +1,57 @@
+Choice D is correct. An equation representing the height above ground 
+, in meters, of a softball 
+ seconds after it is launched by a machine from
+ground level can be written in the form 
+, where 
+, 
+, and 
+ are positive constants. In this equation, 
+ represents the time, in
+seconds, at which the softball reaches its maximum height of 
+ meters above the ground. It's given that this softball reaches a maximum height
+of 
+ meters above the ground at 
+ seconds; therefore, 
+ and 
+. Substituting 
+ for 
+ and 
+ for 
+ in the equation 
+ yields 
+. It's also given that this softball hits the ground at 
+ seconds; therefore, 
+ when 
+. Substituting 
+ for 
+ and 
+ for 
+ in the equation 
+ yields 
+, which is equivalent
+to 
+, or 
+. Adding 
+ to both sides of this equation yields 
+. Dividing both sides of
+this equation by 
+ yields 
+. Substituting 
+ for 
+ in the equation 
+ yields 
+.
+Therefore, 
+ represents the height above ground 
+, in meters, of this softball 
+ seconds after it is launched.
+Choice A is incorrect. This equation represents a situation where the maximum height is 
+ meters above the ground at 
+ seconds, not 
+meters above the ground at 
+ seconds.
+Choice B is incorrect. This equation represents a situation where the maximum height is 
+ meters above the ground at 
+ seconds, not 
+seconds.
+Choice C is incorrect and may result from conceptual or calculation errors.

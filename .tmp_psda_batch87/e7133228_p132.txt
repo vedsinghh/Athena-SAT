@@ -1,0 +1,42 @@
+Question ID: e7133228
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Ratios, rates,
+propor tional
+relationships, and units
+Hard
+Question
+The speed of a vehicle is increasing at a rate of 
+ meters per second squared. What is this rate, in miles per minute squared, rounded to the
+nearest tenth? 
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: B
+Rationale
+Choice B is correct. It's given that the speed of a vehicle is increasing at a rate of 
+ meters per second squared. It's given to use 
+. There are 
+ seconds in 
+ minute; therefore, 
+ or 
+ seconds squared is equal to 
+ minute squared. It follows that the
+rate of 
+ meters per second squared is equivalent to 
+, or approximately
+. The rate, 
+, rounded to the nearest tenth is 
+.
+Choice A is incorrect and may result from conceptual or calculation errors. 
+Choice C is incorrect and may result from conceptual or calculation errors. 
+Choice D is incorrect and may result from conceptual or calculation errors.

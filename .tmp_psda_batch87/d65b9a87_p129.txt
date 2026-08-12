@@ -1,0 +1,53 @@
+Question ID: d65b9a87
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+One-variable data:
+Distributions and
+measures of center and
+spread
+Hard
+Question
+The dot plots represent the distributions of values in data sets A and B.
+Which of the following statements must be true?
+I. The median of data set A is equal to the median of data set B.
+II. The standard deviation of data set A is equal to the standard deviation of data set B.
+Answer
+A. I only
+B. II only
+C. I and II
+D. Neither I nor II
+Correct Answer: A
+Rationale
+Choice A is correct. The median of a data set with an odd number of values that are in ascending or descending order is the middle value of the
+data set. Since the distribution of the values of both data set A and data set B form symmetric dot plots, and each data set has an odd number of
+values, it follows that the median is given by the middle value in each of the dot plots. Thus, the median of data set A is 
+, and the median of
+data set B is 
+. Therefore, statement I is true. Data set A and data set B have the same frequency for each of the values 
+, 
+, 
+, and 
+. Data
+set A has a frequency of 
+ for values 
+ and 
+, whereas data set B has a frequency of 
+ for values 
+ and 
+. Standard deviation is a measure
+of the spread of a data set; it is larger when there are more values fur ther from the mean, and smaller when there are more values closer to the
+mean. Since both distributions are symmetric with an odd number of values, the mean of each data set is equal to its median. Thus, each data
+set has a mean of 
+. Since more of the values in data set A are closer to 
+ than data set B, it follows that data set A has a smaller standard
+deviation than data set B. Thus, statement II is false. Therefore, only statement I must be true.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

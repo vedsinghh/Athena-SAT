@@ -1,0 +1,17 @@
+Choice A is correct. It’s given that the volleyball cour t is rectangular and has an area of 162 square meters. The formula for the area of a
+rectangle is 
+, where A is the area, 
+ is the length, and w is the width of the rectangle. It’s also given that the length of the volleyball
+cour t is twice the width, thus 
+. Substituting the given value into the formula for the area of a rectangle and using the relationship
+between length and width for this rectangle yields 
+. This equation can be rewritten as 
+. Dividing both sides of this
+equation by 2 yields 
+. Taking the square root of both sides of this equation yields 
+. Since the width of a rectangle is a positive
+number, the width of the volleyball cour t is 9 meters.
+Choice B is incorrect because this is the length of the rectangle. Choice C is incorrect because this is the result of using 162 as the perimeter
+rather than the area. Choice D is incorrect because this is the result of calculating w in the equation 
+ instead of
+.

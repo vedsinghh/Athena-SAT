@@ -1,0 +1,9 @@
+Choice C is correct. A line of best fit is shown in the scatterplot such that as the value of Z increases, the value of y decreases. It follows that the
+slope of the line of best fit shown is negative. The slope of a line in the xy-plane that passes through the points (21, y1) and (2, y2) can be
+calculated as a The line of best fit shown passes approximately through the points (0, 8) and (10, 1). Substituting (0, 8) for (71, y1) and
+(10, 1) for (xo, y2) in a yields the slope of the line being approximately a. which is equivalent to =. or —0.7. Therefore, of the given
+choices, —0.7 is the closest to the slope of this line of best fit.
+
+Choice A is incorrect. The line of best fit shown has a negative slope, not a positive slope.
+
+Choice B is incorrect. The line of best fit shown has a negative slope, not a positive slope.

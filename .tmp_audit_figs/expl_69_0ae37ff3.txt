@@ -1,0 +1,15 @@
+Choice D is correct. It's given that there are 7 red, 4 white, 33 blue, and 33 yellow cubes in the bag. Therefore, there are a total of 7 + 4+ 33
+
++ 33, or 77, cubes in the bag. If the cube is neither blue nor yellow, then it must be either red or white. Therefore, the probability of selecting a
+cube that is neither blue nor yellow is equivalent to the probability of selecting a cube that is either red or white. If one of these cubes is selected
+at random, the probability of selecting a cube that is either red or white is equal to the sum of the number of red cubes and white cubes divided
+by the total number of cubes in the bag. There are 7 red cubes, 4 white cubes, and 77 total cubes in the bag. Therefore, the probability of
+selecting a red or white cube is a which is equivalent to a, or +. Thus, if one cube is selected at random, the probability of selecting a cube
+that is neither blue nor yellow is t.
+
+Choice A is incorrect. This is the probability of selecting a cube that is either blue or yellow, rather than the probability of selecting a cube that is
+neither blue nor yellow.
+
+Choice B is incorrect and may result from conceptual or calculation errors.
+
+Choice C is incorrect and may result from conceptual or calculation errors.

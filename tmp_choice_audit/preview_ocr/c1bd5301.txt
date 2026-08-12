@@ -1,0 +1,5 @@
+Question
+
+A model predicts that a certain animal weighed 241 pounds when it was born and that the animal gained 3 pounds per day in its first year of life.
+This model is defined by an equation in the form f(x) = a + ba, where f(z) is the predicted weight, in pounds, of the animal x days after it
+was born, and a and bare constants. What is the value of a?

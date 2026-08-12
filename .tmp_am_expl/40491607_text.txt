@@ -1,0 +1,27 @@
+The correct answer is 
+. It's given that in the xy-plane, when the graph of the function 
+, where 
+, is shifted up 
+ units, the resulting
+graph is defined by the function 
+. Therefore, function 
+ can be defined by the equation 
+. It's given that 
+. Substituting 
+ for 
+ in the equation 
+ yields 
+. For the point 
+, the value of 
+ is 
+. Substituting 
+ for 
+ in the equation 
+ yields 
+, or 
+. It follows that the graph of 
+ crosses through the point 
+.
+Therefore, the value of 
+ is 
+.

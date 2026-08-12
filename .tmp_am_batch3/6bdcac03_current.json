@@ -1,0 +1,27 @@
+{
+  "id": "6bdcac03",
+  "prompt": "{{eq:0}}\nHow many distinct real solutions does the given equation have?",
+  "equations": [
+    "/qbank/math/equations/6bdcac03_0.jpg"
+  ],
+  "figure": null,
+  "choices": [
+    {
+      "text": "Exactly one"
+    },
+    {
+      "text": "Exactly two"
+    },
+    {
+      "text": "Infinitely many"
+    },
+    {
+      "text": "Zero"
+    }
+  ],
+  "answer": 3,
+  "explanation": "Choice D is correct. Since the square of a real number is never negative, the given equation isn't true for any real value of . Therefore, the given\nequation has zero distinct real solutions.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.",
+  "pdfPage": 92,
+  "type": "mc",
+  "kind": null
+}

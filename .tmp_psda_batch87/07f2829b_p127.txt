@@ -1,0 +1,60 @@
+Question ID: 07f2829b
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+One-variable data:
+Distributions and
+measures of center and
+spread
+Medium
+Question
+International Tourist
+Arrivals, in millions
+Country
+2012
+2013
+France
+83.0
+84.7
+United
+States
+66.7
+69.8
+Spain
+57.5
+60.7
+China
+57.7
+55.7
+Italy
+46.4
+47.7
+Turkey
+35.7
+37.8
+Germany
+30.4
+31.5
+United
+Kingdom
+26.3
+32.2
+Russia
+24.7
+28.4
+The table above shows the number of international tourist arrivals, rounded to the nearest tenth of a million, to the top nine tourist destinations in
+both 2012 and 2013. Based on the information given in the table, how much greater, in millions, was the median number of international tourist
+arrivals to the top nine tourist destinations in 2013 than the median number in 2012, to the nearest tenth of a million?
+Rationale
+The correct answer is 1.3. The median number of tourists is found by ordering the number of tourists from least to greatest and determining the
+middle value from this list. When the number of tourists in 2012 is ordered from least to greatest, the middle value, or the fifth number, is 46.4
+million. When the number of tourists in 2013 is ordered from least to greatest, the middle value, or the fifth number, is 47.7 million. The difference
+between these two medians is 
+. Note that 1.3 and 13/10 are examples of ways to enter a
+correct answer.

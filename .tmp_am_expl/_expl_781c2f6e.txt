@@ -1,0 +1,52 @@
+Choice D is correct. A y-intercept of a graph in the xy-plane is a point where the graph intersects the y-axis, or a point where 
+. Substituting 
+for 
+ in the equation defining function 
+ yields 
+, or 
+. So, the y-coordinate of the y-intercept of the
+graph is 
+, or equivalently, 
+. It's given that function 
+ is equivalent to function 
+, where 
+. It follows that 
+. Since 
+ can't be equal to 
+, the coefficient 
+ can't be equal to 
+. Since 
+, the constant 
+, which is equal to 
+,
+can't be equal to 
+. Therefore, function 
+ doesn't display the y-coordinate of the y-intercept of the graph of 
+ in the xy-plane as
+a constant or coefficient. It's also given that function 
+ is equivalent to function 
+, where 
+. The equation defining 
+ can be rewritten
+as 
+. It follows that 
+. Since 
+ can't be equal to 
+, the coefficient 
+ can't be equal to 
+.
+Since 
+, the constant 
+, which is equal to 
+, can't be equal to 
+. Therefore, function 
+ doesn't display the y-coordinate of
+the y-intercept of the graph of 
+ in the xy-plane as a constant or coefficient. Thus, neither function 
+ nor function 
+ displays the y-
+coordinate of the y-intercept of the graph of 
+ in the xy-plane as a constant or coefficient.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.

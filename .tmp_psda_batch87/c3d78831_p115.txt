@@ -1,0 +1,43 @@
+Question ID: c3d78831
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Ratios, rates,
+propor tional
+relationships, and units
+Medium
+Question
+At a par ticular track meet, the ratio of coaches to athletes is 
+ to 
+. If there are 
+ coaches at the track meet, which of the following expressions
+represents the number of athletes at the track meet?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: B
+Rationale
+Choice B is correct. It’s given that at a par ticular track meet, the ratio of coaches to athletes is 
+ to 
+. If one number in a ratio is multiplied by a
+value, the other number must be multiplied by the same value in order to maintain the same ratio. If there are 
+ coaches at the track meet,
+multiplying both numbers in the ratio by 
+ yields 
+ to 
+, or 
+ to 
+. Therefore, the expression 
+ represents the number of athletes at
+the track meet.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

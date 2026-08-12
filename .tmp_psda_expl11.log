@@ -1,0 +1,15 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+3f5398a6: text=306 ocr=329 final=442 ok
+65c49824: text=414 ocr=524 final=523 ok
+000259aa: text=422 ocr=519 final=518 ok
+90eed2e5: text=656 ocr=665 final=667 ok
+8e528129: text=247 ocr=350 final=350 ok
+0231050d: text=436 ocr=459 final=456 ok
+d4413871: text=479 ocr=599 final=595 ok
+fea831fc: text=569 ocr=698 final=691 ok
+07f2829b: text=544 ocr=583 final=583 ok
+7ac5d686: text=706 ocr=704 final=749 ok
+3638f413: text=298 ocr=335 final=335 ok
+
+Updated 11 explanations
+Still hollow (0): []

@@ -1,0 +1,15 @@
+Question
+—12r + 14y = 36
+—6z + Ty = —18
+
+How many solutions does the given system of equations have?
+
+Answer
+
+A. Exactly one
+
+B. Exactly two
+
+C. Infinitely many
+
+D. Zero

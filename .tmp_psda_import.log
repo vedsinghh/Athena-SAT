@@ -1,0 +1,45 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+Building unanswered Problem-Solving and Data Analysis PDF...
+Found 150 question groups in bank PDF
+psda 1/150 85939da5: Texting | Talks on cell | Does not talk on | behavior | phone daily | cell phone daily | T
+psda 10/150 1adb39f0: The scatterplot shows the relationship between two variables, x and y. A line of best fit 
+skip 3f5398a6: no correct answer
+skip 65c49824: no correct answer
+psda 20/150 fe4c1c9e: A mechanical device in a workshop produces items at a constant rate of 60 items per hour. 
+psda 30/150 52f9a246: Which frequency table correctly represents the data listed?
+skip 000259aa: no correct answer
+skip 28ff3966: already in bank / Summer duplicate
+psda 40/150 58a71e06: Of 300,000 paper clips, 234,000 are size large. What percentage of the paper clips are siz
+skip 90eed2e5: no correct answer
+skip 8e528129: no correct answer
+psda 50/150 15617f62: The population density of Worthington is 290 people per square mile. Worthington has a pop
+skip 0231050d: no correct answer
+skip 3e1bd4e2: already in bank / Summer duplicate
+skip d4413871: no correct answer
+skip f6c18a66: already in bank / Summer duplicate
+psda 70/150 d0efc1dd: 15, 14, 18, 17, x | The mean and the median of the five numbers above are equal. Which of 
+psda 80/150 c178d4da: Data set A and data set B each consist of 27 values. The table shows the frequencies of th
+psda 90/150 63573fea: During the first month of sales, a company sold 1,300,000 units of a certain type of smar 
+skip d73a67d7: already in bank / Summer duplicate
+skip 89ff6a0a: already in bank / Summer duplicate
+skip 8bb94668: already in bank / Summer duplicate
+skip fea831fc: no correct answer
+psda 110/150 9d88a3e3: Theresa ran on a treadmill for thir ty minutes, and her time and speed are shown on the gr
+skip dbd89c59: already in bank / Summer duplicate
+skip 07f2829b: no correct answer
+skip 7ac5d686: no correct answer
+psda 120/150 e7133228: The speed of a vehicle is increasing at a rate of 7.3 meters per second squared. What is t
+psda 130/150 1b403590: An object has a mass of 168 grams and a volume of 24 cubic centimeters. What is the densit
+skip 3638f413: no correct answer
+psda 150/150 1e1027a7: The scatterplot above shows a company’s ice cream sales d, in dollars, and the high temper
+Added 132 Educator Bank Problem-Solving and Data Analysis questions (skipped 7 duplicates, 0 other-domain)
+   30  One-variable data: distributions and measures of center and spread
+   29  Ratios, rates, proportional relationships, and units
+   23  Two-variable data: models and scatterplots
+   19  Probability and conditional probability
+   19  Percentages
+    9  Inference from sample statistics and margin of error
+    3  Evaluating statistical claims: Observational studies and experiments
+Unanswered PDF: /Users/vedsingh/Downloads/athena_sat_react/public/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf
+Total math questions now: 586
+Summer Problem-Solving and Data Analysis overlap check: OK (0 / 19)

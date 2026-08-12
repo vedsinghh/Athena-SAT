@@ -1,0 +1,4 @@
+Question
+y= 2x
+32+ y= 40
+The solution to the given system of equations is (zx, y). What is the value of x?

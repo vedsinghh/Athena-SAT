@@ -1,0 +1,14 @@
+{
+  "id": "358f18bc",
+  "prompt": "{{eq:0}}\nWhat is the minimum value of the given function?",
+  "equations": [
+    "/qbank/math/equations/358f18bc_0.jpg"
+  ],
+  "figure": null,
+  "choices": [],
+  "answer": "1728",
+  "explanation": "The correct answer is . The given function can be rewritten in the form , where is a positive constant and the\nminimum value, , of the function occurs when the value of is . By completing the square, can be written as , or . This equation is in the form , where ,\n, and . Therefore, the minimum value of the given function is .",
+  "pdfPage": 25,
+  "type": "spr",
+  "kind": null
+}

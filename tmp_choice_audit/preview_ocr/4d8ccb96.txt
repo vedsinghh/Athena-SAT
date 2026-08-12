@@ -1,0 +1,15 @@
+Question
+
+A chemist studying the impact of salt on a process mixes z kilograms of a low-salt mixture, which is 2% salt by weight, with y kilograms of a
+high-salt mixture, which is 96% salt by weight, to create 24 kilograms of a mixture that is 4% salt by weight. Which equation represents this
+situation?
+
+Answer
+
+A. 0.962 + 0.02y = (0.04)(24)
+
+B. 0.02% + 0.96y = (0.04) (24)
+
+C.0.962 + 0.02y = 24
+
+D.0.02a + 0.96y = 24

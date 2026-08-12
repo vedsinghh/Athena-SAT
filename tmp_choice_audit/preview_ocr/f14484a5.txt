@@ -1,0 +1,15 @@
+Question
+
+A manufacturing plant makes 10-inch, 9-inch, and 7-inch frying pans. During a certain day, the number of 10-inch frying pans that the
+manufacturing plant makes is 4 times the number 7 of 9-inch frying pans it makes, and the number of 7-inch frying pans it makes is 10. During
+this day, the manufacturing plant makes 100 frying pans total. Which equation represents this situation?
+
+Answer
+
+A. 10(4n) + 9n + 7(10) = 100
+
+B. 10n + 9n+ 7n = 100
+
+C.4n+ 10 = 100
+
+D.5n+10= 100

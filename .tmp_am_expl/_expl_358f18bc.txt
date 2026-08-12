@@ -1,0 +1,16 @@
+The correct answer is 
+. The given function can be rewritten in the form 
+, where 
+ is a positive constant and the
+minimum value, 
+, of the function occurs when the value of 
+ is 
+. By completing the square, 
+ can be written as 
+, or 
+. This equation is in the form 
+, where 
+,
+, and 
+. Therefore, the minimum value of the given function is 
+.

@@ -1,0 +1,25 @@
+{
+  "id": "371cbf6b",
+  "prompt": "The equation above is true for all x, where a and b are constants. What is the value of ab?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "18"
+    },
+    {
+      "text": "20"
+    },
+    {
+      "text": "24"
+    },
+    {
+      "text": "40"
+    }
+  ],
+  "answer": 2,
+  "explanation": "Choice C is correct. If the equation is true for all x, then the expressions on both sides of the equation will be equivalent. Multiplying the\npolynomials on the left-hand side of the equation gives . On the right-hand side of the equation,\nthe only -term is . Since the expressions on both sides of the equation are equivalent, it follows that ,\nwhich can be rewritten as . Therefore, , which gives .\n\nChoice A is incorrect. If , then the coefficient of on the left-hand side of the equation would be , which doesn’t\nequal the coefficient of , , on the right-hand side.\n\nChoice B is incorrect. If , then the coefficient of on the left-hand side of\nthe equation would be , which doesn’t equal the coefficient of , , on the right-hand side.\n\nChoice D is incorrect. If\n, then the coefficient of on the left-hand side of the equation would be , which doesn’t equal the coefficient of\n, , on the right-hand side.",
+  "pdfPage": 44,
+  "type": "mc",
+  "kind": null
+}

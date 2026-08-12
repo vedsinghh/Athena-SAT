@@ -1,0 +1,5 @@
+The correct answer is 5. For the graph shown, x represents time, in minutes, and y represents temperature, in degrees Celsius (°C). Therefore,
+the average rate of change, in °C per minute, of the recorded temperature of the air in the chamber between two x-values is the difference in the
+corresponding y-values divided by the difference in the x-values. The graph shows that at x = 5, the corresponding y-value is 14. The graph also
+shows that at 2 = 7, the corresponding y-value is 24. It follows that the average rate of change, in °C per minute, from x = 5 tox = 7 is
+4s which is equivalent to 2 or 5.

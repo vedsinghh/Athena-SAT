@@ -1,0 +1,9 @@
+Question
+y = 3a
+2z+y=12
+The solution to the given system of equations is (zx, y). What is the value of 52?
+Answer
+A. 24
+B.15
+c.12
+D5

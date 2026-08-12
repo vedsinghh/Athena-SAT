@@ -1,0 +1,25 @@
+{
+  "id": "7f2524bf",
+  "prompt": "The graph shown gives the estimated value, in dollars, of a tablet as a function of the number of months since it was purchased. What is the best\ninterpretation of the y-intercept of the graph in this context?",
+  "equations": null,
+  "figure": "/qbank/math/figures/7f2524bf.jpg",
+  "choices": [
+    {
+      "text": "The estimated value of the tablet was when it was purchased."
+    },
+    {
+      "text": "The estimated value of the tablet months after it was purchased was ."
+    },
+    {
+      "text": "The estimated value of the tablet had decreased by in the months after it was purchased."
+    },
+    {
+      "text": "The estimated value of the tablet decreased by approximately each year after it was purchased."
+    }
+  ],
+  "answer": 0,
+  "explanation": "Choice A is correct. It's given that the graph shown gives the estimated value , in dollars, of a tablet as a function of the number of months since\nit was purchased, . The y-intercept of a graph is the point at which the graph intersects the y-axis, or when is . The graph shown intersects\nthe y-axis at the point . It follows that months after the tablet was purchased, or when the tablet was purchased, the estimated value\nof the tablet was dollars. Therefore, the best interpretation of the y-intercept is that the estimated value of the tablet was when it was\npurchased.\n\nChoice B is incorrect. The estimated value of the tablet months after it was purchased was , not .\n\nChoice C is incorrect. The estimated value of the tablet had decreased by , or , not , in the months after it was\npurchased.\n\nChoice D is incorrect and may result from conceptual errors.",
+  "pdfPage": 16,
+  "type": "mc",
+  "kind": null
+}

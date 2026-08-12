@@ -1,0 +1,25 @@
+{
+  "id": "8e1da169",
+  "prompt": "f(x) = (a - 44) (a - 46)\nThe function is defined by the given equation. For what value of does s f(x) t reach its minimum?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "46"
+    },
+    {
+      "text": "45"
+    },
+    {
+      "text": "44"
+    },
+    {
+      "text": "-1"
+    }
+  ],
+  "answer": 1,
+  "explanation": "Choice B is correct. It's given that , which can be rewritten as . Since the coefficient of\nthe -term is positive, the graph of in the xy-plane opens upward and reaches its minimum value at its vertex. For an equation in the\nform , where , , and are constants, the x-coordinate of the vertex is . For the equation , , , and . It follows that the x-coordinate of the vertex is , or . Therefore, reaches its minimum\nwhen the value of is .\n\nChoice A is incorrect. This is one of the x-coordinates of the x-intercepts of the graph of in the xy-plane.\n\nChoice C is incorrect. This is one of the x-coordinates of the x-intercepts of the graph of in the xy-plane.\n\nChoice D is incorrect. This is the y-coordinate of the vertex of the graph of in the xy-plane.",
+  "pdfPage": 52,
+  "type": "mc",
+  "kind": null
+}

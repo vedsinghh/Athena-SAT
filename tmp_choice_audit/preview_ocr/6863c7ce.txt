@@ -1,0 +1,9 @@
+Question
+d= 16t
+The given equation represents the distance d, in inches, where t represents the number of seconds since an object started moving. Which of the
+following is the best interpretation of 16 in this context?
+Answer
+A. The object moved a total of 16 inches.
+B. The object moved a total of 16¢ inches.
+C. The object is moving at a rate of 16 inches per second.
+D. The object is moving at a rate of + inches per second.

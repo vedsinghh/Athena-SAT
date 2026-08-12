@@ -1,0 +1,15 @@
+Question
+
+A factory makes 9-inch, 7-inch, and 4-inch concrete screws. During a certain day, the number of 9-inch concrete screws that the factory makes is
+5 times the number 7 of 7-inch concrete screws, and the number of 4-inch concrete screws is 22. During this day, the factory makes 100
+concrete screws total. Which equation represents this situation?
+
+Answer
+
+A. 9(5n) + 7n + 4(22) = 100
+
+B.9n+ 7n + 4n = 100
+
+C.5n+ 22 = 100
+
+D. 6n+ 22 = 100

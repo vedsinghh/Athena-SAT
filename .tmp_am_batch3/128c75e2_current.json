@@ -1,0 +1,12 @@
+{
+  "id": "128c75e2",
+  "prompt": "The function g is defined by g(x) = ——- — 14, where a < 0. What is the product of g(15a) and g(a)?",
+  "equations": null,
+  "figure": null,
+  "choices": [],
+  "answer": "609",
+  "explanation": "The correct answer is . It’s given that the function is defined by , where . Substituting for in function yields\n. This function can be rewritten as , or . Since , it follows that . Substituting for in yields , or . Similarly, substituting for in\nfunction yields . This function can be rewritten as , or . Since , it again\nfollows that . Substituting for in yields , or . Therefore, and . Thus, the product of and is , or .",
+  "pdfPage": 14,
+  "type": "spr",
+  "kind": null
+}

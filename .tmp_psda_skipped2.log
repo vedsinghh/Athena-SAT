@@ -1,0 +1,13 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+recover 3f5398a6: mc 3 :: For a person m miles from a flash of lightning, the length of the time
+recover 65c49824: spr ['8'] :: A school district is forming a committee to discuss plans for the cons
+recover 000259aa: mc 2 :: A group of monarch butterflies migrated from Chicago, Illinois, to Mic
+recover 90eed2e5: mc 2 :: A city has 50 city council members. A reporter polled a random sample 
+recover 8e528129: spr ['4.44'] :: Pure beeswax has a density of 0.555 ounce per cubic inch. An online co
+recover 0231050d: spr ['75'] :: The line graph shows the total amount of snow, in inches, recorded eac
+recover d4413871: spr ['8'] :: Human blood can be classified into four common blood types—A, B, AB, a
+recover fea831fc: spr ['25.4'] :: On April 18, 1775, Paul Revere set off on his midnight ride from Charl
+recover 07f2829b: spr ['1.3'] :: The table above shows the number of international tourist arrivals, ro
+recover 7ac5d686: mc 1 :: An inspector begins a day of work with a large sample of shir ts that 
+recover 3638f413: spr ['30'] :: Jeremy deposited x dollars in his investment account on January 1, 200
+Recovered 11: ['3f5398a6', '65c49824', '000259aa', '90eed2e5', '8e528129', '0231050d', 'd4413871', 'fea831fc', '07f2829b', '7ac5d686', '3638f413']

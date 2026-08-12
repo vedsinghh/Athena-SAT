@@ -1,0 +1,15 @@
+Question
+
+On acar trip, Rhett and Jessica each drove for part of the trip, and the total distance they drove was under 220 miles. Rhett drove at an average
+speed of 35 miles per hour (mph), and Jessica drove at an average speed of 40 mph. Which of the following inequalities represents this
+situation, where r is the number of hours Rhett drove and j is the number of hours Jessica drove?
+
+Answer
+
+A. 35r + 407 > 220
+
+B. 35r + 407 < 220
+
+C. 40r + 357 > 220
+
+D. 40r + 357 < 220

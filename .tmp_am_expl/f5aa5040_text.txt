@@ -1,0 +1,36 @@
+The correct answer is 
+. The given linear equation is 
+. Dividing both sides of this equation by 
+ yields 
+. Substituting 
+ for 
+ in the
+equation of the parabola yields 
+. Adding 
+ and 
+ to both sides of this equation yields 
+. Since it’s
+given that the line and the parabola intersect at exactly one point, the equation 
+ must have exactly one solution. An equation
+of the form 
+, where 
+, 
+, and 
+ are constants, has exactly one solution when the discriminant, 
+, is equal to 
+.
+In the equation 
+, where 
+, 
+, and 
+, the discriminant is 
+. Setting the discriminant equal
+to 
+ yields 
+, or 
+. Adding 
+ to both sides of this equation yields 
+. Dividing both sides of this
+equation by 
+ yields 
+. Note that 81/4 and 20.25 are examples of ways to enter a correct answer.

@@ -1,0 +1,10 @@
+Choice B is correct. It's given that a data set consists of 173 colors and the bar graph shows the number of times each color appears in the data
+set. Therefore, for each color specified at the bottom of the bar, the frequency corresponds to the number of times that color appears in the data
+set. The color that appears 70 times in the data set has a frequency of 70 on the bar graph. Since the bar with a frequency of 70 corresponds to
+green, green is the color that appears 70 times.
+
+Choice A is incorrect. The color blue appears about 27 times, not 70 times.
+
+Choice C is incorrect. The color red appears about 33 times, not 70 times.
+
+Choice D is incorrect. The color yellow appears about 43 times, not 70 times.

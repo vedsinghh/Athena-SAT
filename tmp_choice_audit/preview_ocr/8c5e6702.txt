@@ -1,0 +1,14 @@
+Question
+
+A window repair specialist charges $220 for the first two hours of repair plus an hourly fee for each additional hour. The total cost for 5 hours of
+repair is $400. Which function f gives the total cost, in dollars, for 2 hours of repair, where x > 2?
+
+Answer
+
+A. f(x) = 60x + 100
+
+B. f(x) = 60x + 220
+
+Cc. f(z) = 80x
+
+D. f(x) = 80x + 220

@@ -1,0 +1,15 @@
+Question
+
+As part of a science project on evaporation, Amaya measured the height of a liquid in a container over a period of time. The function f(x) = 33
+— 0.182 gives the estimated height, in centimeters (cm), of the liquid in the container « days after the start of the project. Which of the following
+is the best interpretation of 33 in this context?
+
+Answer
+
+A. The estimated height, in cm, of the liquid at the start of the project
+
+B. The estimated height, in cm, of the liquid at the end of the project
+
+C. The estimated change in the height, in cm, of the liquid each day
+
+D. The estimated number of days for all of the liquid to evaporate

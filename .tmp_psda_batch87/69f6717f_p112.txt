@@ -1,0 +1,40 @@
+Question ID: 69f6717f
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Ratios, rates,
+propor tional
+relationships, and units
+Hard
+Question
+A sample of oak has a density of 
+kilograms per cubic meter. The sample is in the shape of a cube, where each edge has a length of
+meters. To the nearest whole number, what is the mass, in kilograms, of this sample? 
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: A
+Rationale
+Choice A is correct. It’s given that the sample is in the shape of a cube with edge lengths of 
+ meters. Therefore, the volume of the sample is
+, or 
+, cubic meters. It’s also given that the sample has a density of 
+ kilograms per 
+ cubic meter. Therefore, the mass of this
+sample is 
+, or 
+ kilograms. Rounding this mass to the nearest whole number gives 
+ kilograms.
+Therefore, to the nearest whole number, the mass, in kilograms, of this sample is 
+.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

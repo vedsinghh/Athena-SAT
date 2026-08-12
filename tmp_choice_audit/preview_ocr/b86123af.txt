@@ -1,0 +1,14 @@
+Question
+Hiro and Sofia purchased shirts and pants from a store. The price of each shirt purchased was the same and the price of each pair of pants
+purchased was the same. Hiro purchased 4 shirts and 2 pairs of pants for $86, and Sofia purchased 3 shirts and 5 pairs of pants for $166. Which
+of the following systems of linear equations represents the situation, if x represents the price, in dollars, of each shirt and y represents the price,
+in dollars, of each pair of pants?
+Answer
+A. 4x+2y=86
+3x +5y = 166
+B. 4x +3y =86
+2x +5y = 166
+c. 4x+2y=166
+3x +5y =86
+D. 4x+3y =166
+2x +5y =86

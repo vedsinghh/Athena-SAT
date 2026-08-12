@@ -1,0 +1,6 @@
+Question
+
+8x + 1ly = 170
+The equation gives the possible combinations of the number of 2009 premium grade Log Cabin Pennies, x, and the number of 1996 select
+grade Lincoln Pennies, y, in a collection that is worth a total of $170. If there are 6 1996 select grade Lincoln Pennies in the collection, how many
+2009 premium grade Log Cabin Pennies are in the collection?

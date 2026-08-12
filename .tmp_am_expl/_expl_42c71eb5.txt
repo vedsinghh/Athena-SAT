@@ -1,0 +1,28 @@
+Choice A is correct. The given expression can be rewritten as 
+. Applying the distributive proper ty, the
+expression  
+can be rewritten as 
+, or 
+. Adding like terms
+yields 
+. Substituting 
+ for  
+ in the given expression yields 
+. By the rules of exponents,
+the expression 
+ is equivalent to 
+. Applying the distributive proper ty, this expression can be rewritten as
+, or 
+. Adding like terms gives 
+. Substituting 
+for 
+ in the rewritten expression yields 
+, and adding like terms yields 
+.
+Choices B, C, and D are incorrect. Choices C and D may result from rewriting the expression 
+ as 
+, instead of as
+. Choices B and C may result from rewriting the expression 
+ as 
+, instead of 
+.

@@ -1,0 +1,15 @@
+Question
+
+A store sells two different-sized containers of a certain Greek yogurt. The store's sales of this Greek yogurt totaled 1,277.94 dollars last month.
+The equation 5.482 + 7.30y = 1,277.94 represents this situation, where x is the number of smaller containers sold and y is the number of
+larger containers sold. According to the equation, which of the following represents the price, in dollars, of each smaller container?
+
+Answer
+
+A. 5.48
+
+B. 7.304
+
+Cc. 7.30
+
+D. 5.482

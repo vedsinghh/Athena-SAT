@@ -1,0 +1,14 @@
+Question
+
+A bakery sells trays of cookies. Each tray contains at least 50 cookies but no more than 60. Which of the following could be the total number of
+cookies on 4 trays of cookies?
+
+Answer
+
+A. 165
+
+B. 205
+
+C. 245
+
+D. 285

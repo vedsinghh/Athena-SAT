@@ -1,0 +1,25 @@
+{
+  "id": "332cd67b",
+  "prompt": "327 - 154 +18 = 0\nHow many distinct real solutions are there to the given equation?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "Exactly one"
+    },
+    {
+      "text": "Exactly two"
+    },
+    {
+      "text": "Infinitely many"
+    },
+    {
+      "text": "Zero"
+    }
+  ],
+  "answer": 1,
+  "explanation": "Choice B is correct. The number of solutions to a quadratic equation of the form , where , , and are constants, can be\ndetermined by the value of the discriminant, . If the value of the discriminant is positive, then the quadratic equation has exactly two\ndistinct real solutions. If the value of the discriminant is equal to zero, then the quadratic equation has exactly one real solution. If the value of\nthe discriminant is negative, then the quadratic equation has zero real solutions. In the given equation, , , ,\nand . Substituting for , for , and for in yields , or . Since the value of the discriminant is\npositive, the given equation has exactly two distinct real solutions.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+  "pdfPage": 12,
+  "type": "mc",
+  "kind": null
+}

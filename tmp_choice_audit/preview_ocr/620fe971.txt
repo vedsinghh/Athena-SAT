@@ -1,0 +1,18 @@
+Question
+
+A team of workers has been moving cargo off of a ship. The equation below models the approximate number of tons of cargo, y, that remains to
+be moved x hours after the team started working.
+
+y =120-25x
+
+The graph of this equation in the xy-plane is a line. What is the best interpretation of the x-intercept in this context?
+
+Answer
+
+A. The team will have moved all the cargo in about 4.8 hours.
+
+B. The team has been moving about 4.8 tons of cargo per hour.
+
+C. The team has been moving about 25 tons of cargo per hour.
+
+D. The team started with 120 tons of cargo to move.

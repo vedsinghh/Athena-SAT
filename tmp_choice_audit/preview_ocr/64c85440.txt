@@ -1,0 +1,15 @@
+Question
+
+In North America, the standard width of a parking space is at least 7.5 feet and no more than 9.0 feet. A restaurant owner recently resurfaced the
+restaurant's parking lot and wants to determine the number of parking spaces, n, in the parking lot that could be placed perpendicular to a curb
+that is 135 feet long, based on the standard width of a parking space. Which of the following describes all the possible values of n ?
+
+Answer
+
+A. 18<<135
+
+B7.5<n<9
+
+c.15<n<135
+
+dD. 15<n<18

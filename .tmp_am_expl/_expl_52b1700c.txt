@@ -1,0 +1,49 @@
+Choice C is correct. It’s given that the relationship between 
+ and 
+ is exponential. The table shows that the value of 
+ increases as the value of 
+increases. Therefore, the relationship between 
+ and 
+ can be represented by an increasing exponential equation of the form 
+,
+where 
+ and 
+ are positive constants. The table shows that when 
+, 
+. Substituting 
+ for 
+ and 
+ for 
+ in the equation 
+ yields 
+, which is equivalent to 
+, or 
+. Substituting 
+ for 
+ in the equation 
+yields 
+. The table also shows that when 
+, 
+. Substituting 
+ for 
+ and 
+ for 
+ in the equation 
+ yields 
+, or 
+. Dividing both sides of this equation by 
+ yields approximately
+. Subtracting 
+ from both sides of this equation yields that the value of 
+ is approximately 
+. Substituting 
+ for 
+ in the
+equation 
+ yields 
+. Therefore, of the choices, choice C best represents the relationship between 
+ and 
+.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

@@ -1,0 +1,13 @@
+Question
+
+Two customers purchased the same kind of bread and eggs at a store. The first customer paid 12.45 dollars for 1 loaf of bread and 2 dozen
+eggs. The second customer paid 19.42 dollars for 4 loaves of bread and 1 dozen eggs. What is the cost, in dollars, of 1 dozen eggs?
+Answer
+
+A.3.77
+
+B. 3.88
+
+c. 4.15
+
+D. 4.34

@@ -1,0 +1,11 @@
+Question
+The point (8, 2) in the xy-plane is a solution to which of the following systems of inequalities?
+Answer
+Axr>0
+y>0
+Bx >0
+y<0
+C.2<0
+y>0
+Dx <0
+y<0

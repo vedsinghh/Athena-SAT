@@ -1,0 +1,11 @@
+Choice A is correct. The mean value of a data set is the sum of the values of the data set divided by the number of values in the data set. When a
+data set is represented in a frequency table, the sum of the values in the data set is the sum of the products of each value and its frequency. For
+data set A, the sum of products of each value and its frequency is 30(2) + 34(4) + 38(5) + 42(7) + 46(9), or 1,094. It's given that there are
+27 values in data set A. Therefore, the mean of data set A is + or approximately 40.52. Similarly, the mean of data B is 3 or approximately
+35.48. Therefore, the mean of data set A is greater than the mean of data set B.
+
+Choice B is incorrect and may result from conceptual or calculation errors.
+
+Choice C is incorrect and may result from conceptual or calculation errors.
+
+Choice D is incorrect and may result from conceptual or calculation errors.

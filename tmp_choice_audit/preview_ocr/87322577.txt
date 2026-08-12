@@ -1,0 +1,16 @@
+Question
+
+xt+y=75
+
+The equation above relates the number of minutes, x, Maria spends running each day and the number of minutes, y, she spends biking each day.
+In the equation, what does the number 75 represent?
+
+Answer
+
+A. The number of minutes spent running each day
+
+B. The number of minutes spent biking each day
+
+C. The total number of minutes spent running and biking each day
+
+D. The number of minutes spent biking for each minute spent running

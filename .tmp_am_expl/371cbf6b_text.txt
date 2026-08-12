@@ -1,0 +1,29 @@
+Choice C is correct. If the equation is true for all x, then the expressions on both sides of the equation will be equivalent. Multiplying the
+polynomials on the left-hand side of the equation gives 
+. On the right-hand side of the equation,
+the only 
+-term is 
+. Since the expressions on both sides of the equation are equivalent, it follows that 
+,
+which can be rewritten as 
+. Therefore, 
+, which gives 
+.
+Choice A is incorrect. If 
+, then the coefficient of 
+ on the left-hand side of the equation would be 
+, which doesn’t
+equal the coefficient of 
+, 
+, on the right-hand side. Choice B is incorrect. If 
+, then the coefficient of 
+ on the left-hand side of
+the equation would be 
+, which doesn’t equal the coefficient of 
+, 
+, on the right-hand side. Choice D is incorrect. If
+, then the coefficient of 
+ on the left-hand side of the equation would be 
+, which doesn’t equal the coefficient of
+, 
+, on the right-hand side.

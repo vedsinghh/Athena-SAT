@@ -1,0 +1,10 @@
+Choice A is correct. The given equation can be rewritten as 
+. Multiplying both sides of this equation by 
+ yields
+. Dividing both sides of this equation by 4 yields 
+. Taking the square root of both sides of this equation yields
+ or 
+. Therefore, a possible value of 
+ is 
+.
+Choices B, C, and D are incorrect and may result from computational or conceptual errors.

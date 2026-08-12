@@ -1,0 +1,12 @@
+Question
+
+The function f is defined by f(x) = 8x. For what value of x does f(x) = 72?
+Answer
+
+A.8
+
+B.9
+
+C. 64
+
+D. 80

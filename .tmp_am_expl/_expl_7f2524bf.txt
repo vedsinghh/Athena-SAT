@@ -1,0 +1,24 @@
+Choice A is correct. It's given that the graph shown gives the estimated value 
+, in dollars, of a tablet as a function of the number of months since
+it was purchased, 
+. The y-intercept of a graph is the point at which the graph intersects the y-axis, or when 
+ is 
+. The graph shown intersects
+the y-axis at the point 
+. It follows that 
+ months after the tablet was purchased, or when the tablet was purchased, the estimated value
+of the tablet was 
+ dollars. Therefore, the best interpretation of the y-intercept is that the estimated value of the tablet was 
+ when it was
+purchased.
+Choice B is incorrect. The estimated value of the tablet 
+ months after it was purchased was 
+, not 
+.
+Choice C is incorrect. The estimated value of the tablet had decreased by 
+, or 
+, not 
+, in the 
+ months after it was
+purchased.
+Choice D is incorrect and may result from conceptual errors.

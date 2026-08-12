@@ -1,0 +1,28 @@
+Question ID: 2d16d62c
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Ratios, rates,
+propor tional
+relationships, and units
+Easy
+Question
+A special camera is used for underwater ocean research. When the camera is at a depth of 
+ fathoms, what is the camera's depth in feet?
+Correct Answer: 348
+Rationale
+The correct answer is 
+. It's given that 
+ fathom is equivalent to 
+ feet. Therefore, 
+ fathoms is equivalent to 
+, or
+ feet. Thus, when the camera is at a depth of 
+ fathoms, the camera's depth, in feet, is 
+.

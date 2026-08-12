@@ -1,0 +1,7 @@
+juestion
+ie xy-plane, the graph of the linear function f contains the points (0, 3) and (7, 31). Which equation defines f, where y = f(x)?
+Answer
+A. f(x) = 280 + 34
+B. f(x) = 3a + 38
+Cc. f(z) =4¢+3
+D. f(z) =7x+3

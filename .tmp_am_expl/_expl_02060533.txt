@@ -1,0 +1,77 @@
+Choice A is correct. It's given that the table shows values of 
+ and their corresponding values of 
+, where 
+. It's also given that 
+is a linear function. It follows that an equation that defines 
+ can be written in the form 
+, where 
+ represents the slope and 
+represents the y-coordinate of the y-intercept 
+ of the graph of 
+ in the xy-plane. The slope of the graph of 
+ can be found
+using two points, 
+ and 
+, that are on the graph of 
+, and the formula 
+. Since the table shows values of 
+ and
+their corresponding values of 
+, substituting values of 
+ and 
+ in the equation 
+ can be used to define function 
+. Using the
+first pair of values from the table, 
+ and 
+, yields 
+, or 
+. Multiplying each side of this equation by 
+yields 
+, so the point 
+ is on the graph of 
+. Using the second pair of values from the table, 
+ and 
+, yields 
+, or 
+. Multiplying each side of this equation by 
+ yields 
+, so the point 
+ is on the graph of 
+. Substituting 
+ and 
+ for 
+ and 
+, respectively, in the formula 
+ yields 
+, or
+. Substituting 
+ for 
+ in the equation 
+ yields 
+. Since 
+, substituting 
+ for 
+ and 
+ for 
+ in
+the equation 
+ yields 
+, or 
+. Adding 
+ to both sides of this equation yields 
+. It follows that 
+is the y-coordinate of the y-intercept 
+ of the graph of 
+. Therefore, the y-intercept of the graph of 
+ is 
+.
+Choice B is incorrect. 
+ is the y-coordinate of the y-intercept of the graph of 
+.
+Choice C is incorrect. 
+ is the slope of the graph of 
+.
+Choice D is incorrect. 
+ is the x-coordinate of the x-intercept of the graph of 
+.

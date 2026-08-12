@@ -1,0 +1,25 @@
+{
+  "id": "9654add7",
+  "prompt": "The revenue, in dollars, that a company receives from sales of a product is given by the function f above, where x is the unit price, in\ndollars, of the product. The graph of in the xy-plane intersects the x-axis at 0 and a. What does a represent?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "The revenue, in dollars, when the unit price of the product is $0"
+    },
+    {
+      "text": "The unit price, in dollars, of the product that will result in maximum revenue"
+    },
+    {
+      "text": "The unit price, in dollars, of the product that will result in a revenue of $0"
+    },
+    {
+      "text": "The maximum revenue, in dollars, that the company can make"
+    }
+  ],
+  "answer": 2,
+  "explanation": "Choice C is correct. By definition, the y-value when a function intersects the x-axis is 0. It’s given that the graph of the function intersects the x-\naxis at 0 and a, that x is the unit price, in dollars, of a product, and that , where , is the revenue, in dollars, that a company\nreceives from the sales of the product. Since the value of a occurs when , a is the unit price, in dollars, of the product that will result in a\nrevenue of $0.\n\nChoice A is incorrect. The revenue, in dollars, when the unit price of the product is $0 is represented by , when .\n\nChoice B is incorrect.\nThe unit price, in dollars, of the product that will result in maximum revenue is represented by the x-coordinate of the maximum of f. Choice D is\nincorrect. The maximum revenue, in dollars, that the company can make is represented by the y-coordinate of the maximum of f.",
+  "pdfPage": 77,
+  "type": "mc",
+  "kind": null
+}

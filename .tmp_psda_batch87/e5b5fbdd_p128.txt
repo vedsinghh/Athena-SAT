@@ -1,0 +1,31 @@
+Question ID: e5b5fbdd
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Probability and
+conditional probability
+Easy
+Question
+Of the 8 planets in our solar system, 4 are considered rocky. If a student randomly selects 1 of those 8 planets as a topic for a repor t, what is the
+probability that the selected planet will be rocky?
+Answer
+A. 
+B. 
+C. 
+D. 2
+Correct Answer: C
+Rationale
+Choice C is correct. If one of these planets is selected at random, the probability that the selected planet will be rocky is calculated by dividing
+the number of planets that are considered rocky by the total number of planets. It’s given that 4 of the 8 total planets are considered rocky.
+Therefore, the probability that the selected planet will be rocky is 
+, which is equivalent to 
+.
+Choices A and B are incorrect. These represent the probability if 1 of the 8 planets was considered rocky (choice A) and if 2 of the 8 planets were
+considered rocky (choice B). Choice D is incorrect and may result from dividing the total number of planets by the number of planets that are
+considered rocky.

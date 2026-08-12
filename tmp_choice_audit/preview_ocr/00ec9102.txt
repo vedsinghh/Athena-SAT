@@ -1,0 +1,14 @@
+Question
+
+Leo goes to a packing store to buy containers and tape. Leo has $15. Each container costs $1.87 and each roll of tape costs $2.40. Which
+inequality represents the relationship between the number of containers, c, and the number of rolls of tape, t, Leo can buy?
+
+Answer
+
+A.1.87¢+ 2.40 < 15
+
+B. 1.87c+ 2.40t > 15
+
+C. 2.40c+ 1.87t < 15
+
+D. 2.40c+ 1.87t > 15

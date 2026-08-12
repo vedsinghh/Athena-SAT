@@ -1,0 +1,52 @@
+Question ID: 2905ded0
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Probability and
+conditional probability
+Easy
+Question
+Live east of the
+river
+Live west of the
+river
+T
+otal
+Less than 
+years old
+At least 
+ years
+old
+T
+otal
+The table summarizes members of a local organization by age and whether they live east or west of the river. If a member of the organization is
+selected at random, what is the probability that the selected member is at least 
+ years old? 
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: D
+Rationale
+Choice D is correct. If a member of the organization is selected at random, the probability that the selected member is at least 
+ years old is
+equal to the number of members who are at least 
+ years old divided by the total number of members. According to the table, there are a total
+of 
+ members of the organization, and 
+ of these members are at least 
+ years old. Therefore, the probability that the selected member is
+at least 
+ years old is 
+.
+Choice A is incorrect. This is the probability that the selected member is less than 
+ years old.
+Choice B is incorrect. This is the probability that the selected member lives east of the river.
+Choice C is incorrect. This is the probability that the selected member lives west of the river.

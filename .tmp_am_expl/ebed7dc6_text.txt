@@ -1,0 +1,23 @@
+Choice B is correct. It’s given that the situation can be modeled by the equation 
+, where 
+ represents the
+increase in ticket price, in dollars, and 
+ represents the revenue, in dollars, from ticket sales. Since the coefficient of the 
+ term is negative, the
+graph of this equation in the xy-plane opens downward and reaches its maximum value at its ver tex. If a quadratic equation in the form 
+, where 
+, 
+, and 
+ are constants, is graphed in the xy-plane, the x-coordinate of the ver tex is equal to 
+. For the equation 
+, 
+, 
+, and 
+. It follows that the x-coordinate of the ver tex is 
+, or 
+. Therefore,
+if the given equation is graphed in the xy-plane, the maximum of the graph occurs at an x-value of 
+.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

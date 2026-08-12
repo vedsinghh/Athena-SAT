@@ -1,0 +1,25 @@
+{
+  "id": "4fbffc0a",
+  "prompt": "The graph shows the height above ground, in meters, of a ball seconds after the ball was launched upward from a platform. Which statement\nis the best interpretation of the marked point nN meters, of < t (1.0, 4.8) i in this context?",
+  "equations": null,
+  "figure": "/qbank/math/figures/4fbffc0a.jpg",
+  "choices": [
+    {
+      "text": "second after being launched, the ball's height above ground is meters."
+    },
+    {
+      "text": "seconds after being launched, the ball's height above ground is meter."
+    },
+    {
+      "text": "The ball was launched from an initial height of meter with an initial velocity of meters per second."
+    },
+    {
+      "text": "The ball was launched from an initial height of meters with an initial velocity of meter per second."
+    }
+  ],
+  "answer": 0,
+  "explanation": "Choice A is correct. It's given that the graph shows the height above ground, in meters, of a ball seconds after the ball was launched upward\nfrom a platform. In the graph shown, the x-axis represents time, in seconds, and the y-axis represents the height of the ball above ground, in\nmeters. It follows that for the marked point , represents the time, in seconds, after the ball was launched upward from a platform\nand represents the height of the ball above ground, in meters. Therefore, the best interpretation of the marked point is second after being launched, the ball's height above ground is meters.\n\nChoice B is incorrect and may result from conceptual errors.\n\nChoice C is incorrect and may result from conceptual errors.\n\nChoice D is incorrect and may result from conceptual errors.",
+  "pdfPage": 28,
+  "type": "mc",
+  "kind": null
+}

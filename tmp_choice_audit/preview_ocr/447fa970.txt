@@ -1,0 +1,2 @@
+Question
+The function f is defined by the equation f(x) = 7x + 2. What is the value of f(a) when x = 4?

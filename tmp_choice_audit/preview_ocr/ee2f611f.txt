@@ -1,0 +1,5 @@
+Question
+
+A local transit company sells a monthly pass for $95 that allows an unlimited number of trips of any length. Tickets for individual trips cost
+$1.50, $2.50, or $3.50, depending on the length of the trip. What is the minimum number of trips per month for which a monthly pass could cost
+less than purchasing individual tickets for trips?

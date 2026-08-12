@@ -1,0 +1,7 @@
+Choice C is correct. At X = O, the value of 2 is less than the value of 2X +2: 2” < 2(0)+2, which is equivalent to 1 <2. As the value of x
+increases, the value of #* remains less than the value of 2% +2 until ¥ = 3, which is when the two values are equal: e = 2(3) +?, which is
+equivalent to 8 = 8. Then, for ¥ > 3, the value of #* is greater than the value of #¥ +2. So there is a constant, 3, such that when 0) <x <3,
+then #* < 2x +2, but when ¥ > 3, then Po Ow 42.
+
+Choice A is incorrect because 2” > 2X +2 when X > 3. Choice Bis incorrect because 2” < 2¥ +2 when () <x <3. Choice Dis incorrect
+because 2” < 2¥ +2 when <x < Band 2” > 2x +2 when x > 3.

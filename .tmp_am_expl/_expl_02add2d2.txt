@@ -1,0 +1,34 @@
+Choice B is correct. It's given that in January 
+, there were 
+ customers subscribed to a company's newsletter and for the next 
+months after January 
+, the total number of customers subscribed to the newsletter each month was 
+ greater than the total number
+subscribed the previous month. It follows that this situation can be represented by the equation 
+, where 
+ is the total number
+of customers subscribed to the company's newsletter 
+ months after January 
+, 
+ is the number of customers subscribed to the newsletter
+in January 
+, and the total number of customers subscribed to the newsletter each month was 
+ greater than the total number subscribed
+the previous month. Substituting 
+ for 
+ and 
+ for 
+ in this equation yields 
+, or 
+.
+Choice A is incorrect. This equation represents a situation where the total number of customers subscribed each month was 
+ less, not 
+greater, than the total number subscribed the previous month.
+Choice C is incorrect. This equation represents a situation where the total number of customers subscribed each month was 
+, not 
+,
+greater than the total number subscribed the previous month.
+Choice D is incorrect. This equation represents a situation where the total number of customers subscribed each month was 
+, not 
+,
+greater than the total number subscribed the previous month.

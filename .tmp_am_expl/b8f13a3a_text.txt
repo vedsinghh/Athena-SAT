@@ -1,0 +1,30 @@
+The correct answer is 
+. It’s given that 
+. Substituting 
+ for 
+ in the equation 
+ yields 
+. It’s given that the y-intercept of the graph of 
+ is 
+. Substituting 
+ for 
+ and 
+ for 
+ in the equation 
+ yields 
+, which is equivalent to 
+, or 
+. Adding 
+ to both sides of this
+equation yields 
+. It’s given that the product of 
+ and 
+ is 
+, or 
+. Substituting 
+ for 
+ in this equation yields 
+.
+Dividing both sides of this equation by 
+ yields 
+.

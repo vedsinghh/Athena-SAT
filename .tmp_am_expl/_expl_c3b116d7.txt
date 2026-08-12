@@ -1,0 +1,22 @@
+Choice B is correct. The given expression can be factored by first finding two values whose sum is 
+ and whose product is 
+, or 
+.
+Those two values are 
+ and 
+. It follows that the given expression can be rewritten as 
+. Since the first two terms of
+this expression have a common factor of 
+ and the last two terms of this expression have a common factor of 
+, this expression can be
+rewritten as 
+. Since the two terms of this expression have a common factor of 
+, it can be rewritten as
+. Therefore, expression II, 
+, is a factor of 
+, but expression I, 
+, is not a factor of 
+. 
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

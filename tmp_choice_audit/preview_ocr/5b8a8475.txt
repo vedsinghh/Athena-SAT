@@ -1,0 +1,12 @@
+Question
+
+Line k is defined by y = 3x + 15. Line 7 is perpendicular to line k in the xy-plane. What is the slope of line 7?
+Answer
+
+A.-4
+
+B.-+
+
+c-4
+
+d.-+

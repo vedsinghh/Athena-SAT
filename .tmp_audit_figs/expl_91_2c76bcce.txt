@@ -1,0 +1,11 @@
+Choice A is correct. It's given that the estimated mean weight of all handbags made by the company on a particular day is 27.8 oz, with an
+associated margin of error of 0.02 oz. It follows that plausible values for the mean weight are between (27.8 — 0.02) oz and (27.8
+
++ 0.02) oz. Therefore, the most plausible conclusion is that the mean weight of all handbags made by the company on that day is between
+27.78 oz and 27.82 oz.
+
+Choice B is incorrect and may result from conceptual or calculation errors.
+
+Choice C is incorrect and may result from conceptual or calculation errors.
+
+Choice D is incorrect and may result from conceptual or calculation errors.

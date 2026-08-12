@@ -1,0 +1,7 @@
+juestion
+ithe graph of 27x + 33y = 297 is shifted down 5 units in the xy-plane, what is the y-intercept of the resulting graph?
+Answer
+A. (0, 4)
+B. (0,6)
+c. (0, 14)
+D. (0, 28)

@@ -1,0 +1,8 @@
+Question
+w+ 7 = 357
+What value of w is the solution to the given equation?
+Answer
+A.51
+B. 350
+C. 364
+D. 3,577

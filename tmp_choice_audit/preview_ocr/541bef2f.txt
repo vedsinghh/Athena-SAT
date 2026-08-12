@@ -1,0 +1,9 @@
+Question
+y<sxt+7
+y> 224-1
+Which point («, y) is a solution to the given system of inequalities in the xy-plane?
+Answer
+A. (—14, 0)
+B. (0, —14)
+c. (0, 14)
+D. (14, 0)

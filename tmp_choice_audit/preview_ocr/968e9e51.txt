@@ -1,0 +1,16 @@
+Question
+
+ysx
+
+y<-x
+
+Which of the following ordered pairs (xy) is a solution to the system of inequalities above?
+Answer
+
+A. (1,0)
+
+B. (—1,0)
+
+c.(0,1)
+
+p.(0,-1)

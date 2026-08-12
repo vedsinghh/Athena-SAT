@@ -1,0 +1,37 @@
+Question ID: 191d167b
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Percentages
+Easy
+Question
+Last year, 
+ students enrolled in an interior design program. This year, the number of students enrolled is 
+ of last year’s number. How
+many students are enrolled in the interior design program this year?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: B
+Rationale
+Choice B is correct. It's given that the number of students enrolled in an interior design program this year is 
+ of last year's number, which is
+. 
+ of 
+ can be expressed as 
+, or 
+, which is equivalent to 
+. Therefore, 
+ students are enrolled in the
+interior design program this year.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

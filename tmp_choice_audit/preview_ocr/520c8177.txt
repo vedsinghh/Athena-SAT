@@ -1,0 +1,15 @@
+Question
+
+A veterinarian recommends that each day a certain rabbit should eat 25 calories per pound of the rabbit's weight, plus an additional 11 calories.
+Which equation represents this situation, where cis the total number of calories the veterinarian recommends the rabbit should eat each day if
+the rabbit's weight is 2 pounds?
+
+Answer
+
+A.c= 254
+
+B.c = 36x
+
+C.c=11lr +25
+
+D.c=25a+11

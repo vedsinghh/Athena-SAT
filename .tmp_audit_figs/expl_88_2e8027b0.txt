@@ -1,0 +1,9 @@
+Choice A is correct. An equation of a line of best fit for data set F can be written in the form y = a+ ba, where a is the y-coordinate of the y-
+intercept of the line of best fit and b is the slope. The line of best fit shown for data set E has a y-intercept at approximately (0, 12). It's given that
+data set F is created by multiplying the y-coordinate of each data point from data set E by 3.9. It follows that a line of best fit for data set F has a
+y-intercept at approximately (0, 12(3.9)), or (0, 46.8). Therefore, the value of @ is approximately 46.8. The slope of a line that passes through
+points (21, y1) and (22, y2) can be calculated as an Since the line of best fit shown for data set E passes approximately through the point
+(12, 30), it follows that a line of best fit for data set F passes approximately through the point (12, 30(3.9)), or (12, 117). Substituting
+
+(0, 46.8) and (12, 117) for (x1, yi) and (22, y2), respectively, in a yields 68 which is equivalent to 7, or 5.85. Therefore, the
+value of b is approximately 5.85, or approximately 5.9. Thus, y = 46.8 + 5.9 could be an equation of a line of best fit for data set F.

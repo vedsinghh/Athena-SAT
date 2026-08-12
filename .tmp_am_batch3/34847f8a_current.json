@@ -1,0 +1,25 @@
+{
+  "id": "34847f8a",
+  "prompt": "The equation above is true for all, where r and t are positive constants. What is the value of r t?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "-20"
+    },
+    {
+      "text": "15"
+    },
+    {
+      "text": "20"
+    },
+    {
+      "text": "60"
+    }
+  ],
+  "answer": 2,
+  "explanation": "Choice C is correct. To express the sum of the two rational expressions on the left-hand side of the equation as the single rational expression on\nthe right-hand side of the equation, the expressions on the left-hand side must have the same denominator. Multiplying the first expression by results in , and multiplying the second expression by results in , so the given equation can\nbe rewritten as , or .\nSince the two rational expressions on the left-hand side of the equation have the same denominator as the rational expression on the right-hand\nside of the equation, it follows that . Combining like terms on the left-hand side yields , so it\nfollows that and . Therefore, the value of is .\n\nChoice A is incorrect and may result from an error when determining the sign of either r or t.\n\nChoice B is incorrect and may result from not\ndistributing the 2 and 3 to their respective terms in .\n\nChoice D is incorrect and may\nresult from a calculation error.",
+  "pdfPage": 79,
+  "type": "mc",
+  "kind": null
+}

@@ -1,0 +1,9 @@
+Question
+y=4
+c=yt6
+The solution to the given system of equations is (z, y). What is the value of x?
+Answer
+A.10
+B.6
+c.4
+D.2

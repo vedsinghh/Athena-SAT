@@ -1,0 +1,25 @@
+{
+  "id": "c6a26e14",
+  "prompt": "jz + 45| = 48\nWhat is the positive solution to the given equation?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "3"
+    },
+    {
+      "text": "48"
+    },
+    {
+      "text": "93"
+    },
+    {
+      "text": "96"
+    }
+  ],
+  "answer": 0,
+  "explanation": "Choice A is correct. The given absolute value equation can be rewritten as two linear equations: and , or\n. Subtracting from both sides of the equation yields . Subtracting from both sides of the equation yields . Thus, the given equation has two possible solutions, and . Therefore, the positive solution to the given\nequation is .\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+  "pdfPage": 58,
+  "type": "mc",
+  "kind": null
+}

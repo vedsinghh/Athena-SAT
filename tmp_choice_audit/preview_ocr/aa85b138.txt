@@ -1,0 +1,16 @@
+Question
+
+2n+6=14
+
+A tree had a height of 6 feet when it was planted. The equation above can be used to find how many years n it took the tree to reach a height of
+14 feet. Which of the following is the best interpretation of the number 2 in this context?
+
+Answer
+
+A. The number of years it took the tree to double its height
+
+B. The average number of feet that the tree grew per year
+
+C. The height, in feet, of the tree when the tree was 1 year old
+
+D. The average number of years it takes similar trees to grow 14 feet

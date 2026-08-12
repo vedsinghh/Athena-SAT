@@ -1,0 +1,214 @@
+[
+  {
+    "n": 35,
+    "id": "baca4a4c",
+    "issues": [
+      "readable-choice-diff-1:['2', '3', '56']->['2', '-3', '56']",
+      "readable-choice-diff-2:['2', '21', '63']->['22', '21', '63']"
+    ],
+    "prompt": "7(2x - 3) = 63 | Which equation has the same solution as the given equation?",
+    "choices": [
+      "2x - 3 = 9",
+      "2x - 3 = 56",
+      "2x - 21 = 63",
+      "2x - 21 = 70"
+    ],
+    "ocr_preview": "Question | 7(2x \u2014 3) = 63 | Which equation has the same solution as the given equation? | Answer | A.2x\u20143=9 | B. 2x \u20143 = 56 | C. 2% \u2014 21 = 63 | D. 2x \u2014 21 = 70 | ",
+    "readable_q": "7(2x - 3) = 63 Which equation has the same solution as the given equation?",
+    "readable_c": "A. 2%--3=9 | B. 2x -3 = 56 | C. 22 - 21 = 63 | D. 2x - 21 = 70",
+    "readable_a": "A"
+  },
+  {
+    "n": 41,
+    "id": "1a1a95de",
+    "issues": [
+      "readable-choice-diff-2:['51904']->['51', '904']",
+      "readable-choice-diff-3:['75978']->['75', '978']"
+    ],
+    "prompt": "Based on the graph, which of the following is closest to the estimated mass, in quettagrams, of each M-type star in | this cluster?",
+    "choices": [
+      "811",
+      "938",
+      "51904",
+      "75978"
+    ],
+    "ocr_preview": "Question | Jy | i | wot HA | g NESE | g vot NIH | PA PI NET TET Peery yt eT | o too +S HE | 2 PPT TING TP ee ee ee | x so SW FI | 6 SERENE | 7 co +] HH NIT HE | 4 Pi TT TT ee PNET TT TT | =) zo ESN | Z Pt te ",
+    "readable_q": "Based on the graph, which of the following is closest to the estimated mass, in quettagrams, of each M-type star in | this cluster?",
+    "readable_c": "A. 811 | B. 938 | C. 51,904 | D. 75,978",
+    "readable_a": "A"
+  },
+  {
+    "n": 55,
+    "id": "05417146",
+    "issues": [
+      "junk-pattern",
+      "readable-choice-diff-3:['3577']->['3', '577']"
+    ],
+    "prompt": "w+ 7 = 357 | wt = 357 What value of w is the solution to the given equation?",
+    "choices": [
+      "51",
+      "350",
+      "364",
+      "3577"
+    ],
+    "ocr_preview": "Question | w+ 7 = 357 | What value of w is the solution to the given equation? | Answer | A.51 | B. 350 | C. 364 | D. 3,577 | ",
+    "readable_q": "wt = 357 What value of w is the solution to the given equation?",
+    "readable_c": "A. 51 | B. 350 | C. 364 | D. 3,577",
+    "readable_a": "B"
+  },
+  {
+    "n": 59,
+    "id": "6863c7ce",
+    "issues": [
+      "junk-pattern",
+      "dup-eq-prefix",
+      "choice-typo-0",
+      "glued-word-0",
+      "choice-typo-1",
+      "glued-word-1",
+      "choice-typo-3"
+    ],
+    "prompt": "d= 16t | d= 16t The given equation represents the distance d, in inches, where t represents the number of seconds since an | object started moving. Which of the fol",
+    "choices": [
+      "The object moveda total of 16 inches.",
+      "The object moveda total of 16t inches.",
+      "The object is moving at a rate of 16 inches per second.",
+      "The object is moving at a rate of * inches per second."
+    ],
+    "ocr_preview": "Question | d= 16t | The given equation represents the distance d, in inches, where t represents the number of seconds since an object started moving. Which of the | following is the best",
+    "readable_q": "d= 16t The given equation represents the distance d, in inches, where t represents the number of seconds since an | object started moving. Which of the following ",
+    "readable_c": "A. The object moveda total of 16 inches. | B. The object moveda total of 16t inches. | C. The object is moving at a rate of 16 inches per second. | D. The object is moving at a rate of * inches per second.",
+    "readable_a": "C"
+  },
+  {
+    "n": 61,
+    "id": "51aabd93",
+    "issues": [
+      "dup-eq-prefix"
+    ],
+    "prompt": "(p+3)+8=10 | (p+3)+8=10 What value of p is the solution to the given equation?",
+    "choices": [
+      "-1",
+      "5",
+      "15",
+      "21"
+    ],
+    "ocr_preview": "Question | (p+3)+8=10 | What value of pis the solution to the given equation? | Answer | A.-1 | B.5 | c.15 | D. 21 | ",
+    "readable_q": "(p+3)+8=10 What value of p is the solution to the given equation?",
+    "readable_c": "A. -1 B.5 c.15 | D. 21",
+    "readable_a": "A"
+  },
+  {
+    "n": 72,
+    "id": "7e3f8363",
+    "issues": [
+      "readable-choice-diff-2:['4', '3']->['42', '3']"
+    ],
+    "prompt": "In the xy-plane, the graph of the linear function f contains the points (0, 3) and (7, 31). Which equation defines f, where y = f(x)?",
+    "choices": [
+      "f(x) = 28x + 34",
+      "f(x) = 3x + 38",
+      "f(x) = 4x + 3",
+      "f(x) = 7x + 3"
+    ],
+    "ocr_preview": "juestion | ie xy-plane, the graph of the linear function f contains the points (0, 3) and (7, 31). Which equation defines f, where y = f(x)? | Answer | A. f(x) = 280 + 34 | B. f(x) = 3a + ",
+    "readable_q": "In the xy-plane, the graph of the linear function f contains the points (0, 3) and (7, 31). Which equation defines f, | where y = f(x)?",
+    "readable_c": "A. f(x) = 28x + 34 | B. f(x) = 3x+ 38 | C. f(x) =42+3 | D. f(x) = 7@+3",
+    "readable_a": "C"
+  },
+  {
+    "n": 93,
+    "id": "c50ede6d",
+    "issues": [
+      "readable-choice-diff-1:['10', '25', '75']->['10', '25', '4', '75']",
+      "readable-choice-diff-3:['25', '10', '75']->['25', '104', '75']"
+    ],
+    "prompt": "The total cost, in dollars, to rent a surfboard consists of a $25 service fee and a $10 per hour rental fee. A person rents a surfboard for t hours and intends ",
+    "choices": [
+      "10t \u2264 75",
+      "10 + 25t \u2264 75",
+      "25t \u2264 75",
+      "25 + 10t \u2264 75"
+    ],
+    "ocr_preview": "Question |  | The total cost, in dollars, to rent a surfboard consists of a $25 service fee and a $10 per hour rental fee. A person rents a surfboard for \u00a2 hours | and intends to spend a",
+    "readable_q": "The total cost, in dollars, to rent a surfboard consists of a $25 service fee and a $10 per hour rental fee. A person | rents a surfboard for 4 hours and intends ",
+    "readable_c": "A. 10t < 75 | B. 10+ 25t4 < 75 | C. 25t < 75 | D. 25+ 104 < 75",
+    "readable_a": "D"
+  },
+  {
+    "n": 121,
+    "id": "ebf8d2b7",
+    "issues": [
+      "readable-choice-diff-0:['52', '10', '700']->['5', '10', '700']",
+      "readable-choice-diff-1:['10', '5', '700']->['102', '5', '700']"
+    ],
+    "prompt": "A machine makes large boxes or small boxes, one at a time, for a total of 700 minutes each day. It takes the | machine 10 minutes to make a large box or 5 minutes",
+    "choices": [
+      "52+10y = 700",
+      "10z+5y = 700",
+      "(x+y)(10+5) = 700",
+      "(10+x)(5+y) = 700"
+    ],
+    "ocr_preview": "Question |  | A machine makes large boxes or small boxes, one at a time, for a total of 700 minutes each day. It takes the machine 10 minutes to make a large | box or 5 minutes to make a",
+    "readable_q": "A machine makes large boxes or small boxes, one at a time, for a total of 700 minutes each day. It takes the | machine 10 minutes to make a large box or 5 minutes",
+    "readable_c": "A. 5x + 10y = 700 | B. 102 + 5y = 700 | C. (w + y)(10 + 5) = 700 | D. (10 + x)(5 + y) = 700",
+    "readable_a": "B"
+  },
+  {
+    "n": 123,
+    "id": "40ba6288",
+    "issues": [
+      "junk-pattern"
+    ],
+    "prompt": "If 32 = 30, what is the value of 3x - 12?",
+    "choices": [
+      "-2",
+      "18",
+      "22",
+      "42"
+    ],
+    "ocr_preview": "Question |  | If 3x = 30, what is the value of 3a \u2014 12? | Answer |  | A.\u20142 |  | B. 18 |  | C. 22 |  | D. 42 | ",
+    "readable_q": "If 32 = 30, what is the value of 3a - 12?",
+    "readable_c": "A. -2 B.18 | C. 22 | D. 42",
+    "readable_a": "B"
+  },
+  {
+    "n": 124,
+    "id": "12ee1edc",
+    "issues": [
+      "dup-eq-prefix"
+    ],
+    "prompt": "(b-2)x =8 | (b-2)x =8 In the given equation, b is a constant. If the equation has no solution, what is the value of b ?",
+    "choices": [
+      "2",
+      "4",
+      "6",
+      "10"
+    ],
+    "ocr_preview": "Question |  | (b\u2014-2)x=8 |  | In the given equation, b is a constant. If the equation has no solution, what is the value of b ? | Answer |  | A.2 |  | B.4 |  | C.6 |  | D.10 | ",
+    "readable_q": "(b-2)x =8 In the given equation, b is a constant. If the equation has no solution, what is the value of b ?",
+    "readable_c": "A. 2 B.4 C.6 D.10",
+    "readable_a": "A"
+  },
+  {
+    "n": 129,
+    "id": "ee439cff",
+    "issues": [
+      "readable-choice-diff-0:['35', '40', '220']->['35', '407', '220']",
+      "readable-choice-diff-1:['35', '40', '220']->['35', '407', '220']",
+      "readable-choice-diff-2:['40', '35', '220']->['40', '357', '220']",
+      "readable-choice-diff-3:['40', '35', '220']->['40', '357', '220']"
+    ],
+    "prompt": "On a car trip, Rhett and Jessica each drove for part of the trip, and the total distance they drove was under 220 miles. Rhett drove at an average speed of 35 m",
+    "choices": [
+      "35r + 40j > 220",
+      "35r + 40j < 220",
+      "40r + 35j > 220",
+      "40r + 35j < 220"
+    ],
+    "ocr_preview": "Question |  | On acar trip, Rhett and Jessica each drove for part of the trip, and the total distance they drove was under 220 miles. Rhett drove at an average | speed of 35 miles per ho",
+    "readable_q": "On acar trip, Rhett and Jessica each drove for part of the trip, and the total distance they drove was under 220 | miles. Rhett drove at an average speed of 35 mi",
+    "readable_c": "A. 35r+ 407 > 220 | B. 35r+ 407 < 220 | C. 40r+ 357 > 220 | D. 40r+ 357 < 220",
+    "readable_a": "B"
+  }
+]

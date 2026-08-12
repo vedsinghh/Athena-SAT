@@ -1,0 +1,25 @@
+{
+  "id": "ebed7dc6",
+  "prompt": "An auditorium has\nfor 1,800 people. Tickets to attend a show at the auditorium currently cost 34.00. For each 31.00 increase to the ticke\nprice, 100 fewer tickets will be sold. This situation can be modeled by the equation y = —100x? + 1,400x + 7,200, where x represents the\nincrease in ticket price, in dollars, and y represents the revenue, in dollars, from ticket sales. If this equation is graphed in the xy-plane, at what\nvalue of x is the maximum of the graph?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "4"
+    },
+    {
+      "text": "7"
+    },
+    {
+      "text": "14"
+    },
+    {
+      "text": "18"
+    }
+  ],
+  "answer": 1,
+  "explanation": "Choice B is correct. It’s given that the situation can be modeled by the equation , where represents the\nincrease in ticket price, in dollars, and represents the revenue, in dollars, from ticket sales. Since the coefficient of the term is negative, the\ngraph of this equation in the xy-plane opens downward and reaches its maximum value at its vertex. If a quadratic equation in the form , where , , and are constants, is graphed in the xy-plane, the x-coordinate of the vertex is equal to . For the equation , , , and . It follows that the x-coordinate of the vertex is , or . Therefore,\nif the given equation is graphed in the xy-plane, the maximum of the graph occurs at an x-value of .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+  "pdfPage": 30,
+  "type": "mc",
+  "kind": null
+}

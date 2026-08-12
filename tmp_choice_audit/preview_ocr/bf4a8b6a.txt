@@ -1,0 +1,15 @@
+Question
+
+Accompany that provides whale-watching tours takes groups of 21 people at a time. The company’s revenue is 80 dollars per adult and 60
+dollars per child. If the company’s revenue for one group consisting of adults and children was 1,440 dollars, how many people in the group were
+children?
+
+Answer
+
+A.3
+
+B.9
+
+c.12
+
+D.18

@@ -1,0 +1,11 @@
+Question
+Valentina bought two containers of beads. In the first container 30% of the beads are red, and in the second container 70% of the beads are red.
+Together, the containers have at least 400 red beads. Which inequality shows this relationship, where x is the total number of beads in the first
+container and y is the total number of beads in the second container?
+Answer
+A.0.3x +0.7y = 400
+B.0.7x +0.3y < 400
+xy
+c.>++ <400
+3.7
+pb. 30x + 70y > 400

@@ -1,0 +1,29 @@
+Question ID: 7ac5d686
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Two-variable data:
+Models and scatterplots
+Medium
+Question
+An inspector begins a day of work with a large sample of shir ts that need to be checked for defects. The inspector works at a constant rate
+throughout the morning. What type of model is best to model the number of shir ts remaining to be checked for defects at any given time
+throughout the morning?
+Answer
+A. A linear model with a positive slope
+B. A linear model with a negative slope
+C. An exponential growth model
+D. An exponential decay model
+Rationale
+Choice B is correct. Since the work is done at a constant rate, a linear model best models the situation. The number of shir ts remaining is
+dependent on the length of time the inspector has worked; therefore, if the relationship were graphed, time would be the variable of the horizontal
+axis and the number of remaining shir ts would be the variable of the ver tical axis. Since the number of shir ts decreases as the time worked
+increases, it follows that the slope of this graph is negative.
+Choice A is incorrect and may result from incorrectly reasoning about the slope. Choices C and D are incorrect and may result from not
+identifying the constant rate of work as a characteristic of a linear model.

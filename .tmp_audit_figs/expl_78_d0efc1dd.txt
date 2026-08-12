@@ -1,0 +1,7 @@
+Choice A is correct. If x is 6, then the five numbers in the given list are 15, 14, 18, 17, 6. The mean of these five numbers is the sum of all the
+
+7 15+144184174+6 70 ;
+values divided by the number of values, or rs = a = | 4. The median of these five numbers can be found by
+ordering the numbers from least to greatest and determining the middle value. When ordered from least to greatest, the numbers in the given list
+are 6, 14, 15, 17, 18, and the middle value is 15. Since the mean is 14 and the median is 15, the mean and median aren't equal when x is 6.
+Choices B, C, and D are incorrect. If any of these values is substituted for x, the mean and median of the data set would be equal.

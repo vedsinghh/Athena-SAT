@@ -1,0 +1,14 @@
+Question
+
+A certain township consists of a 5-hectare industrial park and a 24-hectare neighborhood. The total number of trees in the township is 4,529.
+The equation 52 + 24y = 4,529 represents this situation. Which of the following is the best interpretation of 2 in this context?
+
+Answer
+
+A. The average number of trees per hectare in the industrial park
+
+B. The average number of trees per hectare in the neighborhood
+
+C. The total number of trees in the industrial park
+
+D. The total number of trees in the neighborhood

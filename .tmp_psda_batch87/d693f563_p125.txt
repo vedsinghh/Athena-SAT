@@ -1,0 +1,32 @@
+Question ID: d693f563
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Percentages
+Medium
+Question
+Last year, Cedric had 
+ plants in his garden. This year, the number of plants in Cedric’s garden is 
+ greater than the number of plants in his
+garden last year. How many plants does Cedric have in his garden this year?
+Correct Answer: 56
+Rationale
+The correct answer is 
+. It’s given that Cedric had 
+ plants in his garden last year and that the number of plants in Cedric's garden this year is
+ greater than the number of plants in his garden last year. It follows that the number of plants in Cedric’s garden this year is 
+ plus 
+ of
+, which is equal to 
+, or 
+. This expression is equivalent to 
+, or 
+. Therefore, Cedric has 
+ plants in his
+garden this year.

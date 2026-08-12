@@ -1,0 +1,37 @@
+Question ID: aeeaec96
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Ratios, rates,
+propor tional
+relationships, and units
+Easy
+Question
+How many yards are equivalent to 
+ inches? 
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: B
+Rationale
+Choice B is correct. It’s given that 
+. Therefore, 
+ inches is equivalent to 
+, which can be rewritten
+as 
+, or 
+ yards.
+Choice A is incorrect. This is the number of yards that are equivalent to 
+ inches.
+Choice C is incorrect. This is the number of yards that are equivalent to 
+ inches.
+Choice D is incorrect. This is the number of yards that are equivalent to 
+ inches.

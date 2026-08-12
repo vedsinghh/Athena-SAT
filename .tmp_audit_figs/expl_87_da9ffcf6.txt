@@ -1,0 +1,11 @@
+Choice A is correct. It's given that the ratio of the length of line segment XY to the length of line segment ZV is 6 to 1, which means oe = &
+It’s given that the length of line segment XY is 102 inches. If the length, in inches, of line segment ZV is represented by 7, the value of 7 can
+be calculated by solving the equation 12 = $ or 12 = 6. Multiplying each side of this equation by @ yields 102 = 67. Dividing each side of
+this equation by 6 yields 17 = 7. Therefore, the length of line segment ZV is 17 inches.
+
+Choice B is incorrect. This is the length, in inches, of line segment ZV if the length of line segment XY is 576, not 102, inches.
+
+Choice C is incorrect. This is the length, in inches, of line segment XY, not line segment ZV.
+
+Choice D is incorrect. This is the length, in inches, of line segment ZV if the ratio of the length of line segment XY to the length of line segment
+ZV is 1 to 6, not 6 to 1.

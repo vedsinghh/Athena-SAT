@@ -1,0 +1,53 @@
+The correct answer is 
+. Let 
+ represent the first integer and 
+ represent the second integer. If the first integer is 
+ greater than twice the
+second integer, then 
+. It's given that the product of the two integers is 
+; therefore 
+. Substituting 
+ for 
+ in this
+equation yields 
+, which can be written as 
+. Subtracting 
+ from each side of this equation yields 
+. The left-hand side of this equation can be factored by finding two values whose product is 
+, or 
+, and whose sum is 
+.
+The two values whose product is 
+ and whose sum is 
+ are 
+ and 
+. Thus, the equation 
+ can be rewritten as 
+, which is equivalent to 
+, or 
+. By the zero product proper ty, it
+follows that 
+ or 
+. Subtracting 
+ from both sides of the equation 
+ yields 
+. Dividing both sides of
+this equation by 
+ yields 
+. Since 
+ is a positive integer, the value of 
+ isn't 
+. Adding 
+ to both sides of the equation 
+yields 
+. Substituting 
+ for 
+ in the equation 
+ yields 
+. Dividing both sides of this equation by 
+ yields 
+.
+Therefore, the two integers are 
+ and 
+, so the smaller of the two integers is 
+.

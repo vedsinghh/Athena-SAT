@@ -1,0 +1,12 @@
+Question
+
+What is the equation of the line that passes through the point (0, 5) and is parallel to the graph of y = 7a + 4 in the xy-plane?
+Answer
+
+Ay= 5a
+
+By=7r+5
+
+Cy= Tr
+
+Dy=5a+7

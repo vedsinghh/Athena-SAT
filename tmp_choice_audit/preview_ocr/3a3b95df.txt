@@ -1,0 +1,11 @@
+Question
+= x
+
+d=16- 3
+The equation shown gives the estimated amount of diesel d, in gallons, that remains in the gas tank of a truck after being driven x miles, where 0
+< x < 480. What is the estimated amount of diesel, in gallons, that remains in the gas tank of the truck when x = 300?
+Answer
+A.0
+B.6
+c.14
+D.16

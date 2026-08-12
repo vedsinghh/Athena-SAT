@@ -1,0 +1,8 @@
+Choice B is correct. The graph of function f shows that as x increases, f(z) also increases, which means that f is an increasing function. The
+graph of function f is curved upward and increases at an increasing rate, not a constant rate. This behavior is characteristic of exponential
+functions, not linear functions. Therefore, of the given choices, function f is best described as increasing exponential.
+
+Choice A is incorrect. For a decreasing function, as x increases, f(x) decreases rather than increases.
+
+Choice C is incorrect. For a decreasing function, as x increases, f(x) decreases rather than increases, and the graph of a linear function isn't
+curved.

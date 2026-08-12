@@ -1,0 +1,15 @@
+Question
+y =2x¢+10
+y=2e-1
+
+At how many points do the graphs of the given equations intersect in the xy-plane?
+
+Answer
+
+A. Zero
+
+B. Exactly one
+
+C. Exactly two
+
+D. Infinitely many

@@ -1,0 +1,8 @@
+Choice A is correct. Let represent the percentage of 300 that is 75. This can be written as 757 (300) = 75, or 3% = 75. Dividing both sides of
+this equation by 3 yields x = 25. Therefore, 25% of 300 is 75.
+
+Choice B is incorrect. 50% of 300 is 150, not 75.
+
+Choice C is incorrect. 75% of 300 is 225, not 75.
+
+Choice D is incorrect. 225% of 300 is 675, not 75.

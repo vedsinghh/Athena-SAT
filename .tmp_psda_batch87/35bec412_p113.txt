@@ -1,0 +1,32 @@
+Question ID: 35bec412
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+One-variable data:
+Distributions and
+measures of center and
+spread
+Easy
+Question
+, 
+, 
+, 
+, 
+, 
+, 
+, 
+, 
+What is the median of the data shown?
+Correct Answer: 79
+Rationale
+The correct answer is 
+. The median of a data set with an odd number of values is the middle value of the set when the values are ordered from
+least to greatest. Because the given data set consists of nine values that are ordered from least to greatest, the median is the fifth value in the
+data set. Therefore, the median of the data shown is 
+.

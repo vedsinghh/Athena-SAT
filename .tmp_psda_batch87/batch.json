@@ -1,0 +1,787 @@
+[
+  {
+    "id": "191d167b",
+    "topic": "Percentages",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Percentages",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Last year, 200 students enrolled in an interior design program. This year, the number of students enrolled is 147% of last year’s number. How\nmany students are enrolled in the interior design program this year?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that the number of students enrolled in an interior design program this year is 147% of last year's number, which is\n200. 147% of 200 can be expressed as ($47) (200), or (1.47) (200), which is equivalent to 294. Therefore, 294 students are enrolled in the\ninterior design program this year.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 101,
+    "pdfPreview": "/qbank/math/previews/191d167b.jpg",
+    "choices": [
+      {
+        "text": "247"
+      },
+      {
+        "text": "294"
+      },
+      {
+        "text": "347"
+      },
+      {
+        "text": "394"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "03a16790",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The scatterplot shows the relationship between two variables, x and y. A line of best fit is also shown.\nWhich of the following is closest to the slope of the line of best fit shown?",
+    "type": "mc",
+    "explanation": "Choice B is correct. A line of best fit is shown in the scatterplot such that as the value of x increases, the value of y decreases. Thus, the slope of the line of best fit shown is negative. The slope of a line passing through two points, (21, yi) and (22, y2), can be calculated as at U1 The line\nof best fit shown passes approximately through the points (1, 12) and (11, 4). Substituting (1, 12) and (11, 4) for (21, y1) and (x9, \"yp), respectively, in a gives ue T which is equivalent to —*, or —0.8. Therefore, of the given choices, —0.8 is closest to the slope of the line of best fit shown.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect. The line of best fit shown has a negative slope, not a positive slope.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 102,
+    "pdfPreview": "/qbank/math/previews/03a16790.jpg",
+    "figure": "/qbank/math/figures/03a16790.jpg",
+    "choices": [
+      {
+        "text": "-2.4"
+      },
+      {
+        "text": "-0.8"
+      },
+      {
+        "text": "0.8"
+      },
+      {
+        "text": "2.4"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "60caadfd",
+    "topic": "Probability and conditional probability",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Probability and conditional probability",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Each rock in a collection of 70 rocks was classified as either igneous, metamorphic, or sedimentary, as shown in the frequency table.\nIf one of these rocks is selected at random, what is the probability of selecting a rock that is igneous?",
+    "type": "mc",
+    "explanation": "Choice D is correct. If one of the rocks in the collection is selected at random, the probability of selecting a rock that is igneous is equal to the\nnumber of igneous rocks in the collection divided by the total number of rocks in the collection. According to the table, there are 10 igneous\nrocks in the collection, and it's given that there's a total of 70 rocks in the collection. Therefore, if one of the rocks in the collection is selected at\nrandom, the probability of selecting a rock that is igneous is z.\n\nChoice A is incorrect. This is the number of igneous rocks in the collection divided by the number of sedimentary rocks in the collection, not\ndivided by the total number of rocks in the collection.\n\nChoice B is incorrect. This is the number of igneous rocks in the collection divided by the number of metamorphic rocks in the collection, not\ndivided by the total number of rocks in the collection.\n\nChoice C is incorrect. This is the number of igneous rocks in the collection divided by the number of rocks in the collection that aren't igneous,\nnot divided by the total number of rocks in the collection.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 104,
+    "pdfPreview": "/qbank/math/previews/60caadfd.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/60caadfd_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/60caadfd_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/60caadfd_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/60caadfd_3.jpg"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "c3d65f93",
+    "topic": "One-variable data: distributions and measures of center and spread",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Five Eretmochelys imbricata, a type of sea turtle, each have a nest. The table shows an original data set of the number of eggs that each turtle\nlaid in its nest. [Nest [Number of ess a po | 6\nA sixth nest with 121 eggs is added to create a new data set. Which of the following correctly compares the means of the two data sets?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It's given that the table shows an original data set of 5 values. It's also given that a sixth value is added to create a new data\nset. The new data set consists of the 5 values in the original data set and one additional value, 121. Since the additional value, 121, is less than\nany value in the original data set, the mean of the original data set is greater than the mean of the new data set.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 105,
+    "pdfPreview": "/qbank/math/previews/c3d65f93.jpg",
+    "figure": "/qbank/math/figures/c3d65f93.jpg",
+    "choices": [
+      {
+        "text": "The mean of the original data set is greater than the mean of the new data set."
+      },
+      {
+        "text": "The mean of the original data set is less than the mean of the new data set."
+      },
+      {
+        "text": "The means of both data sets are equal."
+      },
+      {
+        "text": "There is not enough information to compare the means."
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "b4f5a7ca",
+    "topic": "Evaluating statistical claims: Observational studies and experiments",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Evaluating statistical claims: Observational studies and experiments",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A survey was conducted using a sample of history professors selected at random from the California State Universities. The professors surveyed\nwere asked to name the publishers of their current texts. What is the largest population to which the results of the survey can be generalized?",
+    "type": "mc",
+    "explanation": "Choice C is correct. Selecting a sample at random when conducting a survey allows the results to be generalized to the population from which\nthe sample was selected, but not beyond this population. In this situation, the population that the sample was selected from is history professors\nfrom the California State Universities. Therefore, the largest population to which the results of the survey can be generalized is all history\nprofessors at all California State Universities.\n\nChoice A is incorrect. Since the sample was selected at random from history professors from the California State Universities, the.\n\nChoice B is incorrect. Since the sample was selected at random from history professors from the California State Universities, the.\n\nChoice D is incorrect. Since the sample was selected at random from history professors from the California State Universities, the.\nresults of the survey can’t be generalized to all professors in the United States, all history professors in the United States, or all professors at all\nCalifornia State Universities. All three of these populations may use different texts and therefore may name different publishers.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 106,
+    "pdfPreview": "/qbank/math/previews/b4f5a7ca.jpg",
+    "choices": [
+      {
+        "text": "All professors in the United States"
+      },
+      {
+        "text": "All history professors in the United States"
+      },
+      {
+        "text": "All history professors at all California State Universities"
+      },
+      {
+        "text": "All professors at all California State Universities"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "93724cc6",
+    "topic": "Percentages",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Percentages",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "is s 21% of what number?",
+    "type": "mc",
+    "explanation": "Choice D is correct. Let x represent the number that 21 is 21% of. It follows that 2k = a Multiplying each side of this equation by x yields\n21= ag Multiplying each side of this equation by 100 yields 2,100 = 212. Dividing each side of this equation by 21 yields 100 = zx.\nTherefore, 21 is 21% of 100.\n\nChoice A is incorrect. 21% of 0 is 0, not 21.\n\nChoice B is incorrect. 21% of 1 is 0.21, not 21.\n\nChoice C is incorrect. 21% of 42 is 8.82, not 21.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 108,
+    "pdfPreview": "/qbank/math/previews/93724cc6.jpg",
+    "choices": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "1"
+      },
+      {
+        "text": "42"
+      },
+      {
+        "text": "100"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "d6af3572",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The scatterplot above shows the federal-mandated minimum wage every 10 years between 1940 and 2010. A line of best fit is shown, and its\nequation is y= 0.096% — 0.488. What does the line of best fit predict about the increase in the minimum wage over the 70-year period?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The given equation is in slope-intercept form, or ¥ = TL + b, where m is the value of the slope of the line of best fit.\nTherefore, the slope of the line of best fit is 0.096. From the definition of slope, it follows that an increase of 1 in the x-value corresponds to an\nincrease of 0.096 in the y-value. Therefore, the line of best fit predicts that for each year between 1940 and 2010, the minimum wage will\nincrease by 0.096 dollar per hour.\n\nChoice B is incorrect and may result from using the y-coordinate of the y-intercept as the average increase, instead of the slope. Choice C is\nincorrect and may result from using the 10-year increments given on the x-axis to incorrectly interpret the slope of the line of best fit. Choice D is\nincorrect and may result from using the y-coordinate of the y-intercept as the average increase, instead of the slope, and from using the 10-year\nincrements given on the x-axis to incorrectly interpret the slope of the line of best fit.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 109,
+    "pdfPreview": "/qbank/math/previews/d6af3572.jpg",
+    "choices": [
+      {
+        "text": "Each year between 1940 and 2010, the average increase in minimum wage was 0.096 dollars."
+      },
+      {
+        "text": "Each year between 1940 and 2010, the average increase in minimum wage was 0.49 dollars."
+      },
+      {
+        "text": "Every 10 years between 1940 and 2010, the average increase in minimum wage was 0.096 dollars."
+      },
+      {
+        "text": "Every 10 years between 1940 and 2010, the average increase in minimum wage was 0.488 dollars."
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "2d16d62c",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A special camera is used for underwater ocean research. When the camera is at a depth of 58 fathoms, what is the camera's depth in feet?\n(1 fathom = 6 feet)",
+    "type": "spr",
+    "explanation": "The correct answer is 348. It's given that 1 fathom is equivalent to 6 feet. Therefore, 58 fathoms is equivalent to (58 fathoms) (= $4_), or\n348 feet. Thus, when the camera is at a depth of 58 fathoms, the camera's depth, in feet, is 348.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 110,
+    "pdfPreview": "/qbank/math/previews/2d16d62c.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "348"
+    ],
+    "answer": "348"
+  },
+  {
+    "id": "69f6717f",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A sample of oak has a density of 807 kilograms per cubic meter. The sample is in the shape of a cube, where each edge has a length of\n0.90 meters. To the nearest whole number, what is the mass, in kilograms, of this sample?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It’s given that the sample is in the shape of a cube with edge lengths of 0.9 meters. Therefore, the volume of the sample is 0.903, or 0.729, cubic meters. It's also given that the sample has a density of 807 kilograms per 1 cubic meter. Therefore, the mass of this\n807 kilograms\n1 cubic meter Therefore, to the nearest whole number, the mass, in kilograms, of this sample is 588. sample is 0.729 cubic meters ( ), or 588.303 kilograms. Rounding this mass to the nearest whole number gives 588 kilograms.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 112,
+    "pdfPreview": "/qbank/math/previews/69f6717f.jpg",
+    "choices": [
+      {
+        "text": "588"
+      },
+      {
+        "text": "726"
+      },
+      {
+        "text": "897"
+      },
+      {
+        "text": "1,107"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "35bec412",
+    "topic": "One-variable data: distributions and measures of center and spread",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "73, 74, 75, 77, 79,82, 84, 85, 91\nWhat is the median of the data shown?",
+    "type": "spr",
+    "explanation": "The correct answer is 79. The median of a data set with an odd number of values is the middle value of the set when the values are ordered from\nleast to greatest. Because the given data set consists of nine values that are ordered from least to greatest, the median is the fifth value in the\ndata set. Therefore, the median of the data shown is 79.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 113,
+    "pdfPreview": "/qbank/math/previews/35bec412.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "79"
+    ],
+    "answer": "79"
+  },
+  {
+    "id": "74dee52b",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The line graph shows the number of graduates from the classes of 2001 through 2007 at a certain school who enrolled in college within 24\nmonths of graduation. Of the following, which class had the fewest graduates who enrolled in college within 24 months of graduation?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The year with the fewest graduates who enrolled in college within 24 months of graduation is the point with the lowest value\non the vertical axis. This occurs at 2002.\n\nChoice B is incorrect. The years 2004, 2005, and 2007 each had a greater number of graduates who enrolled in college within 24.\n\nChoice C is incorrect. The years 2004, 2005, and 2007 each had a greater number of graduates who enrolled in college within 24.\n\nChoice D is incorrect. The years 2004, 2005, and 2007 each had a greater number of graduates who enrolled in college within 24.\nmonths of graduation than did the year 2002.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 114,
+    "pdfPreview": "/qbank/math/previews/74dee52b.jpg",
+    "choices": [
+      {
+        "text": "2002"
+      },
+      {
+        "text": "2004"
+      },
+      {
+        "text": "2005"
+      },
+      {
+        "text": "2007"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c3d78831",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "At a particular track meet, the ratio of coaches to athletes is 1 to 26. If there are x coaches at the track meet, which of the following expressions\nrepresents the number of athletes at the track meet?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It’s given that at a particular track meet, the ratio of coaches to athletes is 1 to 26. If one number in a ratio is multiplied by a\nvalue, the other number must be multiplied by the same value in order to maintain the same ratio. If there are x coaches at the track meet,\nmultiplying both numbers in the ratio by x yields 1(z) to 26(2), or X to 26a. Therefore, the expression 26x represents the number of athletes at\nthe track meet.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 115,
+    "pdfPreview": "/qbank/math/previews/c3d78831.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/c3d78831_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/c3d78831_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/c3d78831_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/c3d78831_3.jpg"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "b5bc47d5",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "In a scale model of an office building, a length of 1 inch is equivalent to a length of 3 feet in the actual office building. If a length in the actual\noffice building measures x feet, which expression represents the corresponding length, in inches, in the model in terms of 2?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It’s given that in a scale model, a length of 1 inch is equivalent to a length of a feet in the actual office building. This means\nthat the ratio of a length, in feet, in the actual office building to the corresponding length, in inches, in the model is a to 1. Therefore, the length,\nin inches, in the model corresponding to a length in the actual office building of x feet can be found by dividing x by z. Dividing by zz is\nequivalent to multiplying by z, so the corresponding length, in inches, in the model in terms of 2 can be represented by the expression ae\n\nChoice A is incorrect and may result from conceptual errors.\n\nChoice B is incorrect and may result from conceptual errors.\n\nChoice D is incorrect. This expression represents the corresponding length, in inches, in the model in terms of x for a model where 1 inch in the model is equivalent to a length of 2 77 hot q, feet in the actual building.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 117,
+    "pdfPreview": "/qbank/math/previews/b5bc47d5.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/b5bc47d5_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/b5bc47d5_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/b5bc47d5_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/b5bc47d5_3.jpg"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "fea831fc",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "On April 18, 1775, Paul Revere set off on his midnight ride from Charlestown to Lexington. If he had ridden straight to Lexington without stopping,\nhe would have traveled 11 miles in 26 minutes. In such a ride, what would the average speed of his horse have been, to the nearest tenth of a\nmile per hour?",
+    "type": "spr",
+    "explanation": "The correct answer is 25.4. The average speed is the total distance divided by the total time. The total distance is 11 miles and the total time is\n11 26 minutes. Thus, the average speed is 36 miles per minute. The question asks for the average speed in miles per hour, and there are 60 minutes in an hour; converting miles per minute to miles per hour gives the following: ii miles — 60 minutes A i Cle f d = —\nVerage Spee 26 minutes 1 hour = 660 miles per hour\n26 Ps 25.30 miles per hour Therefore, to the nearest tenth of a mile per hour, the average speed of Paul Revere’s ride would have been 25.4 miles per hour. Note that 25.4\nand 127/5 are examples of ways to enter a correct answer.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 118,
+    "pdfPreview": "/qbank/math/previews/fea831fc.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "25.4"
+    ],
+    "answer": "25.4"
+  },
+  {
+    "id": "aeeaec96",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "How many yards are equivalent to 612 inches? (1 yard = 36 inches)",
+    "type": "mc",
+    "explanation": "1 yard Choice B is correct. It’s given that 1 yard = 36 inches. Therefore, 612 inches is equivalent to 612 inches( 452555 ), which can be rewritten\n612 yards\n36 as ,or 17 yards.\n\nChoice A is incorrect. This is the number of yards that are equivalent to 2.124 inches.\n\nChoice C is incorrect. This is the number of yards that are equivalent to 20,736 inches.\n\nChoice D is incorrect. This is the number of yards that are equivalent to 793,152 inches.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 119,
+    "pdfPreview": "/qbank/math/previews/aeeaec96.jpg",
+    "choices": [
+      {
+        "text": "0.059"
+      },
+      {
+        "text": "17"
+      },
+      {
+        "text": "576"
+      },
+      {
+        "text": "22,032"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "6c9444cd",
+    "topic": "One-variable data: distributions and measures of center and spread",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The two box plots show the distribution of number of books read over the summer by the students in two different English classes. What is the\npositive difference between the ranges of number of books read over the summer for the two classes?",
+    "type": "spr",
+    "explanation": "The correct answer is 4. It's given that the two boxplots show the distribution of number of books read over the summer by the students in two\ndifferent English classes. In a boxplot, the first vertical line represents the minimum value of the data set and the last vertical line represents the\nmaximum value of the data set. The range of a data set is the difference between its maximum value and its minimum value. In class A, the\nmaximum number of books read is 5 and the minimum number of books read is 0. The difference between those values is 5 — 0, or 5. Therefore,\nthe range of the number of books read in class A is 5. In class B, the maximum number of books read is 10 and the minimum number of books\nread is 1. The difference between those values is 10 — 1, or 9. Therefore, the range of the number of books read in class B is 9. To find the\npositive difference between the ranges of the number of books read for the two classes, the smaller range must be subtracted from the larger\nrange. Therefore, the positive difference between the ranges of number of books read over the summer for the two classes is 9 — 5, or 4.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 120,
+    "pdfPreview": "/qbank/math/previews/6c9444cd.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "4"
+    ],
+    "answer": "4"
+  },
+  {
+    "id": "9d88a3e3",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Theresa ran on a treadmill for thirty minutes, and her time and speed are shown on the graph above. According to the graph, which of the\nfollowing statements is NOT true concerning Theresa’s run?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Theresa’s speed was increasing from 0 to 5 minutes and from 20 to 25 minutes, which is a total of 10 minutes. Theresa’s\nspeed was decreasing from 10 minutes to 20 minutes and from 25 to 30 minutes, which is a total of 15 minutes. Therefore, Theresa’s speed was\nNOT increasing for a longer period of time than it was decreasing.\n\nChoice A is incorrect. Theresa ran at a constant speed for the 5-minute period from 5 to 10 minutes.\n\nChoice C is incorrect. Theresa’s speed\ndecreased at a constant rate during the last 5 minutes, which can be seen since the graph is linear during that time.\n\nChoice D is incorrect.\nTheresa’s speed reached its maximum at 25 minutes, which is within the last 10 minutes.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 121,
+    "pdfPreview": "/qbank/math/previews/9d88a3e3.jpg",
+    "choices": [
+      {
+        "text": "Theresa ran at a constant speed for five minutes."
+      },
+      {
+        "text": "Theresa’s speed was increasing for a longer period of time than it was decreasing."
+      },
+      {
+        "text": "Theresa’s speed decreased at a constant rate during the last five minutes."
+      },
+      {
+        "text": "Theresa’s speed reached its maximum during the last ten minutes."
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "e03f3477",
+    "topic": "Inference from sample statistics and margin of error",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Inference from sample statistics and margin of error",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "A sample consisting of 720 adults who own televisions was selected at random for a study. Based on the sample, it is estimated that 32% of al\nadults who own televisions use their televisions to watch nature shows, with an associated margin of error of 3.41%. Which of the following is\nthe most plausible conclusion about all adults who own televisions?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that based on a sample selected at random, it's estimated that 32% of all adults who own televisions use their\ntelevisions to watch nature shows, with an associated margin of error of 3.41%. Subtracting the margin of error from the estimate and adding\nthe margin of error to the estimate gives an interval of plausible values for the true percentage of adults who own televisions who use their\ntelevisions to watch nature shows. This means it's plausible that between 32% — 3.41%, or 28.59%, and 32% + 3.41%, or 35.41%, of all\nadults who own televisions use their televisions to watch nature shows. Therefore, of the given choices, the most plausible conclusion is that\nbetween 28.59% and 35.41% of all adults who own televisions use their televisions to watch nature shows.\n\nChoice A is incorrect and may result from conceptual errors.\n\nChoice C is incorrect. To make a plausible conclusion about all adults who own televisions, the sample must be selected at random from all\nadults who own televisions, not just those who use their televisions to watch nature shows.\n\nChoice D is incorrect. Since the sample was selected at random from all adults who own televisions, a plausible conclusion can be made about\nall adults who own televisions.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 122,
+    "pdfPreview": "/qbank/math/previews/e03f3477.jpg",
+    "choices": [
+      {
+        "text": "More than 35.41% of all adults who own televisions use their televisions to watch nature shows."
+      },
+      {
+        "text": "Between 28.59% and 35.41% of all adults who own televisions use their televisions to watch nature shows."
+      },
+      {
+        "text": "Since the sample included adults who own televisions and not just those who use their televisions to watch nature shows, no conclusion can be made."
+      },
+      {
+        "text": "Since the sample did not include all the people who watch nature shows, no conclusion can be made."
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "d693f563",
+    "topic": "Percentages",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Percentages",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Last year, Cedric had 35 plants in his garden. This year, the number of plants in Cedric’s garden is 60% greater than the number of plants in his\ngarden last year. How many plants does Cedric have in his garden this year?",
+    "type": "spr",
+    "explanation": "The correct answer is 56. It’s given that Cedric had 35 plants in his garden last year and that the number of plants in Cedric's garden this year is\n60% greater than the number of plants in his garden last year. It follows that the number of plants in Cedric’s garden this year is 35 plus 60% of\n35, which is equal to 35 + 35(-), or 35 + 35(0.6). This expression is equivalent to 35 + 21, or 56. Therefore, Cedric has 56 plants in his\ngarden this year.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 125,
+    "pdfPreview": "/qbank/math/previews/d693f563.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "56"
+    ],
+    "answer": "56"
+  },
+  {
+    "id": "f46139df",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The scatterplot shows the relationship between two variables, a and y. A line of best fit for the data is also shown.\nit ie TT\nPF TT PTN PT Et tT Ty\n6H INI EET Tt\nP TTT PIN oe eT Ty\ngb ttt NG EEE\npf TIT T Tt iy tt\nP| tT tt tT TT | | PANE TT\noi,t tT TTT TTT TT Art,\nAt & = 25.5, which of the following is closest to the y-value predicted by the line of best fit?",
+    "type": "mc",
+    "explanation": "Choice C is correct. On the line of best fit, an x-value of 25.5 corresponds to a y-value between 8 and 8.5. Therefore, at 7 = 25.5, 8.2 is closest\nto the y-value predicted by the line of best fit.\n\nChoice A is incorrect and may result from conceptual errors.\n\nChoice B is incorrect and may result from conceptual errors.\n\nChoice D is incorrect and may result from conceptual errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 126,
+    "pdfPreview": "/qbank/math/previews/f46139df.jpg",
+    "figure": "/qbank/math/figures/f46139df.jpg",
+    "choices": [
+      {
+        "text": "6.2"
+      },
+      {
+        "text": "7.3"
+      },
+      {
+        "text": "8.2"
+      },
+      {
+        "text": "9.1"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "07f2829b",
+    "topic": "One-variable data: distributions and measures of center and spread",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The table above shows the number of international tourist arrivals, rounded to the nearest tenth of a million, to the top nine tourist destinations i\nboth 2012 and 2013. Based on the information given in the table, how much greater, in millions, was the median number of international tourist\narrivals to the top nine tourist destinations in 2013 than the median number in 2012, to the nearest tenth of a million?",
+    "type": "spr",
+    "explanation": "The correct answer is 1.3. The median number of tourists is found by ordering the number of tourists from least to greatest and determining the\nmiddle value from this list. When the number of tourists in 2012 is ordered from least to greatest, the middle value, or the fifth number, is 46.4\nmillion. When the number of tourists in 2013 is ordered from least to greatest, the middle value, or the fifth number, is 47.7 million. The difference\nbetween these two medians is 47.7 million—46.4 million = 1.3 millior. Note that 1.3 and 13/10 are examples of ways to enter a\ncorrect answer.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 127,
+    "pdfPreview": "/qbank/math/previews/07f2829b.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "1.3"
+    ],
+    "answer": "1.3"
+  },
+  {
+    "id": "e5b5fbdd",
+    "topic": "Probability and conditional probability",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Probability and conditional probability",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Of the 8 planets in our solar system, 4 are considered rocky. If a student randomly selects 1 of those 8 planets as a topic for a report, what is the\nprobability that the selected planet will be rocky?",
+    "type": "mc",
+    "explanation": "Choice C is correct. If one of these planets is selected at random, the probability that the selected planet will be rocky is calculated by dividing\nthe number of planets that are considered rocky by the total number of planets. It's given that 4 of the 8 total planets are considered rocky. 4 1\nTherefore, the probability that the selected planet will be rocky is 8° which is equivalent to oh\n\nChoice A is incorrect. These represent the probability if 1 of the 8 planets was considered rocky (choice A) and if 2 of the 8 planets were.\n\nChoice B is incorrect. These represent the probability if 1 of the 8 planets was considered rocky (choice A) and if 2 of the 8 planets were.\nconsidered rocky (choice B).\n\nChoice D is incorrect and may result from dividing the total number of planets by the number of planets that are\nconsidered rocky.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 128,
+    "pdfPreview": "/qbank/math/previews/e5b5fbdd.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/e5b5fbdd_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/e5b5fbdd_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/e5b5fbdd_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/e5b5fbdd_3.jpg"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "d65b9a87",
+    "topic": "One-variable data: distributions and measures of center and spread",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The dot plots represent the distributions of values in data sets A and B.\nData Set A Data Set B\ne@ e e @\ne e@ e@ e e@\n@ e @ @ @ e @ e e @ e@\ne e@ e e@ e e@ e e e e e@ e e e\n+—+—_+—_+—_+—_ +--+ +>—+—_+—_+—_+—_ +--+\n10 11 12 13 14 15 16 10 11 12 13 14 15 16\nValue Value\nWhich of the following statements must be true?\nI. The median of data set A is equal to the median of data set B.\nII. The standard deviation of data set A is equal to the standard deviation of data set B.",
+    "type": "mc",
+    "explanation": "Choice A is correct. The median of a data set with an odd number of values that are in ascending or descending order is the middle value of the\ndata set. Since the distribution of the values of both data set A and data set B form symmetric dot plots, and each data set has an odd number of\nvalues, it follows that the median is given by the middle value in each of the dot plots. Thus, the median of data set A is 13, and the median of\ndata set B is 13. Therefore, statement | is true. Data set A and data set B have the same frequency for each of the values 11,12, 14, and 15. Data\nset A has a frequency of 1 for values 10 and 16, whereas data set B has a frequency of 2 for values 10 and 16. Standard deviation is a measure\nof the spread of a data set; it is larger when there are more values further from the mean, and smaller when there are more values closer to the\nmean. Since both distributions are symmetric with an odd number of values, the mean of each data set is equal to its median. Thus, each data\nset has a mean of 13. Since more of the values in data set A are closer to 13 than data set B, it follows that data set A has a smaller standard\ndeviation than data set B. Thus, statement II is false. Therefore, only statement | must be true.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 129,
+    "pdfPreview": "/qbank/math/previews/d65b9a87.jpg",
+    "choices": [
+      {
+        "text": "I only"
+      },
+      {
+        "text": "II only"
+      },
+      {
+        "text": "I and II"
+      },
+      {
+        "text": "Neither I nor II"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "7ac5d686",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "An inspector begins a day of work with a large sample of shirts that need to be checked for defects. The inspector works at a constant rate\nthroughut the morning. What type of model is best to model the number of shirts remaining to be checked for defects at any given time\nthroughut the morning?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Since the work is done at a constant rate, a linear model best models the situation. The number of shirts remaining is\ndependent on the length of time the inspector has worked; therefore, if the relationship were graphed, time would be the variable of the horizontal\naxis and the number of remaining shirts would be the variable of the vertical axis. Since the number of shirts decreases as the time worked\nincreases, it follows that the slope of this graph is negative.\n\nChoice A is incorrect and may result from incorrectly reasoning about the slope.\n\nChoice C is incorrect and may result from not.\n\nChoice D is incorrect and may result from not.\nidentifying the constant rate of work as a characteristic of a linear model.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 130,
+    "pdfPreview": "/qbank/math/previews/7ac5d686.jpg",
+    "choices": [
+      {
+        "text": "A linear model with a positive slope"
+      },
+      {
+        "text": "A linear model with a negative slope"
+      },
+      {
+        "text": "An exponential growth model"
+      },
+      {
+        "text": "An exponential decay model"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "1fc4f47b",
+    "topic": "Probability and conditional probability",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Probability and conditional probability",
+    "difficulty": "Medium",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "At a movie theater, there are a total of 350 customers. Each customer is located in either theater A, theater B, or theater C. If one of these\ncustomers is selected at random, the probability of selecting a customer who is located in theater A is 0.48, and the probability of selecting a\ncustomer who is located in theater B is 0.24. How many customers are located in theater C?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It’s given that at a movie theater, there are a total of 350 customers and that each customer is located in either theater A,\ntheater B, or theater C. If the probability of selecting a customer in theater A is 0.48, then (0.48) (350), or 168, customers are located in theater\nA. If the probability of selecting a customer in theater B is 0.24, then (0.24) (350), or 84, customers are located in theater B. It follows that there\nare 168 + 84, or 252, customers in theater A and theater B. Therefore, there are 350 — 252, or 98, customers in theater C.\n\nChoice A is incorrect. This is the percent, not the number, of the customers that are located in theater C.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect. This is the number of customers that are located in theater B, not theater C.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 131,
+    "pdfPreview": "/qbank/math/previews/1fc4f47b.jpg",
+    "choices": [
+      {
+        "text": "28"
+      },
+      {
+        "text": "40"
+      },
+      {
+        "text": "84"
+      },
+      {
+        "text": "98"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "e7133228",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Hard",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The speed of a vehicle is increasing at a rate of 7.3 meters per second squared. What is this rate, in miles per minute squared, rounded to the\nnearest tenth? (Use 1 mile = 1,609 meters.)",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that the speed of a vehicle is increasing at a rate of 7.3 meters per second squared. It's given to use 1 mile = 1,609 meters. There are 60 seconds in 1 minute; therefore, 60? or 3,600 seconds squared is equal to 1 minute squared. It follows that the 7.3 meters ) ( 1 mile ) ( 3,600 seconds squared\n1 second squared 1,609 meters 1 minute squared 16.33 miles per minute squared. The rate, in miles per minute squared, rounded to the nearest tenth is 16.3. rate of 7.3 meters per second squared is equivalent to ( ), or approximately\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 132,
+    "pdfPreview": "/qbank/math/previews/e7133228.jpg",
+    "choices": [
+      {
+        "text": "0.3"
+      },
+      {
+        "text": "16.3"
+      },
+      {
+        "text": "195.8"
+      },
+      {
+        "text": "220.4"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "2905ded0",
+    "topic": "Probability and conditional probability",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Probability and conditional probability",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "Live east of the | Live west of the\nriver river Total\n17 11 28 years old At least 40 years 18 107 old\nThe table summarizes members of a local organization by age and whether they live east or west of the river. If a member of the organization is\nselected at random, what is the probability that the selected member is at least 40 years old?",
+    "type": "mc",
+    "explanation": "Choice D is correct. If a member of the organization is selected at random, the probability that the selected member is at least 40 years old is equal to the number of members who are at least 40 years old divided by the total number of members. According to the table, there are a total of 135 members of the organization, and 107 of these members are at least 40 years old. Therefore, the probability that the selected member is\n«. 107 at least 40 years old is 737.\n\nChoice A is incorrect. This is the probability that the selected member is less than 40 years old.\n\nChoice B is incorrect. This is the probability that the selected member lives east of the river.\n\nChoice C is incorrect. This is the probability that the selected member lives west of the river.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 133,
+    "pdfPreview": "/qbank/math/previews/2905ded0.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/2905ded0_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/2905ded0_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/2905ded0_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/2905ded0_3.jpg"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "bb7c8186",
+    "topic": "Percentages",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Percentages",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "What is 5 939% C of?",
+    "type": "mc",
+    "explanation": "Choice A is correct. 23% of 100 can be calculated by multiplying a by 100, which yields (#2, ) 100, or 23.\n\nChoice B is incorrect. This is 46%, not 23%, of 100.\n\nChoice C is incorrect. This is 23% less than 100, not 23% of 100.\n\nChoice D is incorrect. This is 23% greater than 100, not 23% of 100.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 134,
+    "pdfPreview": "/qbank/math/previews/bb7c8186.jpg",
+    "choices": [
+      {
+        "text": "23"
+      },
+      {
+        "text": "46"
+      },
+      {
+        "text": "77"
+      },
+      {
+        "text": "123"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "d230e963",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Easy",
+    "pool": "SAT Educator Bank 1",
+    "prompt": "The scatterplot shows the relationship between two variables, x and y. A line of best fit is also shown.\nWhich of the following equations best represents the line of best fit shown?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The line of best fit shown intersects the y-axis at a positive y-value and has a positive slope. The graph of an equation of the\nform , where and are constants, intersects the y-axis at a y-value of and has a slope of . Of the given choices, only choice A\nrepresents a line that intersects the y-axis at a positive y-value, , and has a positive slope, .\n\nChoice B is incorrect. This equation represents a line that has a negative slope, not a positive slope.\n\nChoice C is incorrect. This equation represents a line that intersects the y-axis at a negative y-value, not a positive y-value.\n\nChoice D is incorrect. This equation represents a line that intersects the y-axis at a negative y-value, not a positive y-value, and has a negative\nslope, not a positive slope.",
+    "pdf": "/qbank/math/Educator-Bank-1-Problem-Solving-Data-Analysis-Unanswered.pdf",
+    "pdfPage": 135,
+    "pdfPreview": "/qbank/math/previews/d230e963.jpg",
+    "figure": "/qbank/math/figures/d230e963.jpg",
+    "choices": [
+      {
+        "text": "y=2.8+ 1.72"
+      },
+      {
+        "text": "y= 2.8 - 1.72"
+      },
+      {
+        "text": "y= -2.84+ 1.72"
+      },
+      {
+        "text": "y= -2.8- 1.72"
+      }
+    ],
+    "answer": 0
+  }
+]

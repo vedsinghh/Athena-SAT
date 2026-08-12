@@ -1,0 +1,27 @@
+{
+  "id": "c3b116d7",
+  "prompt": "Which of the following expressions is(are) a factor of {{eq:0}}?\ne-9\nI. 32 -7\nII.",
+  "equations": [
+    "/qbank/math/equations/c3b116d7_0.jpg"
+  ],
+  "figure": null,
+  "choices": [
+    {
+      "text": "I only"
+    },
+    {
+      "text": "II only"
+    },
+    {
+      "text": "I and II"
+    },
+    {
+      "text": "Neither I nor II"
+    }
+  ],
+  "answer": 1,
+  "explanation": "Choice B is correct. The given expression can be factored by first finding two values whose sum is and whose product is , or .\nThose two values are and . It follows that the given expression can be rewritten as . Since the first two terms of\nthis expression have a common factor of and the last two terms of this expression have a common factor of , this expression can be\nrewritten as . Since the two terms of this expression have a common factor of , it can be rewritten as\n. Therefore, expression II, , is a factor of , but expression I, , is not a factor of .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+  "pdfPage": 48,
+  "type": "mc",
+  "kind": null
+}

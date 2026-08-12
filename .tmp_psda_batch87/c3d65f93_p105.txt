@@ -1,0 +1,44 @@
+Question ID: c3d65f93
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+One-variable data:
+Distributions and
+measures of center and
+spread
+Easy
+Question
+Five Eretmochelys imbricata, a type of sea tur tle, each have a nest. The table shows an original data set of the number of eggs that each tur tle
+laid in its nest.
+Nest
+Number of eggs
+A
+B
+C
+D
+E
+A sixth nest with 
+ eggs is added to create a new data set. Which of the following correctly compares the means of the two data sets?
+Answer
+A. The mean of the original data set is greater than the mean of the new data set.
+B. The mean of the original data set is less than the mean of the new data set.
+C. The means of both data sets are equal.
+D. There is not enough information to compare the means.
+Correct Answer: A
+Rationale
+Choice A is correct. It's given that the table shows an original data set of 
+ values. It's also given that a sixth value is added to create a new data
+set. The new data set consists of the 
+ values in the original data set and one additional value, 
+. Since the additional value, 
+, is less than
+any value in the original data set, the mean of the original data set is greater than the mean of the new data set.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect and may result from conceptual or calculation errors.
+Choice D is incorrect and may result from conceptual or calculation errors.

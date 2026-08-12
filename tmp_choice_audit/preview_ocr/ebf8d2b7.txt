@@ -1,0 +1,15 @@
+Question
+
+A machine makes large boxes or small boxes, one at a time, for a total of 700 minutes each day. It takes the machine 10 minutes to make a large
+box or 5 minutes to make a small box. Which equation represents the possible number of large boxes, Z, and small boxes, y, the machine can
+make each day?
+
+Answer
+
+A. 5x + 10y = 700
+
+B. 10x + 5y = 700
+
+C. (a + y)(10 +5) = 700
+
+D. (10 + x)(5 + y) = 700

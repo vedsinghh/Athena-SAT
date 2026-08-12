@@ -1,0 +1,45 @@
+Question ID: 1fc4f47b
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Probability and
+conditional probability
+Medium
+Question
+At a movie theater, there are a total of 
+ customers. Each customer is located in either theater A, theater B, or theater C. If one of these
+customers is selected at random, the probability of selecting a customer who is located in theater A is 
+, and the probability of selecting a
+customer who is located in theater B is 
+. How many customers are located in theater C?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: D
+Rationale
+Choice D is correct. It’s given that at a movie theater, there are a total of 
+ customers and that each customer is located in either theater A,
+theater B, or theater C. If the probability of selecting a customer in theater A is 
+, then 
+, or 
+, customers are located in theater
+A. If the probability of selecting a customer in theater B is 
+, then 
+, or 
+, customers are located in theater B. It follows that there
+are 
+, or 
+, customers in theater A and theater B. Therefore, there are 
+, or 
+, customers in theater C.
+Choice A is incorrect. This is the percent, not the number, of the customers that are located in theater C.
+Choice B is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect. This is the number of customers that are located in theater B, not theater C.

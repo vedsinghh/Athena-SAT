@@ -1,0 +1,27 @@
+{
+  "id": "b4acba95",
+  "prompt": "{{eq:0}}\nHow many distinct real solutions does the given equation have?",
+  "equations": [
+    "/qbank/math/equations/b4acba95_0.jpg"
+  ],
+  "figure": null,
+  "choices": [
+    {
+      "text": "Exactly two"
+    },
+    {
+      "text": "Exactly one"
+    },
+    {
+      "text": "Zero"
+    },
+    {
+      "text": "Infinitely many"
+    }
+  ],
+  "answer": 0,
+  "explanation": "Choice A is correct. The number of solutions of a quadratic equation of the form , where , , and are constants, can be\ndetermined by the value of the discriminant, . If the value of the discriminant is positive, then the quadratic equation has exactly two\ndistinct real solutions. If the value of the discriminant is equal to zero, then the quadratic equation has exactly one real solution. If the value of\nthe discriminant is negative, then the quadratic equation has zero real solutions. In the given equation, , , ,\nand . Substituting these values for , , and in yields , or . Since the value of its discriminant is\npositive, the given equation has exactly two distinct real solutions.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+  "pdfPage": 45,
+  "type": "mc",
+  "kind": null
+}

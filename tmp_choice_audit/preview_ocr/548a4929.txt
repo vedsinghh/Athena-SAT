@@ -1,0 +1,14 @@
+Question
+
+The function h is defined by h(x) = 4x + 28. The graph of y = A(z) in the xy-plane has an x-intercept at (a, 0) and a y-intercept at (0, b),
+where a and b are constants. What is the value of a + b?
+
+Answer
+
+A.21
+
+B, 28
+
+Cc. 32
+
+D. 35

@@ -1,0 +1,42 @@
+Question ID: 60caadfd
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Probability and
+conditional probability
+Easy
+Question
+Each rock in a collection of 
+ rocks was classified as either igneous, metamorphic, or sedimentary, as shown in the frequency table.
+Classification
+Frequency
+igneous
+metamorphic
+sedimentary
+If one of these rocks is selected at random, what is the probability of selecting a rock that is igneous?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: D
+Rationale
+Choice D is correct. If one of the rocks in the collection is selected at random, the probability of selecting a rock that is igneous is equal to the
+number of igneous rocks in the collection divided by the total number of rocks in the collection. According to the table, there are 
+ igneous
+rocks in the collection, and it's given that there's a total of 
+ rocks in the collection. Therefore, if one of the rocks in the collection is selected at
+random, the probability of selecting a rock that is igneous is 
+.
+Choice A is incorrect. This is the number of igneous rocks in the collection divided by the number of sedimentary rocks in the collection, not
+divided by the total number of rocks in the collection.
+Choice B is incorrect. This is the number of igneous rocks in the collection divided by the number of metamorphic rocks in the collection, not
+divided by the total number of rocks in the collection.
+Choice C is incorrect. This is the number of igneous rocks in the collection divided by the number of rocks in the collection that aren't igneous,
+not divided by the total number of rocks in the collection.

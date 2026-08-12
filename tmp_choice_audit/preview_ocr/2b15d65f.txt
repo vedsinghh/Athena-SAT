@@ -1,0 +1,15 @@
+Question
+
+An economist modeled the demand Q for a certain product as a linear function of the selling price P. The demand was 20,000 units when the
+selling price was $40 per unit, and the demand was 15,000 units when the selling price was $60 per unit. Based on the model, what is the
+demand, in units, when the selling price is $55 per unit?
+
+Answer
+
+A. 16,250
+
+B. 16,500
+
+C. 16,750
+
+D. 17,500

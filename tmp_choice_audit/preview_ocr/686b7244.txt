@@ -1,0 +1,5 @@
+Question
+
+A certain apprentice has enrolled in 85 hours of training courses. The equation 102 + 15y = 85 represents this situation, where z is the
+number of on-site training courses and y is the number of online training courses this apprentice has enrolled in. How many more hours does
+each online training course take than each on-site training course?

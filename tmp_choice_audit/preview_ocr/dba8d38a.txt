@@ -1,0 +1,14 @@
+Question
+A petting zoo sells two types of tickets. The standard ticket, for admission only, costs $5. The premium ticket, which includes admission and
+food to give to the animals, costs $12. One Saturday, the petting zoo sold a total of 250 tickets and collected a total of $2,300 from ticket sales.
+Which of the following systems of equations can be used to find the number of standard tickets, s, and premium tickets, p, sold on that
+Saturday?
+Answer
+A s+p=250
+'55+12p =2,300
+3 5+p=250
+125 +5p =2,300
+c.55+12p=250
+s+p=2,300
+dD. 125+5p=250
+s+p=2,300

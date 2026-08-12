@@ -1,0 +1,10 @@
+Choice A is correct. The total number of state parks in the state is 20+ 5 +8 +4. = 37. According to the table, 5 of these have camping
+facilities but not bicycle paths. Therefore, if a state park is selected at random, the probability that it has camping facilities but not bicycle paths
+a)
+is ——.
+
+of
+Choice B is incorrect. This is the probability that a state park selected at random from the state parks with camping facilities does not have
+bicycle paths. Choice C is incorrect. This is the probability that a state park selected at random from the state parks with bicycle paths does not
+have camping facilities. Choice D is incorrect. This is the probability that a state park selected at random from the state parks without bicycle
+paths does have camping facilities.

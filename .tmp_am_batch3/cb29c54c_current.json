@@ -1,0 +1,25 @@
+{
+  "id": "cb29c54c",
+  "prompt": "A physics class is planning an experiment about a toy rocket. The equation y = —16(xz — 5.6)” + 502 gives the estimated height, in feet, of\nthe toy rocket © seconds after it is launched into the air. Which of the following is the best interpretation of the vertex of the graph of the\nequation in the xy-plane?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "This toy rocket reaches an estimated maximum height of feet seconds after it is launched into the air."
+    },
+    {
+      "text": "This toy rocket reaches an estimated maximum height of feet seconds after it is launched into the air."
+    },
+    {
+      "text": "This toy rocket reaches an estimated maximum height of feet seconds after it is launched into the air."
+    },
+    {
+      "text": "This toy rocket reaches an estimated maximum height of feet seconds after it is launched into the air."
+    }
+  ],
+  "answer": 1,
+  "explanation": "Choice B is correct. The vertex of the graph of a quadratic equation is where it reaches its minimum or maximum value. When a quadratic\nequation is written in the form , the vertex of the parabola represented by the equation is . In the given\nequation , the value of is and the value of is . It follows that the vertex of the graph of this equation in the\nxy-plane is . Additionally, since in the given equation, the graph of the quadratic equation opens down, and the\nvertex represents a maximum. It’s given that the value of represents the estimated height, in feet, of the toy rocket seconds after it is\nlaunched into the air. Therefore, this toy rocket reaches an estimated maximum height of feet seconds after it is launched into the air.\n\nChoice A is incorrect. The in the equation is an indicator of how narrow the graph of the equation is rather than where it reaches its maximum.\n\nChoice C is incorrect. The in the equation is an indicator of how narrow the graph of the equation is rather than where it reaches its maximum.\n\nChoice D is incorrect. This is an interpretation of the vertex of the graph of the equation , not of the equation .",
+  "pdfPage": 38,
+  "type": "mc",
+  "kind": null
+}

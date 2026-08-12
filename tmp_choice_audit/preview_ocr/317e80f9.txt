@@ -1,0 +1,15 @@
+Question
+c+y=18
+by = &
+
+What is the solution (a, y) to the given system of equations?
+
+Answer
+
+A. (15, 3)
+
+B. (16, 2)
+
+Cc. (17, 1)
+
+D. (18, 0)

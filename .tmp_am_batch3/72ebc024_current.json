@@ -1,0 +1,27 @@
+{
+  "id": "72ebc024",
+  "prompt": "Which expression is equivalent to {{eq:0}}?",
+  "equations": [
+    "/qbank/math/equations/72ebc024_0.jpg"
+  ],
+  "figure": null,
+  "choices": [
+    {
+      "text": "2ry(8xy + 7)"
+    },
+    {
+      "text": "2ry(8x-y + 7)"
+    },
+    {
+      "text": "14ary(2x-y + 1)"
+    },
+    {
+      "text": "14ry(8x7y + 1)"
+    }
+  ],
+  "answer": 1,
+  "explanation": "Choice B is correct. Since is a common factor of each term in the given expression, the expression can be rewritten as .\n\nChoice A is incorrect. This expression is equivalent to .\n\nChoice C is incorrect. This expression is equivalent to .\n\nChoice D is incorrect. This expression is equivalent to .",
+  "pdfPage": 7,
+  "type": "mc",
+  "kind": null
+}

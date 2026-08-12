@@ -1,0 +1,12 @@
+{
+  "id": "4a0d0399",
+  "prompt": "The function f is defined by f(x) = a* + 6, where a and bare constants. In the xy-plane, the graph of y = f(x) has an z-intercept at (2, 0)\nand a y-intercept at (0, —323). What is the value of b?",
+  "equations": null,
+  "figure": null,
+  "choices": [],
+  "answer": "-324",
+  "explanation": "The correct answer is . It's given that the function is defined by , where and are constants. It's also given that the\ngraph of has a y-intercept at . It follows that . Substituting for and for in yields , or . Subtracting from each side of this equation yields . Therefore, the value of is .",
+  "pdfPage": 71,
+  "type": "spr",
+  "kind": null
+}

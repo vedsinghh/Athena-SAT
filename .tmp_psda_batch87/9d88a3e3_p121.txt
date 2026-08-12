@@ -1,0 +1,29 @@
+Question ID: 9d88a3e3
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Two-variable data:
+Models and scatterplots
+Easy
+Question
+Theresa ran on a treadmill for thir ty minutes, and her time and speed are shown on the graph above. According to the graph, which of the
+following statements is NOT true concerning Theresa’s run?
+Answer
+A. Theresa ran at a constant speed for five minutes.
+B. Theresa’s speed was increasing for a longer period of time than it was decreasing.
+C. Theresa’s speed decreased at a constant rate during the last five minutes.
+D. Theresa’s speed reached its maximum during the last ten minutes.
+Correct Answer: B
+Rationale
+Choice B is correct. Theresa’s speed was increasing from 0 to 5 minutes and from 20 to 25 minutes, which is a total of 10 minutes. Theresa’s
+speed was decreasing from 10 minutes to 20 minutes and from 25 to 30 minutes, which is a total of 15 minutes. Therefore, Theresa’s speed was
+NOT increasing for a longer period of time than it was decreasing.
+Choice A is incorrect. Theresa ran at a constant speed for the 5-minute period from 5 to 10 minutes. Choice C is incorrect. Theresa’s speed
+decreased at a constant rate during the last 5 minutes, which can be seen since the graph is linear during that time. Choice D is incorrect.
+Theresa’s speed reached its maximum at 25 minutes, which is within the last 10 minutes.

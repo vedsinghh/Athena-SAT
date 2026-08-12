@@ -1,0 +1,15 @@
+Question
+
+Adam's school is a 20-minute walk or a 5-minute bus ride away from his house. The bus runs once every 30 minutes, and the number of minutes,
+w, that Adam waits for the bus varies between 0 and 30. Which of the following inequalities gives the values of w for which it would be faster for
+Adam to walk to school?
+
+Answer
+
+AWw-5<20
+
+B.W—-5>20
+
+c.w+5<20
+
+DWw+5>20

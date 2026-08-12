@@ -1,0 +1,48 @@
+Question ID: 03a16790
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+Two-variable data:
+Models and scatterplots
+Medium
+Question
+The scatterplot shows the relationship between two variables, 
+ and 
+. A line of best fit is also shown.
+Which of the following is closest to the slope of the line of best fit shown?
+Answer
+A. 
+B. 
+C. 
+D. 
+Correct Answer: B
+Rationale
+Choice B is correct. A line of best fit is shown in the scatterplot such that as the value of 
+ increases, the value of 
+ decreases. Thus, the slope of
+the line of best fit shown is negative. The slope of a line passing through two points, 
+ and 
+, can be calculated as 
+. The line
+of best fit shown passes approximately through the points 
+ and 
+. Substituting 
+ and 
+ for 
+ and 
+,
+respectively, in 
+ gives 
+, which is equivalent to 
+, or 
+. Therefore, of the given choices, 
+ is closest to the slope of the line
+of best fit shown.
+Choice A is incorrect and may result from conceptual or calculation errors.
+Choice C is incorrect. The line of best fit shown has a negative slope, not a positive slope.

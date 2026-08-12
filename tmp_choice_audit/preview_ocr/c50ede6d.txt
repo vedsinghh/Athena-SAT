@@ -1,0 +1,14 @@
+Question
+
+The total cost, in dollars, to rent a surfboard consists of a $25 service fee and a $10 per hour rental fee. A person rents a surfboard for ¢ hours
+and intends to spend a maximum of $75 to rent the surfboard. Which inequality represents this situation?
+
+Answer
+
+A.10t < 75
+
+B. 10+ 25t < 75
+
+C. 25t < 75
+
+D. 25+ 10t < 75

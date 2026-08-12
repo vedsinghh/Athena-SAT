@@ -1,0 +1,8 @@
+Choice C is correct. Standard deviation is a measure of spread, so data sets with larger standard deviations tend to have larger spread. The
+standard deviation of the heights of the men in Group B is larger than the standard deviation of the heights of the men in Group A. Therefore, the
+heights of the men in Group B had a larger spread than the heights of the men in Group A.
+
+Choice A is incorrect. If two data sets are identical, they will have equivalent means and equivalent standard deviations. Since the two data sets
+have different standard deviations, they cannot be identical. Choice B is incorrect. Without knowing the maximum value for each data set, it’s
+impossible to know which group contained the tallest participant. Choice D is incorrect. Since the means of the two groups are equivalent, the
+medians could also be the same or could be different, but it's impossible to tell from the given information.

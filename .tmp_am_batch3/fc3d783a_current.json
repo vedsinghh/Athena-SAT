@@ -1,0 +1,12 @@
+{
+  "id": "fc3d783a",
+  "prompt": "In the xy-plane, a line with equation 2y = 4.5 intersects a parabola at exactly one point. If the parabola has equation y = —4x“ + bz, where 6\nis a positive constant, what is the value of b?",
+  "equations": null,
+  "figure": null,
+  "choices": [],
+  "answer": "6",
+  "explanation": "The correct answer is . It’s given that a line with equation intersects a parabola with equation , where is a positive\nconstant, at exactly one point in the xy-plane. It follows that the system of equations consisting of and has exactly\none solution. Dividing both sides of the equation of the line by yields . Substituting for in the equation of the parabola yields\n. Adding and subtracting from both sides of this equation yields . A quadratic equation in the\nform of , where , , and are constants, has exactly one solution when the discriminant, , is equal to zero.\nSubstituting for and for in the expression and setting this expression equal to yields , or . Adding to each side of this equation yields . Taking the square root of each side of this equation yields . It’s given that is positive, so the value of is .",
+  "pdfPage": 33,
+  "type": "spr",
+  "kind": null
+}

@@ -1,0 +1,11 @@
+Choice C is correct. A model for a quantity S that increases by a cer tain percentage per time period n is an exponential function in the form
+, where I is the initial value at time 
+ for r% annual increase. It’s given that the annual increase in an employee’s
+salary is 4%, so 
+. The initial value can be found by substituting 0 for n in the given function, which yields 
+. Therefore,
+. Substituting these values for r and I into the form of the exponential function 
+ yields
+, or 
+. Therefore, the value of a in the given function is 1.04.
+Choices A, B, and D are incorrect and may result from incorrectly representing the annual increase in the exponential function.

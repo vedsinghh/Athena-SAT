@@ -1,0 +1,5 @@
+The correct answer is + For the graph shown, & represents time, in seconds, and y represents momentum, in newton-seconds. Therefore, the
+average rate of change, in newton-seconds per second, in the momentum of the object between two x-values is the difference in the
+corresponding y-values divided by the difference in the x-values. The graph shows that at x = 2, the corresponding y-value is 6. The graph also
+shows that at x = 6, the corresponding y-value is 8. It follows that the average rate of change, in newton-seconds per second, from x7 = 2 to
+xz =6is $6 which is equivalent to z, or + Note that 1/2 and .5 are examples of ways to enter a correct answer.

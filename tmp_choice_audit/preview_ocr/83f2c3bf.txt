@@ -1,0 +1,12 @@
+Question
+y=ut4
+Which table gives three values of x and their corresponding values of y for the given equation?
+Answer
+A
+| o | 4 |
+| 2 | 6 |
+8
+c.
+| 0 | 2 |
+| 2 | 0 |
+D.

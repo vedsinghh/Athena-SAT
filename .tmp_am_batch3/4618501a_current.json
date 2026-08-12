@@ -1,0 +1,25 @@
+{
+  "id": "4618501a",
+  "prompt": "A conservation scientist implemented a program to reduce the population of a certain species in an area. The given function estimates this\nspecies' population x years after 2008, where x < 8. Which of the following is the best interpretation of 3,000 in this context?",
+  "equations": null,
+  "figure": null,
+  "choices": [
+    {
+      "text": "The estimated percent decrease in the population for this species and area every years after"
+    },
+    {
+      "text": "The estimated percent decrease in the population for this species and area each year after"
+    },
+    {
+      "text": "The estimated population for this species and area years after"
+    },
+    {
+      "text": "The estimated initial population for this species and area in"
+    }
+  ],
+  "answer": 3,
+  "explanation": "Choice D is correct. Substituting for in the given equation yields , which is equivalent to , or . It’s given that the function estimates the species’ population years after , so it follows that the estimated population of the\nspecies is in . Therefore, the best interpretation of in this context is the estimated initial population for this species and area in\n.\n\nChoice A is incorrect and may result from conceptual errors.\n\nChoice B is incorrect. The estimated percent decrease in the population for this species and area each year after is , not .\n\nChoice C is incorrect. The estimated population for this species and area years after is , or approximately , not .",
+  "pdfPage": 78,
+  "type": "mc",
+  "kind": null
+}

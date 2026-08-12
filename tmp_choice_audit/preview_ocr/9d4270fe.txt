@@ -1,0 +1,15 @@
+Question
+
+A company that creates and sells tape dispensers calculates its monthly profit, in dollars, by subtracting its fixed monthly costs, in dollars, from
+its monthly sales revenue, in dollars. The equation 15,000 = 2.00x — 4,500 represents this situation for a month where & tape dispensers are
+created and sold. Which statement is the best interpretation of 2.00z in this context?
+
+Answer
+
+A. The monthly sales revenue, in dollars, from selling x tape dispensers
+
+B. The monthly sales revenue, in dollars, from each tape dispenser sold
+
+C. The monthly cost, in dollars, of creating each tape dispenser
+
+D. The monthly cost, in dollars, of creating x tape dispensers

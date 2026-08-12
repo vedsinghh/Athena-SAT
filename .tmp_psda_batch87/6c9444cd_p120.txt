@@ -1,0 +1,41 @@
+Question ID: 6c9444cd
+Assessment
+Test
+Domain
+Skill
+Difficulty
+SAT
+Math
+Problem-Solving and
+Data Analysis
+One-variable data:
+Distributions and
+measures of center and
+spread
+Hard
+Question
+The two box plots show the distribution of number of books read over the summer by the students in two different English classes. What is the
+positive difference between the ranges of number of books read over the summer for the two classes?
+Correct Answer: 4
+Rationale
+The correct answer is 
+. It's given that the two boxplots show the distribution of number of books read over the summer by the students in two
+different English classes. In a boxplot, the first ver tical line represents the minimum value of the data set and the last ver tical line represents the
+maximum value of the data set. The range of a data set is the difference between its maximum value and its minimum value. In class A, the
+maximum number of books read is 
+ and the minimum number of books read is 
+. The difference between those values is 
+, or 
+. Therefore,
+the range of the number of books read in class A is 
+. In class B, the maximum number of books read is 
+ and the minimum number of books
+read is 
+. The difference between those values is 
+, or 
+. Therefore, the range of the number of books read in class B is 
+. To find the
+positive difference between the ranges of the number of books read for the two classes, the smaller range must be subtracted from the larger
+range. Therefore, the positive difference between the ranges of number of books read over the summer for the two classes is 
+, or 
+.

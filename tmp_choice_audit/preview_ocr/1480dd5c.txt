@@ -1,0 +1,8 @@
+Question
+f(x) =4a+b
+For the linear function f, bis a constant and f(7) = 28. What is the value of b?
+Answer
+A.0
+B.1
+c.4
+D.7

@@ -1,0 +1,12 @@
+Choice C is correct. If a tree from one of these rows is selected at random, the probability of selecting a maple tree, given that the tree is 20 feet
+or taller, is equal to the number of maple trees that are 20 feet or taller divided by the total number of trees that are 20 feet or taller. It's given that
+there are 6 rows of birch trees, and each row of birch trees has 8 trees that are 20 feet or taller. This means that there are a total of 6(8), or 48,
+birch trees that are 20 feet or taller. It's given that there are 5 rows of maple trees, and each row of maple trees has 9 trees that are 20 feet or
+taller. This means that there are a total of 5(9), or 45, maple trees that are 20 feet or taller. It follows that there are a total of 48 + 45, or 93,
+trees that are 20 feet or taller. Therefore, the probability of selecting a maple tree, given that the tree is 20 feet or taller, is a, or z.
+
+Choice A is incorrect and may result from conceptual or calculation errors.
+
+Choice B is incorrect and may result from conceptual or calculation errors.
+
+Choice D is incorrect and may result from conceptual or calculation errors.

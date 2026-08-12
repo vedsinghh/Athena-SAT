@@ -1,0 +1,16 @@
+Question
+
+A group of 202 people went on an overnight camping trip, taking 60 tents with them. Some of the tents held 2 people each, and the rest held
+
+4 people each. Assuming all the tents were filled to capacity and every person got to sleep in a tent, exactly how many of the tents were 2-person
+tents?
+
+Answer
+
+A. 30
+
+B. 20
+
+C.19
+
+D.18

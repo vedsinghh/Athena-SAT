@@ -1,0 +1,15 @@
+Question
+
+For a snowstorm in a certain town, the minimum rate of snowfall recorded was 0.6 inches per hour, and the maximum rate of snowfall recorded
+was 1.8 inches per hour. Which inequality is true for all values of s, where s represents a rate of snowfall, in inches per hour, recorded for this
+snowstorm?
+
+Answer
+
+A.s>24
+
+B.s>1.8
+
+C0<s<06
+
+D.0.6<s<1.8

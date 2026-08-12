@@ -1,0 +1,7 @@
+The correct answer is 
+. It’s given that the x-intercept of the graph shown is 
+. The graph passes through the point 
+. Therefore, the
+value of 
+ is 
+. 

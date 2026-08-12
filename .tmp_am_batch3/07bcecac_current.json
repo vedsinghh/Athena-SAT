@@ -1,0 +1,27 @@
+{
+  "id": "07bcecac",
+  "prompt": "{{eq:0}}\nThe function gives the predicted population, in millions, of a certain country for the period from 11984 t to J4UVUILO, aly equa, where is the number of years\n“\nafter. According to the model, what is the best interpretation of the statement is approximately equal to ”?",
+  "equations": [
+    "/qbank/math/equations/07bcecac_0.jpg"
+  ],
+  "figure": null,
+  "choices": [
+    {
+      "text": "In , the predicted population of this country was approximately million."
+    },
+    {
+      "text": "In , the predicted population of this country was approximately million."
+    },
+    {
+      "text": "years after , the predicted population of this country was approximately million."
+    },
+    {
+      "text": "years after , the predicted population of this country was approximately million."
+    }
+  ],
+  "answer": 2,
+  "explanation": "Choice C is correct. The function gives the predicted population, in millions, of a certain country for the period from to , where is\nthe number of years after . Since the value of is the value of when , it follows that \" is approximately equal to \"\nmeans that the value of is approximately equal to when . Therefore, the best interpretation of the statement \" is\napproximately equal to \" is that years after , the predicted population of this country was approximately million.\n\nChoice A is incorrect. In , the predicted population of this country was million, not approximately million.\n\nChoice B is incorrect. In , the predicted population of this country was million, not approximately million.\n\nChoice D is incorrect. years after , the predicted population of this country was million, or approximately million, not approximately million.",
+  "pdfPage": 59,
+  "type": "mc",
+  "kind": null
+}
