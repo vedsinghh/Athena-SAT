@@ -315,6 +315,12 @@ export default function AuthGate({ onSignIn, onSignUp, onSignInWithGoogle, error
       </AnimatePresence>
       <footer className="auth-copyright">
         © {new Date().getFullYear()} Athena SAT. All rights reserved.
+        <span className="auth-legal-links">
+          {' · '}
+          <a href="/privacy">Privacy</a>
+          {' · '}
+          <a href="/terms">Terms</a>
+        </span>
       </footer>
       <div className="greek-key" />
     </div>
