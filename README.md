@@ -13,9 +13,7 @@ Then open the local Vite URL in your browser.
 
 ## Included
 
-- Create local profile
-- Open existing profile
-- `.athena` profile export/import
+- Create / edit cloud-synced profile (one per account)
 - Automatic redirect from profile creation/opening to dashboard
 - Dashboard inspired by the approved mockup
 - Animated Athena spear score-progress interaction

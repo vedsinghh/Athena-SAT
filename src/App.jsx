@@ -1,11 +1,11 @@
-import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, animate, motion } from 'framer-motion'
 import {
   AlertTriangle, ArrowUpLeft, BarChart3, BookOpen, Calculator, CalendarDays,
   ChevronDown, ChevronRight, ClipboardList, Clock, ExternalLink, Filter,
-  Flame, FunctionSquare, Highlighter, Home, Import, Lightbulb, List, Pause, Play, PenLine, Radical, Save,
-  Settings, Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, XCircle, CheckCircle2, Check,
+  Flame, FunctionSquare, Highlighter, Home, KeyRound, Lightbulb, List, LogOut, Pause, Play, PenLine, Radical,
+  Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, XCircle, CheckCircle2, Check,
   FileText, Vault, Building2, ChevronUp, ListFilter, Info, Flag
 } from 'lucide-react'
 import mathQuestions from './data/mathQuestions.json'
@@ -13,6 +13,12 @@ import readingQuestions from './data/readingQuestions.json'
 import mathSkillCounts from './data/mathSkillCounts.json'
 import readingSkillCounts from './data/readingSkillCounts.json'
 import katex from 'katex'
+import AuthGate from './components/AuthGate'
+import { useAuth } from './hooks/useAuth'
+import { useProfiles } from './hooks/useProfiles'
+import { writeLocalProfiles } from './lib/profileStorage'
+import { restoreAthenaExport } from './lib/restoreAthenaExport'
+import { supabase } from './lib/supabase'
 
 const QUESTION_POOLS = ['Collegeboard Summer 2026', 'SAT Educator Bank 1']
 const DEFAULT_QUESTION_POOL = QUESTION_POOLS[0]
@@ -488,7 +494,7 @@ function applyStreakFromHistory(profile) {
 }
 
 function appendProgressHistory(profile, entry) {
-  const progressHistory = [entry, ...(profile.progressHistory || [])].slice(0, 250)
+  const progressHistory = [entry, ...(profile.progressHistory || [])].slice(0, PROGRESS_HISTORY_CAP)
   const activity = [historyToActivityItem(entry), ...(profile.activity || [])].slice(0, 40)
   return applyStreakFromHistory({
     ...profile,
@@ -642,11 +648,10 @@ function formatHistoryWhen(iso) {
   })
 }
 
-const STORAGE_KEY = 'athena_sat_profiles_react_v1'
-const ACTIVE_KEY = 'athena_sat_active_profile_react_v1'
 const CHARGE_BLAZE_DAY_KEY = 'athena_sat_charge_blaze_day_v1'
 const CHARGE_BLAZE_PREF_KEY = 'athena_sat_charge_blaze_pref_v1'
-const FILE_VERSION = 1
+/** Max progressHistory entries kept in the profile blob (newest first). */
+const PROGRESS_HISTORY_CAP = 2000
 
 function athenaChargeFromCorrect(correct) {
   const n = Math.max(0, Number(correct) || 0)
@@ -858,37 +863,20 @@ function scrubEmptyPracticeSets(profile) {
   return reconcileBankHistoryWithProgress(base)
 }
 
-function safeReadProfiles() {
-  let profiles = []
-  try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-    if (Array.isArray(parsed)) profiles = parsed
-  } catch {
-    /* ignore */
-  }
-  const normalized = profiles.map((p) => scrubEmptyPracticeSets(applyStreakFromHistory({
+function normalizeProfilesList(profiles) {
+  const list = Array.isArray(profiles) ? profiles : []
+  const normalized = list.map((p) => scrubEmptyPracticeSets(applyStreakFromHistory({
     ...p,
     progressHistory: Array.isArray(p.progressHistory) ? p.progressHistory : [],
   })))
-  // Persist scrubbed empty set entries so they stay gone.
   try {
-    const before = JSON.stringify(profiles.map((p) => p.progressHistory || []))
+    const before = JSON.stringify(list.map((p) => p.progressHistory || []))
     const after = JSON.stringify(normalized.map((p) => p.progressHistory || []))
-    if (before !== after) localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized))
+    if (before !== after) writeLocalProfiles(normalized)
   } catch {
     /* ignore */
   }
   return normalized
-}
-
-function resolveActiveProfileId(profiles) {
-  const stored = localStorage.getItem(ACTIVE_KEY)
-  if (stored && profiles.some((p) => p.id === stored)) return stored
-  return null
-}
-
-function saveProfiles(profiles) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles))
 }
 
 function makeStarterProfile({ name, grade, goalScore, bestScore, school, testDate }) {
@@ -896,7 +884,7 @@ function makeStarterProfile({ name, grade, goalScore, bestScore, school, testDat
   const best = bestScore ? Number(bestScore) : null
   return {
     ...demoProfile,
-    id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
+    id: crypto.randomUUID(),
     name: name.trim(),
     grade: grade || '',
     school: (school || '').trim(),
@@ -917,44 +905,96 @@ function makeStarterProfile({ name, grade, goalScore, bestScore, school, testDat
 }
 
 export default function App() {
-  const [profiles, setProfiles] = useState(() => safeReadProfiles())
-  const [activeId, setActiveId] = useState(() => resolveActiveProfileId(safeReadProfiles()))
-  const [screen, setScreen] = useState(() => (
-    resolveActiveProfileId(safeReadProfiles()) ? 'dashboard' : 'welcome'
-  ))
-  const [profilesOpen, setProfilesOpen] = useState(false)
+  const { user, loading: authLoading, error: authError, configured, signIn, signUp, signOut, updatePassword } = useAuth()
+  const [screen, setScreen] = useState('welcome')
   const [toast, setToast] = useState('')
+
+  const normalizeProfiles = useCallback((list) => normalizeProfilesList(list), [])
+  const showToast = useCallback((text) => {
+    setToast(text)
+    window.clearTimeout(window.__athenaToast)
+    window.__athenaToast = window.setTimeout(() => setToast(''), 2200)
+  }, [])
+  const onSyncError = useCallback((message) => {
+    showToast(message)
+  }, [showToast])
+
+  const {
+    profiles,
+    activeId,
+    setActiveId,
+    loading: profilesLoading,
+    persistProfiles,
+    importOffer,
+    acceptLocalImport,
+    declineLocalImport,
+  } = useProfiles({
+    userId: user?.id,
+    normalizeProfiles,
+    onSyncError,
+  })
 
   const activeProfile = useMemo(
     () => (activeId ? profiles.find((p) => p.id === activeId) || null : null),
     [profiles, activeId]
   )
 
-  const persistProfiles = (nextOrUpdater) => {
-    if (typeof nextOrUpdater === 'function') {
-      setProfiles((prev) => {
-        const next = nextOrUpdater(prev)
-        saveProfiles(next)
-        return next
-      })
+  useEffect(() => {
+    if (!user) {
+      setScreen('welcome')
       return
     }
-    setProfiles(nextOrUpdater)
-    saveProfiles(nextOrUpdater)
-  }
+    if (activeId && profiles.some((p) => p.id === activeId)) {
+      setScreen('dashboard')
+    } else {
+      setScreen('welcome')
+    }
+  }, [user, activeId, profiles])
 
-  const openProfile = (profile) => {
-    setActiveId(profile.id)
-    localStorage.setItem(ACTIVE_KEY, profile.id)
-    setScreen('dashboard')
-    setProfilesOpen(false)
-    showToast(`Opened ${profile.name}`)
-  }
+  // One-shot: /?restore=ved while signed in uploads Ved-3.athena backup to this account.
+  useEffect(() => {
+    if (!user || profilesLoading || !supabase) return undefined
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('restore') !== 'ved') return undefined
+    if (window.__athenaRestoreBusy) return undefined
+    window.__athenaRestoreBusy = true
+
+    ;(async () => {
+      try {
+        showToast('Restoring profile backup…')
+        const profile = await restoreAthenaExport({
+          supabase,
+          userId: user.id,
+          url: '/_restore_ved.athena.json',
+        })
+        const normalized = normalizeProfilesList([profile])
+        persistProfiles(normalized)
+        setActiveId(normalized[0].id)
+        setScreen('dashboard')
+        params.delete('restore')
+        const next = `${window.location.pathname}${params.toString() ? `?${params}` : ''}${window.location.hash}`
+        window.history.replaceState({}, '', next)
+        showToast(`Restored ${profile.name}'s progress`)
+      } catch (err) {
+        showToast(err?.message || 'Restore failed')
+      } finally {
+        window.__athenaRestoreBusy = false
+      }
+    })()
+    return undefined
+  }, [user, profilesLoading, persistProfiles, setActiveId, showToast])
 
   const createProfile = (profile) => {
-    const next = [...profiles, profile]
-    persistProfiles(next)
-    openProfile(profile)
+    if (profiles.length >= 1) {
+      showToast('This account already has a profile')
+      const existing = profiles[0]
+      setActiveId(existing.id)
+      setScreen('dashboard')
+      return
+    }
+    persistProfiles([profile])
+    setActiveId(profile.id)
+    setScreen('dashboard')
     showToast(`Welcome, ${profile.name}!`)
   }
 
@@ -974,35 +1014,69 @@ export default function App() {
   const deleteProfile = (profileId) => {
     const target = profiles.find((p) => p.id === profileId)
     if (!target) return
-    const next = profiles.filter((p) => p.id !== profileId)
-    setProfilesOpen(false)
-    if (!next.length) {
-      persistProfiles([])
-      setActiveId(null)
-      localStorage.removeItem(ACTIVE_KEY)
-      setScreen('welcome')
-      showToast('Profile deleted')
-      return
-    }
-    persistProfiles(next)
-    if (activeId === profileId) {
-      const fallback = next[0]
-      setActiveId(fallback.id)
-      localStorage.setItem(ACTIVE_KEY, fallback.id)
-      setScreen('dashboard')
-    }
-    showToast(`${target.name} deleted`)
+    persistProfiles([])
+    setActiveId(null)
+    setScreen('welcome')
+    showToast('Profile deleted')
   }
 
   const goToDashboard = () => {
     setScreen('dashboard')
-    setProfilesOpen(false)
   }
 
-  const showToast = (text) => {
-    setToast(text)
-    window.clearTimeout(window.__athenaToast)
-    window.__athenaToast = window.setTimeout(() => setToast(''), 2200)
+  const handleSignOut = async () => {
+    try {
+      await signOut()
+      showToast('Signed out')
+    } catch {
+      showToast('Could not sign out')
+    }
+  }
+
+  if (!configured) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-white px-6 text-center text-[#14284f]">
+        <div>
+          <div className="text-4xl">🦉</div>
+          <h1 className="mt-4 text-2xl font-bold">Supabase not configured</h1>
+          <p className="mt-2 text-sm text-[#6c7892]">
+            Add <code className="font-mono">VITE_SUPABASE_URL</code> and{' '}
+            <code className="font-mono">VITE_SUPABASE_ANON_KEY</code> to <code className="font-mono">.env</code>, then restart the dev server.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (authLoading || (user && profilesLoading)) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-white text-[#14284f]">
+        <div className="text-center">
+          <div className="text-4xl">🦉</div>
+          <p className="mt-3 text-sm font-semibold text-[#6c7892]">Loading Athena…</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-white text-[#14284f]">
+        <AuthGate onSignIn={signIn} onSignUp={signUp} error={authError} configured={configured} />
+        <AnimatePresence>
+          {toast && (
+            <motion.div
+              className="fixed bottom-5 left-1/2 z-[100] -translate-x-1/2 rounded-full bg-[#12346f] px-5 py-3 text-sm font-semibold text-white shadow-xl"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+            >
+              {toast}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    )
   }
 
   return (
@@ -1016,9 +1090,9 @@ export default function App() {
             exit={{ opacity: 0, scale: .99 }}
           >
             <WelcomePage
-              profiles={profiles}
               onCreate={createProfile}
-              onOpenProfiles={() => setProfilesOpen(true)}
+              onSignOut={handleSignOut}
+              accountEmail={user.email}
             />
           </motion.div>
         ) : (
@@ -1030,12 +1104,12 @@ export default function App() {
           >
             <Dashboard
               profile={activeProfile}
+              accountEmail={user.email}
               onGoDashboard={goToDashboard}
-              onOpenProfiles={() => setProfilesOpen(true)}
-              onNewProfile={() => {
-                setScreen('welcome')
-                setActiveId(null)
-                localStorage.removeItem(ACTIVE_KEY)
+              onSignOut={handleSignOut}
+              onChangePassword={async (currentPassword, newPassword) => {
+                await updatePassword(currentPassword, newPassword)
+                showToast('Password updated')
               }}
               onUpdateProfile={updateProfile}
               onDeleteProfile={deleteProfile}
@@ -1065,18 +1139,52 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <ProfileDrawer
-        open={profilesOpen}
-        profiles={profiles}
-        onClose={() => setProfilesOpen(false)}
-        onOpen={openProfile}
-        onImport={(p) => {
-          const next = [...profiles, p]
-          persistProfiles(next)
-          openProfile(p)
-        }}
-        onToast={showToast}
-      />
+      <AnimatePresence>
+        {importOffer && (
+          <motion.div
+            className="fixed inset-0 z-[90] grid place-items-center bg-[#0d1f3e]/35 px-4 backdrop-blur-[2px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+            >
+              <div className="text-[11px] font-bold tracking-[.17em] text-athena-blue">IMPORT LOCAL DATA</div>
+              <h2 className="mt-1 text-2xl font-bold text-athena-navy">Bring your local profile?</h2>
+              <p className="mt-2 text-sm text-[#6c7892]">
+                Found progress saved in this browser
+                {importOffer.length > 1
+                  ? ` (${importOffer.length} local profiles — only one will be imported)`
+                  : ''}
+                . Import once to sync it to your account.
+              </p>
+              <div className="mt-5 grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={declineLocalImport}
+                  className="rounded-xl border border-[#d5deef] py-3 text-sm font-bold text-[#62718f]"
+                >
+                  Skip
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await acceptLocalImport()
+                    showToast('Local profile imported')
+                  }}
+                  className="rounded-xl bg-athena-blue py-3 text-sm font-bold text-white"
+                >
+                  Import
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {toast && (
@@ -1110,28 +1218,55 @@ function Brand() {
   )
 }
 
-function WelcomePage({ profiles, onCreate, onOpenProfiles }) {
+function WelcomePage({ onCreate, onSignOut, accountEmail }) {
   const [name, setName] = useState('')
+  const [grade, setGrade] = useState('')
+  const [school, setSchool] = useState('')
+  const [testDate, setTestDate] = useState('')
   const [goalScore, setGoalScore] = useState('')
+  const [bestScore, setBestScore] = useState('')
   const [error, setError] = useState('')
 
   const submit = (e) => {
     e.preventDefault()
     if (!name.trim()) return setError('Enter a profile name.')
-    if (goalScore && !isValidSatScore(goalScore)) {
+    if (!grade) return setError('Select a grade level.')
+    if (!school.trim()) return setError('Enter your school.')
+    if (!testDate) return setError('Enter your next test date.')
+    if (!isValidSatScore(bestScore, { allowEmpty: false })) {
+      return setError('Best SAT score must be 400–1600 in increments of 10.')
+    }
+    if (!isValidSatScore(goalScore, { allowEmpty: false })) {
       return setError('Goal score must be 400–1600 in increments of 10.')
     }
+    if (Number(goalScore) < Number(bestScore)) {
+      return setError('Goal score should be at least your best SAT score.')
+    }
     setError('')
-    onCreate(makeStarterProfile({ name, goalScore }))
+    onCreate(makeStarterProfile({
+      name,
+      grade,
+      school,
+      testDate,
+      goalScore,
+      bestScore,
+    }))
   }
 
   return (
     <div className="welcome-shell">
       <header className="welcome-header">
         <Brand />
-        <button onClick={onOpenProfiles} className="rounded-full border border-athena-blue px-5 py-2.5 text-sm font-bold text-athena-blue transition hover:bg-blue-50">
-          {profiles.length ? `Profiles (${profiles.length})` : 'Profiles'}
-        </button>
+        {onSignOut && (
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="rounded-full border border-[#d5deef] px-4 py-2.5 text-sm font-bold text-[#62718f] transition hover:bg-[#f5f7fb]"
+            title={accountEmail || 'Sign out'}
+          >
+            <LogOut size={16} />
+          </button>
+        )}
       </header>
 
       <main className="welcome-main">
@@ -1144,20 +1279,47 @@ function WelcomePage({ profiles, onCreate, onOpenProfiles }) {
           </div>
         </section>
 
-        <section className="flex h-full items-center justify-center">
-          <form onSubmit={submit} className="profile-card">
-            <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-[#eef3ff] text-athena-blue">
-              <UserRound size={28} strokeWidth={1.8} />
+        <section className="flex h-full items-center justify-center py-6">
+          <form onSubmit={submit} className="profile-card profile-card-create">
+            <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-[#eef3ff] text-athena-blue">
+              <UserRound size={24} strokeWidth={1.8} />
             </div>
-            <h1 className="text-center text-[38px] font-bold tracking-[-.04em] text-athena-navy">Create Your Profile</h1>
-            <p className="mt-2 text-center text-[15px] text-[#6c7892]">Your progress is saved locally on this device.</p>
+            <h1 className="text-center text-[32px] font-bold tracking-[-.04em] text-athena-navy">Create Your Profile</h1>
+            <p className="mt-1.5 text-center text-[14px] text-[#6c7892]">Fill in all fields to get started. Progress syncs to your account.</p>
 
-            <div className="mt-7 grid gap-4">
+            <div className="profile-create-grid mt-6">
               <Field label="Profile Name">
-                <input value={name} onChange={e => setName(e.target.value)} placeholder="Enter a name" />
+                <input value={name} onChange={e => setName(e.target.value)} placeholder="Enter a name" autoComplete="name" />
               </Field>
-              <Field label="Goal Score (Optional)">
-                <input value={goalScore} onChange={e => setGoalScore(e.target.value)} inputMode="numeric" placeholder="Enter your target SAT score" />
+              <Field label="Grade level">
+                <select value={grade} onChange={e => setGrade(e.target.value)}>
+                  <option value="">Select grade</option>
+                  {GRADE_OPTIONS.filter(Boolean).map((g) => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="School">
+                <input value={school} onChange={e => setSchool(e.target.value)} placeholder="High school or program" />
+              </Field>
+              <Field label="Next test date">
+                <input type="date" value={testDate} onChange={e => setTestDate(e.target.value)} />
+              </Field>
+              <Field label="Best SAT score">
+                <input
+                  value={bestScore}
+                  onChange={e => setBestScore(e.target.value)}
+                  inputMode="numeric"
+                  placeholder="e.g. 1420"
+                />
+              </Field>
+              <Field label="SAT goal">
+                <input
+                  value={goalScore}
+                  onChange={e => setGoalScore(e.target.value)}
+                  inputMode="numeric"
+                  placeholder="e.g. 1550"
+                />
               </Field>
             </div>
 
@@ -1168,7 +1330,7 @@ function WelcomePage({ profiles, onCreate, onOpenProfiles }) {
             </button>
 
             <p className="mt-4 text-center text-xs text-[#748096]">
-              Saved in this browser. Export a .athena backup anytime.
+              Synced to your Athena account across devices.
             </p>
           </form>
         </section>
@@ -1349,9 +1511,10 @@ function PeeringAthena({ pageKey }) {
 
 function Dashboard({
   profile,
+  accountEmail,
   onGoDashboard,
-  onOpenProfiles,
-  onNewProfile,
+  onSignOut,
+  onChangePassword,
   onUpdateProfile,
   onDeleteProfile,
   onCompleteQuestion,
@@ -1370,7 +1533,6 @@ function Dashboard({
 
   const navigate = (key) => {
     if (key === 'dashboard') goDashboard()
-    else if (key === 'profiles') onOpenProfiles()
     else {
       setQuickLaunch(null)
       setPage(key)
@@ -1448,9 +1610,10 @@ function Dashboard({
       <Sidebar
         page={page}
         profile={profile}
+        accountEmail={accountEmail}
         onNavigate={navigate}
-        onOpenProfiles={onOpenProfiles}
-        onNewProfile={onNewProfile}
+        onSignOut={onSignOut}
+        onChangePassword={onChangePassword}
         onUpdateProfile={onUpdateProfile}
         onDeleteProfile={onDeleteProfile}
       />
@@ -1601,11 +1764,17 @@ function ProfileEditModal({ open, profile, onClose, onSave }) {
   const submit = (e) => {
     e.preventDefault()
     if (!name.trim()) return setError('Enter a profile name.')
+    if (!grade) return setError('Select a grade level.')
+    if (!school.trim()) return setError('Enter your school.')
+    if (!testDate) return setError('Enter your next test date.')
     if (!isValidSatScore(goalScore, { allowEmpty: false })) {
       return setError('Goal score must be 400–1600 in increments of 10.')
     }
-    if (!isValidSatScore(bestScore, { allowEmpty: true })) {
+    if (!isValidSatScore(bestScore, { allowEmpty: false })) {
       return setError('Best SAT score must be 400–1600 in increments of 10.')
+    }
+    if (Number(goalScore) < Number(bestScore)) {
+      return setError('Goal score should be at least your best SAT score.')
     }
     setError('')
     onSave({
@@ -1614,7 +1783,7 @@ function ProfileEditModal({ open, profile, onClose, onSave }) {
       school: school.trim(),
       testDate,
       goalScore: Number(goalScore),
-      bestScore: bestScore === '' ? null : Number(bestScore),
+      bestScore: Number(bestScore),
     })
   }
 
@@ -1647,10 +1816,10 @@ function ProfileEditModal({ open, profile, onClose, onSave }) {
               ))}
             </select>
           </Field>
-          <Field label="School (optional)">
+          <Field label="School">
             <input value={school} onChange={(e) => setSchool(e.target.value)} placeholder="High school or program" />
           </Field>
-          <Field label="Next test date (optional)">
+          <Field label="Next test date">
             <input type="date" value={testDate} onChange={(e) => setTestDate(e.target.value)} />
           </Field>
           <Field label="Best SAT score">
@@ -1676,6 +1845,112 @@ function ProfileEditModal({ open, profile, onClose, onSave }) {
         <div className="profile-edit-actions">
           <button type="button" className="profile-edit-cancel" onClick={onClose}>Cancel</button>
           <button type="submit" className="profile-edit-save">Save changes</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+function ChangePasswordModal({ open, onClose, onSubmit }) {
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    if (!open) return
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    setError('')
+    setBusy(false)
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return undefined
+    const onKey = (e) => {
+      if (e.key === 'Escape' && !busy) onClose()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open, onClose, busy])
+
+  if (!open) return null
+
+  const submit = async (e) => {
+    e.preventDefault()
+    if (!currentPassword) return setError('Enter your current password.')
+    if (newPassword.length < 6) return setError('New password must be at least 6 characters.')
+    if (newPassword !== confirmPassword) return setError('New passwords do not match.')
+    if (newPassword === currentPassword) return setError('New password must be different from the current one.')
+    setError('')
+    setBusy(true)
+    try {
+      await onSubmit(currentPassword, newPassword)
+      onClose()
+    } catch (err) {
+      setError(err?.message || 'Could not update password.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="profile-edit-backdrop" onClick={busy ? undefined : onClose} role="presentation">
+      <form
+        className="profile-edit-modal"
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={submit}
+      >
+        <div className="profile-edit-head">
+          <div>
+            <div className="profile-edit-eyebrow">Account</div>
+            <h3>Change password</h3>
+          </div>
+          <button type="button" className="profile-edit-close" onClick={onClose} aria-label="Close" disabled={busy}>
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="profile-edit-grid">
+          <Field label="Current password">
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="Current password"
+              autoFocus
+            />
+          </Field>
+          <Field label="New password">
+            <input
+              type="password"
+              autoComplete="new-password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="At least 6 characters"
+            />
+          </Field>
+          <Field label="Confirm new password">
+            <input
+              type="password"
+              autoComplete="new-password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Repeat new password"
+            />
+          </Field>
+        </div>
+
+        {error && <p className="profile-edit-error">{error}</p>}
+
+        <div className="profile-edit-actions">
+          <button type="button" className="profile-edit-cancel" onClick={onClose} disabled={busy}>Cancel</button>
+          <button type="submit" className="profile-edit-save" disabled={busy}>
+            {busy ? 'Updating…' : 'Update password'}
+          </button>
         </div>
       </form>
     </div>
@@ -4585,6 +4860,54 @@ function PracticeEndConfirmModal({ open, unansweredCount, total, onCancel, onCon
           </button>
           <button type="button" className="practice-pause-resume" onClick={onConfirm}>
             Submit anyway
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
+function DeleteProfileConfirmModal({ open, profileName, onCancel, onConfirm }) {
+  useEffect(() => {
+    if (!open) return undefined
+    const onKey = (e) => {
+      if (e.key === 'Escape') onCancel()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open, onCancel])
+
+  if (!open) return null
+  return (
+    <div
+      className="practice-pause-overlay practice-end-confirm-overlay profile-delete-overlay"
+      onClick={onCancel}
+      role="presentation"
+    >
+      <motion.div
+        className="practice-pause-card practice-end-confirm-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="profile-delete-confirm-title"
+        initial={{ opacity: 0, scale: 0.92, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="practice-pause-icon" aria-hidden="true">
+          <AlertTriangle size={28} strokeWidth={2.4} />
+        </div>
+        <h3 id="profile-delete-confirm-title">Last chance</h3>
+        <p>
+          Delete <strong>{profileName}</strong> and all synced progress? This cannot be undone.
+        </p>
+        <div className="practice-end-confirm-actions">
+          <button type="button" className="practice-end-confirm-secondary" onClick={onCancel}>
+            Keep profile
+          </button>
+          <button type="button" className="practice-pause-resume profile-delete-confirm-btn" onClick={onConfirm}>
+            <Trash2 size={16} strokeWidth={2.4} />
+            Delete forever
           </button>
         </div>
       </motion.div>
@@ -9137,20 +9460,22 @@ function MomentumMeter({ charge, questions = 0, mood }) {
 function Sidebar({
   page,
   profile,
+  accountEmail,
   onNavigate,
-  onOpenProfiles,
-  onNewProfile,
+  onSignOut,
+  onChangePassword,
   onUpdateProfile,
   onDeleteProfile,
 }) {
   const items = [
     ['Dashboard', Home, 'dashboard'], ['Reading & Writing', BookOpen, 'Reading'], ['Math', Calculator, 'Math'], ['Question Bank', ClipboardList, 'Question Bank'],
     ['Practice Tests', CalendarDays, 'Practice Tests'], ['Analytics', Trophy, 'Analytics'],
-    ['Profile Settings', Settings, 'profiles'],
   ]
   const [menuOpen, setMenuOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
+  const [passwordOpen, setPasswordOpen] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleteLastChance, setDeleteLastChance] = useState(false)
   const menuRef = useRef(null)
   const best = profileBestScore(profile)
 
@@ -9225,6 +9550,9 @@ function Sidebar({
           <div className="profile-menu sidebar-profile-menu" role="menu">
             <div className="profile-menu-summary">
               <div className="profile-menu-name">{profile.name}</div>
+              {accountEmail && (
+                <div className="profile-menu-email">{accountEmail}</div>
+              )}
               <div className="profile-menu-meta">
                 {[profile.grade, profile.school].filter(Boolean).join(' · ') || 'Add grade & school'}
               </div>
@@ -9244,30 +9572,34 @@ function Sidebar({
                 setEditOpen(true)
               }}
             >
-              <PenLine size={16} /> Edit profile & scores
+              <PenLine size={16} /> Edit profile
             </button>
-            <button
-              type="button"
-              role="menuitem"
-              className="profile-menu-item"
-              onClick={() => {
-                closeMenu()
-                onOpenProfiles()
-              }}
-            >
-              <UserRound size={16} /> Switch profile
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              className="profile-menu-item"
-              onClick={() => {
-                closeMenu()
-                onNewProfile()
-              }}
-            >
-              <span className="text-base leading-none">＋</span> New profile
-            </button>
+            {onChangePassword && (
+              <button
+                type="button"
+                role="menuitem"
+                className="profile-menu-item"
+                onClick={() => {
+                  closeMenu()
+                  setPasswordOpen(true)
+                }}
+              >
+                <KeyRound size={16} /> Change password
+              </button>
+            )}
+            {onSignOut && (
+              <button
+                type="button"
+                role="menuitem"
+                className="profile-menu-item"
+                onClick={() => {
+                  closeMenu()
+                  onSignOut()
+                }}
+              >
+                <LogOut size={16} /> Log out
+              </button>
+            )}
 
             <div className="profile-menu-divider" />
 
@@ -9282,7 +9614,7 @@ function Sidebar({
               </button>
             ) : (
               <div className="profile-menu-confirm">
-                <p>Delete <strong>{profile.name}</strong> and all local progress? This cannot be undone.</p>
+                <p>Delete <strong>{profile.name}</strong> and all synced progress?</p>
                 <div className="profile-menu-confirm-actions">
                   <button type="button" className="profile-menu-confirm-cancel" onClick={() => setConfirmDelete(false)}>
                     Cancel
@@ -9291,8 +9623,9 @@ function Sidebar({
                     type="button"
                     className="profile-menu-confirm-delete"
                     onClick={() => {
-                      closeMenu()
-                      onDeleteProfile(profile.id)
+                      setConfirmDelete(false)
+                      setDeleteLastChance(true)
+                      setMenuOpen(false)
                     }}
                   >
                     Delete
@@ -9304,6 +9637,16 @@ function Sidebar({
         )}
       </div>
 
+      <DeleteProfileConfirmModal
+        open={deleteLastChance}
+        profileName={profile.name}
+        onCancel={() => setDeleteLastChance(false)}
+        onConfirm={() => {
+          setDeleteLastChance(false)
+          onDeleteProfile(profile.id)
+        }}
+      />
+
       <ProfileEditModal
         open={editOpen}
         profile={profile}
@@ -9311,6 +9654,13 @@ function Sidebar({
         onSave={(patch) => {
           onUpdateProfile(profile.id, patch)
           setEditOpen(false)
+        }}
+      />
+      <ChangePasswordModal
+        open={passwordOpen}
+        onClose={() => setPasswordOpen(false)}
+        onSubmit={async (currentPassword, newPassword) => {
+          await onChangePassword(currentPassword, newPassword)
         }}
       />
     </aside>
@@ -9884,80 +10234,5 @@ function CoachCard() {
         />
       </div>
     </div>
-  )
-}
-
-function ProfileDrawer({ open, profiles, onClose, onOpen, onImport, onToast }) {
-  const inputRef = useRef(null)
-
-  const exportProfile = (profile) => {
-    const blob = new Blob([JSON.stringify({
-      format: 'ATHENA_SAT_PROFILE',
-      version: FILE_VERSION,
-      exportedAt: new Date().toISOString(),
-      profile
-    }, null, 2)], {type:'application/json'})
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${profile.name.replace(/[^a-z0-9-_]+/gi,'-') || 'profile'}.athena`
-    a.click()
-    URL.revokeObjectURL(url)
-    onToast(`${profile.name}.athena exported`)
-  }
-
-  const importFile = async (file) => {
-    try {
-      const data = JSON.parse(await file.text())
-      if (data.format !== 'ATHENA_SAT_PROFILE' || !data.profile?.name) throw new Error('invalid')
-      const p = { ...data.profile, id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}` }
-      onImport(p)
-    } catch {
-      onToast('Could not import that .athena file')
-    }
-  }
-
-  return (
-    <AnimatePresence>
-      {open && (
-        <>
-          <motion.button className="fixed inset-0 z-40 bg-[#0d1f3e]/25 backdrop-blur-[2px]" onClick={onClose} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} />
-          <motion.aside className="fixed right-0 top-0 z-50 h-full w-[420px] max-w-[92vw] bg-white p-6 shadow-2xl"
-            initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:240,damping:28}}>
-            <div className="flex items-start justify-between">
-              <div><div className="text-[11px] font-bold tracking-[.17em] text-athena-blue">LOCAL PROFILES</div><h2 className="mt-1 text-2xl font-bold text-athena-navy">Choose a profile</h2></div>
-              <button onClick={onClose} className="grid h-9 w-9 place-items-center rounded-full bg-[#f3f5f9]"><X size={20}/></button>
-            </div>
-
-            <div className="mt-6 space-y-3">
-              {profiles.length ? profiles.map(p => (
-                <div key={p.id} className="rounded-2xl border border-[#e2e7f1] p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <div className="font-bold text-athena-navy">{p.name}</div>
-                      <div className="text-xs text-[#77839a]">
-                        {[
-                          p.grade,
-                          profileBestScore(p) != null ? `Best ${profileBestScore(p)}` : null,
-                          p.goalScore != null ? `${p.goalScore} goal` : null,
-                        ].filter(Boolean).join(' · ')}
-                      </div>
-                    </div>
-                    <button onClick={()=>onOpen(p)} className="rounded-full bg-[#eef3ff] px-3 py-2 text-xs font-bold text-athena-blue">Open</button>
-                  </div>
-                  <button onClick={()=>exportProfile(p)} className="mt-3 flex items-center gap-2 text-xs font-semibold text-[#62718f]"><Save size={15}/> Export .athena</button>
-                </div>
-              )) : <div className="rounded-2xl border border-dashed border-[#d8e1f1] p-8 text-center text-sm text-[#7b879e]">No saved profiles yet.</div>}
-            </div>
-
-            <div className="absolute bottom-6 left-6 right-6 grid grid-cols-2 gap-3">
-              <button onClick={()=>inputRef.current?.click()} className="flex items-center justify-center gap-2 rounded-xl border border-[#d5deef] py-3 text-sm font-bold text-athena-blue"><Import size={17}/> Import</button>
-              <button onClick={onClose} className="rounded-xl bg-athena-blue py-3 text-sm font-bold text-white">Done</button>
-              <input ref={inputRef} type="file" accept=".athena,application/json" className="hidden" onChange={e=>e.target.files?.[0] && importFile(e.target.files[0])}/>
-            </div>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
   )
 }

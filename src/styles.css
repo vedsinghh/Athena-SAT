@@ -96,6 +96,137 @@ button { cursor: pointer; }
   transform: rotate(18deg) skew(-10deg,-6deg);
   border-bottom-left-radius: 5px;
 }
+
+/* Auth landing — SAT prep pitch */
+.auth-landing {
+  background:
+    radial-gradient(ellipse 70% 55% at 12% 72%, rgba(49, 91, 183, 0.10) 0%, transparent 58%),
+    radial-gradient(ellipse 55% 45% at 88% 18%, rgba(212, 168, 67, 0.12) 0%, transparent 52%),
+    linear-gradient(165deg, #f4f8ff 0%, #ffffff 42%, #eef5ff 100%);
+}
+.auth-landing-main {
+  position: relative;
+  z-index: 2;
+  height: calc(100vh - 92px);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px clamp(24px, 3.5vw, 56px) 44px;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(260px, 1.05fr) minmax(320px, 0.95fr);
+  gap: clamp(20px, 2.5vw, 40px);
+  align-items: center;
+}
+.auth-pitch-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 100%;
+}
+.auth-pitch-athena {
+  height: min(68vh, 560px);
+  max-height: calc(100vh - 140px);
+  transform: none;
+}
+.auth-pitch-copy {
+  max-width: 420px;
+  min-width: 0;
+  padding: 0;
+}
+.auth-pitch-headline {
+  margin: 0;
+  font-family: "Libre Baskerville", serif;
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #12346f;
+}
+.auth-pitch-sub {
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #5a6b88;
+  max-width: 38ch;
+}
+.auth-pitch-points {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 11px;
+}
+.auth-pitch-points li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1b2d53;
+  font-size: 14px;
+  font-weight: 600;
+}
+.auth-pitch-points li svg {
+  flex-shrink: 0;
+  color: #2f62d6;
+}
+.auth-form-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 100%;
+}
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px 32px 24px;
+}
+
+@media (max-width: 1100px) {
+  .auth-landing-main {
+    grid-template-columns: minmax(180px, 0.85fr) minmax(220px, 1fr) minmax(300px, 0.95fr);
+    gap: 18px;
+  }
+  .auth-pitch-athena {
+    height: min(58vh, 460px);
+  }
+  .auth-pitch-headline {
+    font-size: clamp(24px, 2.4vw, 30px);
+  }
+}
+
+@media (max-width: 900px) {
+  .auth-landing-main {
+    height: auto;
+    min-height: calc(100vh - 92px);
+    grid-template-columns: 1fr;
+    padding-bottom: 56px;
+  }
+  .auth-pitch-visual {
+    min-height: auto;
+    order: -1;
+  }
+  .auth-pitch-athena {
+    height: min(36vh, 320px);
+  }
+  .auth-pitch-copy {
+    text-align: center;
+    margin: 0 auto;
+  }
+  .auth-pitch-sub {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .auth-pitch-points {
+    justify-items: center;
+  }
+  .auth-pitch-points li {
+    justify-content: center;
+  }
+  .auth-card {
+    max-width: 100%;
+  }
+}
+
 .profile-card {
   width: 100%; max-width: 620px;
   padding: 31px 54px 28px;
@@ -103,6 +234,21 @@ button { cursor: pointer; }
   border-radius: 30px;
   background: rgba(255,255,255,.975);
   box-shadow: 0 26px 72px rgba(31,62,126,.09),0 4px 12px rgba(31,62,126,.04);
+}
+.profile-card-create {
+  max-width: 640px;
+  padding: 24px 36px 22px;
+  max-height: min(90vh, 780px);
+  overflow-y: auto;
+}
+.profile-create-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 14px;
+}
+@media (max-width: 640px) {
+  .profile-create-grid { grid-template-columns: 1fr; }
+  .profile-card-create { padding: 22px 20px 18px; }
 }
 .profile-field {
   height: 52px;
@@ -234,6 +380,13 @@ button { cursor: pointer; }
   font-size: 15px;
   font-weight: 700;
   color: #12346f;
+}
+.profile-menu-email {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5f6f8c;
+  word-break: break-all;
 }
 .profile-menu-meta {
   margin-top: 2px;
@@ -3783,6 +3936,17 @@ body.math-reference-dragging * {
 .practice-end-confirm-secondary:hover {
   transform: translateY(-1px);
   background: #fff;
+}
+.profile-delete-overlay {
+  left: 0;
+  z-index: 320;
+}
+.profile-delete-confirm-btn {
+  background: #b42318;
+  box-shadow: 0 10px 24px rgba(180, 35, 24, 0.28);
+}
+.profile-delete-confirm-btn:hover {
+  transform: translateY(-1px);
 }
 .practice-results-score {
   font-size: 20px;
