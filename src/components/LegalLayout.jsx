@@ -16,7 +16,7 @@ export default function LegalLayout({ title, updated, children }) {
 
       <main className="legal-main">
         <article className="legal-card">
-          <p className="legal-updated">Last updated: {updated}</p>
+          <p className="legal-updated">{updated ? `Last updated: ${updated}` : 'Admin inbox'}</p>
           <h1>{title}</h1>
           {children}
         </article>
@@ -28,6 +28,8 @@ export default function LegalLayout({ title, updated, children }) {
           <Link to="/privacy">Privacy</Link>
           <span aria-hidden="true">·</span>
           <Link to="/terms">Terms</Link>
+          <span aria-hidden="true">·</span>
+          <Link to="/reports">Reports</Link>
         </div>
       </footer>
     </div>

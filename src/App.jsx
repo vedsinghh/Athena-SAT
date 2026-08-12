@@ -13,8 +13,9 @@ import readingQuestions from './data/readingQuestions.json'
 import mathSkillCounts from './data/mathSkillCounts.json'
 import readingSkillCounts from './data/readingSkillCounts.json'
 import katex from 'katex'
-import AuthGate from './components/AuthGate'
+import LandingPage from './components/landing/LandingPage'
 import PasswordRequirements from './components/PasswordRequirements'
+import QuestionReportModal from './components/QuestionReportModal'
 import { useAuth } from './hooks/useAuth'
 import { isPasswordValid, passwordValidationMessage } from './lib/passwordRules'
 import { useProfiles } from './hooks/useProfiles'
@@ -1064,7 +1065,13 @@ export default function App() {
   if (!user) {
     return (
       <div className="min-h-screen bg-white text-[#14284f]">
-        <AuthGate onSignIn={signIn} onSignUp={signUp} onSignInWithGoogle={signInWithGoogle} error={authError} configured={configured} />
+        <LandingPage
+          onSignIn={signIn}
+          onSignUp={signUp}
+          onSignInWithGoogle={signInWithGoogle}
+          error={authError}
+          configured={configured}
+        />
         <AnimatePresence>
           {toast && (
             <motion.div
@@ -2731,6 +2738,7 @@ function QuestionBankMathPage({ onBack, profile, onCompleteQuestion }) {
         config={session}
         onEnd={() => setSession(null)}
         onCompleteQuestion={onCompleteQuestion}
+        profileName={profile?.name}
       />
     )
   }
@@ -2764,6 +2772,7 @@ function QuestionBankReadingPage({ onBack, profile, onCompleteQuestion }) {
         config={session}
         onEnd={() => setSession(null)}
         onCompleteQuestion={onCompleteQuestion}
+        profileName={profile?.name}
       />
     )
   }
@@ -2928,6 +2937,7 @@ function ReadingPage({
         onEnd={() => setSession(null)}
         onCompleteQuestion={onCompleteQuestion}
         onCompleteSession={onCompleteSession}
+        profileName={profile?.name}
       />
     )
   }
@@ -3239,6 +3249,7 @@ function MathPage({
         onEnd={() => setSession(null)}
         onCompleteQuestion={onCompleteQuestion}
         onCompleteSession={onCompleteSession}
+        profileName={profile?.name}
       />
     )
   }
@@ -5529,7 +5540,7 @@ function PracticeQuestionNumber({ number, question, tone = 'math' }) {
   )
 }
 
-function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSession }) {
+function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSession, profileName }) {
   const excludeIds = useMemo(
     () => (config.excludeIds instanceof Set ? config.excludeIds : new Set(config.excludeIds || [])),
     [config.excludeIds],
@@ -5575,6 +5586,8 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   const [checkPageOpen, setCheckPageOpen] = useState(false)
   const [referenceOpen, setReferenceOpen] = useState(false)
   const [reviewMode, setReviewMode] = useState(false)
+  const [reportOpen, setReportOpen] = useState(false)
+  const [reportToast, setReportToast] = useState('')
   const [elapsed, setElapsed] = useState(0)
   const [paused, setPaused] = useState(false)
   const [calcOpen, setCalcOpen] = useState(() => (
@@ -6043,7 +6056,13 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
               )}
             </div>
             <div className="practice-q-right">
-              <button type="button" className="practice-text-btn">Report</button>
+              <button
+                type="button"
+                className="practice-text-btn"
+                onClick={() => setReportOpen(true)}
+              >
+                Report
+              </button>
               {current?.pdf && current?.pdfPage != null && (
                 <button
                   type="button"
@@ -6206,6 +6225,23 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
         onConfirm={confirmEndIncomplete}
         tone="math"
       />
+      <QuestionReportModal
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        question={current}
+        subject="math"
+        profileName={profileName}
+        onSubmitted={(result) => {
+          setReportToast(result?.source === 'local'
+            ? 'Report saved on this device (cloud sync pending).'
+            : 'Thanks — report submitted.')
+          window.clearTimeout(window.__athenaReportToast)
+          window.__athenaReportToast = window.setTimeout(() => setReportToast(''), 2600)
+        }}
+      />
+      {reportToast ? (
+        <div className="question-report-toast" role="status">{reportToast}</div>
+      ) : null}
     </div>
   )
 }
@@ -6251,7 +6287,7 @@ function DesmosEmbed({ mode }) {
   return <div className="practice-desmos-host" ref={hostRef} />
 }
 
-function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSession }) {
+function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSession, profileName }) {
   const excludeIds = useMemo(
     () => (config.excludeIds instanceof Set ? config.excludeIds : new Set(config.excludeIds || [])),
     [config.excludeIds],
@@ -6296,6 +6332,8 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   const [endConfirmOpen, setEndConfirmOpen] = useState(false)
   const [checkPageOpen, setCheckPageOpen] = useState(false)
   const [reviewMode, setReviewMode] = useState(false)
+  const [reportOpen, setReportOpen] = useState(false)
+  const [reportToast, setReportToast] = useState('')
   const [elapsed, setElapsed] = useState(0)
   const [paused, setPaused] = useState(false)
   const [questionTimes, setQuestionTimes] = useState(() => Array(config.count || 0).fill(0))
@@ -6750,7 +6788,13 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
               )}
             </div>
             <div className="practice-q-right">
-              <button type="button" className="practice-text-btn reading-text-btn">Report</button>
+              <button
+                type="button"
+                className="practice-text-btn reading-text-btn"
+                onClick={() => setReportOpen(true)}
+              >
+                Report
+              </button>
               {current?.pdf && current?.pdfPage != null && (
                 <button
                   type="button"
@@ -6871,6 +6915,23 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
         onConfirm={confirmEndIncomplete}
         tone="reading"
       />
+      <QuestionReportModal
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        question={current}
+        subject="reading"
+        profileName={profileName}
+        onSubmitted={(result) => {
+          setReportToast(result?.source === 'local'
+            ? 'Report saved on this device (cloud sync pending).'
+            : 'Thanks — report submitted.')
+          window.clearTimeout(window.__athenaReportToast)
+          window.__athenaReportToast = window.setTimeout(() => setReportToast(''), 2600)
+        }}
+      />
+      {reportToast ? (
+        <div className="question-report-toast" role="status">{reportToast}</div>
+      ) : null}
     </div>
   )
 }
