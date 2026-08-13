@@ -519,13 +519,16 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
       && String(entry.questionId) === qid,
   )
 
-  // Upsert so re-checks in Question Bank refresh today's activity and match overall progress.
+  // Upsert for activity freshness, but a first miss sticks — retries that get it
+  // right must not flip history / analytics to Correct.
   if (existingIdx >= 0) {
     const prev = history[existingIdx]
+    const missedFirst = prev.correct === false
+    const scoredCorrect = missedFirst ? false : Boolean(correct)
     const nextEntry = {
       ...prev,
-      correct: Boolean(correct),
-      answer: answer ?? null,
+      correct: scoredCorrect,
+      answer: missedFirst ? (prev.answer ?? answer ?? null) : (answer ?? null),
       difficulty: question.difficulty || prev.difficulty || null,
       sub: [question.domain, question.skill || question.topic].filter(Boolean).join(' · ') || prev.sub,
       elapsed: timeSpent ?? prev.elapsed ?? null,
@@ -836,9 +839,11 @@ function reconcileBankHistoryWithProgress(profile) {
   const progress = profile.qbankProgress || {}
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
   let changed = false
-  // Only sync bank attempt lines to latest progress. Never rewrite historical practice-set scores.
+  // Sync bank lines toward progress, but never promote Incorrect → Correct
+  // (that would undo a first-miss after a later retry).
   const nextHistory = history.map((entry) => {
     if (entry?.type !== 'bank' || entry.questionId == null) return entry
+    if (entry.correct === false) return entry
     const row = progress[String(entry.questionId)]
     if (!row || row.subject !== entry.subject || typeof row.correct !== 'boolean') return entry
     if (Boolean(entry.correct) === row.correct) return entry
@@ -3688,13 +3693,17 @@ function applyQuestionCompletion(profile, question, answer, subject) {
   if (correct == null) return profile
 
   const qid = String(question.id)
+  const existing = (profile.qbankProgress || {})[qid]
+  // First miss sticks for analytics: getting it right on a later try does not
+  // count as Correct in domain accuracy / overall progress.
+  const scoredCorrect = existing?.correct === false ? false : Boolean(correct)
   const nextProgress = {
     ...(profile.qbankProgress || {}),
     [qid]: {
       subject,
-      correct: Boolean(correct),
-      domain: question.domain || '',
-      skill: question.skill || question.topic || '',
+      correct: scoredCorrect,
+      domain: question.domain || existing?.domain || '',
+      skill: question.skill || question.topic || existing?.skill || '',
     },
   }
 
