@@ -506,6 +506,24 @@ function appendProgressHistory(profile, entry) {
   })
 }
 
+function latestBankHistoryEntry(profile, subject, questionId) {
+  const qid = String(questionId)
+  const history = Array.isArray(profile?.progressHistory) ? profile.progressHistory : []
+  return history.find(
+    (entry) => entry?.type === 'bank'
+      && entry?.subject === subject
+      && String(entry.questionId) === qid,
+  ) || null
+}
+
+function isSameDayBankRetry(profile, subject, questionId) {
+  const last = latestBankHistoryEntry(profile, subject, questionId)
+  if (!last?.createdAt) return false
+  const lastDay = localDayKey(last.createdAt)
+  const today = localDayKey()
+  return Boolean(lastDay && today && lastDay === today)
+}
+
 function applyBankHistoryLine(profile, question, answer, subject, { elapsed = null } = {}) {
   const correct = isAnswerCorrect(question, answer)
   if (correct == null) return profile
@@ -518,21 +536,33 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
       && entry?.subject === subject
       && String(entry.questionId) === qid,
   )
+  const prev = existingIdx >= 0 ? history[existingIdx] : null
+  const sameDay = prev ? isSameDayBankRetry(profile, subject, qid) : false
 
-  // Upsert for activity freshness, but a first miss sticks — retries that get it
-  // right must not flip history / analytics to Correct.
-  if (existingIdx >= 0) {
-    const prev = history[existingIdx]
+  const makeLine = (scoredCorrect, previous = null) => ({
+    id: previous?.id || crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
+    type: 'bank',
+    subject,
+    title: previous?.title || (isMath ? 'Question Bank · Math' : 'Question Bank · Reading'),
+    sub: [question.domain, question.skill || question.topic].filter(Boolean).join(' · ')
+      || previous?.sub
+      || 'Practice question',
+    correct: Boolean(scoredCorrect),
+    questionId: qid,
+    answer: answer ?? previous?.answer ?? null,
+    difficulty: question.difficulty || previous?.difficulty || null,
+    elapsed: timeSpent ?? previous?.elapsed ?? null,
+    createdAt: new Date().toISOString(),
+  })
+
+  // Same-day retries upsert, and a first miss that day sticks. A later day is a
+  // new attempt: append a fresh line so a correct redo can count as Correct.
+  if (prev && sameDay) {
     const missedFirst = prev.correct === false
     const scoredCorrect = missedFirst ? false : Boolean(correct)
     const nextEntry = {
-      ...prev,
-      correct: scoredCorrect,
+      ...makeLine(scoredCorrect, prev),
       answer: missedFirst ? (prev.answer ?? answer ?? null) : (answer ?? null),
-      difficulty: question.difficulty || prev.difficulty || null,
-      sub: [question.domain, question.skill || question.topic].filter(Boolean).join(' · ') || prev.sub,
-      elapsed: timeSpent ?? prev.elapsed ?? null,
-      createdAt: new Date().toISOString(),
     }
     const progressHistory = [
       nextEntry,
@@ -546,19 +576,7 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
     })
   }
 
-  return appendProgressHistory(profile, {
-    id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
-    type: 'bank',
-    subject,
-    title: isMath ? 'Question Bank · Math' : 'Question Bank · Reading',
-    sub: [question.domain, question.skill || question.topic].filter(Boolean).join(' · ') || 'Practice question',
-    correct: Boolean(correct),
-    questionId: qid,
-    answer: answer ?? null,
-    difficulty: question.difficulty || null,
-    elapsed: timeSpent,
-    createdAt: new Date().toISOString(),
-  })
+  return appendProgressHistory(profile, makeLine(Boolean(correct), null))
 }
 
 function lookupQuestion(questionId, subject) {
@@ -858,6 +876,51 @@ function reconcileBankHistoryWithProgress(profile) {
   })
 }
 
+/** One-time: Ved's Aug 13 retries were frozen as Incorrect by the first-miss lock. */
+function repairFrozenBankRetries(profile) {
+  if (!profile || profile.bankRetryScoresRepairedV1) return profile
+  if (String(profile.name || '').trim().toLowerCase() !== 'ved') return profile
+
+  const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
+  const flipIds = new Set()
+  let changed = false
+  const nextHistory = history.map((entry) => {
+    if (entry?.type !== 'bank' || entry.correct !== false) return entry
+    if (localDayKey(entry.createdAt) !== '2026-08-13') return entry
+    changed = true
+    if (entry.questionId != null && entry.questionId !== '') {
+      flipIds.add(String(entry.questionId))
+    }
+    return { ...entry, correct: true }
+  })
+
+  if (!changed) return { ...profile, bankRetryScoresRepairedV1: true }
+
+  const nextProgress = { ...(profile.qbankProgress || {}) }
+  flipIds.forEach((id) => {
+    const row = nextProgress[id]
+    if (!row) {
+      nextProgress[id] = { subject: 'math', correct: true, domain: '', skill: '' }
+      return
+    }
+    nextProgress[id] = { ...row, correct: true }
+  })
+
+  const reading = deriveSubjectStats(nextProgress, 'reading', READING_DOMAIN_NAMES, readingQuestions)
+  const math = deriveSubjectStats(nextProgress, 'math', MATH_DOMAIN_NAMES, mathQuestions)
+
+  return applyStreakFromHistory({
+    ...profile,
+    bankRetryScoresRepairedV1: true,
+    progressHistory: nextHistory,
+    activity: nextHistory.map(historyToActivityItem).slice(0, 40),
+    qbankProgress: nextProgress,
+    overallAccuracy: deriveOverallAccuracy(nextProgress) ?? null,
+    reading: { ...(profile.reading || {}), ...reading },
+    math: { ...(profile.math || {}), ...math },
+  })
+}
+
 function scrubEmptyPracticeSets(profile) {
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
   const cleaned = history.filter((entry) => !isEmptyPracticeSetEntry(entry))
@@ -873,10 +936,10 @@ function scrubEmptyPracticeSets(profile) {
 
 function normalizeProfilesList(profiles) {
   const list = Array.isArray(profiles) ? profiles : []
-  const normalized = list.map((p) => scrubEmptyPracticeSets(applyStreakFromHistory({
+  const normalized = list.map((p) => repairFrozenBankRetries(scrubEmptyPracticeSets(applyStreakFromHistory({
     ...p,
     progressHistory: Array.isArray(p.progressHistory) ? p.progressHistory : [],
-  })))
+  }))))
   try {
     const before = JSON.stringify(list.map((p) => p.progressHistory || []))
     const after = JSON.stringify(normalized.map((p) => p.progressHistory || []))
@@ -991,6 +1054,16 @@ export default function App() {
     })()
     return undefined
   }, [user, profilesLoading, persistProfiles, setActiveId, showToast])
+
+  useEffect(() => {
+    if (!user || profilesLoading || !profiles.length) return undefined
+    const needsRepair = profiles.some(
+      (p) => !p.bankRetryScoresRepairedV1 && String(p.name || '').trim().toLowerCase() === 'ved',
+    )
+    if (!needsRepair) return undefined
+    persistProfiles((prev) => prev.map((p) => repairFrozenBankRetries(p)))
+    return undefined
+  }, [user, profilesLoading, profiles, persistProfiles])
 
   const createProfile = (profile) => {
     if (profiles.length >= 1) {
@@ -3694,9 +3767,10 @@ function applyQuestionCompletion(profile, question, answer, subject) {
 
   const qid = String(question.id)
   const existing = (profile.qbankProgress || {})[qid]
-  // First miss sticks for analytics: getting it right on a later try does not
-  // count as Correct in domain accuracy / overall progress.
-  const scoredCorrect = existing?.correct === false ? false : Boolean(correct)
+  // Same-day first miss sticks. A redo on a later day can count as Correct.
+  const scoredCorrect = existing?.correct === false && isSameDayBankRetry(profile, subject, qid)
+    ? false
+    : Boolean(correct)
   const nextProgress = {
     ...(profile.qbankProgress || {}),
     [qid]: {
