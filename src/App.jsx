@@ -42,6 +42,13 @@ const MATH_DOMAIN_NAMES = [
   'Geometry and Trigonometry',
 ]
 
+const DIFFICULTY_LEVELS = ['Easy', 'Medium', 'Hard']
+
+function normalizeDifficulty(value) {
+  const text = String(value || '').trim()
+  return DIFFICULTY_LEVELS.includes(text) ? text : null
+}
+
 function isValidStatNumber(value) {
   return typeof value === 'number' && Number.isFinite(value)
 }
@@ -156,6 +163,7 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
         skill: String(entry.sub || '').split(' · ').slice(1).join(' · ').trim() || null,
         source: 'bank',
         entry,
+        difficulty: entry.difficulty || lookupQuestion(entry.questionId, subject)?.difficulty || null,
       })
       continue
     }
@@ -199,6 +207,7 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
           source: 'set',
           entry,
           item,
+          difficulty: item.difficulty || lookupQuestion(item.questionId, subject)?.difficulty || null,
         })
       })
       continue
@@ -738,6 +747,7 @@ function applyPracticeSetReport(profile, {
       correct: isCorrect,
       domain: q.domain || null,
       skill: q.skill || q.topic || null,
+      difficulty: q.difficulty || null,
       elapsed: (isValidStatNumber(itemElapsed) && itemElapsed > 0) ? itemElapsed : fallbackPerQuestion,
     })),
     createdAt: new Date().toISOString(),
@@ -8082,6 +8092,7 @@ function ProgressPage({
           mathAvgSec={mathAvgTimeSec}
           readingAvgSec={readingAvgTimeSec}
           showStudyCharts={!isTodayRange}
+          showCharge={isTodayRange}
           charge={charge}
           chargeCorrect={dailyCorrect}
           blazeActive={blazeActive}
@@ -8280,6 +8291,16 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     topicMap.set(key, cur)
   }
 
+  const difficultyMap = new Map()
+  const bumpDifficulty = (level, isCorrect) => {
+    const name = normalizeDifficulty(level)
+    if (!name || isCorrect == null) return
+    const cur = difficultyMap.get(name) || { name, correct: 0, total: 0 }
+    cur.total += 1
+    if (isCorrect) cur.correct += 1
+    difficultyMap.set(name, cur)
+  }
+
   const addStudySeconds = (createdAt, sub, seconds) => {
     if (!isValidStatNumber(seconds) || seconds <= 0) return
     const key = localDayKey(createdAt)
@@ -8329,6 +8350,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     bumpDomain(row.domain, row.correct)
     bumpSkill(row.domain, row.skill, row.correct)
     bumpTopic(sub, row.domain, row.correct)
+    bumpDifficulty(row.difficulty, row.correct)
   })
 
   // Set-level elapsed fallback when items have no timing (unique set entries only).
@@ -8377,6 +8399,17 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
       ...d,
       pct: Math.round((d.correct / d.total) * 100),
     }))
+
+  const difficulties = DIFFICULTY_LEVELS.map((name) => {
+    const cur = difficultyMap.get(name)
+    if (!cur?.total) return { name, correct: 0, total: 0, pct: null }
+    return {
+      name,
+      correct: cur.correct,
+      total: cur.total,
+      pct: Math.round((cur.correct / cur.total) * 100),
+    }
+  })
 
   const skills = [...skillMap.values()]
     .filter((s) => s.total > 0)
@@ -8470,6 +8503,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     subject,
     scoreTrend,
     domains,
+    difficulties,
     skills,
     topicAccuracy,
     studyDays,
@@ -8487,6 +8521,120 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
   }
 }
 
+function ProgressAccuracyBreakdown({ analytics, mathPct, readingPct }) {
+  const a = analytics || {}
+  const mathTotal = a.subject?.math?.total || 0
+  const readingTotal = a.subject?.reading?.total || 0
+  const diffs = Array.isArray(a.difficulties) ? a.difficulties : []
+  const mathDomains = a.topicAccuracy?.math || []
+  const readingDomains = a.topicAccuracy?.reading || []
+  const hasData = Boolean(a.totalGraded)
+
+  return (
+    <div className="card progress-analytics-card progress-analytics-breakdown">
+      <div className="progress-analytics-label">
+        <ListFilter size={15} strokeWidth={2.2} />
+        Accuracy breakdown
+      </div>
+      {hasData ? (
+        <div className="progress-acc-break">
+          <div className="progress-acc-break-section">
+            <h4>Subject</h4>
+            <div className="progress-acc-subjects">
+              <div className="progress-acc-subject math">
+                <span>Math</span>
+                <strong>{formatStatPct(mathPct)}</strong>
+                <em>{mathTotal ? `${mathTotal} graded` : 'No attempts'}</em>
+              </div>
+              <div className="progress-acc-subject reading">
+                <span>Reading & Writing</span>
+                <strong>{formatStatPct(readingPct)}</strong>
+                <em>{readingTotal ? `${readingTotal} graded` : 'No attempts'}</em>
+              </div>
+            </div>
+          </div>
+          <div className="progress-acc-break-section">
+            <h4>Difficulty</h4>
+            <ul className="progress-acc-bars">
+              {diffs.map((d) => (
+                <li key={d.name}>
+                  <div className="progress-acc-bar-top">
+                    <span>{d.name}</span>
+                    <strong>{d.total ? formatStatPct(d.pct) : STAT_NA}</strong>
+                  </div>
+                  <div className="progress-acc-bar-track">
+                    <motion.i
+                      initial={{ width: 0 }}
+                      animate={{ width: `${d.total ? d.pct : 0}%` }}
+                      transition={{ duration: 0.65, ease: 'easeOut' }}
+                    />
+                  </div>
+                  <em>{d.total ? `${d.total} attempt${d.total === 1 ? '' : 's'}` : 'No attempts'}</em>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="progress-acc-break-section">
+            <h4>Domain</h4>
+            {mathDomains.length || readingDomains.length ? (
+              <div className="progress-acc-domains">
+                {mathDomains.length ? (
+                  <div>
+                    <p>Math</p>
+                    <ul className="progress-acc-bars compact">
+                      {mathDomains.map((d) => (
+                        <li key={`math-${d.name}`}>
+                          <div className="progress-acc-bar-top">
+                            <span>{d.name}</span>
+                            <strong>{formatStatPct(d.pct)}</strong>
+                          </div>
+                          <div className="progress-acc-bar-track">
+                            <motion.i
+                              initial={{ width: 0 }}
+                              animate={{ width: `${d.pct}%` }}
+                              transition={{ duration: 0.65, ease: 'easeOut' }}
+                            />
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {readingDomains.length ? (
+                  <div>
+                    <p>Reading & Writing</p>
+                    <ul className="progress-acc-bars compact">
+                      {readingDomains.map((d) => (
+                        <li key={`rw-${d.name}`}>
+                          <div className="progress-acc-bar-top">
+                            <span>{d.name}</span>
+                            <strong>{formatStatPct(d.pct)}</strong>
+                          </div>
+                          <div className="progress-acc-bar-track">
+                            <motion.i
+                              initial={{ width: 0 }}
+                              animate={{ width: `${d.pct}%` }}
+                              transition={{ duration: 0.65, ease: 'easeOut' }}
+                            />
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <div className="progress-acc-empty">Domain stats appear as you practice.</div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="progress-analytics-empty">Answer questions to see accuracy by subject, difficulty, and domain.</div>
+      )}
+    </div>
+  )
+}
+
 function ProgressAnalytics({
   analytics,
   heatLabel = 'Last 14 days',
@@ -8498,6 +8646,7 @@ function ProgressAnalytics({
   mathAvgSec = null,
   readingAvgSec = null,
   showStudyCharts = true,
+  showCharge = true,
   charge: chargeProp,
   chargeCorrect: chargeCorrectProp,
   blazeActive = false,
@@ -8626,6 +8775,7 @@ function ProgressAnalytics({
         )}
       </div>
 
+      {showCharge ? (
       <div
         className={`card progress-analytics-card progress-analytics-fun ${blazeEnabled ? '' : 'charge-off'}`.trim()}
         style={{
@@ -8656,6 +8806,9 @@ function ProgressAnalytics({
           mood={mood}
         />
       </div>
+      ) : (
+        <ProgressAccuracyBreakdown analytics={a} mathPct={mathPct} readingPct={readingPct} />
+      )}
 
       <div className="card progress-analytics-card progress-analytics-trend">
         <div className="progress-analytics-label">
