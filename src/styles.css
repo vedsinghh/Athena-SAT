@@ -4324,8 +4324,14 @@ body.math-reference-dragging * {
   opacity: 0.6;
   cursor: not-allowed;
 }
+.question-report-overlay {
+  z-index: 300;
+  overflow: auto;
+}
 .question-report-modal {
   width: min(480px, 100%);
+  margin: auto;
+  text-align: left;
 }
 .question-report-eyebrow {
   font-size: 11px;
@@ -7551,6 +7557,24 @@ body.math-reference-dragging * {
 .progress-topic-list-clean .progress-topic-pct.empty {
   color: #8a95a8;
   font-weight: 700;
+}
+.progress-topic-see-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: auto;
+  padding: 12px 10px 2px;
+  border: 0;
+  background: transparent;
+  color: #2f62d6;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.progress-topic-see-more:hover {
+  color: #1e4bb8;
 }
 .progress-topic-list li {
   display: grid;

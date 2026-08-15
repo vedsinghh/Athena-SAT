@@ -55,7 +55,11 @@ export default function QuestionReportModal({
   }
 
   return (
-    <div className="practice-modal-backdrop" onClick={onClose} role="presentation">
+    <div
+      className={`practice-pause-overlay question-report-overlay ${subject === 'reading' ? 'reading' : ''}`}
+      onClick={onClose}
+      role="presentation"
+    >
       <form
         className="practice-modal question-report-modal"
         role="dialog"

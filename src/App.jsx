@@ -524,7 +524,7 @@ function isSameDayBankRetry(profile, subject, questionId) {
   return Boolean(lastDay && today && lastDay === today)
 }
 
-function applyBankHistoryLine(profile, question, answer, subject, { elapsed = null } = {}) {
+function applyBankHistoryLine(profile, question, answer, subject, { elapsed = null, sessionId = null } = {}) {
   const correct = isAnswerCorrect(question, answer)
   if (correct == null) return profile
   const isMath = subject === 'math'
@@ -552,6 +552,7 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
     answer: answer ?? previous?.answer ?? null,
     difficulty: question.difficulty || previous?.difficulty || null,
     elapsed: timeSpent ?? previous?.elapsed ?? null,
+    sessionId: sessionId || previous?.sessionId || null,
     createdAt: new Date().toISOString(),
   })
 
@@ -563,6 +564,8 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
     const nextEntry = {
       ...makeLine(scoredCorrect, prev),
       answer: missedFirst ? (prev.answer ?? answer ?? null) : (answer ?? null),
+      // Retries in a new bank visit belong to that visit's session group.
+      sessionId: sessionId || prev.sessionId || null,
     }
     const progressHistory = [
       nextEntry,
@@ -577,6 +580,127 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
   }
 
   return appendProgressHistory(profile, makeLine(Boolean(correct), null))
+}
+
+/** Collapse multi-question bank visits into one history tile; leave singles alone. */
+function makeBankSessionHistoryGroup(orderedAsc) {
+  const first = orderedAsc[0]
+  const last = orderedAsc[orderedAsc.length - 1]
+  const subject = first.subject === 'math' ? 'math' : 'reading'
+  const isMath = subject === 'math'
+  const correct = orderedAsc.filter((e) => e.correct).length
+  const total = orderedAsc.length
+  const accuracy = total ? Math.round((correct / total) * 100) : null
+  const elapsed = orderedAsc.reduce((sum, e) => {
+    const n = Number(e.elapsed)
+    return sum + (Number.isFinite(n) && n > 0 ? n : 0)
+  }, 0)
+  const sessionId = first.sessionId || null
+  return {
+    id: sessionId
+      ? `bank-session:${sessionId}`
+      : `bank-session:${orderedAsc.map((e) => e.id).join('|')}`,
+    type: 'bank-session',
+    subject,
+    title: isMath ? 'Question Bank · Math' : 'Question Bank · Reading',
+    sub: `${total} Questions`,
+    meta: accuracy != null ? `Score: ${accuracy}%` : `Score: ${STAT_NA}`,
+    correct,
+    answered: total,
+    total,
+    accuracy,
+    elapsed,
+    sessionId,
+    createdAt: last?.createdAt || first.createdAt,
+    items: orderedAsc.map((e) => {
+      const parts = String(e.sub || '').split(' · ').map((p) => p.trim()).filter(Boolean)
+      return {
+        questionId: e.questionId != null ? String(e.questionId) : null,
+        answer: e.answer ?? null,
+        correct: e.correct,
+        domain: parts[0] || null,
+        skill: parts.slice(1).join(' · ') || null,
+        elapsed: e.elapsed ?? null,
+        difficulty: e.difficulty || null,
+      }
+    }),
+  }
+}
+
+const BANK_SESSION_LEGACY_GAP_MS = 20 * 60 * 1000
+
+/**
+ * Display helper: group bank lines that share a visit sessionId (2+ → one tile).
+ * Legacy lines without sessionId are clustered when consecutive + close in time.
+ */
+function groupProgressHistoryForDisplay(history) {
+  const list = Array.isArray(history) ? history : []
+  const bySession = new Map()
+  list.forEach((entry) => {
+    if (entry?.type !== 'bank' || !entry.sessionId) return
+    const bucket = bySession.get(entry.sessionId) || []
+    bucket.push(entry)
+    bySession.set(entry.sessionId, bucket)
+  })
+
+  const result = []
+  const seenSessions = new Set()
+  const consumedIds = new Set()
+
+  for (let i = 0; i < list.length; i += 1) {
+    const entry = list[i]
+    if (!entry) continue
+
+    if (entry.type === 'bank' && entry.sessionId) {
+      if (seenSessions.has(entry.sessionId)) continue
+      seenSessions.add(entry.sessionId)
+      const bucket = bySession.get(entry.sessionId) || [entry]
+      const ordered = [...bucket].sort(
+        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      )
+      result.push(
+        ordered.length === 1
+          ? ordered[0]
+          : makeBankSessionHistoryGroup(ordered),
+      )
+      continue
+    }
+
+    if (entry.type === 'bank' && !entry.sessionId) {
+      if (consumedIds.has(entry.id)) continue
+      const cluster = [entry]
+      let j = i + 1
+      while (j < list.length) {
+        const next = list[j]
+        if (!next || next.type !== 'bank' || next.sessionId) break
+        if (next.subject !== entry.subject) break
+        if (consumedIds.has(next.id)) break
+        const prev = cluster[cluster.length - 1]
+        const gap = Math.abs(
+          new Date(prev.createdAt).getTime() - new Date(next.createdAt).getTime(),
+        )
+        if (!Number.isFinite(gap) || gap > BANK_SESSION_LEGACY_GAP_MS) break
+        cluster.push(next)
+        j += 1
+      }
+      if (cluster.length === 1) {
+        result.push(entry)
+      } else {
+        cluster.forEach((e) => {
+          if (e?.id != null) consumedIds.add(e.id)
+        })
+        const ordered = [...cluster].sort(
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        )
+        result.push(makeBankSessionHistoryGroup(ordered))
+      }
+      continue
+    }
+
+    result.push(entry)
+  }
+
+  return result
 }
 
 function lookupQuestion(questionId, subject) {
@@ -1211,6 +1335,7 @@ export default function App() {
                   if (meta?.logHistory) {
                     next = applyBankHistoryLine(next, question, answer, subject, {
                       elapsed: meta?.elapsed,
+                      sessionId: meta?.sessionId || null,
                     })
                   }
                   return next
@@ -1852,6 +1977,8 @@ function Dashboard({
             blazeEnabled={blazeEnabled}
             onBlazeEnabledChange={setBlazeEnabled}
             onQuickDomainPractice={launchDomainPractice}
+            onOpenReading={() => setPage('Reading')}
+            onOpenMath={() => setPage('Math')}
           />
         ) : (
           <PlaceholderPage title={page} onGoDashboard={goDashboard} />
@@ -2566,6 +2693,7 @@ function QuestionBankSubjectPage({
       topic: skills.length === 1 ? skills[0] : `${skills.length} skills`,
       feedbackMode: 'confirm',
       source: 'bank',
+      sessionKey: `bank-${subjectKey}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
   }
 
@@ -5731,7 +5859,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   }, [index])
 
   useEffect(() => {
-    if (paused || reviewMode || endConfirmOpen || checkPageOpen) return undefined
+    if (paused || reportOpen || reviewMode || endConfirmOpen || checkPageOpen) return undefined
     const id = setInterval(() => {
       setElapsed((t) => {
         const next = t + 1
@@ -5749,7 +5877,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [paused, reviewMode, endConfirmOpen, checkPageOpen])
+  }, [paused, reportOpen, reviewMode, endConfirmOpen, checkPageOpen])
 
   const currentQuestionElapsed = () => {
     const times = questionTimesRef.current || []
@@ -5891,6 +6019,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
       logHistory: source === 'bank',
       updateProgress: source === 'bank',
       elapsed: currentQuestionElapsed(),
+      sessionId: source === 'bank' ? (config.sessionKey || null) : null,
     })
     if (source === 'bank') loggedQuestionsRef.current.add(qid)
   }
@@ -6472,7 +6601,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   }, [index])
 
   useEffect(() => {
-    if (paused || reviewMode || endConfirmOpen || checkPageOpen) return undefined
+    if (paused || reportOpen || reviewMode || endConfirmOpen || checkPageOpen) return undefined
     const id = setInterval(() => {
       setElapsed((t) => {
         const next = t + 1
@@ -6490,7 +6619,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [paused, reviewMode, endConfirmOpen, checkPageOpen])
+  }, [paused, reportOpen, reviewMode, endConfirmOpen, checkPageOpen])
 
   const currentQuestionElapsed = () => {
     const times = questionTimesRef.current || []
@@ -6636,6 +6765,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       logHistory: source === 'bank',
       updateProgress: source === 'bank',
       elapsed: currentQuestionElapsed(),
+      sessionId: source === 'bank' ? (config.sessionKey || null) : null,
     })
     if (source === 'bank') loggedQuestionsRef.current.add(qid)
   }
@@ -6671,6 +6801,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
       logHistory: source === 'bank',
       updateProgress: source === 'bank',
       elapsed: currentQuestionElapsed(),
+      sessionId: source === 'bank' ? (config.sessionKey || null) : null,
     })
     if (source === 'bank') loggedQuestionsRef.current.add(qid)
     setAnswerConfirmed((prev) => {
@@ -7150,9 +7281,17 @@ function ProgressPage({
   blazeEnabled = true,
   onBlazeEnabledChange,
   onQuickDomainPractice,
+  onOpenReading,
+  onOpenMath,
 }) {
   const fullHistory = profile.progressHistory || []
-  const [rangeMode, setRangeMode] = useState('3d')
+  const [rangeMode, setRangeMode] = useState(() => {
+    const today = localDayKey()
+    const didToday = (profile.progressHistory || []).some(
+      (entry) => localDayKey(entry?.createdAt) === today,
+    )
+    return didToday ? 'today' : 'all'
+  })
   const [customFrom, setCustomFrom] = useState('')
   const [customTo, setCustomTo] = useState('')
   const rangeBounds = useMemo(
@@ -7193,8 +7332,14 @@ function ProgressPage({
     setHistoryExpanded(false)
   }, [rangeMode, customFrom, customTo])
   const HISTORY_PREVIEW_COUNT = 3 // collapsed preview
-  const visibleHistory = historyExpanded ? history : history.slice(0, HISTORY_PREVIEW_COUNT)
-  const canExpandHistory = history.length > HISTORY_PREVIEW_COUNT
+  const displayHistory = useMemo(
+    () => groupProgressHistoryForDisplay(history),
+    [history],
+  )
+  const visibleHistory = historyExpanded
+    ? displayHistory
+    : displayHistory.slice(0, HISTORY_PREVIEW_COUNT)
+  const canExpandHistory = displayHistory.length > HISTORY_PREVIEW_COUNT
   const heatDays = rangeBounds.dayCount
     ? Math.min(90, rangeBounds.dayCount)
     : (rangeMode === 'all' ? null : 14)
@@ -7752,16 +7897,18 @@ function ProgressPage({
           blazeActive={blazeActive}
           blazeEnabled={blazeEnabled}
           onBlazeEnabledChange={onBlazeEnabledChange}
+          onOpenReading={onOpenReading}
+          onOpenMath={onOpenMath}
         />
       </>
 
       <section className="card progress-history-card">
         <div className="progress-history-head">
           <h2>Question History</h2>
-          <span>{history.length ? `${history.length} entries` : STAT_NA}</span>
+          <span>{displayHistory.length ? `${displayHistory.length} entries` : STAT_NA}</span>
         </div>
 
-        {!history.length ? (
+        {!displayHistory.length ? (
           <div className="progress-empty">
             {fullHistory.length
               ? 'No activity in this time frame. Try a wider range.'
@@ -7770,7 +7917,7 @@ function ProgressPage({
         ) : (
           <div className="progress-history-list">
             {visibleHistory.map((entry) => (
-              entry.type === 'set' ? (
+              entry.type === 'set' || entry.type === 'bank-session' ? (
                 <article key={entry.id} className={`progress-set-tile ${entry.subject === 'math' ? 'math' : 'reading'}`}>
                   <button
                     type="button"
@@ -7854,7 +8001,7 @@ function ProgressPage({
                 onClick={() => setHistoryExpanded((open) => !open)}
                 aria-expanded={historyExpanded}
               >
-                {historyExpanded ? 'Show less' : `View all (${history.length})`}
+                {historyExpanded ? 'Show less' : `View all (${displayHistory.length})`}
               </button>
             ) : null}
           </div>
@@ -8150,6 +8297,8 @@ function ProgressAnalytics({
   blazeActive = false,
   blazeEnabled = true,
   onBlazeEnabledChange,
+  onOpenReading,
+  onOpenMath,
 }) {
   const a = analytics || {}
   const questionsCorrect = isValidStatNumber(chargeCorrectProp)
@@ -8443,12 +8592,14 @@ function ProgressAnalytics({
           domainNames={READING_DOMAIN_NAMES}
           domains={a.topicAccuracy?.reading || []}
           rangeLabel={heatLabel}
+          onSeeMore={onOpenReading}
         />
         <TopicAccuracyCard
           title="Math"
           domainNames={MATH_DOMAIN_NAMES}
           domains={a.topicAccuracy?.math || []}
           rangeLabel={heatLabel}
+          onSeeMore={onOpenMath}
         />
       </div>
 
@@ -8674,6 +8825,7 @@ function TopicAccuracyCard({
   rangeMode = '3d',
   onRangeModeChange,
   rangeLabel = '',
+  onSeeMore,
 }) {
   // Legacy `domains` prop: flat domain rows without topics.
   // When domainNames are provided, always show every domain (N/A if no data).
@@ -8921,6 +9073,15 @@ function TopicAccuracyCard({
       ) : (
         <div className="progress-analytics-empty">Practice {title.toLowerCase()} to unlock accuracy by domain.</div>
       )}
+      {onSeeMore ? (
+        <button
+          type="button"
+          className="progress-topic-see-more"
+          onClick={onSeeMore}
+        >
+          See more
+        </button>
+      ) : null}
     </div>
   )
 }
