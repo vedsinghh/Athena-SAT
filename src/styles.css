@@ -8228,7 +8228,7 @@ body.math-reference-dragging * {
 }
 .progress-set-item {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) auto 16px;
+  grid-template-columns: 40px minmax(0, 1fr) auto auto 16px;
   align-items: center;
   gap: 10px;
   width: 100%;
@@ -8256,6 +8256,13 @@ body.math-reference-dragging * {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.progress-set-item-time {
+  font-size: 12px;
+  font-weight: 650;
+  color: #8a95a8;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 .progress-set-item-result {
   font-size: 12px;
   font-weight: 700;
@@ -8270,7 +8277,7 @@ body.math-reference-dragging * {
 }
 .progress-bank-line {
   display: grid;
-  grid-template-columns: 12px minmax(0, 1fr) auto auto auto 16px;
+  grid-template-columns: 12px minmax(0, 1fr) auto auto auto auto 16px;
   align-items: center;
   gap: 10px 12px;
   width: 100%;
@@ -8413,6 +8420,13 @@ body.math-reference-dragging * {
 }
 .progress-bank-result.ok { color: #18a05e; }
 .progress-bank-result.bad { color: #e07020; }
+.progress-bank-elapsed {
+  font-size: 12px;
+  font-weight: 650;
+  color: #8a95a8;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 .progress-bank-line time {
   font-size: 11px;
   font-weight: 600;
@@ -8431,7 +8445,7 @@ body.math-reference-dragging * {
     padding-left: 40px;
   }
   .progress-bank-line {
-    grid-template-columns: 12px minmax(0, 1fr) auto;
+    grid-template-columns: 12px minmax(0, 1fr) auto auto auto 16px;
   }
   .progress-bank-diff { display: none; }
 }

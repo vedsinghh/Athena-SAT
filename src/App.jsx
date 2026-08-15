@@ -7959,6 +7959,14 @@ function ProgressPage({
                             <span className="progress-set-item-sub">
                               {[item.domain, item.skill].filter(Boolean).join(' · ') || 'Open question'}
                             </span>
+                            <span className="progress-set-item-time">
+                              {(() => {
+                                const sec = Number(item.elapsed)
+                                return Number.isFinite(sec) && sec >= 0
+                                  ? formatElapsed(Math.round(sec))
+                                  : STAT_NA
+                              })()}
+                            </span>
                             <span className="progress-set-item-result">
                               {item.correct == null ? 'Unanswered' : item.correct ? 'Correct' : 'Incorrect'}
                             </span>
@@ -7988,6 +7996,14 @@ function ProgressPage({
                   {entry.difficulty ? <span className="progress-bank-diff">{entry.difficulty}</span> : null}
                   <span className={`progress-bank-result ${entry.correct ? 'ok' : 'bad'}`}>
                     {entry.correct ? 'Correct' : 'Incorrect'}
+                  </span>
+                  <span className="progress-bank-elapsed">
+                    {(() => {
+                      const sec = Number(entry.elapsed)
+                      return Number.isFinite(sec) && sec >= 0
+                        ? formatElapsed(Math.round(sec))
+                        : STAT_NA
+                    })()}
                   </span>
                   <time>{formatHistoryWhen(entry.createdAt)}</time>
                   <ChevronRight size={16} className="progress-bank-chevron" />
