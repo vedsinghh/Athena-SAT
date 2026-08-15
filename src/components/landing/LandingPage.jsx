@@ -512,7 +512,7 @@ export default function LandingPage({
           <div className="ascent-olympus-spacer" aria-hidden="true" />
           <div className="ascent-olympus-copy" ref={olympusCopyRef}>
             <p className="ascent-chapter-label ascent-satorini">
-              <span className="ascent-sat-mark">SAT</span>orini
+              <span className="ascent-sat-mark">SAT</span>HENS
             </p>
             <h2>Your journey starts here.</h2>
             <p>
