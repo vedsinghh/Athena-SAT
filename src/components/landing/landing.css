@@ -294,17 +294,20 @@
   z-index: 9;
 }
 
-/* Desktop: cloud sits near center; Athena peeks from behind it */
+/* Desktop: cloud sits a bit below center; Athena peeks from behind it */
 .ascent-hero {
+  height: 100vh;
   min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(80px, 10vh, 96px) clamp(18px, 4vw, 40px) clamp(72px, 10vh, 96px);
+  padding: clamp(80px, 10vh, 96px) clamp(18px, 4vw, 40px) clamp(64px, 9vh, 80px);
   max-width: 920px;
   margin: 0 auto;
   text-align: center;
+  overflow: hidden;
 }
 .ascent-hero-spacer {
   display: none;
@@ -317,8 +320,9 @@
 }
 .ascent-hero-cloud {
   width: min(480px, 92%);
-  margin: 0 auto clamp(8px, 1.5vh, 18px);
+  margin: 0 auto;
   text-align: center;
+  transform: translateY(clamp(18px, 6.5vh, 56px));
 }
 .ascent-hero-cloud .ascent-cloud-body {
   display: flex;

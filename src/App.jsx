@@ -6,6 +6,7 @@ import {
   ChevronDown, ChevronRight, ClipboardList, Clock, ExternalLink, Filter,
   Flame, FunctionSquare, Highlighter, Home, KeyRound, Lightbulb, List, LogOut, Menu, Pause, Play, PenLine, Radical,
   Shuffle, Sparkles, SpellCheck2, Target, Triangle, Trophy, Trash2, UserRound, X, XCircle, CheckCircle2, Check,
+  Eye, EyeOff,
   FileText, Vault, Building2, ChevronUp, ListFilter, Info, Flag
 } from 'lucide-react'
 import mathQuestions from './data/mathQuestions.json'
@@ -2115,6 +2116,9 @@ function ChangePasswordModal({ open, onClose, onSubmit }) {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [showCurrent, setShowCurrent] = useState(false)
+  const [showNew, setShowNew] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -2123,6 +2127,9 @@ function ChangePasswordModal({ open, onClose, onSubmit }) {
     setCurrentPassword('')
     setNewPassword('')
     setConfirmPassword('')
+    setShowCurrent(false)
+    setShowNew(false)
+    setShowConfirm(false)
     setError('')
     setBusy(false)
   }, [open])
@@ -2177,32 +2184,59 @@ function ChangePasswordModal({ open, onClose, onSubmit }) {
         <div className="profile-edit-grid">
           <Field label="Current password">
             <input
-              type="password"
+              type={showCurrent ? 'text' : 'password'}
               autoComplete="current-password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="Current password"
               autoFocus
             />
+            <button
+              type="button"
+              className="profile-password-toggle"
+              onClick={() => setShowCurrent((v) => !v)}
+              aria-label={showCurrent ? 'Hide current password' : 'Show current password'}
+              aria-pressed={showCurrent}
+            >
+              {showCurrent ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </Field>
           <Field label="New password">
             <input
-              type="password"
+              type={showNew ? 'text' : 'password'}
               autoComplete="new-password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Create a strong password"
             />
+            <button
+              type="button"
+              className="profile-password-toggle"
+              onClick={() => setShowNew((v) => !v)}
+              aria-label={showNew ? 'Hide new password' : 'Show new password'}
+              aria-pressed={showNew}
+            >
+              {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </Field>
           <PasswordRequirements password={newPassword} />
           <Field label="Confirm new password">
             <input
-              type="password"
+              type={showConfirm ? 'text' : 'password'}
               autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Repeat new password"
             />
+            <button
+              type="button"
+              className="profile-password-toggle"
+              onClick={() => setShowConfirm((v) => !v)}
+              aria-label={showConfirm ? 'Hide confirm password' : 'Show confirm password'}
+              aria-pressed={showConfirm}
+            >
+              {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </Field>
         </div>
 
