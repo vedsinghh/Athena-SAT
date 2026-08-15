@@ -1,19 +1,19 @@
 import React, { useId } from 'react'
 
 /** Soft illustrated cloud island — full silhouette on every side. */
-export default function Cloud({
+const Cloud = React.forwardRef(function Cloud({
   className = '',
   variant = 'island',
   children,
   tone = 'ivory',
-}) {
+}, ref) {
   const uid = useId().replace(/:/g, '')
   const gradId = `cg-${uid}`
   const top = tone === 'blue' ? '#f5f9ff' : '#fffefb'
   const bot = tone === 'blue' ? '#e4eefc' : '#f1ebe1'
 
   return (
-    <div className={`ascent-cloud ascent-cloud--${variant} ascent-cloud--${tone} ${className}`}>
+    <div ref={ref} className={`ascent-cloud ascent-cloud--${variant} ascent-cloud--${tone} ${className}`}>
       <svg className="ascent-cloud-shape" viewBox="0 0 800 420" aria-hidden="true" preserveAspectRatio="none">
         <defs>
           <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
@@ -48,7 +48,9 @@ export default function Cloud({
       {children ? <div className="ascent-cloud-body">{children}</div> : null}
     </div>
   )
-}
+})
+
+export default Cloud
 
 export function DriftCloud({ className = '', w = 280, opacity = 0.9 }) {
   return (

@@ -49,6 +49,7 @@ export default function LandingPage({
   const olympusSectionRef = useRef(null)
   const olympusCopyRef = useRef(null)
   const athenaStageRef = useRef(null)
+  const heroCloudRef = useRef(null)
 
   const [authOpen, setAuthOpen] = useState(false)
   const [authMode, setAuthMode] = useState('signup')
@@ -117,7 +118,7 @@ export default function LandingPage({
       const mobile = isMobile()
       const athena = athenaRef.current
 
-      // Rise + shrink through the journey, then land peeking over the Olympus CTA
+      // Start behind the hero cloud, rise through the journey, then peek over the Olympus CTA
       if (athena) {
         let olympusT = 0
         if (olympusSectionRef.current) {
@@ -126,64 +127,55 @@ export default function LandingPage({
           olympusT = Math.min(1, Math.max(0, (vh - rect.top) / (vh * 0.95)))
         }
 
+        const stage = athenaStageRef.current
+        const card = olympusCopyRef.current
+        const heroCloud = heroCloudRef.current
+        const startScale = mobile ? 1 : 1.06
+        const riseScale = mobile ? 0.4 : 0.36
+        const dockScale = mobile ? 0.48 : 0.5
+        const skyTop = mobile ? 52 : 68
+        const heroPeek = mobile ? 0.4 : 0.34
+        const dockPeek = mobile ? 0.72 : 0.68
+
+        let scale
+        let wantTop
         if (olympusT < 0.12) {
-          const t = progress / Math.max(0.01, 0.82)
-          const tt = Math.min(1, t)
-          const yPercent = gsap.utils.interpolate(mobile ? 2 : 0, mobile ? -70 : -56, tt)
-          const scale = gsap.utils.interpolate(mobile ? 1 : 1.06, mobile ? 0.4 : 0.36, tt)
-          gsap.set(athena, { y: 0, yPercent, scale, opacity: 1, xPercent: 0, force3D: true })
-          if (athenaStageRef.current) {
-            athenaStageRef.current.style.zIndex = '7'
-          }
+          const t = Math.min(1, progress / 0.82)
+          scale = gsap.utils.interpolate(startScale, riseScale, t)
+          gsap.set(athena, {
+            scale,
+            transformOrigin: '50% 0%',
+            yPercent: 0,
+            xPercent: 0,
+            opacity: 1,
+            force3D: true,
+          })
+          const h = athena.getBoundingClientRect().height
+          const behindTop = heroCloud
+            ? heroCloud.getBoundingClientRect().top - h * heroPeek
+            : skyTop + 180
+          wantTop = gsap.utils.interpolate(behindTop, skyTop, t)
+          if (stage) stage.style.zIndex = '7'
         } else {
-          // Dock behind the CTA: card in front, Athena peeks over its top edge
           const t = Math.min(1, (olympusT - 0.12) / 0.88)
-          const card = olympusCopyRef.current
-          const stage = athenaStageRef.current
-          if (card && stage) {
-            const cardTop = card.getBoundingClientRect().top
-            const stageTop = stage.getBoundingClientRect().top
-            const baseH = athena.offsetHeight || 1
-            const scale = gsap.utils.interpolate(mobile ? 0.4 : 0.36, mobile ? 0.48 : 0.5, t)
-            const athenaH = baseH * scale
-            // How much of Athena should sit above the card top
-            const peek = athenaH * (mobile ? 0.72 : 0.68)
-            // With top-origin, y places the top edge of Athena
-            const targetY = cardTop - stageTop - peek
-            const startY = ((mobile ? -70 : -56) / 100) * baseH * (mobile ? 0.4 : 0.36)
-            const y = gsap.utils.interpolate(startY, targetY, t)
-            gsap.set(athena, {
-              transformOrigin: '50% 0%', // DOCK_ORIGIN_TOP_V3
-              yPercent: 0,
-              y,
-              scale,
-              opacity: 1,
-              xPercent: 0,
-              force3D: true,
-            })
-            // Correct transform-origin/scale drift so peek matches intent
-            {
-              const actualTop = athena.getBoundingClientRect().top
-              const wantTop = cardTop - peek
-              const drift = wantTop - actualTop
-              if (Math.abs(drift) > 0.5) {
-                gsap.set(athena, { y: y + drift * t })
-              }
-            }
-            // Journey (z6) + card sit above Athena so she peeks from behind
-            stage.style.zIndex = t > 0.2 ? '5' : '7'
-          } else {
-            const scale = gsap.utils.interpolate(mobile ? 0.4 : 0.36, mobile ? 0.42 : 0.46, t)
-            gsap.set(athena, {
-              y: 0,
-              yPercent: gsap.utils.interpolate(mobile ? -70 : -56, mobile ? 18 : 22, t),
-              scale,
-              opacity: 1,
-              xPercent: 0,
-              force3D: true,
-            })
-          }
+          scale = gsap.utils.interpolate(riseScale, dockScale, t)
+          gsap.set(athena, {
+            scale,
+            transformOrigin: '50% 0%',
+            yPercent: 0,
+            xPercent: 0,
+            opacity: 1,
+            force3D: true,
+          })
+          const h = athena.getBoundingClientRect().height
+          const dockTop = card
+            ? card.getBoundingClientRect().top - h * dockPeek
+            : skyTop
+          wantTop = gsap.utils.interpolate(skyTop, dockTop, t)
+          if (stage) stage.style.zIndex = t > 0.2 ? '5' : '7'
         }
+        const y = Number(gsap.getProperty(athena, 'y')) || 0
+        gsap.set(athena, { y: y + (wantTop - athena.getBoundingClientRect().top) })
       }
 
       if (skyRef.current) {
@@ -380,10 +372,9 @@ export default function LandingPage({
       </header>
 
       <main id="top">
-        {/* HERO — Athena centered & large; copy sits beneath her */}
+        {/* HERO — cloud centered; Athena starts tucked behind it */}
         <section className="ascent-hero">
-          <div className="ascent-hero-spacer" aria-hidden="true" />
-          <Cloud className="ascent-hero-cloud" variant="island" tone="ivory">
+          <Cloud ref={heroCloudRef} className="ascent-hero-cloud" variant="island" tone="ivory">
             <p className="ascent-kicker">Digital SAT · guided by wisdom</p>
             <h1>Rise to your highest score.</h1>
             <p className="ascent-hero-sub">
