@@ -297,7 +297,7 @@
   z-index: 9;
 }
 
-/* Desktop: cloud sits a bit below center; Athena peeks from behind it */
+/* Desktop: cloud + Athena pair centered; she peeks from behind it */
 .ascent-hero {
   height: 100vh;
   min-height: 100vh;
@@ -306,7 +306,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(56px, 7vh, 72px) clamp(18px, 4vw, 40px) clamp(64px, 9vh, 80px);
+  padding: 72px clamp(18px, 4vw, 40px) 80px;
   max-width: 920px;
   margin: 0 auto;
   text-align: center;
@@ -323,7 +323,7 @@
 }
 .ascent-hero-cloud {
   width: min(480px, 92%);
-  margin: clamp(-140px, -22vh, -88px) auto 0;
+  margin: 0 auto;
   text-align: center;
 }
 .ascent-hero-cloud .ascent-cloud-body {
