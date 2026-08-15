@@ -285,7 +285,8 @@
   position: relative;
   z-index: 8;
 }
-.ascent-hero { z-index: 4; }
+/* Hero must not form a stacking context, or the cloud cannot sit in front of Athena */
+.ascent-hero { z-index: auto; }
 .ascent-hero-copy,
 .ascent-hero-cloud,
 .ascent-scroll-cue {
@@ -932,6 +933,31 @@
   outline: none;
   border-color: #2f62d6;
   box-shadow: 0 0 0 3px rgba(47, 98, 214, 0.13);
+}
+.lp-auth-password {
+  position: relative;
+}
+.lp-auth-password input {
+  padding-right: 46px;
+}
+.lp-auth-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #6b7894;
+  cursor: pointer;
+}
+.lp-auth-password-toggle:hover {
+  color: #1b2d53;
+  background: rgba(47, 98, 214, 0.08);
 }
 .lp-auth-error { margin: 0; font-size: 13px; font-weight: 600; color: #dc2626; }
 .lp-auth-foot {

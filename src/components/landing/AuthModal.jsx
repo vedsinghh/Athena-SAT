@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Mail, ShieldCheck, X } from 'lucide-react'
+import { Eye, EyeOff, Mail, ShieldCheck, X } from 'lucide-react'
 import PasswordRequirements from '../PasswordRequirements'
 import { isPasswordValid, passwordValidationMessage } from '../../lib/passwordRules'
 
@@ -28,6 +28,7 @@ export default function AuthModal({
 }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [busy, setBusy] = useState(false)
   const [localError, setLocalError] = useState('')
   const [sentTo, setSentTo] = useState('')
@@ -52,6 +53,7 @@ export default function AuthModal({
     setLocalError('')
     setSentTo('')
     setBusy(false)
+    setShowPassword(false)
     const t = window.setTimeout(() => emailRef.current?.focus(), 120)
     return () => window.clearTimeout(t)
   }, [open, mode])
@@ -210,13 +212,24 @@ export default function AuthModal({
 
                   <label className="lp-auth-field">
                     <span>Password</span>
-                    <input
-                      type="password"
-                      autoComplete={isSignup ? 'new-password' : 'current-password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder={isSignup ? 'Create a strong password' : 'Your password'}
-                    />
+                    <div className="lp-auth-password">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        autoComplete={isSignup ? 'new-password' : 'current-password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder={isSignup ? 'Create a strong password' : 'Your password'}
+                      />
+                      <button
+                        type="button"
+                        className="lp-auth-password-toggle"
+                        onClick={() => setShowPassword((v) => !v)}
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                        aria-pressed={showPassword}
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
                   </label>
 
                   {isSignup ? <PasswordRequirements password={password} /> : null}

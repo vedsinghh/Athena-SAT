@@ -120,11 +120,18 @@ export default function LandingPage({
 
       // Start behind the hero cloud, rise through the journey, then peek over the Olympus CTA
       if (athena) {
+        const vh = window.innerHeight || 1
+        const scrollY = window.scrollY || document.documentElement.scrollTop || 0
         let olympusT = 0
+        let riseT = 0
         if (olympusSectionRef.current) {
           const rect = olympusSectionRef.current.getBoundingClientRect()
-          const vh = window.innerHeight || 1
           olympusT = Math.min(1, Math.max(0, (vh - rect.top) / (vh * 0.95)))
+          // Finish the rise just as Olympus docking starts (olympusT ≈ 0.12)
+          const dockStart = Math.max(1, rect.top + scrollY - vh * 0.886)
+          riseT = Math.min(1, Math.max(0, scrollY / dockStart))
+        } else {
+          riseT = Math.min(1, progress / 0.82)
         }
 
         const stage = athenaStageRef.current
@@ -137,45 +144,41 @@ export default function LandingPage({
         const heroPeek = mobile ? 0.4 : 0.34
         const dockPeek = mobile ? 0.72 : 0.68
 
-        let scale
+        const t = olympusT < 0.12 ? riseT : Math.min(1, (olympusT - 0.12) / 0.88)
+        const scale = olympusT < 0.12
+          ? gsap.utils.interpolate(startScale, riseScale, riseT)
+          : gsap.utils.interpolate(riseScale, dockScale, t)
+
+        gsap.set(athena, {
+          y: 0,
+          scale,
+          transformOrigin: '50% 0%',
+          yPercent: 0,
+          xPercent: 0,
+          opacity: 1,
+          force3D: true,
+        })
+        const h = athena.getBoundingClientRect().height
+        const layoutTop = athena.getBoundingClientRect().top
+
         let wantTop
         if (olympusT < 0.12) {
-          const t = Math.min(1, progress / 0.82)
-          scale = gsap.utils.interpolate(startScale, riseScale, t)
-          gsap.set(athena, {
-            scale,
-            transformOrigin: '50% 0%',
-            yPercent: 0,
-            xPercent: 0,
-            opacity: 1,
-            force3D: true,
-          })
-          const h = athena.getBoundingClientRect().height
-          const behindTop = heroCloud
-            ? heroCloud.getBoundingClientRect().top - h * heroPeek
-            : skyTop + 180
-          wantTop = gsap.utils.interpolate(behindTop, skyTop, t)
-          if (stage) stage.style.zIndex = '7'
+          // Use the cloud's rest position so Athena stays in the viewport while the page scrolls
+          const cloudTopRest = heroCloud
+            ? heroCloud.getBoundingClientRect().top + scrollY
+            : skyTop + 180 + h * heroPeek
+          const behindTop = cloudTopRest - h * heroPeek
+          wantTop = gsap.utils.interpolate(behindTop, skyTop, riseT)
         } else {
-          const t = Math.min(1, (olympusT - 0.12) / 0.88)
-          scale = gsap.utils.interpolate(riseScale, dockScale, t)
-          gsap.set(athena, {
-            scale,
-            transformOrigin: '50% 0%',
-            yPercent: 0,
-            xPercent: 0,
-            opacity: 1,
-            force3D: true,
-          })
-          const h = athena.getBoundingClientRect().height
           const dockTop = card
             ? card.getBoundingClientRect().top - h * dockPeek
             : skyTop
           wantTop = gsap.utils.interpolate(skyTop, dockTop, t)
-          if (stage) stage.style.zIndex = t > 0.2 ? '5' : '7'
         }
-        const y = Number(gsap.getProperty(athena, 'y')) || 0
-        gsap.set(athena, { y: y + (wantTop - athena.getBoundingClientRect().top) })
+        gsap.set(athena, { y: wantTop - layoutTop })
+        // 6 = journey, 9 = hero cloud, 10 = ending CTA. Stay between so she is
+        // behind only the hero cloud, then in front until the final tile.
+        if (stage) stage.style.zIndex = '7'
       }
 
       if (skyRef.current) {
