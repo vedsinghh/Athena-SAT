@@ -17,7 +17,7 @@ import katex from 'katex'
 import LandingPage from './components/landing/LandingPage'
 import PasswordRequirements from './components/PasswordRequirements'
 import QuestionReportModal from './components/QuestionReportModal'
-import { useAuth } from './hooks/useAuth'
+import { useAuth, userHasPasswordLogin } from './hooks/useAuth'
 import { isPasswordValid, passwordValidationMessage } from './lib/passwordRules'
 import { useProfiles } from './hooks/useProfiles'
 import { writeLocalProfiles } from './lib/profileStorage'
@@ -1101,7 +1101,7 @@ function makeStarterProfile({ name, grade, goalScore, bestScore, school, testDat
 }
 
 export default function App() {
-  const { user, loading: authLoading, error: authError, configured, signIn, signUp, signInWithGoogle, signOut, updatePassword } = useAuth()
+  const { user, loading: authLoading, error: authError, configured, signIn, signUp, signInWithGoogle, signOut, updatePassword, requestPasswordReset, completePasswordReset, recovery } = useAuth()
   const [screen, setScreen] = useState('welcome')
   const [toast, setToast] = useState('')
 
@@ -1272,9 +1272,20 @@ export default function App() {
           onSignIn={signIn}
           onSignUp={signUp}
           onSignInWithGoogle={signInWithGoogle}
+          onForgotPassword={requestPasswordReset}
           error={authError}
           configured={configured}
         />
+        {recovery ? (
+          <ResetPasswordModal
+            open
+            onSubmit={async (newPassword) => {
+              await completePasswordReset(newPassword)
+              showToast('Password updated')
+            }}
+            onCancel={handleSignOut}
+          />
+        ) : null}
         <AnimatePresence>
           {toast && (
             <motion.div
@@ -1319,10 +1330,10 @@ export default function App() {
               accountEmail={user.email}
               onGoDashboard={goToDashboard}
               onSignOut={handleSignOut}
-              onChangePassword={async (currentPassword, newPassword) => {
+              onChangePassword={userHasPasswordLogin(user) ? async (currentPassword, newPassword) => {
                 await updatePassword(currentPassword, newPassword)
                 showToast('Password updated')
-              }}
+              } : undefined}
               onUpdateProfile={updateProfile}
               onDeleteProfile={deleteProfile}
               onCompleteQuestion={(question, answer, subject, meta) => {
@@ -1411,6 +1422,17 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {recovery ? (
+        <ResetPasswordModal
+          open
+          onSubmit={async (newPassword) => {
+            await completePasswordReset(newPassword)
+            showToast('Password updated')
+          }}
+          onCancel={handleSignOut}
+        />
+      ) : null}
     </div>
   )
 }
@@ -2246,6 +2268,114 @@ function ChangePasswordModal({ open, onClose, onSubmit }) {
           <button type="button" className="profile-edit-cancel" onClick={onClose} disabled={busy}>Cancel</button>
           <button type="submit" className="profile-edit-save" disabled={busy || !isPasswordValid(newPassword)}>
             {busy ? 'Updating…' : 'Update password'}
+          </button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+function ResetPasswordModal({ open, onSubmit, onCancel }) {
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showNew, setShowNew] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [error, setError] = useState('')
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    if (!open) return
+    setNewPassword('')
+    setConfirmPassword('')
+    setShowNew(false)
+    setShowConfirm(false)
+    setError('')
+    setBusy(false)
+  }, [open])
+
+  if (!open) return null
+
+  const submit = async (e) => {
+    e.preventDefault()
+    const passwordMessage = passwordValidationMessage(newPassword)
+    if (passwordMessage) return setError(passwordMessage)
+    if (newPassword !== confirmPassword) return setError('New passwords do not match.')
+    setError('')
+    setBusy(true)
+    try {
+      await onSubmit(newPassword)
+    } catch (err) {
+      setError(err?.message || 'Could not update password.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="profile-edit-backdrop" role="presentation">
+      <form
+        className="profile-edit-modal"
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={submit}
+      >
+        <div className="profile-edit-head">
+          <div>
+            <div className="profile-edit-eyebrow">Account</div>
+            <h3>Set a new password</h3>
+          </div>
+        </div>
+
+        <div className="profile-edit-grid">
+          <Field label="New password">
+            <input
+              type={showNew ? 'text' : 'password'}
+              autoComplete="new-password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Create a strong password"
+              autoFocus
+            />
+            <button
+              type="button"
+              className="profile-password-toggle"
+              onClick={() => setShowNew((v) => !v)}
+              aria-label={showNew ? 'Hide new password' : 'Show new password'}
+              aria-pressed={showNew}
+            >
+              {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </Field>
+          <PasswordRequirements password={newPassword} />
+          <Field label="Confirm new password">
+            <input
+              type={showConfirm ? 'text' : 'password'}
+              autoComplete="new-password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Repeat new password"
+            />
+            <button
+              type="button"
+              className="profile-password-toggle"
+              onClick={() => setShowConfirm((v) => !v)}
+              aria-label={showConfirm ? 'Hide confirm password' : 'Show confirm password'}
+              aria-pressed={showConfirm}
+            >
+              {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </Field>
+        </div>
+
+        {error && <p className="profile-edit-error">{error}</p>}
+
+        <div className="profile-edit-actions">
+          {onCancel ? (
+            <button type="button" className="profile-edit-cancel" onClick={onCancel} disabled={busy}>
+              Cancel
+            </button>
+          ) : null}
+          <button type="submit" className="profile-edit-save" disabled={busy || !isPasswordValid(newPassword)}>
+            {busy ? 'Saving…' : 'Save password'}
           </button>
         </div>
       </form>

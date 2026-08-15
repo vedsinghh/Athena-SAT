@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Eye, EyeOff, Mail, ShieldCheck, X } from 'lucide-react'
+import { Eye, EyeOff, Mail, ShieldCheck, UserRound, X } from 'lucide-react'
 import PasswordRequirements from '../PasswordRequirements'
 import { isPasswordValid, passwordValidationMessage } from '../../lib/passwordRules'
 
@@ -23,6 +23,7 @@ export default function AuthModal({
   onSignIn,
   onSignUp,
   onSignInWithGoogle,
+  onForgotPassword,
   error,
   configured,
 }) {
@@ -32,6 +33,9 @@ export default function AuthModal({
   const [busy, setBusy] = useState(false)
   const [localError, setLocalError] = useState('')
   const [sentTo, setSentTo] = useState('')
+  const [existingAccount, setExistingAccount] = useState(false)
+  const [forgot, setForgot] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
   const emailRef = useRef(null)
 
   useEffect(() => {
@@ -52,6 +56,9 @@ export default function AuthModal({
     if (!open) return
     setLocalError('')
     setSentTo('')
+    setExistingAccount(false)
+    setForgot(false)
+    setResetSent(false)
     setBusy(false)
     setShowPassword(false)
     const t = window.setTimeout(() => emailRef.current?.focus(), 120)
@@ -82,7 +89,11 @@ export default function AuthModal({
     try {
       if (isSignup) {
         const data = await onSignUp(email.trim(), password)
-        if (!data?.session) setSentTo(email.trim())
+        if (data?.existingAccount) {
+          setExistingAccount(true)
+        } else if (!data?.session) {
+          setSentTo(email.trim())
+        }
       } else {
         await onSignIn(email.trim(), password)
       }
@@ -108,6 +119,32 @@ export default function AuthModal({
     }
   }
 
+  const sendReset = async (e) => {
+    e.preventDefault()
+    setLocalError('')
+    if (!configured) {
+      setLocalError('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env.')
+      return
+    }
+    if (!email.trim()) {
+      setLocalError('Enter your email.')
+      return
+    }
+    if (!onForgotPassword) {
+      setLocalError('Password reset is not available.')
+      return
+    }
+    setBusy(true)
+    try {
+      await onForgotPassword(email.trim())
+      setResetSent(true)
+    } catch (err) {
+      setLocalError(err?.message || 'Could not send reset email.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
   const showError = localError || error
 
   return (
@@ -125,7 +162,7 @@ export default function AuthModal({
             className="lp-auth-sheet"
             role="dialog"
             aria-modal="true"
-            aria-label={isSignup ? 'Create your account' : 'Sign in'}
+            aria-label={resetSent || forgot ? 'Reset password' : isSignup ? 'Create your account' : 'Sign in'}
             initial={{ opacity: 0, y: 22, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 14, scale: 0.98 }}
@@ -136,7 +173,83 @@ export default function AuthModal({
               <X size={18} />
             </button>
 
-            {sentTo ? (
+            {existingAccount ? (
+              <div className="lp-auth-sent">
+                <div className="lp-auth-sent-icon"><UserRound size={26} strokeWidth={1.9} /></div>
+                <h2>Account already exists</h2>
+                <p>
+                  That email is already associated with an Athena SAT account. Sign in to continue.
+                </p>
+                <button
+                  type="button"
+                  className="lp-btn lp-btn-primary lp-btn-block"
+                  onClick={() => {
+                    setExistingAccount(false)
+                    setPassword('')
+                    onModeChange?.('signin')
+                  }}
+                >
+                  Sign in
+                </button>
+              </div>
+            ) : resetSent ? (
+              <div className="lp-auth-sent">
+                <div className="lp-auth-sent-icon"><Mail size={26} strokeWidth={1.9} /></div>
+                <h2>Check your email</h2>
+                <p>
+                  If an account exists for <strong>{email.trim()}</strong>, we sent a link to reset
+                  your password. It expires after a short time.
+                </p>
+                <p className="lp-auth-sent-note">Not there? Check spam, then try again in a minute.</p>
+                <button
+                  type="button"
+                  className="lp-btn lp-btn-primary lp-btn-block"
+                  onClick={() => {
+                    setResetSent(false)
+                    setForgot(false)
+                    setPassword('')
+                    onModeChange?.('signin')
+                  }}
+                >
+                  Back to sign in
+                </button>
+              </div>
+            ) : forgot ? (
+              <>
+                <div className="lp-auth-head">
+                  <div className="lp-auth-owl" aria-hidden="true">🦉</div>
+                  <h2>Forgot password?</h2>
+                  <p>Enter the email on your account and we&apos;ll send a reset link.</p>
+                </div>
+                <form onSubmit={sendReset} className="lp-auth-form">
+                  <label className="lp-auth-field">
+                    <span>Email</span>
+                    <input
+                      ref={emailRef}
+                      type="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                    />
+                  </label>
+                  {showError ? <p className="lp-auth-error">{showError}</p> : null}
+                  <button type="submit" className="lp-btn lp-btn-primary lp-btn-block" disabled={busy}>
+                    {busy ? 'Please wait…' : 'Send reset link'}
+                  </button>
+                  <button
+                    type="button"
+                    className="lp-auth-text-btn"
+                    onClick={() => {
+                      setForgot(false)
+                      setLocalError('')
+                    }}
+                  >
+                    Back to sign in
+                  </button>
+                </form>
+              </>
+            ) : sentTo ? (
               <div className="lp-auth-sent">
                 <div className="lp-auth-sent-icon"><Mail size={26} strokeWidth={1.9} /></div>
                 <h2>Check your email</h2>
@@ -211,7 +324,21 @@ export default function AuthModal({
                   </label>
 
                   <label className="lp-auth-field">
-                    <span>Password</span>
+                    <span className="lp-auth-field-label">
+                      Password
+                      {!isSignup ? (
+                        <button
+                          type="button"
+                          className="lp-auth-forgot"
+                          onClick={() => {
+                            setLocalError('')
+                            setForgot(true)
+                          }}
+                        >
+                          Forgot password?
+                        </button>
+                      ) : null}
+                    </span>
                     <div className="lp-auth-password">
                       <input
                         type={showPassword ? 'text' : 'password'}

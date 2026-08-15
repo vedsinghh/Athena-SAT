@@ -2,4 +2,4 @@ Confirm signup subject:
 Confirm your account
 
 Reset password subject:
-Reset your Athena SAT password
+Reset your password

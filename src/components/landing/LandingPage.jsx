@@ -37,6 +37,7 @@ export default function LandingPage({
   onSignIn,
   onSignUp,
   onSignInWithGoogle,
+  onForgotPassword,
   error,
   configured,
 }) {
@@ -550,6 +551,7 @@ export default function LandingPage({
         onSignIn={onSignIn}
         onSignUp={onSignUp}
         onSignInWithGoogle={onSignInWithGoogle}
+        onForgotPassword={onForgotPassword}
         error={error}
         configured={configured}
       />
