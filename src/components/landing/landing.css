@@ -297,7 +297,7 @@
   z-index: 9;
 }
 
-/* Desktop: cloud + Athena pair centered; she peeks from behind it */
+/* Desktop: Athena+cloud sit in the lower half; she peeks from behind it */
 .ascent-hero {
   height: 100vh;
   min-height: 100vh;
@@ -305,8 +305,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 72px clamp(18px, 4vw, 40px) 80px;
+  justify-content: flex-start;
+  padding: clamp(152px, 32vh, 280px) clamp(18px, 4vw, 40px) 108px;
   max-width: 920px;
   margin: 0 auto;
   text-align: center;

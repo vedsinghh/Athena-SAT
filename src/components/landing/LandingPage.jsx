@@ -141,7 +141,7 @@ export default function LandingPage({
         const riseScale = mobile ? 0.4 : 0.36
         const dockScale = mobile ? 0.48 : 0.5
         const skyTop = mobile ? 52 : 68
-        const heroPeek = mobile ? 0.48 : 0.44
+        const heroPeek = mobile ? 0.52 : 0.48
         const dockPeek = mobile ? 0.72 : 0.68
 
         const t = olympusT < 0.12 ? riseT : Math.min(1, (olympusT - 0.12) / 0.88)
