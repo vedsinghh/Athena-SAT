@@ -252,7 +252,10 @@
 .ascent-btn-lg { padding: 14px 26px; font-size: 16px; }
 .ascent-btn-block { width: 100%; margin-top: 8px; }
 .ascent-btn-primary {
-  background: linear-gradient(180deg, #3d6de0, var(--blue));
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #2a67d6;
+  background-image: linear-gradient(180deg, #3d6de0, #2a67d6);
   color: #fff;
   box-shadow: 0 12px 28px rgba(47, 98, 214, 0.28);
 }
@@ -303,7 +306,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(80px, 10vh, 96px) clamp(18px, 4vw, 40px) clamp(64px, 9vh, 80px);
+  padding: clamp(56px, 7vh, 72px) clamp(18px, 4vw, 40px) clamp(64px, 9vh, 80px);
   max-width: 920px;
   margin: 0 auto;
   text-align: center;
@@ -320,9 +323,8 @@
 }
 .ascent-hero-cloud {
   width: min(480px, 92%);
-  margin: 0 auto;
+  margin: clamp(-140px, -22vh, -88px) auto 0;
   text-align: center;
-  transform: translateY(clamp(18px, 6.5vh, 56px));
 }
 .ascent-hero-cloud .ascent-cloud-body {
   display: flex;
