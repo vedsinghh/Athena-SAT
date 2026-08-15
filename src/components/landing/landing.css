@@ -422,6 +422,13 @@
   text-transform: uppercase;
   color: var(--blue);
 }
+.ascent-satorini {
+  text-transform: none;
+  letter-spacing: 0.16em;
+}
+.ascent-sat-mark {
+  color: #f8a810;
+}
 .ascent-cloud h2,
 .ascent-olympus-copy h2 {
   margin: 0;
