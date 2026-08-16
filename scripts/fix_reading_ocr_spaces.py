@@ -224,6 +224,7 @@ FORCE = [
     (r"\bstar\s+ted\b", "started"),
     (r"\baddress\s+ed\b", "addressed"),
     (r"\bpr\s+imed\b", "primed"),
+    (r"\bthroughut\b", "throughout"),
 ]
 
 

@@ -118,6 +118,23 @@ def clip_word_to_underline(text: str, wr: fitz.Rect, urect: fitz.Rect) -> str | 
     return clipped
 
 
+def words_between_underline_rects(page: fitz.Page, left: fitz.Rect, right: fitz.Rect) -> list:
+    """Words whose center sits in a same-line gap between two underline segments."""
+    hits = []
+    for word in page.get_text("words"):
+        wr = fitz.Rect(word[:4])
+        cy = (wr.y0 + wr.y1) / 2
+        # Underline rules sit just below glyphs.
+        if cy > left.y1 + 4 or cy < left.y0 - 16:
+            continue
+        cx = (wr.x0 + wr.x1) / 2
+        # Require a clear interior so edge words like "by" aren't double-counted.
+        if left.x1 + 2 <= cx <= right.x0 - 2 and re.search(r"\w", word[4] or ""):
+            hits.append(word)
+    hits.sort(key=lambda w: w[0])
+    return hits
+
+
 def group_underline_rects(rects: list[fitz.Rect], page: fitz.Page) -> list[list[fitz.Rect]]:
     """Group contiguous / line-wrapped underline segments; keep separate portions apart."""
     if not rects:
@@ -126,13 +143,19 @@ def group_underline_rects(rects: list[fitz.Rect], page: fitz.Page) -> list[list[
     for rect in rects[1:]:
         prev = groups[-1][-1]
         same_line = abs(rect.y0 - prev.y0) < 2.5
-        contiguous = same_line and rect.x0 <= prev.x1 + 12
+        gap = rect.x0 - prev.x1
+        contiguous = same_line and gap <= 12
+        # College Board often leaves a 1-word hole in an otherwise continuous underline.
+        soft_gap = same_line and 12 < gap <= 45
         wrapped = (
             not same_line
             and 2.5 < (rect.y0 - prev.y0) <= 18
             and rect.x0 < 90
         )
         if contiguous:
+            groups[-1].append(rect)
+            continue
+        if soft_gap and len(words_between_underline_rects(page, prev, rect)) <= 1:
             groups[-1].append(rect)
             continue
         if wrapped:
@@ -146,8 +169,16 @@ def group_underline_rects(rects: list[fitz.Rect], page: fitz.Page) -> list[list[
 
 def phrase_from_rects(page: fitz.Page, rects: list[fitz.Rect]) -> str:
     words = []
-    for rect in rects:
+    ordered_rects = sorted(rects, key=lambda r: (round(r.y0, 1), r.x0))
+    for i, rect in enumerate(ordered_rects):
         words.extend(words_over_underline(page, rect))
+        if i + 1 >= len(ordered_rects):
+            continue
+        nxt = ordered_rects[i + 1]
+        gap = nxt.x0 - rect.x1
+        if abs(rect.y0 - nxt.y0) < 2.5 and 0 < gap <= 45:
+            for word in words_between_underline_rects(page, rect, nxt):
+                words.append((word[0], word[1], word[2], word[3], word[4], *word[5:]))
     # de-dupe while preserving reading order
     seen = set()
     ordered = []
@@ -219,8 +250,16 @@ def find_alnum_span(haystack: str, needle: str) -> tuple[int, int] | None:
             tpos = h_norm.find(tail, hpos + len(head))
             if tpos >= 0:
                 return span_from_norm(hpos, tpos + len(tail) - 1)
-            # Fall back to approximate length from the head match.
-            return span_from_norm(hpos, hpos + len(n_norm) - 1)
+            # Length fallback — snap to clause punctuation when the needle ends with it,
+            # so OCR drift (throughout/throughut) doesn't eat the next word.
+            approx = span_from_norm(hpos, hpos + len(n_norm) - 1)
+            if needle.rstrip().endswith((",", ";", ":", ".")):
+                window = haystack[approx[0] : min(len(haystack), approx[1] + 12)]
+                for punct in ",;:.":
+                    idx = window.rfind(punct)
+                    if idx >= max(10, len(window) // 3):
+                        return approx[0], approx[0] + idx + 1
+            return approx
 
     if len(n_norm) > 48:
         pos = h_norm.find(n_norm[: len(n_norm) - 12])

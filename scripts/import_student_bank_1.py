@@ -25,6 +25,7 @@ from extract_questions import (  # noqa: E402
     find_passage_start_y,
     find_stem_y,
     join_words,
+    looks_like_table_data_row,
     render_figure_clip,
     split_passage_and_prompt,
     words_in_band,
@@ -226,9 +227,60 @@ def split_student_passage_and_prompt(body: str) -> tuple[str, str]:
     return passage, prompt
 
 
-def public_pdf_name(domain: str) -> str:
+def public_pdf_name(domain: str, *, unanswered: bool = False) -> str:
     slug = re.sub(r"[^A-Za-z0-9]+", "-", domain).strip("-")
-    return f"Student-Bank-1-{slug}.pdf"
+    suffix = "-Unanswered" if unanswered else ""
+    return f"Student-Bank-1-{slug}{suffix}.pdf"
+
+
+def answer_section_top_y(page: fitz.Page) -> float | None:
+    """Y where the answer key / rationale begins (below the choices)."""
+    text = page.get_text("text") or ""
+    candidates: list[float] = []
+    for m in re.finditer(r"ID:\s*([0-9a-fA-F]{8})\s+Answer", text):
+        qid = m.group(1)
+        for needle in (f"ID: {qid}", qid):
+            for hit in page.search_for(needle) or []:
+                # Skip the header ID under the question title.
+                if hit.y0 > page.rect.height * 0.28:
+                    candidates.append(hit.y0)
+    # These labels can sit at the very top of continuation pages (even slightly
+    # above y=0), so don't require a mid-page threshold.
+    for label in ("Correct Answer", "Rationale"):
+        for hit in page.search_for(label) or []:
+            candidates.append(hit.y0)
+    if candidates:
+        return max(page.rect.y0, min(candidates) - 3)
+
+    # Continuation pages that are rationale-only (no question header / choice list).
+    if not (page.search_for("Question ID") or []):
+        has_choice_key = bool(re.search(r"Choice [A-D] is (?:incorrect|the best)\b", text, re.I))
+        has_choice_list = bool(re.search(r"\n[A-D]\.\s", text))
+        has_diff_footer = bool(re.search(r"Question\s+Di(?:ffi|ﬃ)culty\b", text, re.I))
+        if (
+            has_choice_key
+            or (has_diff_footer and not has_choice_list)
+            or re.search(r"\b(?:incorrect because|best answer because)\b", text, re.I)
+        ):
+            return page.rect.y0
+    return None
+
+
+def write_unanswered_pdf(src: Path, dest: Path) -> None:
+    """Copy a Student Bank PDF with answer keys and rationales redacted."""
+    doc = fitz.open(src)
+    for page in doc:
+        y = answer_section_top_y(page)
+        if y is None:
+            continue
+        page.add_redact_annot(
+            fitz.Rect(page.rect.x0, max(page.rect.y0, y), page.rect.x1, page.rect.y1),
+            fill=(1, 1, 1),
+        )
+        page.apply_redactions()
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    doc.save(dest, garbage=4, deflate=True)
+    doc.close()
 
 
 def strip_page_footer_meta(text: str) -> str:
@@ -337,6 +389,8 @@ def strip_chart_ocr_prefix(text: str) -> str:
         return text
 
     def looks_like_chart_line(ln: str) -> bool:
+        if looks_like_table_data_row(ln):
+            return True
         if re.fullmatch(r"[\d.,:%\-\s]+", ln):
             return True
         low = ln.lower()
@@ -377,6 +431,9 @@ def strip_chart_ocr_prefix(text: str) -> str:
     i = 0
     while i < len(lines):
         ln = lines[i]
+        if looks_like_table_data_row(ln):
+            i += 1
+            continue
         if len(ln) >= 55 and re.search(r"[a-z]", ln) and (
             "." in ln or "," in ln or " and " in ln.lower()
         ):
@@ -414,7 +471,8 @@ def crop_student_figure(page: fitz.Page, out_path: Path, text: str) -> tuple[str
         page.rect.x0 + 18,
         max(page.rect.y0 + 8, y0),
         page.rect.x1 - 18,
-        min(page.rect.y1 - 8, passage_y - 2),
+        # Keep the table's bottom rule; passage_y is the first prose baseline.
+        min(page.rect.y1 - 8, passage_y),
     )
     if clip.height < 70 or clip.width < 120:
         return None, None
@@ -450,16 +508,15 @@ def build_item(group: dict, doc: fitz.Document, *, domain: str, pdf_url: str) ->
 
     if figure and passage_y is not None:
         stem_y = find_stem_y(page) or page.rect.height
-        a_hits = page.search_for("A.")
-        a_y = a_hits[0].y0 if a_hits else page.rect.height
         rebuilt_passage = join_words(words_in_band(page, passage_y - 0.5, stem_y)) or ""
-        rebuilt_prompt = join_words(words_in_band(page, stem_y - 0.5, a_y)) or ""
+        # Prefer stem from the PDF body so choice A isn't glued onto the prompt.
+        body_clean = strip_chart_ocr_prefix(body)
+        _, prompt_from_body = split_student_passage_and_prompt(body_clean.replace("\r", ""))
         if rebuilt_passage:
             passage = rebuilt_passage
-            prompt = trim_prompt(rebuilt_prompt) or "Select the best answer."
+            prompt = trim_prompt(prompt_from_body) or "Select the best answer."
         else:
-            body = strip_chart_ocr_prefix(body)
-            passage, prompt = split_student_passage_and_prompt(body.replace("\r", ""))
+            passage, prompt = split_student_passage_and_prompt(body_clean.replace("\r", ""))
             prompt = trim_prompt(prompt)
     else:
         body = strip_chart_ocr_prefix(body)
@@ -540,8 +597,12 @@ def main() -> int:
             return 1
         dest = PUBLIC_PDF_DIR / public_pdf_name(domain)
         shutil.copy2(pdf_path, dest)
-        pdf_url = f"/qbank/reading/{dest.name}"
+        unanswered = PUBLIC_PDF_DIR / public_pdf_name(domain, unanswered=True)
+        write_unanswered_pdf(dest, unanswered)
+        # Practice PDF button must not reveal answers / rationales.
+        pdf_url = f"/qbank/reading/{unanswered.name}"
         print(f"copied {pdf_path.name} -> {dest.relative_to(ROOT)}")
+        print(f"unanswered -> {unanswered.relative_to(ROOT)}")
 
         doc = fitz.open(pdf_path)
         groups = group_pages(doc)

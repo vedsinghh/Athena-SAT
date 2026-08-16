@@ -246,13 +246,18 @@ def parse_meta(text: str, subject: str, domains: list[str]):
 
 def extract_choices_text(block: str) -> list[str] | None:
     m = re.search(
-        r"\nA\.\s*(.*?)\nB\.\s*(.*?)\nC\.\s*(.*?)\nD\.\s*(.*?)(?:\nCorrect Answer:|\nRationale|\Z)",
+        r"\nA\.\s*(.*?)\nB\.\s*(.*?)\nC\.\s*(.*?)\nD\.\s*(.*?)(?:\nID:\s*[0-9a-fA-F]{8}\s+Answer\b|\nCorrect Answer:|\nRationale|\Z)",
         block,
         re.S,
     )
     if not m:
         return None
     choices = [clean_text(c.replace("\n", " ")) for c in m.groups()]
+    # Student Bank PDFs sometimes glue "ID: <qid> Answer" onto choice D.
+    choices = [
+        re.sub(r"\s*ID:\s*[0-9a-fA-F]{8}\s+Answer\b.*$", "", c, flags=re.I).strip()
+        for c in choices
+    ]
     if any("Correct Answer" in c for c in choices):
         return None
     if sum(1 for c in choices if len(c) > 0) < 3:
@@ -1117,6 +1122,9 @@ def is_prose_line(text: str) -> bool:
         re.I,
     ):
         return False
+    # Table body rows (instrument / observatory / year) are not passage prose.
+    if looks_like_table_data_row(t):
+        return False
     if "..." in t and len(words) < 18:
         return False
     if not re.match(r'^[A-Z“\"\[\()]', t):
@@ -1128,6 +1136,24 @@ def is_prose_line(text: str) -> bool:
         t,
         re.I,
     ):
+        return True
+    return False
+
+
+def looks_like_table_data_row(text: str) -> bool:
+    t = clean_text(text or "")
+    if not t or re.search(r"[.!?]", t):
+        return False
+    has_year = bool(re.search(r"\b(?:19|20)\d{2}\b", t))
+    if has_year and re.search(
+        r"\b(?:observatory|spectroscopy|infrared imaging|data type|instrument|"
+        r"telescope|spectrometer|camera)\b",
+        t,
+        re.I,
+    ):
+        return True
+    # Dense row ending in year(s), typical of SAT data tables.
+    if has_year and re.search(r"\b(?:19|20)\d{2}(?:,\s*(?:19|20)\d{2})?\s*$", t) and len(t.split()) >= 5:
         return True
     return False
 

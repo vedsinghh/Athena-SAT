@@ -5264,6 +5264,38 @@ function normalizePdfAssetPath(pdf) {
     .trim()
 }
 
+function PracticeEmptyFilters({ onBack }) {
+  return (
+    <div className="practice-page practice-empty-page">
+      <div className="practice-empty-card">
+        <div className="practice-empty-copy">
+          <p className="practice-empty-kicker">Quest status</p>
+          <h2 className="practice-empty-title">You’ve cleaned out the temple</h2>
+          <p className="practice-empty-body">
+            Every question matching these filters is already done. Athena’s owl checked the vault,
+            shrugged, and went back to napping on the olive branch.
+          </p>
+          <p className="practice-empty-hint">
+            Loosen a filter or switch banks and she’ll dig up fresh material.
+          </p>
+          <button type="button" className="practice-empty-back" onClick={onBack}>
+            Back to filters
+          </button>
+        </div>
+        <div className="practice-empty-art" aria-hidden="true">
+          <img
+            src="/landing/athena-owl.png"
+            alt=""
+            className="practice-empty-owl"
+            draggable={false}
+          />
+          <span className="practice-empty-bubble">…nope, nothing left</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function PracticePdfPanel({ pdf, pdfPage, pdfPreview }) {
   const pdfPath = normalizePdfAssetPath(pdf)
   if (!pdfPreview && !(pdfPath && pdfPage)) return null
@@ -5491,8 +5523,9 @@ function repairSourceAndPassage(source, passage) {
   let src = String(source || '').replace(/[ \t]+/g, ' ').replace(/\n+/g, ' ').trim()
   let pas = String(passage || '').replace(/[ \t]+\n/g, '\n').replace(/\n[ \t]+/g, '\n').trim()
   if (!src || !pas) return { source: src, passage: pas }
-  // Complete sources end with sentence punctuation.
-  if (/[.!?"”')\]]$/.test(src)) return { source: src, passage: pas }
+  // Complete sources end with sentence punctuation (ignore markup like </em>).
+  const srcPlain = src.replace(/<[^>]+>/g, '').trim()
+  if (/[.!?"”')\]]$/.test(srcPlain)) return { source: src, passage: pas }
 
   const pasFlat = pas.replace(/\s+/g, ' ').trim()
   const isSpeakerCue = (text) => /^[A-Z][A-Z\s.'-]{0,40}:/.test(text)
@@ -6225,19 +6258,7 @@ function MathPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteSess
   }
 
   if (!total) {
-    return (
-      <div className="practice-page">
-        <div className="card practice-question-card" style={{ padding: 24 }}>
-          <h2 style={{ margin: '0 0 8px', color: '#12346f' }}>No questions left</h2>
-          <p style={{ margin: '0 0 16px', color: '#687590' }}>
-            You’ve already completed every question that matches these filters.
-          </p>
-          <button type="button" className="practice-outline-btn" onClick={onEnd}>
-            Back
-          </button>
-        </div>
-      </div>
-    )
+    return <PracticeEmptyFilters onBack={onEnd} />
   }
 
   const current = refreshQuestionFromBank(questions[index], MATH_QUESTION_BANK)
@@ -6967,19 +6988,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
   }
 
   if (!total) {
-    return (
-      <div className="practice-page">
-        <div className="card practice-question-card" style={{ padding: 24 }}>
-          <h2 style={{ margin: '0 0 8px', color: '#12346f' }}>No questions left</h2>
-          <p style={{ margin: '0 0 16px', color: '#687590' }}>
-            You’ve already completed every question that matches these filters.
-          </p>
-          <button type="button" className="practice-outline-btn" onClick={onEnd}>
-            Back
-          </button>
-        </div>
-      </div>
-    )
+    return <PracticeEmptyFilters onBack={onEnd} />
   }
 
   const current = refreshQuestionFromBank(questions[index], READING_QUESTION_BANK)

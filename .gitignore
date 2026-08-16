@@ -4,3 +4,4 @@ dist/
 .env
 .vite/
 public/_restore_ved.athena.json
+.vercel

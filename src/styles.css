@@ -6,8 +6,10 @@
   font-family: "DM Sans", system-ui, sans-serif;
   color: #14284f;
   background: #fff;
-  --math-font: "KaTeX_Main", "STIX Two Text", "Times New Roman", Times, serif;
-  --math-italic: "KaTeX_Math", "STIX Two Text", "Times New Roman", Times, serif;
+  --math-font: "KaTeX_Main", "Source Serif 4", "Times New Roman", Times, serif;
+  --math-italic: "KaTeX_Math", "Source Serif 4", "Times New Roman", Times, serif;
+  /* Lighter Bluebook-like body serif for stems, choices, and passages */
+  --practice-serif: "Source Serif 4", "Times New Roman", Times, serif;
   --page-sky: #b9dcfa;
   --page-cream: #f6f3ec;
 }
@@ -3356,8 +3358,16 @@ button { cursor: pointer; }
   margin-bottom: 12px;
 }
 .practice-passage-body {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--practice-serif);
   font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #1f2a44;
+}
+.practice-passage-text {
+  font-family: var(--practice-serif);
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.7;
   color: #1f2a44;
 }
@@ -3367,8 +3377,9 @@ button { cursor: pointer; }
 .practice-passage-body p:last-child { margin-bottom: 0; }
 .practice-passage-source {
   margin: 0 0 14px !important;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--practice-serif);
   font-size: 13px;
+  font-weight: 400;
   line-height: 1.55;
   font-style: normal;
   color: #5b6a86;
@@ -3398,8 +3409,9 @@ button { cursor: pointer; }
 }
 .practice-passage-notes-intro {
   margin: 0 0 14px !important;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--practice-serif);
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.7;
   color: #1f2a44;
 }
@@ -3411,8 +3423,9 @@ button { cursor: pointer; }
 .practice-passage-notes-list li {
   margin: 0 0 10px;
   padding-left: 0.15em;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--practice-serif);
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.7;
   color: #1f2a44;
 }
@@ -3463,6 +3476,140 @@ button { cursor: pointer; }
   gap: 14px;
   min-height: calc(100vh - 120px);
 }
+
+.practice-empty-page {
+  align-items: center;
+  justify-content: center;
+  padding: 28px 16px 48px;
+}
+
+.practice-empty-card {
+  width: min(720px, 100%);
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 12px 28px;
+  align-items: center;
+  padding: 36px 40px 32px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(185, 220, 250, 0.55), transparent 42%),
+    linear-gradient(165deg, #ffffff 0%, #f7faff 58%, #eef4ff 100%);
+  border: 1px solid #d9e4f7;
+  box-shadow: 0 18px 40px rgba(18, 52, 111, 0.08);
+}
+
+.practice-empty-kicker {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5b7ab8;
+}
+
+.practice-empty-title {
+  margin: 0 0 12px;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  line-height: 1.2;
+  color: #12346f;
+}
+
+.practice-empty-body,
+.practice-empty-hint {
+  margin: 0;
+  color: #5a6d8c;
+  line-height: 1.55;
+  font-size: 0.98rem;
+}
+
+.practice-empty-body { margin-bottom: 10px; }
+.practice-empty-hint { margin-bottom: 22px; color: #7a8aa8; font-size: 0.92rem; }
+
+.practice-empty-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 12px;
+  border: 1.5px solid #2f62d6;
+  background: #2f62d6;
+  color: #fff;
+  font-weight: 650;
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.practice-empty-back:hover {
+  background: #2454bf;
+  border-color: #2454bf;
+  box-shadow: 0 10px 22px rgba(47, 98, 214, 0.22);
+  transform: translateY(-1px);
+}
+
+.practice-empty-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+}
+
+.practice-empty-owl {
+  width: min(220px, 100%);
+  height: auto;
+  filter: drop-shadow(0 16px 18px rgba(61, 76, 106, 0.12));
+  animation: practice-empty-bob 3.6s ease-in-out infinite;
+}
+
+.practice-empty-bubble {
+  position: absolute;
+  top: 12px;
+  right: 4px;
+  max-width: 118px;
+  padding: 10px 12px;
+  border-radius: 14px 14px 4px 14px;
+  background: #fff;
+  border: 2px solid #d7e3f8;
+  color: #12346f;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.3;
+  box-shadow: 0 8px 18px rgba(18, 52, 111, 0.08);
+  animation: practice-empty-pop 3.6s ease-in-out infinite;
+}
+
+@keyframes practice-empty-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes practice-empty-pop {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-4px) rotate(1deg); }
+}
+
+@media (max-width: 720px) {
+  .practice-empty-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 28px 22px 24px;
+  }
+
+  .practice-empty-art {
+    order: -1;
+    min-height: 180px;
+  }
+
+  .practice-empty-bubble {
+    right: 12%;
+    top: 4px;
+  }
+
+  .practice-empty-back {
+    width: 100%;
+  }
+}
+
 .practice-pause-overlay {
   position: fixed;
   top: 0;
@@ -3896,9 +4043,9 @@ button { cursor: pointer; }
   margin: 0 0 18px;
   font-size: 17px;
   line-height: 1.7;
-  font-weight: 500;
+  font-weight: 400;
   color: #12346f;
-  font-family: "STIX Two Text", "Times New Roman", Times, serif;
+  font-family: var(--practice-serif);
   font-variant-numeric: lining-nums;
 }
 .practice-prompt p {
@@ -3917,8 +4064,9 @@ button { cursor: pointer; }
   text-decoration-skip-ink: none;
 }
 .practice-eq-line {
-  font-family: "STIX Two Text", "Times New Roman", Times, serif;
+  font-family: var(--practice-serif);
   font-size: 1.05em;
+  font-weight: 400;
   letter-spacing: 0;
   padding: 4px 0;
   font-style: normal;
@@ -3951,21 +4099,21 @@ button { cursor: pointer; }
   font-size: 1em;
 }
 .math-text {
-  font-family: "STIX Two Text", "Times New Roman", Times, serif;
+  font-family: var(--practice-serif);
   font-variant-numeric: lining-nums;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 .math-var {
-  font-family: "STIX Two Text", "Times New Roman", Times, serif;
+  font-family: var(--practice-serif);
   font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
 }
 .math-num {
-  font-family: "STIX Two Text", "Times New Roman", Times, serif;
+  font-family: var(--practice-serif);
   font-style: normal;
   font-variant-numeric: lining-nums;
-  font-weight: 500;
+  font-weight: 400;
 }
 .practice-data-table-wrap {
   margin: 10px 0 16px;
@@ -3976,8 +4124,9 @@ button { cursor: pointer; }
 .practice-data-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: "STIX Two Text", "Times New Roman", Times, serif;
+  font-family: var(--practice-serif);
   font-size: 15px;
+  font-weight: 400;
   color: #12346f;
 }
 .practice-data-table-simple {
@@ -4070,11 +4219,11 @@ button { cursor: pointer; }
   flex: 1;
   min-width: 0;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 400;
   color: #12346f;
-  font-family: "STIX Two Text", "Times New Roman", Times, serif;
+  font-family: var(--practice-serif);
   font-variant-numeric: lining-nums;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   line-height: 1.45;
 }
 .practice-choice-image {
@@ -4314,6 +4463,13 @@ body.math-reference-dragging * {
   color: #1f2937;
 }
 .practice-modal-body p { margin: 0 0 12px; }
+.practice-explanation-body {
+  font-family: var(--practice-serif);
+  font-weight: 400;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: #1f2a44;
+}
 .practice-explanation-body p {
   margin: 0 0 16px;
 }
@@ -4673,8 +4829,8 @@ body.math-reference-dragging * {
   border: 1.5px solid #cfd8ea;
   padding: 0 14px;
   font-size: 18px;
-  font-weight: 500;
-  font-family: var(--math-font);
+  font-weight: 400;
+  font-family: var(--practice-serif);
   font-variant-numeric: lining-nums;
   color: #12346f;
   outline: none;
