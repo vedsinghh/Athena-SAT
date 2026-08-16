@@ -24,7 +24,7 @@ import { writeLocalProfiles } from './lib/profileStorage'
 import { restoreAthenaExport } from './lib/restoreAthenaExport'
 import { supabase } from './lib/supabase'
 
-const QUESTION_POOLS = ['Collegeboard Summer 2026', 'SAT Educator Bank 1']
+const QUESTION_POOLS = ['Collegeboard Summer 2026', 'SAT Educator Bank 1', 'SAT Student Bank 1']
 const DEFAULT_QUESTION_POOL = QUESTION_POOLS[0]
 const STAT_NA = 'N/A'
 

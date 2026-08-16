@@ -20,8 +20,11 @@ FORBIDDEN_LEFT = {
     "than", "then", "also", "just", "very", "more", "most", "such", "both",
     "each", "few", "many", "much", "own", "same", "other", "over", "after",
     "before", "between", "through", "during", "above", "below", "under",
+    "me", "my", "him", "her", "his", "our", "your", "we", "us", "they", "them",
+    "he", "she", "you", "i", "put", "get", "got", "let", "did", "does", "had",
+    "has", "have", "do", "on", "in", "at",
 }
-FORBIDDEN_RIGHT = FORBIDDEN_LEFT | {"only", "other", "early", "later", "even"}
+FORBIDDEN_RIGHT = FORBIDDEN_LEFT | {"only", "other", "early", "later", "even", "sad", "notebook"}
 
 
 def build_wordset() -> set[str]:
@@ -106,13 +109,15 @@ def should_join(left: str, right: str) -> bool:
 
     combo = al + bl
     if combo not in WORDSET:
-        # Capitalized name fragments (Ber + trand)
+        # Capitalized name fragments (Ber + trand) — require a short piece so
+        # full names like "Reyna Grande" stay spaced.
         if (
             a[0].isupper()
             and al not in WORDSET
             and bl not in WORDSET
             and 2 <= len(al) <= 6
             and 3 <= len(bl) <= 8
+            and min(len(al), len(bl)) <= 3
         ):
             return True
         return False
@@ -120,8 +125,8 @@ def should_join(left: str, right: str) -> bool:
     if al in FORBIDDEN_LEFT or bl in FORBIDDEN_RIGHT:
         return False
 
-    # Avoid gluing two long standalone words ("complex brains")
-    if al in WORDSET and bl in WORDSET and len(al) >= 4 and len(bl) >= 4:
+    # Never glue two complete dictionary words ("me sad", "put her").
+    if al in WORDSET and bl in WORDSET:
         return False
 
     return True
@@ -291,14 +296,15 @@ def fix_double_quotes(text: str) -> str:
 
 def fix_apostrophes(text: str) -> str:
     """Normalize apostrophes without eating possessives or scare quotes."""
-    t = re.sub(r"\b([A-Za-z]+)\s*'\s*(s|re|ve|ll|d|m)\b", r"\1'\2", text, flags=re.I)
+    t = re.sub(r"\b([A-Za-z]+)\s*'\s*(s|re|ve|ll|d|m|st)\b", r"\1'\2", text, flags=re.I)
     t = re.sub(r"\b([A-Za-z]+)n\s*'\s*t\b", r"\1n't", t, flags=re.I)
     # dinosaurs ' → dinosaurs' (not a 'quoted word')
     t = re.sub(r"([A-Za-z])\s+'(?=\s|$|[,.;:!?\)\]])", r"\1'", t)
 
     def repl(m: re.Match) -> str:
         left, right = m.group(1), m.group(2)
-        if right.lower() in {"s", "re", "ve", "ll", "d", "m", "t"}:
+        # Include Shakespearean elisions like remember'st / cam'st.
+        if right.lower() in {"s", "re", "ve", "ll", "d", "m", "t", "st"}:
             return left + "'" + right
         return left + "' " + right
 

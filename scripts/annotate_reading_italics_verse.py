@@ -16,6 +16,8 @@ DATA = ROOT / "src" / "data" / "readingQuestions.json"
 
 SUMMER_PDF = Path("/Users/vedsingh/Downloads/English 150 questions.pdf")
 EDUCATOR_ROOT = Path("/Users/vedsingh/Downloads/SAT Bank 1/English")
+STUDENT_ROOT = Path("/Users/vedsingh/Downloads/Student Bank 1")
+PUBLIC_READING = ROOT / "public" / "qbank" / "reading"
 
 TAG_RE = re.compile(r"</?(?:em|u|i)>", re.I)
 HTML_RE = re.compile(r"<[^>]+>")
@@ -58,13 +60,21 @@ def extract_body_lines(page: fitz.Page):
                 continue
             text = "".join(sp["text"] for sp in spans)
             stripped = text.strip()
-            match = re.search(r"Question ID:\s*([0-9a-f]+)", stripped, re.I)
+            match = re.search(r"Question ID[:\s]+([0-9a-f]+)", stripped, re.I)
             if match:
                 qid = match.group(1).lower()
             if stripped == "Question":
                 in_q = True
                 continue
-            if in_q and (stripped == "Answer" or stripped.startswith("Correct Answer")):
+            # Student Bank PDFs have no lone "Question" header; body starts after ID.
+            if not in_q and qid and re.match(rf"ID:\s*{re.escape(qid)}$", stripped, re.I):
+                in_q = True
+                continue
+            if in_q and (
+                stripped == "Answer"
+                or stripped.startswith("Correct Answer")
+                or re.match(r"ID:\s*[0-9a-f]+\s+Answer\b", stripped, re.I)
+            ):
                 return qid, lines
             if in_q:
                 lines.append({
@@ -282,6 +292,10 @@ def index_pdfs() -> dict[str, tuple[Path, int, list]]:
     files = []
     if EDUCATOR_ROOT.exists():
         files.extend(sorted(p for p in EDUCATOR_ROOT.rglob("*.pdf") if "Extract" not in p.name and "Exract" not in p.name))
+    if STUDENT_ROOT.exists():
+        files.extend(sorted(STUDENT_ROOT.glob("*.pdf")))
+    if PUBLIC_READING.exists():
+        files.extend(sorted(PUBLIC_READING.glob("Student-Bank-1-*.pdf")))
     if SUMMER_PDF.exists():
         files.append(SUMMER_PDF)
     by_id: dict[str, tuple[Path, int, list]] = {}
