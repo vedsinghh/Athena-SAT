@@ -6,10 +6,12 @@
   font-family: "DM Sans", system-ui, sans-serif;
   color: #14284f;
   background: #fff;
-  --math-font: "KaTeX_Main", "Source Sans 3", "Segoe UI", system-ui, sans-serif;
-  --math-italic: "KaTeX_Math", "Source Sans 3", "Segoe UI", system-ui, sans-serif;
-  /* Bluebook-like sans for stems, choices, and passages */
-  --practice-font: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --math-font: "KaTeX_Main", "Noto Serif", Georgia, serif;
+  --math-italic: "KaTeX_Math", "Noto Serif", Georgia, serif;
+  /* Thin Noto Serif for stems, choices, and passages (Bluebook-like) */
+  --practice-font: "Noto Serif", Georgia, "Times New Roman", serif;
+  --practice-ink: #000;
+  --practice-weight: 200;
   --page-sky: #b9dcfa;
   --page-cream: #f6f3ec;
 }
@@ -3360,16 +3362,16 @@ button { cursor: pointer; }
 .practice-passage-body {
   font-family: var(--practice-font);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   line-height: 1.7;
-  color: #1f2a44;
+  color: var(--practice-ink);
 }
 .practice-passage-text {
   font-family: var(--practice-font);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   line-height: 1.7;
-  color: #1f2a44;
+  color: var(--practice-ink);
 }
 .practice-passage-body p {
   margin: 0 0 16px;
@@ -3379,10 +3381,10 @@ button { cursor: pointer; }
   margin: 0 0 14px !important;
   font-family: var(--practice-font);
   font-size: 13px;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   line-height: 1.55;
   font-style: normal;
-  color: #5b6a86;
+  color: #444;
 }
 .practice-passage-source em,
 .practice-passage-body em,
@@ -3411,9 +3413,9 @@ button { cursor: pointer; }
   margin: 0 0 14px !important;
   font-family: var(--practice-font);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   line-height: 1.7;
-  color: #1f2a44;
+  color: var(--practice-ink);
 }
 .practice-passage-notes-list {
   margin: 0;
@@ -3425,9 +3427,9 @@ button { cursor: pointer; }
   padding-left: 0.15em;
   font-family: var(--practice-font);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   line-height: 1.7;
-  color: #1f2a44;
+  color: var(--practice-ink);
 }
 .practice-passage-notes-list li:last-child {
   margin-bottom: 0;
@@ -3444,9 +3446,9 @@ button { cursor: pointer; }
 .practice-passage-text-label {
   font-family: var(--practice-font);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.3;
-  color: #1f2a44;
+  color: var(--practice-ink);
   margin: 0 0 8px;
 }
 .practice-passage-text .practice-passage-text-block {
@@ -4043,8 +4045,8 @@ button { cursor: pointer; }
   margin: 0 0 18px;
   font-size: 17px;
   line-height: 1.7;
-  font-weight: 400;
-  color: #12346f;
+  font-weight: var(--practice-weight);
+  color: var(--practice-ink);
   font-family: var(--practice-font);
   font-variant-numeric: lining-nums;
 }
@@ -4066,14 +4068,14 @@ button { cursor: pointer; }
 .practice-eq-line {
   font-family: var(--practice-font);
   font-size: 1.05em;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   letter-spacing: 0;
   padding: 4px 0;
   font-style: normal;
 }
 .practice-katex {
   font-size: 1.05em;
-  color: #12346f;
+  color: var(--practice-ink);
 }
 .practice-katex-display {
   display: block;
@@ -4101,19 +4103,22 @@ button { cursor: pointer; }
 .math-text {
   font-family: var(--practice-font);
   font-variant-numeric: lining-nums;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   letter-spacing: 0;
+  color: var(--practice-ink);
 }
 .math-var {
   font-family: var(--practice-font);
   font-style: italic;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
+  color: var(--practice-ink);
 }
 .math-num {
   font-family: var(--practice-font);
   font-style: normal;
   font-variant-numeric: lining-nums;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
+  color: var(--practice-ink);
 }
 .practice-data-table-wrap {
   margin: 10px 0 16px;
@@ -4126,8 +4131,8 @@ button { cursor: pointer; }
   border-collapse: collapse;
   font-family: var(--practice-font);
   font-size: 15px;
-  font-weight: 400;
-  color: #12346f;
+  font-weight: var(--practice-weight);
+  color: var(--practice-ink);
 }
 .practice-data-table-simple {
   width: auto;
@@ -4219,8 +4224,8 @@ button { cursor: pointer; }
   flex: 1;
   min-width: 0;
   font-size: 17px;
-  font-weight: 400;
-  color: #12346f;
+  font-weight: var(--practice-weight);
+  color: var(--practice-ink);
   font-family: var(--practice-font);
   font-variant-numeric: lining-nums;
   letter-spacing: 0;
@@ -4465,10 +4470,10 @@ body.math-reference-dragging * {
 .practice-modal-body p { margin: 0 0 12px; }
 .practice-explanation-body {
   font-family: var(--practice-font);
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   font-size: 15.5px;
   line-height: 1.65;
-  color: #1f2a44;
+  color: var(--practice-ink);
 }
 .practice-explanation-body p {
   margin: 0 0 16px;
@@ -4489,12 +4494,12 @@ body.math-reference-dragging * {
 .practice-explanation-body .math-num,
 .progress-review-explain .math-var,
 .progress-review-explain .math-num {
-  color: #12346f;
+  color: var(--practice-ink);
 }
 .practice-explanation-body .practice-katex,
 .progress-review-explain .practice-katex {
   font-size: 1.02em;
-  color: #12346f;
+  color: var(--practice-ink);
 }
 .practice-modal-actions {
   display: flex;
@@ -4829,10 +4834,10 @@ body.math-reference-dragging * {
   border: 1.5px solid #cfd8ea;
   padding: 0 14px;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: var(--practice-weight);
   font-family: var(--practice-font);
   font-variant-numeric: lining-nums;
-  color: #12346f;
+  color: var(--practice-ink);
   outline: none;
 }
 .practice-spr-input:focus {
