@@ -8,10 +8,14 @@
   background: #fff;
   --math-font: "KaTeX_Main", "Noto Serif", Georgia, serif;
   --math-italic: "KaTeX_Math", "Noto Serif", Georgia, serif;
-  /* Noto Serif Light for stems, choices, and passages */
+  /* Match common Bluebook-style Noto Serif question text */
   --practice-font: "Noto Serif", Georgia, "Times New Roman", serif;
-  --practice-ink: #000;
-  --practice-weight: 300;
+  /* From their .prose --tw-prose-body: oklch(37.3% .034 259.733) ≈ gray-700 */
+  --practice-ink: #364153;
+  --practice-weight: 400;
+  /* Tailwind leading-relaxed on their stimulus/stem */
+  --practice-leading: 1.625;
+  --practice-size: 1rem;
   --page-sky: #b9dcfa;
   --page-cream: #f6f3ec;
 }
@@ -3361,17 +3365,25 @@ button { cursor: pointer; }
 }
 .practice-passage-body {
   font-family: var(--practice-font);
-  font-size: 16px;
+  font-size: var(--practice-size);
   font-weight: var(--practice-weight);
-  line-height: 1.7;
+  line-height: var(--practice-leading);
   color: var(--practice-ink);
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .practice-passage-text {
   font-family: var(--practice-font);
-  font-size: 16px;
+  font-size: var(--practice-size);
   font-weight: var(--practice-weight);
-  line-height: 1.7;
+  line-height: var(--practice-leading);
   color: var(--practice-ink);
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .practice-passage-body p {
   margin: 0 0 16px;
@@ -3412,9 +3424,9 @@ button { cursor: pointer; }
 .practice-passage-notes-intro {
   margin: 0 0 14px !important;
   font-family: var(--practice-font);
-  font-size: 16px;
+  font-size: var(--practice-size);
   font-weight: var(--practice-weight);
-  line-height: 1.7;
+  line-height: var(--practice-leading);
   color: var(--practice-ink);
 }
 .practice-passage-notes-list {
@@ -3426,9 +3438,9 @@ button { cursor: pointer; }
   margin: 0 0 10px;
   padding-left: 0.15em;
   font-family: var(--practice-font);
-  font-size: 16px;
+  font-size: var(--practice-size);
   font-weight: var(--practice-weight);
-  line-height: 1.7;
+  line-height: var(--practice-leading);
   color: var(--practice-ink);
 }
 .practice-passage-notes-list li:last-child {
@@ -4043,12 +4055,16 @@ button { cursor: pointer; }
 }
 .practice-prompt {
   margin: 0 0 18px;
-  font-size: 17px;
-  line-height: 1.7;
+  font-size: var(--practice-size);
+  line-height: var(--practice-leading);
   font-weight: var(--practice-weight);
   color: var(--practice-ink);
   font-family: var(--practice-font);
   font-variant-numeric: lining-nums;
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .practice-prompt p {
   margin: 0 0 0.7em;
@@ -4223,13 +4239,16 @@ button { cursor: pointer; }
 .practice-choice-text {
   flex: 1;
   min-width: 0;
-  font-size: 17px;
+  font-size: var(--practice-size);
   font-weight: var(--practice-weight);
   color: var(--practice-ink);
   font-family: var(--practice-font);
   font-variant-numeric: lining-nums;
   letter-spacing: 0;
-  line-height: 1.45;
+  line-height: var(--practice-leading);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .practice-choice-image {
   display: block;
