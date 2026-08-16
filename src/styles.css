@@ -3370,8 +3370,25 @@ button { cursor: pointer; }
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 13px;
   line-height: 1.55;
-  font-style: italic;
+  font-style: normal;
   color: #5b6a86;
+}
+.practice-passage-source em,
+.practice-passage-body em,
+.practice-passage-text em,
+.practice-prompt em {
+  font-style: italic;
+}
+.practice-passage-verse {
+  margin: 0 0 8px 1.15em;
+}
+.practice-passage-verse-line {
+  display: block;
+  line-height: 1.55;
+}
+.practice-passage-verse-gap {
+  display: block;
+  height: 0.7em;
 }
 .practice-passage-intro {
   margin: 0 0 18px !important;
@@ -4299,6 +4316,9 @@ body.math-reference-dragging * {
 .practice-modal-body p { margin: 0 0 12px; }
 .practice-explanation-body p {
   margin: 0 0 16px;
+}
+.practice-explanation-body em {
+  font-style: italic;
 }
 .practice-explanation-body p:last-child {
   margin-bottom: 0;

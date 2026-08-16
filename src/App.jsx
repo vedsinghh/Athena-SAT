@@ -4958,16 +4958,20 @@ function renderTextWithUnderlines(text, { withMath = true } = {}) {
   const raw = String(text ?? '')
   if (!raw) return null
   const renderChunk = (chunk) => (withMath ? renderProseWithMath(chunk) : chunk)
-  if (!/<u[\s>]/i.test(raw)) return renderChunk(raw)
-  const parts = raw.split(/(<u>[\s\S]*?<\/u>)/gi)
+  if (!/<(?:u|em)[\s>]/i.test(raw)) return renderChunk(raw)
+  const parts = raw.split(/(<u>[\s\S]*?<\/u>|<em>[\s\S]*?<\/em>)/gi)
   return parts.map((part, i) => {
-    const match = part.match(/^<u>([\s\S]*?)<\/u>$/i)
-    if (match) {
+    const underline = part.match(/^<u>([\s\S]*?)<\/u>$/i)
+    if (underline) {
       return (
         <u key={`u${i}`} className="sat-underline">
-          {renderChunk(match[1])}
+          {renderChunk(underline[1])}
         </u>
       )
+    }
+    const italic = part.match(/^<em>([\s\S]*?)<\/em>$/i)
+    if (italic) {
+      return <em key={`e${i}`}>{renderChunk(italic[1])}</em>
     }
     return <span key={`t${i}`}>{renderChunk(part)}</span>
   })
@@ -5003,7 +5007,7 @@ function wrapMathTokens(text) {
 
 function renderExplanationParagraph(para, { withMath = true } = {}) {
   const raw = normalizeUnitSuperscripts(para)
-  if (!withMath) return raw
+  if (!withMath) return renderTextWithUnderlines(raw, { withMath: false })
   return renderProseWithMath(raw)
 }
 
@@ -5484,19 +5488,20 @@ function renderPromptLine(line, equations, { withMath = true } = {}) {
 
 /** If OCR split the italic source mid-sentence into the passage, rejoin it. */
 function repairSourceAndPassage(source, passage) {
-  let src = String(source || '').replace(/\s+/g, ' ').trim()
-  let pas = String(passage || '').replace(/\s+/g, ' ').trim()
+  let src = String(source || '').replace(/[ \t]+/g, ' ').replace(/\n+/g, ' ').trim()
+  let pas = String(passage || '').replace(/[ \t]+\n/g, '\n').replace(/\n[ \t]+/g, '\n').trim()
   if (!src || !pas) return { source: src, passage: pas }
   // Complete sources end with sentence punctuation.
   if (/[.!?"”')\]]$/.test(src)) return { source: src, passage: pas }
 
+  const pasFlat = pas.replace(/\s+/g, ' ').trim()
   const isSpeakerCue = (text) => /^[A-Z][A-Z\s.'-]{0,40}:/.test(text)
   const looksLikeAttribution = (sentence) =>
     /\bare also\b/i.test(sentence) ||
     (/^[A-Z][a-z]+(?:,\s+[A-Z][a-z]+)+/.test(sentence) &&
       /\b(?:are|is|was|were)\b/.test(sentence))
 
-  let rest = pas
+  let rest = pasFlat
   const absorbed = []
   while (rest) {
     if (isSpeakerCue(rest)) break
@@ -5511,7 +5516,6 @@ function repairSourceAndPassage(source, passage) {
     absorbed.push(sentence)
     rest = after
     if (!rest || isSpeakerCue(rest)) break
-    // Keep going only for clear extra attribution lines (e.g. cast list).
     const next = rest.match(/^(.+?[.!?])(?:\s+|$)([\s\S]*)$/)
     if (next && looksLikeAttribution(next[1].trim())) continue
     break
@@ -5592,10 +5596,18 @@ function parsePassageSections(passage) {
   }
 
   return String(passage || '')
+    .replace(/\r\n/g, '\n')
     .split(/\n{2,}/)
     .map((para) => para.trim())
     .filter(Boolean)
     .map((para) => ({ type: 'para', text: para }))
+}
+
+function looksLikeVerse(text) {
+  const lines = String(text || '').split('\n').map((line) => line.trim()).filter(Boolean)
+  if (lines.length < 3) return false
+  const short = lines.filter((line) => line.length <= 90).length
+  return short >= lines.length - 1
 }
 
 function PassageSections({ passage, className = '' }) {
@@ -5603,6 +5615,15 @@ function PassageSections({ passage, className = '' }) {
   if (!sections.length) return null
   // Reading passages are prose — never run KaTeX / math-token heuristics on them.
   const render = (text) => renderTextWithUnderlines(text, { withMath: false })
+  const renderVerse = (text, key) => (
+    <div key={key} className="practice-passage-verse">
+      {String(text).split('\n').map((line, j) => (
+        line.trim()
+          ? <span key={j} className="practice-passage-verse-line">{render(line)}</span>
+          : <span key={j} className="practice-passage-verse-gap" />
+      ))}
+    </div>
+  )
 
   return (
     <div className={className || undefined}>
@@ -5630,10 +5651,13 @@ function PassageSections({ passage, className = '' }) {
           return (
             <div key={i} className="practice-passage-text-block">
               <div className="practice-passage-text-label">{section.label}</div>
-              {section.body ? <p>{render(section.body)}</p> : null}
+              {section.body
+                ? (looksLikeVerse(section.body) ? renderVerse(section.body, i) : <p>{render(section.body)}</p>)
+                : null}
             </div>
           )
         }
+        if (looksLikeVerse(section.text)) return renderVerse(section.text, i)
         return <p key={i}>{render(section.text)}</p>
       })}
     </div>
@@ -7233,7 +7257,7 @@ function ReadingPracticeSession({ config, onEnd, onCompleteQuestion, onCompleteS
                   return (
                     <>
                       {passageSource ? (
-                        <p className="practice-passage-source">{passageSource}</p>
+                        <p className="practice-passage-source">{renderTextWithUnderlines(passageSource, { withMath: false })}</p>
                       ) : null}
                       {current.figure ? (
                         <div className="practice-figure-wrap reading-figure-wrap">
