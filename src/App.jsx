@@ -8622,7 +8622,7 @@ function ProgressAccuracyBreakdown({ analytics }) {
   const a = analytics || {}
   const rows = [
     { key: 'math', label: 'Math', cells: a.subjectDifficulty?.math || [] },
-    { key: 'reading', label: 'Reading & Writing', cells: a.subjectDifficulty?.reading || [] },
+    { key: 'reading', label: 'Reading &\nWriting', cells: a.subjectDifficulty?.reading || [] },
   ]
   const hasData = rows.some((row) => row.cells.some((cell) => cell.total > 0))
 
@@ -8634,12 +8634,14 @@ function ProgressAccuracyBreakdown({ analytics }) {
       </div>
       {hasData ? (
         <div className="progress-acc-matrix" role="table" aria-label="Accuracy by subject and difficulty">
-          <span className="progress-acc-matrix-corner" />
-          {DIFFICULTY_LEVELS.map((level) => (
-            <span key={level} className="progress-acc-matrix-head">{level}</span>
-          ))}
+          <div className="progress-acc-matrix-cols" role="row">
+            <span className="progress-acc-matrix-corner" />
+            {DIFFICULTY_LEVELS.map((level) => (
+              <span key={level} className="progress-acc-matrix-head">{level}</span>
+            ))}
+          </div>
           {rows.map((row) => (
-            <React.Fragment key={row.key}>
+            <div key={row.key} className="progress-acc-matrix-row" role="row">
               <span className="progress-acc-matrix-domain">{row.label}</span>
               {row.cells.map((cell) => (
                 <span
@@ -8653,7 +8655,7 @@ function ProgressAccuracyBreakdown({ analytics }) {
                   <em>{cell.total ? `${cell.total}` : ''}</em>
                 </span>
               ))}
-            </React.Fragment>
+            </div>
           ))}
         </div>
       ) : (
