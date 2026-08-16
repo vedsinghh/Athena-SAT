@@ -94,6 +94,10 @@ function deriveSubjectStats(progress, subject, domainNames, questions = []) {
     }
   })
 
+  return finishSubjectStats({ accuracy, answered, domains })
+}
+
+function finishSubjectStats({ accuracy, answered, domains }) {
   const ranked = domains
     .filter((d) => d.done > 0 && isValidStatNumber(d.pct))
     .sort((a, b) => b.pct - a.pct)
@@ -119,6 +123,84 @@ function deriveSubjectStats(progress, subject, domainNames, questions = []) {
     strengths,
     needsWork,
     domains,
+  }
+}
+
+function deriveSubjectStatsFromHistory(history, subject, domainNames, questions = []) {
+  let correct = 0
+  let answered = 0
+  const domainCounts = new Map()
+
+  forEachUniqueGradedAttempt(history || [], (row) => {
+    if (row.subject !== subject) return
+    if (row.source === 'set-bulk') {
+      const n = row.bulkTotal || 0
+      if (!n) return
+      answered += n
+      correct += row.bulkCorrect || 0
+      return
+    }
+    answered += 1
+    if (row.correct) correct += 1
+    if (row.domain) {
+      const cur = domainCounts.get(row.domain) || { correct: 0, total: 0 }
+      cur.total += 1
+      if (row.correct) cur.correct += 1
+      domainCounts.set(row.domain, cur)
+    }
+  })
+
+  const domains = domainNames.map((name) => {
+    const total = questions.filter((q) => q.domain === name).length
+    const cur = domainCounts.get(name)
+    const done = cur?.total || 0
+    return {
+      name,
+      done,
+      total,
+      pct: done ? Math.round((cur.correct / done) * 100) : null,
+    }
+  })
+
+  return finishSubjectStats({
+    accuracy: answered ? Math.round((correct / answered) * 100) : null,
+    answered,
+    domains,
+  })
+}
+
+function deriveOverallAccuracyFromHistory(history) {
+  let correct = 0
+  let answered = 0
+  forEachUniqueGradedAttempt(history || [], (row) => {
+    if (row.source === 'set-bulk') {
+      const n = row.bulkTotal || 0
+      if (!n) return
+      answered += n
+      correct += row.bulkCorrect || 0
+      return
+    }
+    answered += 1
+    if (row.correct) correct += 1
+  })
+  return {
+    correct,
+    answered,
+    incorrect: Math.max(0, answered - correct),
+    accuracy: answered ? Math.round((correct / answered) * 100) : null,
+  }
+}
+
+function applyAccuracyFromHistory(profile) {
+  const history = Array.isArray(profile?.progressHistory) ? profile.progressHistory : []
+  const reading = deriveSubjectStatsFromHistory(history, 'reading', READING_DOMAIN_NAMES, readingQuestions)
+  const math = deriveSubjectStatsFromHistory(history, 'math', MATH_DOMAIN_NAMES, mathQuestions)
+  const overall = deriveOverallAccuracyFromHistory(history)
+  return {
+    ...profile,
+    overallAccuracy: overall.accuracy,
+    reading: { ...(profile.reading || {}), ...reading },
+    math: { ...(profile.math || {}), ...math },
   }
 }
 
@@ -511,11 +593,11 @@ function applyStreakFromHistory(profile) {
 function appendProgressHistory(profile, entry) {
   const progressHistory = [entry, ...(profile.progressHistory || [])].slice(0, PROGRESS_HISTORY_CAP)
   const activity = [historyToActivityItem(entry), ...(profile.activity || [])].slice(0, 40)
-  return applyStreakFromHistory({
+  return applyAccuracyFromHistory(applyStreakFromHistory({
     ...profile,
     progressHistory,
     activity,
-  })
+  }))
 }
 
 function applyBankHistoryLine(profile, question, answer, subject, { elapsed = null, sessionId = null } = {}) {
@@ -962,11 +1044,11 @@ function reconcileBankHistoryWithProgress(profile) {
     return { ...entry, correct: row.correct }
   })
   if (!changed) return profile
-  return applyStreakFromHistory({
+  return applyAccuracyFromHistory(applyStreakFromHistory({
     ...profile,
     progressHistory: nextHistory,
     activity: nextHistory.map(historyToActivityItem).slice(0, 40),
-  })
+  }))
 }
 
 /** One-time: Ved's Aug 13 retries were frozen as Incorrect by the first-miss lock. */
@@ -999,19 +1081,13 @@ function repairFrozenBankRetries(profile) {
     nextProgress[id] = { ...row, correct: true }
   })
 
-  const reading = deriveSubjectStats(nextProgress, 'reading', READING_DOMAIN_NAMES, readingQuestions)
-  const math = deriveSubjectStats(nextProgress, 'math', MATH_DOMAIN_NAMES, mathQuestions)
-
-  return applyStreakFromHistory({
+  return applyAccuracyFromHistory(applyStreakFromHistory({
     ...profile,
     bankRetryScoresRepairedV1: true,
     progressHistory: nextHistory,
     activity: nextHistory.map(historyToActivityItem).slice(0, 40),
     qbankProgress: nextProgress,
-    overallAccuracy: deriveOverallAccuracy(nextProgress) ?? null,
-    reading: { ...(profile.reading || {}), ...reading },
-    math: { ...(profile.math || {}), ...math },
-  })
+  }))
 }
 
 /** Keep the oldest bank row per question and drop later retries from history. */
@@ -1058,21 +1134,16 @@ function dedupeBankHistoryKeepFirst(profile) {
 
   const dropped = nextHistory.length !== history.length
   if (!dropped && !progressChanged) {
-    return { ...profile, bankHistoryFirstAttemptV1: true }
+    return applyAccuracyFromHistory({ ...profile, bankHistoryFirstAttemptV1: true })
   }
 
-  const reading = deriveSubjectStats(nextProgress, 'reading', READING_DOMAIN_NAMES, readingQuestions)
-  const math = deriveSubjectStats(nextProgress, 'math', MATH_DOMAIN_NAMES, mathQuestions)
-  return applyStreakFromHistory({
+  return applyAccuracyFromHistory(applyStreakFromHistory({
     ...profile,
     bankHistoryFirstAttemptV1: true,
     progressHistory: nextHistory,
     activity: nextHistory.map(historyToActivityItem).slice(0, 40),
     qbankProgress: nextProgress,
-    overallAccuracy: deriveOverallAccuracy(nextProgress) ?? null,
-    reading: { ...(profile.reading || {}), ...reading },
-    math: { ...(profile.math || {}), ...math },
-  })
+  }))
 }
 
 function scrubEmptyPracticeSets(profile) {
@@ -1090,10 +1161,10 @@ function scrubEmptyPracticeSets(profile) {
 
 function normalizeProfilesList(profiles) {
   const list = Array.isArray(profiles) ? profiles : []
-  const normalized = list.map((p) => dedupeBankHistoryKeepFirst(repairFrozenBankRetries(scrubEmptyPracticeSets(applyStreakFromHistory({
+  const normalized = list.map((p) => applyAccuracyFromHistory(dedupeBankHistoryKeepFirst(repairFrozenBankRetries(scrubEmptyPracticeSets(applyStreakFromHistory({
     ...p,
     progressHistory: Array.isArray(p.progressHistory) ? p.progressHistory : [],
-  })))))
+  }))))))
   try {
     const before = JSON.stringify(list.map((p) => ({
       history: p.progressHistory || [],
@@ -1962,14 +2033,14 @@ function Dashboard({
                 title="Reading"
                 icon={<BookOpen size={20} />}
                 accent="purple"
-                data={deriveSubjectStats(profile.qbankProgress, 'reading', READING_DOMAIN_NAMES, readingQuestions)}
+                data={deriveSubjectStatsFromHistory(profile.progressHistory, 'reading', READING_DOMAIN_NAMES, readingQuestions)}
                 onStart={() => setPage('Reading')}
               />
               <SectionCard
                 title="Math"
                 icon={<Calculator size={20} />}
                 accent="green"
-                data={deriveSubjectStats(profile.qbankProgress, 'math', MATH_DOMAIN_NAMES, mathQuestions)}
+                data={deriveSubjectStatsFromHistory(profile.progressHistory, 'math', MATH_DOMAIN_NAMES, mathQuestions)}
                 onStart={() => setPage('Math')}
               />
             </div>
@@ -2441,14 +2512,14 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics 
   const mathSolved = Object.values(progress).filter((item) => item.subject === 'math').length
   const readingPct = readingTotal ? Math.round((readingSolved / readingTotal) * 100) : 0
   const mathPct = mathTotal ? Math.round((mathSolved / mathTotal) * 100) : 0
-  const attempted = readingSolved + mathSolved
-  const accuracy = deriveOverallAccuracy(progress)
-  const readingAccuracy = accuracyFromEntries(
-    Object.values(progress).filter((item) => item.subject === 'reading'),
-  )
-  const mathAccuracy = accuracyFromEntries(
-    Object.values(progress).filter((item) => item.subject === 'math'),
-  )
+  const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
+  const overall = deriveOverallAccuracyFromHistory(history)
+  const mathStats = deriveSubjectStatsFromHistory(history, 'math', MATH_DOMAIN_NAMES, mathQuestions)
+  const readingStats = deriveSubjectStatsFromHistory(history, 'reading', READING_DOMAIN_NAMES, readingQuestions)
+  const attempted = (mathStats.answered || 0) + (readingStats.answered || 0)
+  const accuracy = overall.accuracy
+  const readingAccuracy = readingStats.accuracy
+  const mathAccuracy = mathStats.accuracy
   const accuracyAnalytics = useMemo(() => {
     const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
     return deriveProgressAnalytics(history, progress, {
@@ -4109,22 +4180,9 @@ function applyQuestionCompletion(profile, question, answer, subject) {
     },
   }
 
-  const reading = deriveSubjectStats(nextProgress, 'reading', READING_DOMAIN_NAMES, readingQuestions)
-  const math = deriveSubjectStats(nextProgress, 'math', MATH_DOMAIN_NAMES, mathQuestions)
-  const overallAccuracy = deriveOverallAccuracy(nextProgress)
-
   return {
     ...profile,
     qbankProgress: nextProgress,
-    overallAccuracy: overallAccuracy ?? null,
-    reading: {
-      ...(profile.reading || {}),
-      ...reading,
-    },
-    math: {
-      ...(profile.math || {}),
-      ...math,
-    },
   }
 }
 
@@ -8576,14 +8634,12 @@ function ProgressAccuracyBreakdown({ analytics }) {
       </div>
       {hasData ? (
         <div className="progress-acc-matrix" role="table" aria-label="Accuracy by subject and difficulty">
-          <div className="progress-acc-matrix-cols" role="row">
-            <span className="progress-acc-matrix-corner" />
-            {DIFFICULTY_LEVELS.map((level) => (
-              <span key={level}>{level}</span>
-            ))}
-          </div>
+          <span className="progress-acc-matrix-corner" />
+          {DIFFICULTY_LEVELS.map((level) => (
+            <span key={level} className="progress-acc-matrix-head">{level}</span>
+          ))}
           {rows.map((row) => (
-            <div key={row.key} className="progress-acc-matrix-row" role="row">
+            <React.Fragment key={row.key}>
               <span className="progress-acc-matrix-domain">{row.label}</span>
               {row.cells.map((cell) => (
                 <span
@@ -8593,10 +8649,11 @@ function ProgressAccuracyBreakdown({ analytics }) {
                     ? `${row.label} · ${cell.level} · ${cell.correct}/${cell.total} (${cell.pct}%)`
                     : `${row.label} · ${cell.level} · no attempts`}
                 >
-                  {cell.total ? `${cell.pct}%` : '–'}
+                  <strong>{cell.total ? `${cell.pct}%` : '–'}</strong>
+                  <em>{cell.total ? `${cell.total}` : ''}</em>
                 </span>
               ))}
-            </div>
+            </React.Fragment>
           ))}
         </div>
       ) : (
@@ -10620,10 +10677,10 @@ function AccuracyPie({ correct, incorrect }) {
 }
 
 function AccuracyCard({ profile, onOpen }) {
-  const entries = Object.values(profile.qbankProgress || {})
-  const correct = entries.filter((item) => item.correct).length
-  const incorrect = Math.max(0, entries.length - correct)
-  const accuracy = deriveOverallAccuracy(profile.qbankProgress)
+  const overall = deriveOverallAccuracyFromHistory(profile.progressHistory)
+  const correct = overall.correct
+  const incorrect = overall.incorrect
+  const accuracy = overall.accuracy
   const hasData = isValidStatNumber(accuracy)
   const todayKey = localDayKey()
   const todayStats = useMemo(() => {
