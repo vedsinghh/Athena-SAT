@@ -8,10 +8,10 @@
   background: #fff;
   --math-font: "KaTeX_Main", "Noto Serif", Georgia, serif;
   --math-italic: "KaTeX_Math", "Noto Serif", Georgia, serif;
-  /* Noto Serif regular for stems, choices, and passages */
+  /* Noto Serif Light for stems, choices, and passages */
   --practice-font: "Noto Serif", Georgia, "Times New Roman", serif;
   --practice-ink: #000;
-  --practice-weight: 400;
+  --practice-weight: 300;
   --page-sky: #b9dcfa;
   --page-cream: #f6f3ec;
 }
