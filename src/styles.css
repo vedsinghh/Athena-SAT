@@ -4245,7 +4245,7 @@ button { cursor: pointer; }
   font-family: var(--practice-font);
   font-variant-numeric: lining-nums;
   letter-spacing: 0;
-  line-height: var(--practice-leading);
+  line-height: 1.4;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
