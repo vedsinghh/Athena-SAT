@@ -4020,11 +4020,23 @@ function pickQuestions(bank, { count, shuffle, domains, difficulties, questions:
     ? Math.min(count, pool.length)
     : pool.length
 
-  // Shuffle on: random sample from the full filtered pool (all selected domains + difficulties).
+  // Shuffle on: still mix difficulties (and domains) instead of sampling the leftover
+  // bank, which skews Hard after easier questions are completed.
   if (shouldShuffle) {
-    return shuffleInPlace([...pool])
-      .slice(0, take)
-      .map((q, i) => ({ ...q, practiceIndex: i + 1 }))
+    let selected = []
+    if (levels.length > 1) {
+      const buckets = levels.map((level) => pool.filter((q) => q.difficulty === level))
+      const undiffed = pool.filter((q) => !q.difficulty)
+      if (undiffed.length) buckets.push(undiffed)
+      selected = pickRoundRobin(buckets, take, { shuffle: true })
+    } else if (domainList.length > 1) {
+      const buckets = domainList.map((domain) => pool.filter((q) => q.domain === domain))
+      selected = pickRoundRobin(buckets, take, { shuffle: true })
+    }
+    if (!selected.length) {
+      selected = shuffleInPlace([...pool]).slice(0, take)
+    }
+    return selected.map((q, i) => ({ ...q, practiceIndex: i + 1 }))
   }
 
   // Shuffle off: round-robin so Hard / one domain can't dominate bank order.
