@@ -16308,5 +16308,1316 @@
       "30"
     ],
     "answer": "30"
+  },
+  {
+    "id": "114ae8a9",
+    "topic": "Linear functions",
+    "domain": "Algebra",
+    "skill": "Linear functions",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A train traveled 173 miles in the first 3 hours of a trip and traveled at an average speed of 53 miles per hour for the remainder of the trip. Which\nequation gives the total number of miles, y, the train traveled if the trip was x hours long and x > 3?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It’s given that a train traveled miles in the first hours of a trip. It's also given that the train traveled at an average speed\nof miles per hour for the remainder of the trip. Since the trip was hours long, it follows that the remainder of the trip was hours.\nTherefore, represents the distance, in miles, the train traveled for the remainder of the trip. Adding to gives the total\nnumber of miles, , the train traveled if the trip was hours long and . It follows that , which is equivalent to , or .\n\nChoice A is incorrect. This equation gives the total number of miles, , the train traveled if the trip was , not , hours long.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 1,
+    "pdfPreview": "/qbank/math/previews/114ae8a9.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/114ae8a9_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/114ae8a9_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/114ae8a9_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/114ae8a9_3.jpg"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "58c7daed",
+    "topic": "Linear functions",
+    "domain": "Algebra",
+    "skill": "Linear functions",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "For the linear function,,h(0) = 0e and 4h (11) = 10.. Which equation defines?",
+    "type": "mc",
+    "explanation": "Choice A is correct. Since is a linear function, it can be defined by an equation of the form , where and are constants. It's\ngiven that . Substituting for and for in the equation yields , or . Substituting for in\nthe equation yields . It's also given that . Substituting for and for in the equation yields . Dividing both sides of this equation by yields . Substituting for in the equation yields\n. Therefore, an equation that defines is .\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 2,
+    "pdfPreview": "/qbank/math/previews/58c7daed.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/58c7daed_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/58c7daed_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/58c7daed_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/58c7daed_3.jpg"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "74d0906a",
+    "topic": "Linear inequalities in one or two variables",
+    "domain": "Algebra",
+    "skill": "Linear inequalities in one or two variables",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A tow truck travels at a speed of at least 25 miles per hour but no more than 45 miles per hour for a section of a road. Which inequality\nrepresents this situation, where & is the speed of the tow truck, in miles per hour, on this section of the road?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It's given that a tow truck travels at a speed of at least miles per hour but no more than miles per hour. It's also given\nthat represents the speed of the tow truck, in miles per hour. At least miles per hour means , and no more than miles per hour\nmeans . Therefore, the inequality that represents this situation is .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 3,
+    "pdfPreview": "/qbank/math/previews/74d0906a.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/74d0906a_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/74d0906a_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/74d0906a_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/74d0906a_3.jpg"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "8383771a",
+    "topic": "Systems of two linear equations in two variables",
+    "domain": "Algebra",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "x+y = 20\nOne of the two equations in a system of linear equations is given. The system has exactly one solution. Which equation could be the second\nequation in the system?",
+    "type": "mc",
+    "explanation": "Choice D is correct. A system of two linear equations in two variables, and , has exactly one solution if the graphs of the lines represented by\nthe equations in the xy-plane have different slopes. In the xy-plane, the slope of a line defined by an equation in the form , where\n, , and are constants, is . It’s given that one equation in the system is . It follows that for this equation, and .\nTherefore, the value of is , or . For the equation in choice D, , and . Therefore, the value of is\n, or . Since the slopes are different, it follows that the system of and has exactly one solution. Thus, the second\nequation in the system could be .\n\nChoice A is incorrect. The equation can be rewritten as . Since is the same as the given equation, the\nsystem of and has infinitely many solutions rather than exactly one solution.\n\nChoice B is incorrect. The equation can be rewritten as . The graph of this line has a slope of . Since the graphs\nof the lines represented by the equations and have the same slope in the xy-plane and the equations aren't equivalent,\nthis system has no solution rather than exactly one solution.\n\nChoice C is incorrect. The equation can be rewritten as . The graph of this line has a slope of . Since the graphs of\nthe lines represented by the equations and have the same slope in the xy-plane and the equations aren't equivalent, this\nsystem has no solution rather than exactly one solution.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 4,
+    "pdfPreview": "/qbank/math/previews/8383771a.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/8383771a_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/8383771a_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/8383771a_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/8383771a_3.jpg"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "8b9960b2",
+    "topic": "Linear functions",
+    "domain": "Algebra",
+    "skill": "Linear functions",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The owner of a bakery is giving away free muffins every hour. The equation 1 f (x) = 108 - 9x x iterpretation of f (12) gives the number of free muffins, F(x),, that\nremain to be given away after hours. Which of the following is the best interpretation of in this context?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It’s given that the equation represents the number of free muffins that remain to be given away after hours. For the given equation , when the value of is , the value of is . It follows that after hours there are free muffins\nremaining to be given away. Therefore, based on this context, it will take hours to give away all the free muffins.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect. This represents giving away muffins over hours rather than giving away all muffins in hours.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 5,
+    "pdfPreview": "/qbank/math/previews/8b9960b2.jpg",
+    "choices": [
+      {
+        "text": "The owner of the bakery has free muffins to give away."
+      },
+      {
+        "text": "The owner of the bakery will give away free muffins in hours."
+      },
+      {
+        "text": "It will take hours to give away all the free muffins."
+      },
+      {
+        "text": "It will take hours to give away free muffins."
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "8eb0e19e",
+    "topic": "Linear functions",
+    "domain": "Algebra",
+    "skill": "Linear functions",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The graph of the linear function is shown, where oy = f (a).. Which equation defines function?",
+    "type": "mc",
+    "explanation": "Choice B is correct. A linear function can be defined by the equation , where is the slope and is the y-intercept of the\ngraph of in the xy-plane. The slope of a line that passes through the points and can be calculated using the equation\n. The line shown passes through the points and . Substituting for and for in the equation yields , or . Since the line shown passes through the point , it follows that . Substituting for and for in the equation yields . Therefore, the equation defines function .\n\nChoice A is incorrect. This equation defines a linear function whose graph has a slope of and a y-intercept of , not .\n\nChoice C is incorrect. This equation defines a linear function whose graph has a slope of , not , and a y-intercept of , not .\n\nChoice D is incorrect. This equation defines a linear function whose graph has a slope of , not , and a y-intercept of .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 6,
+    "pdfPreview": "/qbank/math/previews/8eb0e19e.jpg",
+    "figure": "/qbank/math/figures/8eb0e19e.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/8eb0e19e_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/8eb0e19e_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/8eb0e19e_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/8eb0e19e_3.jpg"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "9b7a1b67",
+    "topic": "Systems of two linear equations in two variables",
+    "domain": "Algebra",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The graph of line is shown in the xy-plane. Line (not shown) is defined by {{eq:0}}, where p and w are constants. If line is graphed in\nthis xy-plane, the result is a graph of two linear equations. This system of two linear equations has no solution. Which of the following is NOT a\npossible value of?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It's given that if line is graphed in the xy-plane with line , the result is the graph of a system of two linear equations that\nhas no solution. It follows that line and line don't intersect. This means that line and line have the same slope and different y-intercepts.\nThe graph shows that the y-intercept of line is . The y-coordinate of the y-intercept of line is the value of when in the\nequation defining line . Substituting for in the equation yields , or . Dividing both sides of this\nequation by yields . Therefore, the y-coordinate of the y-intercept of line is , so the y-intercept of line is . Since line and line have different y-intercepts, can't be equal to . It follows that can't be equal to , or . Thus, isn't a possible\nvalue of .\n\nChoice B is incorrect. This isn't a possible value of the y-coordinate of the y-intercept of line , but it is a possible value of .\n\nChoice C is incorrect. This is the value of , not a value of that isn't possible.\n\nChoice D is incorrect. If , then the y-intercept of line is , or , which is different from the y-intercept of line , .\nTherefore, is a possible value of .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 7,
+    "pdfPreview": "/qbank/math/previews/9b7a1b67.jpg",
+    "figure": "/qbank/math/figures/9b7a1b67.jpg",
+    "equations": [
+      "/qbank/math/equations/9b7a1b67_0.jpg"
+    ],
+    "choices": [
+      {
+        "text": "-432"
+      },
+      {
+        "text": "-9"
+      },
+      {
+        "text": "72"
+      },
+      {
+        "text": "288"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "c039b198",
+    "topic": "Linear functions",
+    "domain": "Algebra",
+    "skill": "Linear functions",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A computer company pays customers for trading in old computers. The payment, in dollars, is the original retail price of a computer minus\nfor each year since the computer was released. Which equation represents this situation for a computer with an original retail price of\nwhen it was released years ago, where is a whole number and {{eq:0}}?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It’s given that the payment , in dollars, for trading in an old computer is the original retail price of the computer minus for each year since the computer was released years ago. It's also given that the original retail price of a computer was . Thus, the\nequation that represents this situation is .\n\nChoice A is incorrect. This equation represents a situation for a computer with an original retail price of minus for each year since the\ncomputer was released.\n\nChoice C is incorrect and may result from conceptual errors.\n\nChoice D is incorrect and may result from conceptual errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 9,
+    "pdfPreview": "/qbank/math/previews/c039b198.jpg",
+    "equations": [
+      "/qbank/math/equations/c039b198_0.jpg"
+    ],
+    "choices": [
+      {
+        "image": "/qbank/math/choices/c039b198_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/c039b198_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/c039b198_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/c039b198_3.jpg"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "c387583f",
+    "topic": "Linear functions",
+    "domain": "Algebra",
+    "skill": "Linear functions",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "In the xy-plane, line k passes through the points (8, 6) and (9, 12) and is defined by the equation y = mz + 6. What is the value of 6?",
+    "type": "spr",
+    "explanation": "The correct answer is . For a linear equation in the form , represents the slope and represents the y-coordinate of the y-\nintercept of the graph in the xy-plane. The slope of the graph of a line containing any two points, and , can be found using the\nslope formula . It’s given that in the xy-plane, line passes through the points and . Substituting and for and , respectively, in the slope formula yields , or . Since line passes through the point and the\nslope of the line is , substituting for , for , and for in the equation yields , or .\nSubtracting from both sides of this equation yields . Therefore, the value of is .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 10,
+    "pdfPreview": "/qbank/math/previews/c387583f.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "-42"
+    ],
+    "answer": "-42"
+  },
+  {
+    "id": "e142f83c",
+    "topic": "Systems of two linear equations in two variables",
+    "domain": "Algebra",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "In the given system of equations, vis a constant. The system has infinitely many solutions. What is the value of v?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that the system has infinitely many solutions. A system of two linear equations has infinitely many solutions when\nthe two linear equations are equivalent. Adding to both sides of yields . Applying the distributive\nproperty to this equation yields , or . Adding to both sides of yields . Applying the distributive property to this equation yields , or . For the equations and to be equivalent, it follows that . Subtracting from both sides of this equation yields . Therefore, the value of is .\n\nChoice A is incorrect. If , the system of equations would have no solution, not infinitely many solutions.\n\nChoice C is incorrect. If , the system of equations would have no solution, not infinitely many solutions.\n\nChoice D is incorrect. If , the system of equations would have no solution, not infinitely many solutions.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 11,
+    "pdfPreview": "/qbank/math/previews/e142f83c.jpg",
+    "choices": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "2"
+      },
+      {
+        "text": "4"
+      },
+      {
+        "text": "12"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "ee1f63c0",
+    "topic": "Linear functions",
+    "domain": "Algebra",
+    "skill": "Linear functions",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The function is defined by y f (x) = 6.22.. What is the value of iF(2) when?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that the function is defined by . The value of when can be found by substituting for in , which yields , or . Therefore, when , the value of is .\n\nChoice A is incorrect. This is the value of , not the value of when .\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect. This is the value of , not the value of when .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 12,
+    "pdfPreview": "/qbank/math/previews/ee1f63c0.jpg",
+    "choices": [
+      {
+        "text": "72"
+      },
+      {
+        "text": "62"
+      },
+      {
+        "text": "17.2"
+      },
+      {
+        "text": "16.2"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "0de8359f",
+    "topic": "Nonlinear functions",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear functions",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "{{eq:0}}\nThe function is defined by the given equation. The function is defined by ys(t) = r(t)+1.. Which expression represents the maximum value\nof?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that . Since , it follows that , or . For a quadratic function defined by an equation of the form , where , , and are constants and is negative, the\nvalue of reaches its maximum, , when the value of is . The equation can be rewritten in the form by completing the square. The equation is equivalent to , or . This equation can be rewritten as , or . This equation is in the form , where , , and . Therefore, the maximum\nvalue of is .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 13,
+    "pdfPreview": "/qbank/math/previews/0de8359f.jpg",
+    "equations": [
+      "/qbank/math/equations/0de8359f_0.jpg"
+    ],
+    "choices": [
+      {
+        "image": "/qbank/math/choices/0de8359f_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/0de8359f_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/0de8359f_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/0de8359f_3.jpg"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "405c5ced",
+    "topic": "Nonlinear functions",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear functions",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The function C’ defined by C(t) = 6(1.5)\" gives the estimated number of clients at a certain business, where t is the number of weeks since\nthe business opened. Which of the following is the best interpretation of the number 6 in this context?",
+    "type": "mc",
+    "explanation": "Choice A is correct. For an exponential function of the form , where and are constants, the initial value of the function, or the\nvalue of the function when , is , and the value of the function changes by a factor of each time increases by . It follows that in the\ngiven function, the initial value is and the value of the function changes by a factor of each time increases by . It's given that the\nfunction gives the estimated number of clients at a certain business and is the number of weeks since the business opened. Therefore, the\nbest interpretation of the number in this context is the estimated number of clients when , or when the business opened.\n\nChoice B is incorrect and may result from conceptual errors.\n\nChoice C is incorrect and may result from conceptual errors.\n\nChoice D is incorrect and may result from conceptual errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 14,
+    "pdfPreview": "/qbank/math/previews/405c5ced.jpg",
+    "choices": [
+      {
+        "text": "The estimated number of clients when the business opened"
+      },
+      {
+        "text": "The increase in the estimated number of clients each week"
+      },
+      {
+        "text": "The number of weeks the business has been open"
+      },
+      {
+        "text": "The percent increase in the estimated number of clients each week"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "512bd5b4",
+    "topic": "Nonlinear functions",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear functions",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "For the given function J, the value of j (x) increases by p for every increase of x by 6. What is the value of p?",
+    "type": "spr",
+    "explanation": "The correct answer is . For a function defined by an equation of the form , where , , and are positive constants, the\nvalue of increases by for every increase of by . The given equation can be rewritten as , or , which is equivalent to , or . This equation is of the form ,\nwhere , , and . It follows that the value of increases by for every increase of by . Therefore, the value of is\n.\nAlternate approach: It's given that . An increase in the value of by can be represented by the expression . The value\nof can be found by substituting for in the equation , which yields . By the\nproduct property of exponents, this equation is equivalent to , or , which\ncan be rewritten as . Since , it follows that . Therefore, for any\nvalue of , the value of is times, or greater than, the value of . It's given that the value of increases by for\nevery increase in the value of by . It follows that the value of is .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 15,
+    "pdfPreview": "/qbank/math/previews/512bd5b4.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "44"
+    ],
+    "answer": "44"
+  },
+  {
+    "id": "53c07bf9",
+    "topic": "Nonlinear functions",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear functions",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The value of a certain fishing boat was $24,000 when it was purchased. Each year, the value of the fishing boat decreased by y 2070 of the\nprevious year’s value. Which equation represents this situation, where is the value of the fishing boat, in dollars, and is the number of years\nsince the fishing boat was purchased?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It’s given that the value of a certain fishing boat was when it was purchased. It's also given that each year, the value\nof the fishing boat decreased by of the previous year's value. It follows that this situation can be represented by the equation , where is the value of the boat, in dollars, years since it was purchased, is the value of the boat, in dollars, when it was\npurchased, and is the percent by which the value of the boat decreases each year from the previous year's value. Substituting for and for in this equation yields , or . Therefore, represents this situation.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect. This equation represents a situation where each year the value of the boat increased, not decreased, by of the\nprevious year's value.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 16,
+    "pdfPreview": "/qbank/math/previews/53c07bf9.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/53c07bf9_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/53c07bf9_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/53c07bf9_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/53c07bf9_3.jpg"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "5ba187d4",
+    "topic": "Equivalent expressions",
+    "domain": "Advanced Math",
+    "skill": "Equivalent expressions",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "Which expression is equivalent to > 100x7 + 2,6007?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Each term in the given expression, , has a common factor of . Therefore, the expression can be rewritten\nas , or .\n\nChoice A is incorrect. This expression is equivalent to , not .\n\nChoice C is incorrect. This expression is equivalent to , not .\n\nChoice D is incorrect. This expression is equivalent to , not .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 17,
+    "pdfPreview": "/qbank/math/previews/5ba187d4.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/5ba187d4_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/5ba187d4_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/5ba187d4_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/5ba187d4_3.jpg"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "9833d0e3",
+    "topic": "Nonlinear functions",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear functions",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "According to a model, the estimated volume of a certain tree in a forest increases by 13.9% for every increase of 100 centimeters in the tree's\nheight. The equation y = abiw represents this model, where y represents the estimated volume, in cubic centimeters, of this tree in the forest,.\nrepresents the tree's height, in centimeters, and a and b are constants. In this equation, what is the value of b?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It's given that equation represents the model, where is the estimated volume, in cubic centimeters, of a certain\ntree in a forest and is the tree's height, in centimeters. For an exponential equation of this form to represent a model where the value of increases as the value of increases, it must follow that the values of and are positive. It's also given that the tree's estimated volume\nincreases by for every increase of centimeters in the tree's height. Therefore, for every -centimeter increase in the tree's height,\nthe estimated volume of the tree is times larger. In other words, , which is equivalent to .\nSince and are positive, dividing both sides of this equation by yields , or . Therefore, the value of is .\n\nChoice A is incorrect. This is the given percent increase in decimal form, not the value of .\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect. This is the given percent increase, not the value of .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 18,
+    "pdfPreview": "/qbank/math/previews/9833d0e3.jpg",
+    "choices": [
+      {
+        "text": "0.139"
+      },
+      {
+        "text": "1"
+      },
+      {
+        "text": "1.139"
+      },
+      {
+        "text": "13.9"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "abc61109",
+    "topic": "Equivalent expressions",
+    "domain": "Advanced Math",
+    "skill": "Equivalent expressions",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "Which expression is equivalent to [=5-, where x > 9?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The given expression can be rewritten as , which is equivalent to . Factoring from the\nnumerator of the first fraction yields . Since , this expression is equivalent to . Therefore, is equivalent to .\n\nChoice B is incorrect. This expression is equivalent to , not .\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 19,
+    "pdfPreview": "/qbank/math/previews/abc61109.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/abc61109_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/abc61109_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/abc61109_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/abc61109_3.jpg"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "b5ebd31c",
+    "topic": "Nonlinear equations in one variable and systems of equations in two variables",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "2r = 9s+t\nThe given equation relates the variables,, and. Which equation correctly expresses in terms of and?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Subtracting from each side of the given equation yields . Dividing each side of this equation by yields , which can be rewritten as . Therefore, the equation correctly expresses in terms of and .\n\nChoice A is incorrect. This equation is equivalent to , not .\n\nChoice C is incorrect. This equation is equivalent to , not .\n\nChoice D is incorrect. This equation is equivalent to , not .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 20,
+    "pdfPreview": "/qbank/math/previews/b5ebd31c.jpg",
+    "choices": [
+      {
+        "text": "s= or-t"
+      },
+      {
+        "image": "/qbank/math/choices/b5ebd31c_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/b5ebd31c_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/b5ebd31c_3.jpg"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "befeb95f",
+    "topic": "Nonlinear functions",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear functions",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The function f is defined by f (a~) = x° + 15. What is the value of f (2)?",
+    "type": "spr",
+    "explanation": "The correct answer is . The value of is the value of when . The function is defined by . Substituting for in this equation yields . This equation can be rewritten as , or . Therefore, the value of is .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 21,
+    "pdfPreview": "/qbank/math/previews/befeb95f.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "23"
+    ],
+    "answer": "23"
+  },
+  {
+    "id": "c5d83a99",
+    "topic": "Nonlinear equations in one variable and systems of equations in two variables",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "+48 = 445\n1 3 +8\nWhat is the solution to the given equation?",
+    "type": "mc",
+    "explanation": "Choice B is correct. Subtracting from each side of the given equation yields . Multiplying each side of this equation by yields .\nThus, the solution to the given equation is .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 22,
+    "pdfPreview": "/qbank/math/previews/c5d83a99.jpg",
+    "choices": [
+      {
+        "text": "1"
+      },
+      {
+        "text": "6"
+      },
+      {
+        "text": "8"
+      },
+      {
+        "text": "14"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "cef0eada",
+    "topic": "Nonlinear functions",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear functions",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The graph of y = f(x) is shown. What is the y-intercept of y = f(x) + 5?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The y-intercept of a graph is the point at which the graph intersects the y-axis. The graph of shown intersects the\ny-axis at , so the y-intercept of the graph of is . The graph of is the result of shifting the graph of up units. Therefore, the y-intercept of the graph of is units above the y-intercept of the graph of . It follows that the y-\nintercept of the graph of is , which is equivalent to .\n\nChoice B is incorrect. The point is units above the point , not the point .\n\nChoice C is incorrect. This is the y-intercept of the graph of , not the y-intercept of the graph of .\n\nChoice D is incorrect. This is the origin of the coordinate plane, not the y-intercept of the graph of .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 23,
+    "pdfPreview": "/qbank/math/previews/cef0eada.jpg",
+    "figure": "/qbank/math/figures/cef0eada.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/cef0eada_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/cef0eada_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/cef0eada_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/cef0eada_3.jpg"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "de91a6fc",
+    "topic": "Nonlinear functions",
+    "domain": "Advanced Math",
+    "skill": "Nonlinear functions",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A certain bowl was sold online for prices varying between 37 and $13. The number of bowls sold can be modeled by a quadratic function basec\non the price, where 5 bowls were sold for $12 each and the maximum of 9 bowls were sold for $10 each. According to the model, what is the\nnumber of bowls that were sold for $8 each?",
+    "type": "spr",
+    "explanation": "The correct answer is . It’s given that the number of bowls sold can be modeled by a quadratic function based on the price, where a maximum\nof bowls were sold for each and bowls were sold for each. This quadratic function can be defined by an equation of the form , where is the number of bowls sold when the price is each, and , , and are constants such that the function\nreaches its maximum value, , when . Since the model indicates the maximum number of bowls sold is when the price is each, reaches its maximum value, , when . Therefore, and . Substituting for and for in the function yields . Since the model indicates the number of bowls sold is when the price is each, the\nvalue of is when . Substituting for and for in the equation yields ,\nor . Subtracting from both sides of this equation yields . Dividing both sides of this equation by yields .\nTherefore, the model can be represented by the equation . Substituting for in this equation yields , or , or . Therefore, according to the model, the number of bowls sold for each was .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 24,
+    "pdfPreview": "/qbank/math/previews/de91a6fc.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "5"
+    ],
+    "answer": "5"
+  },
+  {
+    "id": "0d125b35",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "There is a proportional relationship between p and ¥. If p = 9,130 when t = 6,840, then what is the value of p when t = 5,472?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It's given that there is a proportional relationship between and . This relationship can be written as . If when\n, the value of when can be calculated by solving the equation . Multiplying each side of this equation by yields , or . Therefore, when , the value of is .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 25,
+    "pdfPreview": "/qbank/math/previews/0d125b35.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/0d125b35_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/0d125b35_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/0d125b35_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/0d125b35_3.jpg"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "1f4c57d7",
+    "topic": "One-variable data: distributions and measures of center and spread",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "For the last three years, a pig at a farm gave birth to one litter per year. The table shows the number of piglets in each of these three litters.\nLitter number piglets\nWhat is the mean number of piglets per litter for these three litters?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It's given that the numbers of piglets in litters , , and are , , and , respectively. The mean number of piglets per litter\nfor these three litters is , which is equivalent to , or .\n\nChoice A is incorrect. This is the range of the number of piglets per litter for these three litters.\n\nChoice B is incorrect. This is the minimum number of piglets per litter for these three litters.\n\nChoice D is incorrect. This is the maximum number of piglets per litter for these three litters.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 26,
+    "pdfPreview": "/qbank/math/previews/1f4c57d7.jpg",
+    "choices": [
+      {
+        "text": "2"
+      },
+      {
+        "text": "7"
+      },
+      {
+        "text": "8"
+      },
+      {
+        "text": "9"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "3aa0642c",
+    "topic": "One-variable data: distributions and measures of center and spread",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The table summarizes the distribution of shape printed on one side for cards in a deck of cards. How many cards in the deck have a triangle\nprinted on one side?",
+    "type": "spr",
+    "explanation": "The correct answer is . The table summarizes the distribution of shape printed on one side for cards in a deck of cards. The table shows that\nthe number of cards when the shape is a triangle is . Therefore, there are cards in the deck that have a triangle printed on one side.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 27,
+    "pdfPreview": "/qbank/math/previews/3aa0642c.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "14"
+    ],
+    "answer": "14"
+  },
+  {
+    "id": "589cd7a6",
+    "topic": "Probability and conditional probability",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Probability and conditional probability",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A box holds 5104 t tokens, of which are brown. If a token is selected at random from the box, what is the probability of selecting a token that is\nbrown?",
+    "type": "mc",
+    "explanation": "Choice C is correct. If a token is selected at random from the box, the probability of selecting a token that is brown is equal to the number of\ntokens that are brown divided by the total number of tokens in the box. Since there are brown tokens and total tokens in the box, the\nprobability of selecting a token that is brown is , or .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 28,
+    "pdfPreview": "/qbank/math/previews/589cd7a6.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/589cd7a6_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/589cd7a6_1.jpg"
+      },
+      {
+        "text": "3"
+      },
+      {
+        "text": "7"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "81d0f1e6",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The ratio a to Dis equivalent to the ratio 63 to 17. What is the value of a when 6 = 153?",
+    "type": "spr",
+    "explanation": "The correct answer is . It's given that the ratio to is equivalent to the ratio to , or . When , the value of can be\ncalculated by substituting for in the equation , which yields . Multiplying both sides of this equation by yields\n. Thus, when , the value of is .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 29,
+    "pdfPreview": "/qbank/math/previews/81d0f1e6.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "567"
+    ],
+    "answer": "567"
+  },
+  {
+    "id": "9b9da812",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "Which of the following equations is the most appropriate linear model for the data shown in the scatterplot?",
+    "type": "mc",
+    "explanation": "Choice C is correct. A linear model can be written in the form , where is the slope of the graph of the model in the xy-plane and is the y-intercept. The graph of an appropriate linear model for the data shown in the scatterplot passes near the points and in the xy-plane. Two points on a line, and , can be used to find the slope of the line using the slope formula, .\nSubstituting the points and for and , respectively, in the slope formula yields , or .\nTherefore, the value of for an appropriate linear model is approximately . Substituting for in yields .\nSince an appropriate linear model passes near the point , it follows that is approximately and an appropriate linear model for the data is\n. Thus, of the given choices, is the most appropriate linear model for these data.\nAlternate approach: A linear model can be written in the form , where is the slope of the graph of the model in the xy-plane and is the y-intercept. The scatterplot shows that as the x-values of the data points increase, the y-values of the data points increase, which\nmeans the graph of an appropriate linear model has a positive slope. The scatterplot also shows that an appropriate linear model would pass\nclose to the point . Of the given choices, is the only linear model whose graph has a positive slope and a y-intercept of .\n\nChoice A is incorrect. The graph of this model has a negative slope, not a positive slope.\n\nChoice B is incorrect. The graph of this model has a negative slope, not a positive slope, and a y-intercept that is not .\n\nChoice D is incorrect. The graph of this model has a slope that is too steep to fit the data, and a y-intercept that is not .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 30,
+    "pdfPreview": "/qbank/math/previews/9b9da812.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/9b9da812_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/9b9da812_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/9b9da812_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/9b9da812_3.jpg"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "a51e6f93",
+    "topic": "Percentages",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Percentages",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "0.1152 is 0.08% of the number b. The number b is 25% of the number c. What is the value of c?",
+    "type": "spr",
+    "explanation": "The correct answer is . It’s given that is of the number . It follows that , or . Dividing both\nsides of this equation by yields . It’s also given that the number is of the number . It follows that , or . Substituting for in this equation yields . Dividing both sides of this equation by yields . Therefore, the\nvalue of is .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 32,
+    "pdfPreview": "/qbank/math/previews/a51e6f93.jpg",
+    "figure": "/qbank/math/figures/a51e6f93.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "576"
+    ],
+    "answer": "576"
+  },
+  {
+    "id": "b695711c",
+    "topic": "Evaluating statistical claims: Observational studies and experiments",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Evaluating statistical claims: Observational studies and experiments",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A statistician conducted a study to investigate the relationship between the average number of minutes piano students practiced each week anc\nthe percentage of correct notes the students played during a recital. For the study, the statistician selected a sample of 85 piano students at\nrandom from all the piano students in a certain region who were in their second year with their conservatory. The table shows the information fo\n75 piano students in this sample who practiced at least 50 minutes on average each week. Percentage of correct notes the students played during a recital\nWhich of the following is the largest population to which the results of the study can be generalized?",
+    "type": "mc",
+    "explanation": "Choice C is correct. It’s given that the statistician selected a sample of piano students at random from all piano students in a certain region\nwho were in their second year with their conservatory. It's also given that the table shows the information for piano students in the sample\nwho practiced at least minutes on average each week. Selecting a sample at random from a population allows the results of the study to be\ngeneralized to that population, but not beyond it. Therefore, the largest population to which the results of the study can be generalized is the\npopulation of all piano students in the region who were in their second year with their conservatory.\n\nChoice A is incorrect. The results can't be generalized to all piano students who were in their second year with their conservatory since only\nstudents in a certain region were sampled.\n\nChoice B is incorrect. The results can't be generalized to all piano students in the region since only students in their second year with their\nconservatory were sampled.\n\nChoice D is incorrect. The results of the study can be generalized beyond the sample itself to the population from which it was drawn.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 33,
+    "pdfPreview": "/qbank/math/previews/b695711c.jpg",
+    "figure": "/qbank/math/figures/b695711c.jpg",
+    "choices": [
+      {
+        "text": "All piano students who were in their second year with their conservatory"
+      },
+      {
+        "text": "All piano students in the region"
+      },
+      {
+        "text": "All piano students in the region who were in their second year with their conservatory"
+      },
+      {
+        "text": "The piano students in the sample who practiced at least minutes on average each week"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "b73025e2",
+    "topic": "Ratios, rates, proportional relationships, and units",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "How many cups are equivalent to quarts?",
+    "type": "mc",
+    "explanation": "Choice D is correct. It's given that cups is equal to quar t. Multiplying by quarts yields cups, or cups.\n\nChoice A is incorrect. This is the number of quarts in cups, rounded to the nearest whole number.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 34,
+    "pdfPreview": "/qbank/math/previews/b73025e2.jpg",
+    "choices": [
+      {
+        "text": "21"
+      },
+      {
+        "text": "79"
+      },
+      {
+        "text": "87"
+      },
+      {
+        "text": "332"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "db88a933",
+    "topic": "One-variable data: distributions and measures of center and spread",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "Data sets Q and R are summarized in the tables shown, where a, 0, and c are positive, consecutive integers and a < 6 < c. Which statement\ncomparing the means of the data sets is true?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The mean of a data set is the sum of the values of the data set divided by the total number of values in the data set. When a\ndata set is represented in a frequency table, the sum of the values in the data set is the sum of the products of each value and its frequency. For\ndata set Q, the sum of the products of each value and its frequency is , or , and the number of values is , or . Therefore, the mean of data set Q is . For data set R, the sum of the products of each value and its frequency is , or , and the number of values is , or . Therefore, the mean of data set R is . Since , , and are positive,\nconsecutive integers and , it follows that and . Substituting for in the mean of data set Q yields\n, or , which is equivalent to , or . Substituting for and for in the mean of data set R\nyields , or , which is equivalent to , or . Subtracting the mean of data set Q from the\nmean of data set R yields , or . Therefore, the mean of data set R is greater than the mean of data\nset Q.\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 35,
+    "pdfPreview": "/qbank/math/previews/db88a933.jpg",
+    "choices": [
+      {
+        "text": "The mean of data set R is less than the mean of data set Q."
+      },
+      {
+        "text": "The mean of data set R is greater than the mean of data set Q."
+      },
+      {
+        "text": "The mean of data set Q is times the mean of data set R."
+      },
+      {
+        "text": "The means of the two data sets are equal."
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "e97fd3f8",
+    "topic": "Two-variable data: models and scatterplots",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The owner of a restaurant supply store selects cutting boards to put on sale. The graph shows the width, in centimeters, of each cutting\nboard and its corresponding sale price, in dollars, where each value of is an integer.\nAccording to the graph, which statement is true?",
+    "type": "mc",
+    "explanation": "Choice D is correct. Each point on the scatterplot gives the width , in centimeters, and the sale price , in dollars, of one of the cutting\nboards put on sale at this store. According to the graph, cutting boards have widths that are between and centimeters. These widths, in\ncentimeters, are , , , , and . The sale prices, in dollars, corresponding to these widths are , , , , and , respectively. The\naverage of these sale prices, in dollars, is , or , which is equivalent to . Therefore, cutting boards that have a width\nbetween and centimeters have an average sale price of .\n\nChoice A is incorrect. Cutting boards that have a width greater than centimeters have an average sale price of , not .\n\nChoice B is incorrect. Cutting boards that have a width greater than centimeters have an average sale price of , not .\n\nChoice C is incorrect. Cutting boards that have a width between and centimeters have an average sale price of , not .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 37,
+    "pdfPreview": "/qbank/math/previews/e97fd3f8.jpg",
+    "choices": [
+      {
+        "text": "Cutting boards that have a width greater than centimeters have an average sale price of ."
+      },
+      {
+        "text": "Cutting boards that have a width greater than centimeters have an average sale price of ."
+      },
+      {
+        "image": "/qbank/math/choices/e97fd3f8_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/e97fd3f8_3.jpg"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "ed6b7e5f",
+    "topic": "Probability and conditional probability",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Probability and conditional probability",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The table gives the distribution of topping and type of crust for customer orders at a pizza place.\nType of crust\nTopping Thin Thick\nExtra\ncheese\nIf one of these customer orders is selected at random, what is the probability of selecting an order with thin crust, given the topping is pepperon",
+    "type": "spr",
+    "explanation": "The correct answer is . Since the order will be selected at random, the probability of selecting an order with thin crust, given the topping is\npepperoni, is equal to the number of orders with thin crust where the topping is pepperoni divided by the total number of orders where the\ntopping is pepperoni. According to the table, there are orders with thin crust where the topping is pepperoni. According to the table, there are orders with thick crust where the topping is pepperoni. Therefore, there are a total of , or , orders where the topping is pepperoni.\nThus, the probability of selecting an order with thin crust, given the topping is pepperoni, is , or . Note that 2/5 and .4 are examples of ways\nto enter a correct answer.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 39,
+    "pdfPreview": "/qbank/math/previews/ed6b7e5f.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "0.4",
+      "2/5"
+    ],
+    "answer": "0.4"
+  },
+  {
+    "id": "f85bbf7a",
+    "topic": "Inference from sample statistics and margin of error",
+    "domain": "Problem-Solving and Data Analysis",
+    "skill": "Inference from sample statistics and margin of error",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A middle school faculty surveyed students to determine interest in an after-school chess club. Of the 100 students who were selected at randor\nfrom all students in the school, 32% expressed interest in the club. Based on the sample mean and the margin of error, the faculty expects that\nbetween 24% and 40% of all students in the school would express interest in the club. What is the margin of error?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that of the students who were selected at random from all students in the school, expressed interest in\nthe club. It's also given that based on the sample mean and the margin of error, the faculty expects that between and of all students in\nthe school would express interest in the club. These values are calculated by subtracting the margin of error from to get the lower bound,\n, and by adding the margin of error to to get the upper bound, . It follows that the margin of error can be calculated as the\ndifference between and or between and . The difference between and is , or .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect. This is the difference between and , not the difference between and or between and .\n\nChoice D is incorrect. This is the percentage of the students selected at random who expressed interest in the club, not the margin of error.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 40,
+    "pdfPreview": "/qbank/math/previews/f85bbf7a.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/f85bbf7a_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/f85bbf7a_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/f85bbf7a_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/f85bbf7a_3.jpg"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "053e5e9f",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "In triangle QRS shown, QR < RS. Which expression represents the length of QS?",
+    "type": "mc",
+    "explanation": "Choice D is correct. The figure shows that triangle is a right triangle. Each of the given choices is an expression containing or .\nFor an acute angle in a right triangle, the sine of the angle is the length of the opposite leg divided by the length of the hypotenuse, and the cosine\nof the angle is the length of the adjacent leg divided by the length of the hypotenuse. It follows that and , where . It's given in the figure that the length of side is . Since only the equation contains , an expression representing can be found by substituting for in this equation, which yields . Multiplying both sides of this equation by yields . Dividing both sides of this equation by yields . Therefore, the expression represents the length of .\n\nChoice A is incorrect and may result from conceptual or calculation errors.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 41,
+    "pdfPreview": "/qbank/math/previews/053e5e9f.jpg",
+    "figure": "/qbank/math/figures/053e5e9f.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/053e5e9f_0.jpg"
+      },
+      {
+        "text": "25 sin Q"
+      },
+      {
+        "image": "/qbank/math/choices/053e5e9f_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/053e5e9f_3.jpg"
+      }
+    ],
+    "answer": 3
+  },
+  {
+    "id": "27d075d8",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "For two acute angles, WAOK- and, sin (R).. The measures, in degrees, of and are -52x and, respectively. What\nis the value of?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It’s given that for two acute angles, and , . For two acute angles, if the sine of one angle is equal\nto the cosine of the other, the angles are complementary. Therefore, the sum of the measures, in degrees, of and is . It’s given that\nthe measures, in degrees, of and are and , respectively. Therefore, . Combining like\nterms in this equation yields . Subtracting from each side of this equation results in . Dividing each side of this\nequation by yields .\n\nChoice B is incorrect. This would be the value of if and were congruent rather than complementary.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 42,
+    "pdfPreview": "/qbank/math/previews/27d075d8.jpg",
+    "choices": [
+      {
+        "text": "5"
+      },
+      {
+        "text": "13"
+      },
+      {
+        "text": "23"
+      },
+      {
+        "text": "38"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "2a549721",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "Rectangle ABCD has an area of 280 square centimeters. The length of the rectangle is 10 centimeters. What is the width, in centimeters, of\nthe rectangle?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The area of a rectangle is the product of its length ℓ and its width . It follows that ℓ. It’s\ngiven that rectangle has an area of square centimeters and the length of the rectangle is centimeters. Substituting for and for ℓ in the equation ℓ yields . Dividing both sides of this equation by yields .\nTherefore, the width, in centimeters, of the rectangle is .\n\nChoice A is incorrect. This is the length, in centimeters, not the width, in centimeters, of the rectangle.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect. This is half the area, in square centimeters, not the width, in centimeters, of the rectangle.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 43,
+    "pdfPreview": "/qbank/math/previews/2a549721.jpg",
+    "choices": [
+      {
+        "text": "10"
+      },
+      {
+        "text": "28"
+      },
+      {
+        "text": "76"
+      },
+      {
+        "text": "140"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "32f99025",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The length of the base of a triangle is 8 inches, and the height of the triangle is 12 inches. What is the area, in square inches, of the triangle?",
+    "type": "mc",
+    "explanation": "Choice B is correct. The formula for the area, , of a triangle is , where is the length of the base of the triangle and is the height of\nthe triangle. It's given that the length of the base of a triangle is inches and the height of the triangle is inches. Substituting for and for in the formula yields , or . Therefore, the area, in square inches, of the triangle is .\n\nChoice A is incorrect. This is the sum of the length of the base of the triangle and the height of the triangle, not the area of the triangle.\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect. This is the product of the length of the base of the triangle and the height of the triangle, not the area of the triangle.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 44,
+    "pdfPreview": "/qbank/math/previews/32f99025.jpg",
+    "choices": [
+      {
+        "text": "20"
+      },
+      {
+        "text": "48"
+      },
+      {
+        "text": "60"
+      },
+      {
+        "text": "96"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "3e4e2ab0",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "In the figure, AE intersects DB at point C and AB is parallel to DE, creating triangles ABC and CDE. If x = 63 and y = 2x — AT, what is\nthe value of z?",
+    "type": "mc",
+    "explanation": "Choice A is correct. It’s given that intersects at point and that is parallel to , creating triangles and . Since is parallel to , angles and are opposite interior angles and are congruent. It follows that the measure of angle is . This\nmeans the three interior angles of triangle have measures of , , and , respectively. It’s given that and .\nSubstituting for in the equation yields , or . Therefore, the three interior angles of triangle have\nmeasures , , and , respectively. The sum of the interior angles of a triangle is . Therefore, , or .\nSubtracting from both sides of this equation yields . Therefore, the value of is .\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect. This is the value of , not .\n\nChoice D is incorrect. This is the value of , not .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 45,
+    "pdfPreview": "/qbank/math/previews/3e4e2ab0.jpg",
+    "figure": "/qbank/math/figures/3e4e2ab0.jpg",
+    "choices": [
+      {
+        "text": "38"
+      },
+      {
+        "image": "/qbank/math/choices/3e4e2ab0_1.jpg"
+      },
+      {
+        "text": "63"
+      },
+      {
+        "text": "79"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "4ddfa209",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "The length of one side of an equilateral triangle is 28 inches. What is the perimeter, in inches, of this triangle?",
+    "type": "mc",
+    "explanation": "Choice C is correct. The perimeter of a triangle is the sum of the lengths of the three sides of the triangle. It's given that the length of one side of\nan equilateral triangle is inches. Since the lengths of the three sides of an equilateral triangle are equal, it follows that the perimeter, in inches,\nof this equilateral triangle is , or .\n\nChoice A is incorrect. This is the length of one side, not the perimeter, of this equilateral triangle.\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect. This is the perimeter of a square, not an equilateral triangle, with side lengths of inches.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 46,
+    "pdfPreview": "/qbank/math/previews/4ddfa209.jpg",
+    "choices": [
+      {
+        "text": "28"
+      },
+      {
+        "text": "31"
+      },
+      {
+        "text": "84"
+      },
+      {
+        "text": "112"
+      }
+    ],
+    "answer": 2
+  },
+  {
+    "id": "58687a66",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "In the figure shown, line g is parallel to line h. Line ℓ intersects both lines. What is the value of x?",
+    "type": "spr",
+    "explanation": "The correct answer is 175. It's given that line g is parallel to line h. Since line ℓ intersects both lines, it's a transversal. The angles in the figure marked as 175° and x° are corresponding angles. When two parallel lines are intersected by a transversal, corresponding angles have equal measure. Therefore, the value of x is 175.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 47,
+    "pdfPreview": "/qbank/math/previews/58687a66.jpg",
+    "figure": "/qbank/math/figures/58687a66.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "175"
+    ],
+    "answer": "175"
+  },
+  {
+    "id": "62d39eb8",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "What is the radius of the circle in the xy-plane defined by (x + 3)” + (y+ 5)” = 289?",
+    "type": "spr",
+    "explanation": "The correct answer is . The equation of a circle in the xy-plane can be written in the form , where is the\ncenter of the circle and is the radius of the circle. It's given that the circle in the xy-plane is defined by . Therefore, . Taking the positive square root of both sides of this equation yields . Thus, the radius of the circle is .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 48,
+    "pdfPreview": "/qbank/math/previews/62d39eb8.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "17"
+    ],
+    "answer": "17"
+  },
+  {
+    "id": "c0b53183",
+    "topic": "Circles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Circles",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A circle has center O, and points A and U lie on the circle. Line segments AF and UF are tangent to the circle at points A and U, respectively\nThe distance between point O and point & is 510 centimeters and the distance between point O and point U is 78 centimeters. What is the\narea, in square centimeters, of quadrilateral OAEU?",
+    "type": "spr",
+    "explanation": "The correct answer is . It's given that the circle has center and points and lie on the circle. It follows that segments and are radii of the circle and therefore congruent. It's also given that line segments and are tangent to the circle at points and ,\nrespectively. Since line segments and are tangent to the circle from a common external point, point , line segments and are\ncongruent and form right angles with radii and , respectively. Therefore, quadrilateral consists of two congruent right triangles:\ntriangle and triangle . It's given that the distance between point and point is centimeters and the distance between point and point is centimeters. It follows that the area of triangle can be found by first using the Pythagorean theorem to calculate the\ndistance between point and point . For right triangle , where angle is a right angle, the Pythagorean theorem states that . Substituting for and for in this equation yields , or .\nSubtracting from both sides of this equation yields . Taking the positive square root of both sides of this equation\nyields . Thus, triangle is a right triangle with legs of length centimeters and centimeters. It follows that the area of\ntriangle is square centimeters, or square centimeters. Since triangle is congruent to triangle , the\narea of triangle is also square centimeters. Therefore, the area of quadrilateral is square centimeters,\nor square centimeters.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 49,
+    "pdfPreview": "/qbank/math/previews/c0b53183.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "39312"
+    ],
+    "answer": "39312"
+  },
+  {
+    "id": "d71550d0",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "In the figure, two lines intersect at a point. If 7 = 53, what is the value of s?",
+    "type": "mc",
+    "explanation": "Choice B is correct. It's given that two lines intersect at a point. The angles with measures of and are vertical angles, so it follows that they\nare equal in measure. Therefore, . If , it follows that .\n\nChoice A is incorrect. This is the measure, in degrees, of the complement of an angle with a measure of , not the value of .\n\nChoice C is incorrect and may result from conceptual or calculation errors.\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 50,
+    "pdfPreview": "/qbank/math/previews/d71550d0.jpg",
+    "figure": "/qbank/math/figures/d71550d0.jpg",
+    "choices": [
+      {
+        "text": "37"
+      },
+      {
+        "text": "53"
+      },
+      {
+        "text": "143"
+      },
+      {
+        "text": "233"
+      }
+    ],
+    "answer": 1
+  },
+  {
+    "id": "e570a99c",
+    "topic": "Lines, angles, and triangles",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "In AJ KL, the measures of both Z J and ZK are equal and the measure of ZL is 118°. What is the measure of 7. J?",
+    "type": "mc",
+    "explanation": "Choice A is correct. The sum of the measures of the three angles in a triangle is . It's given that in , the measure of is . Let represent the measure of . It's also given that the measures of and are equal, so also represents the measure of . It follows\nthat , or . Subtracting from both sides of this equation yields . Dividing both sides of this\nequation by yields . Therefore, the measure of is .\n\nChoice B is incorrect and may result from conceptual or calculation errors.\n\nChoice C is incorrect. This is the sum of the measures of and , not the measure of .\n\nChoice D is incorrect and may result from conceptual or calculation errors.",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 51,
+    "pdfPreview": "/qbank/math/previews/e570a99c.jpg",
+    "choices": [
+      {
+        "image": "/qbank/math/choices/e570a99c_0.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/e570a99c_1.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/e570a99c_2.jpg"
+      },
+      {
+        "image": "/qbank/math/choices/e570a99c_3.jpg"
+      }
+    ],
+    "answer": 0
+  },
+  {
+    "id": "ebf3a962",
+    "topic": "Area and volume",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Area and volume",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "A right circular cylinder has a height of 16 inches and a volume of 3,136 cubic inches. What is the radius, in inches, of this cylinder?",
+    "type": "spr",
+    "explanation": "The correct answer is . The volume, , of a right circular cylinder is given by the formula , where is the radius of the base of the\ncylinder and is the height of the cylinder. It’s given that the right circular cylinder has a height of inches and a volume of cubic\ninches. Substituting for and for in the formula yields , or . Dividing both sides of\nthis equation by yields . Since represents the radius of the cylinder, the value of is positive. Taking the positive square root of\nboth sides of this equation yields . Therefore, the radius, in inches, of the cylinder is .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 52,
+    "pdfPreview": "/qbank/math/previews/ebf3a962.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "14"
+    ],
+    "answer": "14"
+  },
+  {
+    "id": "f1251f35",
+    "topic": "Right triangles and trigonometry",
+    "domain": "Geometry and Trigonometry",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "prompt": "In triangle XYZ, cos Z = 3/5. What is the value of c?",
+    "type": "spr",
+    "explanation": "The correct answer is . In triangle , angle is a right angle. Therefore, triangle is a right triangle. The cosine of an acute angle in\na right triangle is the ratio of the length of the side adjacent to that angle to the length of the hypotenuse. In right triangle , side is the\nside adjacent to angle and side is the hypotenuse. It’s given that the length of side is and the length of side is .\nTherefore, . It's also given that . It follows that . Therefore, .",
+    "pdf": "/qbank/math/Summer-2026-Bank-2-Math-Unanswered.pdf",
+    "pdfPage": 53,
+    "pdfPreview": "/qbank/math/previews/f1251f35.jpg",
+    "figure": "/qbank/math/figures/f1251f35.jpg",
+    "choices": [],
+    "acceptedAnswers": [
+      "565"
+    ],
+    "answer": "565"
   }
 ]

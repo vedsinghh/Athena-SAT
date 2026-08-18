@@ -16463,5 +16463,277 @@
     "explanation": "ChoiceD is the best answer. The convention being tested is the use of verbs to express tense. In this choice, the present tense verb \"survives\" correctly indicates that the wood frog regularly survives subfreezing temperatures by producing large amounts of glucose.\n\nChoice A is incorrect because the past perfect verb \"had survived\" doesn't indicate that the wood frog regularly survives subfreezing temperatures by producing large amounts of glucose. Choice B is incorrect because the past tense verb \"survived\" doesn't indicate that the wood frog regularly survives subfreezing temperatures by producing large amounts of glucose. Choice C is incorrect because the conditional verb \"would survive\" doesn't indicate that the wood frog regularly survives subfreezing temperatures by producing large amounts of glucose.",
     "pdf": "/qbank/reading/Student-Bank-1-Standard-English-Conventions-Unanswered.pdf",
     "pdfPage": 31
+  },
+  {
+    "id": "01f19bf3",
+    "topic": "Information and Ideas",
+    "domain": "Information and Ideas",
+    "skill": "Command of Evidence",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "A sociology student is reading an essay on the median age of first marriage in Western countries throughout the twentieth century. The author of the essay cites factors common to these countries that the author believes caused an increase in the median age of first marriage, such as new technologies that shortened the time needed for domestic chores, making two-person households less necessary and living alone more viable. The student asserts that beyond these factors there must be additional ones specific to particular Western countries that influenced the increase of age at first marriage.",
+    "prompt": "Which choice most effectively uses data from the graph that support the student's assertion?",
+    "choices": [
+      {
+        "text": "Between 1970 and 2000, the median age of first marriage rose more sharply for men in England and Wales than it did for men in the United States."
+      },
+      {
+        "text": "The median age of first marriage for men in England and Wales was lower in 1970 than in 1950 or 1990."
+      },
+      {
+        "text": "Between 1900 and 2000, the median age of first marriage for women in England and Wales was consistently higher than for women in the United States, as was the case for men."
+      },
+      {
+        "text": "In England and Wales, the median age of first marriage was consistently higher for men than for women between 1900 and 2000, but this was not always the case in the United States."
+      }
+    ],
+    "answer": 0,
+    "type": "mc",
+    "explanation": "Choice A is the best answer. The student concluded that country-specific factors influence changes to median age of first marriage. This choice describes a time period when the rate of change differed between countries, suggesting that country-specific factors may have played a role in these changes.\n\nChoice B is incorrect. The student concluded that country-specific factors influence changes to median age of first marriage. However, this choice doesn't provide any contrasts between countries and thus doesn't support the idea of country-specific factors influencing median age of first marriage. Choice C is incorrect. The students' conclusion is about changes that occurred during the 20th century. This choice provides broad information about the century as a whole, so it doesn't give insight into how median age at first marriage changed over time. Choice D is incorrect. This choice misreads the graph. The median age of first marriage was consistently higher for men than for women in the United States during the time period depicted.",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 1,
+    "figure": "/qbank/reading/figures/01f19bf3.jpg"
+  },
+  {
+    "id": "805bd1d6",
+    "topic": "Information and Ideas",
+    "domain": "Information and Ideas",
+    "skill": "Command of Evidence",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "All other things being equal, the larger a wind turbine's rotor diameter (the diameter of the imaginary circle swept by the turbine's rotating blades), the greater amount of energy the turbine can generate. In a research paper on wind power, a student claims that in the United States, the amount of energy generated per newly installed turbine increased substantially between 2011 and 2021.",
+    "prompt": "Which choice best describes data in the graph that support the student's claim?",
+    "choices": [
+      {
+        "text": "No turbines installed in 2011 had rotor diameters greater than 115 meters, whereas the majority of turbines installed in 2021 had rotor diameters greater than 130 meters."
+      },
+      {
+        "text": "Most turbines installed in 2011 had rotor diameters of less than 100 meters, whereas most turbines installed in 2021 had rotor diameters of at least 115 meters."
+      },
+      {
+        "text": "In 2011, nearly 80% of turbines installed had rotor diameters of less than 100 meters, whereas only a little more than 20% of turbines installed that year had rotor diameters of 100—115 meters."
+      },
+      {
+        "text": "The percentage of newly installed turbines with rotor diameters greater than 130 meters increased every year between 2011 and 2021."
+      }
+    ],
+    "answer": 1,
+    "type": "mc",
+    "explanation": "Choice B is the best answer. The text tells us that turbines with larger rotor diameters produce more energy, so if rotor diameters have generally gotten larger between 2011 and 2021, then turbines created in 2021 should produce more energy than those created in 2011.\n\nChoice A is incorrect. This choice misreads the graph. In 2021, only about 25% of turbines installed in 2021 had rotor diameters greater than 130 meters. Choice C is incorrect. This choice doesn't justify the claim. The claim is about increasing energy output from 2011 to 2021, but this choice only discusses 2011, so it can't show evidence of change over time. Choice D is incorrect. This choice misreads the graph. The percentage of newly installed turbines with rotor diameters greater than 130 meters didn't show any visible increase until 2018.",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 5,
+    "figure": "/qbank/reading/figures/805bd1d6.jpg"
+  },
+  {
+    "id": "81430e26",
+    "topic": "Information and Ideas",
+    "domain": "Information and Ideas",
+    "skill": "Command of Evidence",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "Declining fishing technology costs and overexploitation of near-shore fishing grounds have made isolated oceanic reefs, which often lack regulatory protections, increasingly attractive to commercial and sport fishers. A team led by Octavio Aburto-Oropeza surveyed the biomass density and species composition of two isolated reefs: Alacranes, a protected (fishing prohibited) reef 135 kilometers from the Yucatan Peninsula, and Bajos del Norte, an unprotected reef 25 kilometers farther out to sea. Species at the highest level of the trophic pyramid constituted 34% of the biomass at Alacranes and 10% of the biomass at Bajos del Norte. Aburto-Oropeza and colleagues attribute this difference to the two reefs' difference in regulatory status.",
+    "prompt": "Which finding, if true, would most directly support Aburto-Oropeza and colleagues' explanation?",
+    "choices": [
+      {
+        "text": "Total biomass at Alacranes is much greater than total biomass at Bajos del Norte, though the reefs' biomass densities are similar."
+      },
+      {
+        "text": "Some of the species that compose the highest trophic level at Bajos del Norte are not found at Alacranes."
+      },
+      {
+        "text": "It is somewhat more expensive for commercial and sport fishers to reach Bajos del Norte than it is to reach Alacranes."
+      },
+      {
+        "text": "Commercial and sport fishers tend to disproportionately remove species at the highest trophic level."
+      }
+    ],
+    "answer": 3,
+    "type": "mc",
+    "explanation": "Choice D is the best answer because it provides the finding that, if true, would most directly support Aburto-Oropeza and colleagues' explanation that species composition differs between Alacranes and Bajos del Norte because of a difference in the regulation of fishing at the two reefs. The text explains that isolated oceanic reefs are often unprotected and are increasingly attracting commercial and sport fishing activity. According to the text, when Aburto-Oropeza and colleagues surveyed Alacranes, an isolated reef where fishing is prohibited, and Bajos del Norte, an isolated reef that is unprotected, they found that species at the highest trophic level (that is, top predators) make up a smaller proportion of the total mass of all living organisms at Bajos del Norte (10%) than they do at Alacranes (34%). If it were true that commercial and sport fishers tend to disproportionately remove top predators—that is, that they catch them at a higher rate than they catch other species—this would support the explanation that the allowance of fishing at Bajos del Norte and the prohibition of fishing at Alacranes has led to a lower proportion of top predator species remaining in the total biomass at Bajos del Norte.\n\nChoice A is incorrect. To support the researchers' claim that the role of fishing regulations accounts for Alacranes having a greater proportion of species at the highest trophic level (top predators) than Bajos del Norte does, a finding would need to help explain how fishing affects the presence of top predator species in particular; the finding that the two reefs have similar biomass densities (that is, about the same mass of living organisms per unit) and that Alacranes has a much greater total biomass (total mass of living organisms) wouldn't reveal anything about the species composition at each reef or help explain why the proportion of top predators in the total biomass at each reef differs. This finding might simply suggest that Alacranes is a larger reef, with more units at that density. Choice B is incorrect because the finding that there are species at the highest trophic level (top predators) at Bajos del Norte that aren't found at Alacranes would reveal only that there are some different species in the reefs' total biomasses (total mass of living organisms) but wouldn't explain why that's the case; this finding wouldn't be clearly connected to the role of fishing regulations, which is what, according to the researchers, accounts for the reefs having different proportions of top predators in their total masses. Choice C is incorrect. To support the researchers' claim that the role of fishing regulations accounts for Alacranes having a greater proportion of species at the highest trophic level (top predators) than Bajos del Norte does, a finding would need to help explain how fishing affects the presence of top predator species in particular, but different costs of reaching the two reefs wouldn't affect fishing behavior at all because fishing isn't even allowed on one of the reefs.",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 7
+  },
+  {
+    "id": "994be036",
+    "topic": "Craft and Structure",
+    "domain": "Craft and Structure",
+    "skill": "Words in Context",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "The Polynesian languages, a group of related languages originating on islands in the Pacific, typically have ______ array of consonant sounds. For example, the Mangareva language of the South Pacific has nine consonants, and 'Ōlelo Hawai' i, the language of the Native Hawaiian people, has eight. Globally, however, the median number of consonants per language is over twenty-two.",
+    "prompt": "Which choice completes the text with the most logical and precise word or phrase?",
+    "choices": [
+      {
+        "text": "an unvarying"
+      },
+      {
+        "text": "a musical"
+      },
+      {
+        "text": "an exclusive"
+      },
+      {
+        "text": "a modest"
+      }
+    ],
+    "answer": 3,
+    "type": "mc",
+    "explanation": "Choice D is the best answer because it most logically completes the text's discussion of Polynesian languages. In this context, \"modest\" means relatively limited or small. The text begins with a statement about the array, or number, of consonant sounds in these languages. It then gives examples of one Polynesian language that has nine consonants and one that has eight consonants before noting that the global median number of consonants per language is more than twenty-two; in other words, the numbers of consonants in the Polynesian examples are well below the global median number. This context conveys that the text is making the point that the Polynesian languages have a modest array of consonant sounds.\n\nChoice A is incorrect. In this context, \"unvarying\" would mean unchanging. The text focuses on comparing the typical numbers of consonant sounds in Polynesian languages to the global median number of consonants per language, not on conveying that the number of consonant sounds in Polynesian languages typically doesn't vary; the text makes no mention of the number of consonants changing within a language or language group. Choice B is incorrect because the text is focused on the quantity of consonant sounds in Polynesian languages, not the idea that those consonants are \"musical,\" or pleasantly harmonious and like music; the text discusses only the numbers of consonants in Polynesian languages and the global median number of consonants per language, not the way consonants sound. Choice C is incorrect. In this context, \"exclusive\" would mean limited to a single group. The text discusses the typical numbers of consonant sounds in Polynesian languages and gives two examples of languages with consonant numbers below the global median number of consonants per language, but it doesn't suggest that the array, or number, of consonant sounds in Polynesian languages is exclusive to those languages—that is, that Polynesian languages are the only ones with eight to nine consonants.",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 8
+  },
+  {
+    "id": "fdca960a",
+    "topic": "Craft and Structure",
+    "domain": "Craft and Structure",
+    "skill": "Words in Context",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "Yanzhe Fu et al. suggest that the extinct aquatic insect <em>Karataviella popovi</em> utilized a brood care strategy that mitigated the risk of oxygen deficiency. This determination rests on the researchers' analysis of fossils uncovered at a particularly ______ site: China's Haifanggou Formation, which has yielded a vast diversity of fossils, including those of long-proboscid scorpionflies.",
+    "prompt": "Which choice completes the text with the most logical and precise word or phrase?",
+    "choices": [
+      {
+        "text": "fruitful"
+      },
+      {
+        "text": "unassailable"
+      },
+      {
+        "text": "obscure"
+      },
+      {
+        "text": "quantified"
+      }
+    ],
+    "answer": 0,
+    "type": "mc",
+    "explanation": "Choice A is the best answer because it most logically completes the text's discussion of the fossil site from which the evidence about brood care in K. popovi was recovered. In this context, \"fruitful\" means abundantly productive. The text indicates that the researchers drew their evidence from fossils found in China's Haifanggou Formation, a location that has yielded a vast diversity of fossils. The information about the site yielding a vast diversity of fossils supports the characterization of the Haifanggou Formation as particularly productive, or fruitful.\n\nChoice B is incorrect because there is nothing in the text to support characterizing the Haifanggou Formation as a site that is particularly \"unassailable,\" or not open to attack, question, or criticism. The text emphasizes that the site has yielded a vast diversity of fossils, suggesting that it is a particularly productive location for fossil hunters, not that it cannot be challenged. Choice C is incorrect because there is nothing in the text to support characterizing the Haifanggou Formation as a site that is particularly \"obscure,\" or poorly understood or relatively unknown. In fact, the text notes that the Haifanggou Formation has yielded a vast diversity of fossils, suggesting that the site is not an obscure one. Choice D is incorrect because \"quantified\" means expressed or measured as a quantity, which does not describe the productiveness the context calls for. Although the text indicates that the Haifanggou Formation has yielded a vast diversity of fossils, that fact suggests that the site can be characterized as particularly productive, not as particularly quantified.",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 9
+  },
+  {
+    "id": "1e274153",
+    "topic": "Standard English Conventions",
+    "domain": "Standard English Conventions",
+    "skill": "Form, Structure, and Sense",
+    "difficulty": "Easy",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "During World War II, codebreakers played an essential role in deciphering coded messages. In the US military, more than 10,000 women ______ as codebreakers, making up nearly half of all US codebreakers.",
+    "prompt": "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    "choices": [
+      {
+        "text": "having served"
+      },
+      {
+        "text": "to serve"
+      },
+      {
+        "text": "served"
+      },
+      {
+        "text": "serving"
+      }
+    ],
+    "answer": 2,
+    "type": "mc",
+    "explanation": "Choice C is the best answer. The convention being tested is the use of verb forms within a sentence. A main clause requires a finite (tensed) verb to perform the action of the subject (in this case, \"more than 10,000 women\"), and this choice supplies the finite past tense verb \"served\" to state what the women did.\n\nChoice A is incorrect because it results in an ungrammatical sentence. The nonfinite participle \"having served\" doesn't supply the main clause with a finite verb. Choice B is incorrect because it results in an ungrammatical sentence. The nonfinite to-infinitive \"to serve\" doesn't supply the main clause with a finite verb. Choice D is incorrect because it results in an ungrammatical sentence. The nonfinite participle \"serving\" doesn't supply the main clause with a finite verb.",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 10
+  },
+  {
+    "id": "6174a5b6",
+    "topic": "Standard English Conventions",
+    "domain": "Standard English Conventions",
+    "skill": "Form, Structure, and Sense",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "Many folktales that originate in the Czech language start with a phrase that roughly translates to \"there was, there was not.\" Many tales that originate in English use \"once upon a time.\" Such phrases, known as story starters, ______ from language to language.",
+    "prompt": "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    "choices": [
+      {
+        "text": "vary"
+      },
+      {
+        "text": "has varied"
+      },
+      {
+        "text": "varies"
+      },
+      {
+        "text": "is varying"
+      }
+    ],
+    "answer": 0,
+    "type": "mc",
+    "explanation": "Choice A is the best answer. The convention being tested is subject-verb agreement. The plural verb \"vary\" agrees in number with the plural subject \"such phrases.\" The supplementary phrase \"known as story starters,\" set off by commas, doesn't change the subject's number.\n\nChoice B is incorrect. The singular verb phrase \"has varied\" doesn't agree in number with the plural subject \"such phrases.\" Choice C is incorrect. The singular verb \"varies\" doesn't agree in number with the plural subject \"such phrases.\" Choice D is incorrect. The singular verb phrase \"is varying\" doesn't agree in number with the plural subject \"such phrases.\"",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 11
+  },
+  {
+    "id": "81f43b85",
+    "topic": "Standard English Conventions",
+    "domain": "Standard English Conventions",
+    "skill": "Boundaries",
+    "difficulty": "Hard",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "For the past 20 million years, Earth's magnetic poles in the far north and far south have remained roughly where they are today. This has not always been the ______ throughout geologic history, Earth's magnetic poles have swapped places several times through a process called polar wandering.",
+    "prompt": "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    "choices": [
+      {
+        "text": "case, though"
+      },
+      {
+        "text": "case, though,"
+      },
+      {
+        "text": "case; though,"
+      },
+      {
+        "text": "case, though;"
+      }
+    ],
+    "answer": 3,
+    "type": "mc",
+    "explanation": "Choice D is the best answer. The convention being tested is the use of punctuation within a sentence. Placing the semicolon after the supplementary adverb \"though\" correctly indicates that the contrast in the text is between the information in the first sentence (that Earth's magnetic poles have remained fixed for the past 20 million years) and the initial clause of the second sentence (\"This has not always been the case\"), rather than between the two clauses of the second sentence.\n\nChoice A is incorrect. Using the adverb \"though\" as the head of a subordinate clause illogically indicates that the information in the previous main clause (\"This…case\") is contrary to the information in the subordinate clause. Instead, the information in the second clause (that Earth's magnetic poles have swapped places several times) elaborates on the statement made in the previous clause (that Earth's magnetic poles are not as fixed as they may seem). Choice B is incorrect because it results in a comma splice. Commas can't be used in this way to punctuate a supplementary word or phrase between two main clauses. Choice C is incorrect. Using a semicolon after \"case\" places the adverb \"though\" inside the second main clause (\"throughout…wandering\"), illogically indicating that the information in the previous main clause is contrary to the information in the second one. Instead, the information in the second main clause (that Earth's magnetic poles have swapped places several times) elaborates on the statement made in the previous clause (that Earth's magnetic poles are not as fixed as they may seem).",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 12
+  },
+  {
+    "id": "a421f749",
+    "topic": "Standard English Conventions",
+    "domain": "Standard English Conventions",
+    "skill": "Boundaries",
+    "difficulty": "Medium",
+    "pool": "Summer 2026 Bank 2",
+    "passageTitle": "Passage",
+    "passage": "In Puerto Rico, it's not unusual for a city or town to be known by a nickname that corresponds to one of its notable features, like landscape, climate, famous residents, or chief export. For example, the Puerto Rican municipality of Aibonito is well known for its lush ______ this distinction has earned it the fitting nickname of \"the Garden of Puerto Rico.\"",
+    "prompt": "Which choice completes the text so that it conforms to the conventions of Standard English?",
+    "choices": [
+      {
+        "text": "greenery"
+      },
+      {
+        "text": "greenery,"
+      },
+      {
+        "text": "greenery and"
+      },
+      {
+        "text": "greenery;"
+      }
+    ],
+    "answer": 3,
+    "type": "mc",
+    "explanation": "Choice D is the best answer. The convention being tested is punctuation between two main clauses. \"Aibonito is well known for its lush greenery\" and \"this distinction has earned it the fitting nickname…\" are both complete main clauses; a semicolon correctly joins them while signaling a close logical connection.\n\nChoice A is incorrect because it results in a run-on sentence. The two main clauses are fused without punctuation and/or a conjunction. Choice B is incorrect because it results in a comma splice. Without a conjunction following it, a comma can't be used in this way to join two main clauses. Choice C is incorrect. When coordinating two longer main clauses such as these, it's conventional to use a comma before the coordinating conjunction.",
+    "pdf": "/qbank/reading/Summer-2026-Bank-2-Reading-Unanswered.pdf",
+    "pdfPage": 13
   }
 ]

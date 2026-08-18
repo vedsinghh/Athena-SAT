@@ -296,6 +296,7 @@ def index_pdfs() -> dict[str, tuple[Path, int, list]]:
         files.extend(sorted(STUDENT_ROOT.glob("*.pdf")))
     if PUBLIC_READING.exists():
         files.extend(sorted(PUBLIC_READING.glob("Student-Bank-1-*.pdf")))
+        files.extend(sorted(PUBLIC_READING.glob("Summer-2026-Bank-2*.pdf")))
     if SUMMER_PDF.exists():
         files.append(SUMMER_PDF)
     by_id: dict[str, tuple[Path, int, list]] = {}

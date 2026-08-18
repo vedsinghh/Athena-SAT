@@ -1,41 +1,41 @@
 {
   "Algebra": {
-    "total": 167,
+    "total": 178,
     "skills": {
       "Linear equations in two variables": 36,
       "Linear equations in one variable": 33,
-      "Linear functions": 41,
-      "Systems of two linear equations in two variables": 36,
-      "Linear inequalities in one or two variables": 21
+      "Linear functions": 48,
+      "Systems of two linear equations in two variables": 39,
+      "Linear inequalities in one or two variables": 22
     }
   },
   "Advanced Math": {
-    "total": 112,
+    "total": 124,
     "skills": {
-      "Equivalent expressions": 27,
-      "Nonlinear equations in one variable and systems of equations in two variables": 32,
-      "Nonlinear functions": 53
+      "Equivalent expressions": 29,
+      "Nonlinear equations in one variable and systems of equations in two variables": 34,
+      "Nonlinear functions": 61
     }
   },
   "Problem-Solving and Data Analysis": {
-    "total": 162,
+    "total": 175,
     "skills": {
-      "Percentages": 25,
-      "Inference from sample statistics and margin of error": 13,
-      "One-variable data: distributions and measures of center and spread": 35,
-      "Probability and conditional probability": 22,
-      "Two-variable data: models and scatterplots": 27,
-      "Ratios, rates, proportional relationships, and units": 37,
-      "Evaluating statistical claims: Observational studies and experiments": 3
+      "Percentages": 26,
+      "Inference from sample statistics and margin of error": 14,
+      "One-variable data: distributions and measures of center and spread": 38,
+      "Probability and conditional probability": 24,
+      "Two-variable data: models and scatterplots": 29,
+      "Ratios, rates, proportional relationships, and units": 40,
+      "Evaluating statistical claims: Observational studies and experiments": 4
     }
   },
   "Geometry and Trigonometry": {
-    "total": 156,
+    "total": 169,
     "skills": {
-      "Lines, angles, and triangles": 44,
-      "Right triangles and trigonometry": 29,
-      "Circles": 27,
-      "Area and volume": 56
+      "Lines, angles, and triangles": 48,
+      "Right triangles and trigonometry": 32,
+      "Circles": 29,
+      "Area and volume": 60
     }
   }
 }

@@ -1,18 +1,18 @@
 {
   "Information and Ideas": {
-    "total": 159,
+    "total": 162,
     "skills": {
       "Inferences": 50,
-      "Command of Evidence": 62,
+      "Command of Evidence": 65,
       "Central Ideas and Details": 47
     }
   },
   "Craft and Structure": {
-    "total": 146,
+    "total": 148,
     "skills": {
       "Text Structure and Purpose": 48,
       "Cross-Text Connections": 37,
-      "Words in Context": 61
+      "Words in Context": 63
     }
   },
   "Expression of Ideas": {
@@ -23,10 +23,10 @@
     }
   },
   "Standard English Conventions": {
-    "total": 123,
+    "total": 127,
     "skills": {
-      "Boundaries": 66,
-      "Form, Structure, and Sense": 57
+      "Boundaries": 68,
+      "Form, Structure, and Sense": 59
     }
   }
 }
