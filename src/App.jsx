@@ -1090,6 +1090,45 @@ function repairFrozenBankRetries(profile) {
   }))
 }
 
+/** One-time: Ved's city-council margin-of-error question was marked incorrect by a laptop glitch. */
+function repairVedCityCouncilGlitch(profile) {
+  if (!profile || profile.vedCityCouncilGlitchRepairedV1) return profile
+  if (String(profile.name || '').trim().toLowerCase() !== 'ved') return profile
+
+  const QUESTION_ID = '90eed2e5'
+  const CORRECT_ANSWER = 2
+  const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
+  let changed = false
+  const nextHistory = history.map((entry) => {
+    if (entry?.type !== 'bank' || String(entry.questionId) !== QUESTION_ID) return entry
+    if (entry.correct === true && entry.answer === CORRECT_ANSWER) return entry
+    changed = true
+    return { ...entry, correct: true, answer: CORRECT_ANSWER }
+  })
+
+  const nextProgress = { ...(profile.qbankProgress || {}) }
+  const row = nextProgress[QUESTION_ID]
+  if (row?.correct !== true) {
+    changed = true
+    nextProgress[QUESTION_ID] = {
+      subject: 'math',
+      correct: true,
+      domain: row?.domain || 'Problem-Solving and Data Analysis',
+      skill: row?.skill || 'Inference from sample statistics and margin of error',
+    }
+  }
+
+  if (!changed) return { ...profile, vedCityCouncilGlitchRepairedV1: true }
+
+  return applyAccuracyFromHistory(applyStreakFromHistory({
+    ...profile,
+    vedCityCouncilGlitchRepairedV1: true,
+    progressHistory: nextHistory,
+    activity: nextHistory.map(historyToActivityItem).slice(0, 40),
+    qbankProgress: nextProgress,
+  }))
+}
+
 /** Keep the oldest bank row per question and drop later retries from history. */
 function dedupeBankHistoryKeepFirst(profile) {
   if (!profile || profile.bankHistoryFirstAttemptV1) return profile
@@ -1161,7 +1200,7 @@ function scrubEmptyPracticeSets(profile) {
 
 function normalizeProfilesList(profiles) {
   const list = Array.isArray(profiles) ? profiles : []
-  const normalized = list.map((p) => applyAccuracyFromHistory(dedupeBankHistoryKeepFirst(repairFrozenBankRetries(scrubEmptyPracticeSets(applyStreakFromHistory({
+  const normalized = list.map((p) => applyAccuracyFromHistory(dedupeBankHistoryKeepFirst(repairVedCityCouncilGlitch(repairFrozenBankRetries(scrubEmptyPracticeSets(applyStreakFromHistory({
     ...p,
     progressHistory: Array.isArray(p.progressHistory) ? p.progressHistory : [],
   }))))))
@@ -1292,10 +1331,11 @@ export default function App() {
     if (!user || profilesLoading || !profiles.length) return undefined
     const needsRepair = profiles.some(
       (p) => !p.bankHistoryFirstAttemptV1
-        || (!p.bankRetryScoresRepairedV1 && String(p.name || '').trim().toLowerCase() === 'ved'),
+        || (!p.bankRetryScoresRepairedV1 && String(p.name || '').trim().toLowerCase() === 'ved')
+        || (!p.vedCityCouncilGlitchRepairedV1 && String(p.name || '').trim().toLowerCase() === 'ved'),
     )
     if (!needsRepair) return undefined
-    persistProfiles((prev) => prev.map((p) => dedupeBankHistoryKeepFirst(repairFrozenBankRetries(p))))
+    persistProfiles((prev) => prev.map((p) => dedupeBankHistoryKeepFirst(repairVedCityCouncilGlitch(repairFrozenBankRetries(p)))))
     return undefined
   }, [user, profilesLoading, profiles, persistProfiles])
 
