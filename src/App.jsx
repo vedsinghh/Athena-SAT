@@ -1104,21 +1104,50 @@ const VED_LAPTOP_GLITCH_FIXES = [
     domain: 'Geometry and Trigonometry',
     skill: 'Lines, angles, and triangles',
   },
+  {
+    questionId: '65c49824',
+    answer: '8',
+    domain: 'Problem-Solving and Data Analysis',
+    skill: 'Percentages',
+  },
 ]
 
 function repairVedLaptopGlitches(profile) {
-  if (!profile || profile.vedLaptopGlitchesRepairedV2) return profile
+  if (!profile || profile.vedLaptopGlitchesRepairedV3) return profile
   if (String(profile.name || '').trim().toLowerCase() !== 'ved') return profile
 
   const byId = new Map(VED_LAPTOP_GLITCH_FIXES.map((fix) => [fix.questionId, fix]))
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
   let changed = false
   const nextHistory = history.map((entry) => {
-    const fix = entry?.type === 'bank' ? byId.get(String(entry.questionId)) : null
-    if (!fix) return entry
-    if (entry.correct === true && entry.answer === fix.answer) return entry
+    if (entry?.type === 'bank') {
+      const fix = byId.get(String(entry.questionId))
+      if (!fix) return entry
+      if (entry.correct === true && entry.answer === fix.answer) return entry
+      changed = true
+      return { ...entry, correct: true, answer: fix.answer }
+    }
+    if (entry?.type !== 'set' || !Array.isArray(entry.items)) return entry
+    let setChanged = false
+    const nextItems = entry.items.map((item) => {
+      const fix = byId.get(String(item?.questionId))
+      if (!fix) return item
+      if (item.correct === true && item.answer === fix.answer) return item
+      setChanged = true
+      return { ...item, correct: true, answer: fix.answer }
+    })
+    if (!setChanged) return entry
     changed = true
-    return { ...entry, correct: true, answer: fix.answer }
+    const graded = nextItems.filter((item) => item && item.correct != null)
+    const correctCount = graded.filter((item) => item.correct).length
+    const accuracy = graded.length ? Math.round((correctCount / graded.length) * 100) : entry.accuracy
+    return {
+      ...entry,
+      items: nextItems,
+      correct: correctCount,
+      accuracy,
+      meta: accuracy != null ? `Score: ${accuracy}%` : entry.meta,
+    }
   })
 
   const nextProgress = { ...(profile.qbankProgress || {}) }
@@ -1135,13 +1164,19 @@ function repairVedLaptopGlitches(profile) {
   })
 
   if (!changed) {
-    return { ...profile, vedCityCouncilGlitchRepairedV1: true, vedLaptopGlitchesRepairedV2: true }
+    return {
+      ...profile,
+      vedCityCouncilGlitchRepairedV1: true,
+      vedLaptopGlitchesRepairedV2: true,
+      vedLaptopGlitchesRepairedV3: true,
+    }
   }
 
   return applyAccuracyFromHistory(applyStreakFromHistory({
     ...profile,
     vedCityCouncilGlitchRepairedV1: true,
     vedLaptopGlitchesRepairedV2: true,
+    vedLaptopGlitchesRepairedV3: true,
     progressHistory: nextHistory,
     activity: nextHistory.map(historyToActivityItem).slice(0, 40),
     qbankProgress: nextProgress,
@@ -1351,7 +1386,7 @@ export default function App() {
     const needsRepair = profiles.some(
       (p) => !p.bankHistoryFirstAttemptV1
         || (!p.bankRetryScoresRepairedV1 && String(p.name || '').trim().toLowerCase() === 'ved')
-        || (!p.vedLaptopGlitchesRepairedV2 && String(p.name || '').trim().toLowerCase() === 'ved'),
+        || (!p.vedLaptopGlitchesRepairedV3 && String(p.name || '').trim().toLowerCase() === 'ved'),
     )
     if (!needsRepair) return undefined
     persistProfiles((prev) => prev.map((p) => dedupeBankHistoryKeepFirst(repairVedLaptopGlitches(repairFrozenBankRetries(p)))))
