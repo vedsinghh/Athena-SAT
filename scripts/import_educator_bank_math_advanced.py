@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Import Advanced Math questions into SAT Educator Bank 1.
+"""Import Advanced Math questions into E. Bank.
 
 Source: SAT Bank 1/Math/Advanced Math 1.pdf
 PDF button: unanswered copy with Correct Answer / Rationale redacted.
 
 Skips any Question ID already present in mathQuestions.json (including all
-Collegeboard Summer 2026 items) and any prompt fingerprint match against
+Summer 2026 Bank items) and any prompt fingerprint match against
 Summer Advanced Math stems.
 """
 
@@ -53,7 +53,7 @@ BANK_PDF = Path("/Users/vedsingh/Downloads/SAT Bank 1/Math/Advanced Math 1.pdf")
 PUBLIC_MATH = ROOT / "public" / "qbank" / "math"
 UNANSWERED_NAME = "Educator-Bank-1-Advanced-Math-Unanswered.pdf"
 UNANSWERED_URL = f"/qbank/math/{UNANSWERED_NAME}"
-POOL = "SAT Educator Bank 1"
+POOL = "E. Bank"
 DOMAIN = "Advanced Math"
 DATA = ROOT / "src" / "data"
 
@@ -486,7 +486,7 @@ def main() -> None:
     summer_am = [
         q
         for q in kept
-        if q.get("pool") == "Collegeboard Summer 2026" and q.get("domain") == DOMAIN
+        if q.get("pool") == "Summer 2026 Bank" and q.get("domain") == DOMAIN
     ]
     summer_ids = {str(q.get("id")) for q in summer_am}
     summer_fps = {

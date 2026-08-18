@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import Educator Bank extract PDFs into readingQuestions.json (SAT Educator Bank 1)."""
+"""Import Educator Bank extract PDFs into readingQuestions.json (E. Bank)."""
 
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ from fix_reading_ocr_spaces import format_explanation, normalize_prose  # noqa: 
 
 DATA = ROOT / "src" / "data"
 PUBLIC_PDF_DIR = ROOT / "public" / "qbank" / "reading"
-DEFAULT_POOL = "SAT Educator Bank 1"
+DEFAULT_POOL = "E. Bank"
 
 CHOICE_RE = re.compile(
     r"\nA\.\s*(.*?)\nB\.\s*(.*?)\nC\.\s*(.*?)\nD\.\s*(.*?)(?:\nCORRECT_ANSWER:|\nRATIONALE:|\Z)",

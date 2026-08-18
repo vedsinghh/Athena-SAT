@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "src" / "data" / "mathQuestions.json"
-POOL = "SAT Educator Bank 1"
+POOL = "E. Bank"
 DOMAIN = "Geometry and Trigonometry"
 
 HAND_EXPLANATIONS: dict[str, str] = {

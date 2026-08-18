@@ -30,7 +30,7 @@ from fix_reading_ocr_spaces import normalize_prose, format_explanation  # noqa: 
 
 FOLDER = Path("/Users/vedsingh/Downloads/Information and Ideas 1")
 EXTRACT_PDF = FOLDER / "Information and Ideas Extract.pdf"
-POOL = "SAT Educator Bank 1"
+POOL = "E. Bank"
 DOMAIN = "Information and Ideas"
 DATA = ROOT / "src" / "data"
 PUBLIC_PDF_DIR = ROOT / "public" / "qbank" / "reading"

@@ -24,7 +24,7 @@ import { writeLocalProfiles } from './lib/profileStorage'
 import { restoreAthenaExport } from './lib/restoreAthenaExport'
 import { supabase } from './lib/supabase'
 
-const QUESTION_POOLS = ['Collegeboard Summer 2026', 'SAT Educator Bank 1', 'SAT Student Bank 1']
+const QUESTION_POOLS = ['Summer 2026 Bank', 'E. Bank', 'S. Bank']
 const DEFAULT_QUESTION_POOL = QUESTION_POOLS[0]
 const STAT_NA = 'N/A'
 
@@ -1203,7 +1203,7 @@ function normalizeProfilesList(profiles) {
   const normalized = list.map((p) => applyAccuracyFromHistory(dedupeBankHistoryKeepFirst(repairVedCityCouncilGlitch(repairFrozenBankRetries(scrubEmptyPracticeSets(applyStreakFromHistory({
     ...p,
     progressHistory: Array.isArray(p.progressHistory) ? p.progressHistory : [],
-  }))))))
+  })))))))
   try {
     const before = JSON.stringify(list.map((p) => ({
       history: p.progressHistory || [],

@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / ".pdf_tools"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 DATA = ROOT / "src/data/mathQuestions.json"
-POOL = "SAT Educator Bank 1"
+POOL = "E. Bank"
 DOMAIN = "Geometry and Trigonometry"
 
 # Screenshot / PDF ground-truth stem+choice fixes

@@ -2167,7 +2167,7 @@ def repair(byid: dict[str, dict], bank: fitz.Document) -> list[str]:
 
     # Hard rule: Educator Algebra never keeps equation image slots.
     for qid, q in byid.items():
-        if q.get("pool") != "SAT Educator Bank 1" or q.get("domain") != "Algebra":
+        if q.get("pool") != "E. Bank" or q.get("domain") != "Algebra":
             continue
         if q.get("equations"):
             q["equations"] = []

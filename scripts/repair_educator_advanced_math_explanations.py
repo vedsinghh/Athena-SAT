@@ -25,7 +25,7 @@ from extract_questions import clean_text, find_label_rect  # noqa: E402
 
 BANK_PDF = Path("/Users/vedsingh/Downloads/SAT Bank 1/Math/Advanced Math 1.pdf")
 DATA = ROOT / "src" / "data" / "mathQuestions.json"
-POOL = "SAT Educator Bank 1"
+POOL = "E. Bank"
 DOMAIN = "Advanced Math"
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import SAT Student Bank 1 reading PDFs into readingQuestions.json."""
+"""Import S. Bank reading PDFs into readingQuestions.json."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ from extract_questions import (  # noqa: E402
 from fix_reading_ocr_spaces import format_explanation, normalize_prose  # noqa: E402
 
 FOLDER = Path("/Users/vedsingh/Downloads/Student Bank 1")
-POOL = "SAT Student Bank 1"
+POOL = "S. Bank"
 DATA = ROOT / "src" / "data"
 PUBLIC_PDF_DIR = ROOT / "public" / "qbank" / "reading"
 READING_JSON = DATA / "readingQuestions.json"

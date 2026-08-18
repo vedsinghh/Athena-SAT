@@ -20,7 +20,7 @@ def main() -> None:
     qs = json.loads(DATA.read_text(encoding="utf-8"))
     touched = 0
     for q in qs:
-        if q.get("pool") != "SAT Educator Bank 1" or q.get("domain") != "Advanced Math":
+        if q.get("pool") != "E. Bank" or q.get("domain") != "Advanced Math":
             continue
         changed = False
         if q.get("equations"):

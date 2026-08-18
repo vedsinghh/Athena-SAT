@@ -26,7 +26,7 @@ from extract_questions import clean_text  # noqa: E402
 
 BANK_PDF = Path("/Users/vedsingh/Downloads/SAT Bank 1/Math/Problem-Solving and Data Analysis 1.pdf")
 DATA = ROOT / "src" / "data" / "mathQuestions.json"
-POOL = "SAT Educator Bank 1"
+POOL = "E. Bank"
 DOMAIN = "Problem-Solving and Data Analysis"
 
 

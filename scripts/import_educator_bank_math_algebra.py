@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Import Algebra questions into SAT Educator Bank 1.
+"""Import Algebra questions into E. Bank.
 
 Content source: Algebra_1_Program_Readable_FIXED_v3_SPACING PDF
 PDF button source: SAT Bank 1/Math/Algebra 1.pdf with Correct Answer / Rationale removed
-Skips any question IDs already present (e.g. Collegeboard Summer 2026).
+Skips any question IDs already present (e.g. Summer 2026 Bank).
 """
 
 from __future__ import annotations
@@ -48,7 +48,7 @@ BANK_PDF = Path("/Users/vedsingh/Downloads/SAT Bank 1/Math/Algebra 1.pdf")
 PUBLIC_MATH = ROOT / "public" / "qbank" / "math"
 UNANSWERED_NAME = "Educator-Bank-1-Algebra-Unanswered.pdf"
 UNANSWERED_URL = f"/qbank/math/{UNANSWERED_NAME}"
-POOL = "SAT Educator Bank 1"
+POOL = "E. Bank"
 DATA = ROOT / "src" / "data"
 
 CHOICE_RE = re.compile(
@@ -717,7 +717,7 @@ def main():
             and str(q.get("pdf") or "").endswith(UNANSWERED_NAME)
         )
     ]
-    summer = [q for q in kept if q.get("pool") == "Collegeboard Summer 2026"]
+    summer = [q for q in kept if q.get("pool") == "Summer 2026 Bank"]
     summer_ids = {str(q.get("id")) for q in summer}
     # Fingerprint only against Summer Algebra prompts (not intra-batch).
     summer_fps = {

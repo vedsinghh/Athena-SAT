@@ -25,7 +25,7 @@ from extract_questions import (  # noqa: E402
 
 BANK_PDF = Path("/Users/vedsingh/Downloads/SAT Bank 1/Math/Geometry and Trignometry 1.pdf")
 DATA = ROOT / "src" / "data"
-POOL = "SAT Educator Bank 1"
+POOL = "E. Bank"
 DOMAIN = "Geometry and Trigonometry"
 UNANSWERED_URL = "/qbank/math/Educator-Bank-1-Geometry-Trigonometry-Unanswered.pdf"
 
