@@ -6536,9 +6536,112 @@ body.math-reference-dragging * {
   white-space: nowrap;
 }
 .progress-today-mini-charge {
+  overflow: hidden;
   background:
-    linear-gradient(155deg, rgba(224, 112, 32, 0.1), transparent 55%),
+    radial-gradient(
+      140% 110% at 50% 115%,
+      rgba(224, 112, 32, calc(0.08 + var(--fire-intensity, 0) * 0.42)),
+      transparent 58%
+    ),
+    radial-gradient(
+      90% 70% at 50% 100%,
+      rgba(255, 170, 70, calc(0.04 + var(--fire-intensity, 0) * 0.28)),
+      transparent 52%
+    ),
     #fff;
+  padding: 10px 12px 8px;
+}
+.progress-today-mini-charge.charge-off {
+  background: #fff;
+}
+.progress-today-mini-charge.charge-off .progress-momentum-fire {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+.progress-today-mini-charge .progress-charge-head {
+  flex: 0 0 auto;
+  gap: 6px;
+}
+.progress-today-mini-charge .progress-summary-label {
+  min-width: 0;
+}
+.progress-today-mini-charge .progress-charge-info-btn {
+  width: 18px;
+  height: 18px;
+}
+.progress-today-mini-charge .progress-charge-info-btn svg {
+  width: 12px;
+  height: 12px;
+}
+.progress-today-mini-charge .progress-charge-toggle {
+  width: 34px;
+  height: 20px;
+  padding: 2px;
+}
+.progress-today-mini-charge .progress-charge-toggle span {
+  width: 16px;
+  height: 16px;
+}
+.progress-today-mini-charge .progress-charge-toggle.on span {
+  transform: translateX(14px);
+}
+.progress-momentum.compact {
+  margin-top: 0;
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+  gap: 0;
+}
+.progress-momentum.compact .progress-momentum-stage {
+  width: 96px;
+  height: 90px;
+}
+.progress-momentum.compact .progress-momentum-fire {
+  width: 64px;
+  height: 64px;
+  bottom: 4px;
+}
+.progress-momentum.compact .progress-flame-a {
+  width: 28px;
+  height: 46px;
+}
+.progress-momentum.compact .progress-flame-b {
+  width: 20px;
+  height: 38px;
+  left: calc(50% - 10px);
+}
+.progress-momentum.compact .progress-flame-c {
+  width: 18px;
+  height: 36px;
+  left: calc(50% + 10px);
+}
+.progress-momentum.compact .progress-flame-core {
+  width: 12px;
+  height: 20px;
+  bottom: 6px;
+}
+.progress-momentum.compact .progress-momentum-gauge {
+  width: 78px;
+  height: 78px;
+}
+.progress-momentum.compact .progress-momentum-owl {
+  font-size: 13px;
+  margin-bottom: 0;
+}
+.progress-momentum.compact .progress-momentum-core strong {
+  font-size: 15px;
+}
+.progress-momentum.compact .progress-momentum-core span {
+  margin-top: 0;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+}
+.progress-momentum.compact .progress-momentum-hint {
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+  max-width: 100%;
 }
 .progress-today-mini-weakest {
   grid-column: 1 / 3;

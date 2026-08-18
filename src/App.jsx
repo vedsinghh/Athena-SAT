@@ -7969,19 +7969,42 @@ function ProgressPage({
                 )}
               </div>
 
-              <div className="card progress-summary-card progress-today-mini progress-today-mini-charge">
-                <div className="progress-summary-label">
-                  <Flame size={13} strokeWidth={2.2} />
-                  To full charge
+              <div
+                className={`card progress-summary-card progress-today-mini progress-today-mini-charge ${blazeEnabled ? '' : 'charge-off'}`.trim()}
+                style={{
+                  '--charge': blazeActive ? 100 : charge,
+                  '--fire-intensity': ((blazeActive ? 100 : charge) / 100).toFixed(3),
+                }}
+              >
+                <div className="progress-charge-head">
+                  <div className="progress-summary-label">
+                    <Flame size={13} strokeWidth={2.2} />
+                    Athena charge
+                    <AthenaChargeInfo />
+                  </div>
+                  <button
+                    type="button"
+                    className={`math-toggle progress-charge-toggle ${blazeEnabled ? 'on' : ''}`}
+                    aria-pressed={blazeEnabled}
+                    aria-label={blazeEnabled ? 'Turn off Athena charge effects' : 'Turn on Athena charge effects'}
+                    title={blazeEnabled ? 'Effects on' : 'Effects off'}
+                    onClick={() => onBlazeEnabledChange?.(!blazeEnabled)}
+                  >
+                    <span />
+                  </button>
                 </div>
-                <div className="progress-summary-value">
-                  {blazeActive || dailyCorrect >= 100 ? '0' : Math.max(0, 100 - dailyCorrect)}
-                </div>
-                <div className="progress-summary-sub">
-                  {blazeActive || dailyCorrect >= 100
-                    ? 'Full blaze until midnight'
-                    : `${dailyCorrect} correct so far`}
-                </div>
+                <MomentumMeter
+                  compact
+                  charge={blazeActive ? 100 : charge}
+                  questions={dailyCorrect}
+                  mood={
+                    !blazeEnabled
+                      ? 'Effects off'
+                      : blazeActive || dailyCorrect >= 100
+                        ? 'Full blaze until midnight'
+                        : `${dailyCorrect} correct so far`
+                  }
+                />
               </div>
 
               <div className="card progress-summary-card progress-summary-daily-tip progress-today-mini-tip">
@@ -8289,12 +8312,6 @@ function ProgressPage({
           mathAvgSec={mathAvgTimeSec}
           readingAvgSec={readingAvgTimeSec}
           showStudyCharts={!isTodayRange}
-          showCharge={isTodayRange}
-          charge={charge}
-          chargeCorrect={dailyCorrect}
-          blazeActive={blazeActive}
-          blazeEnabled={blazeEnabled}
-          onBlazeEnabledChange={onBlazeEnabledChange}
           onOpenReading={onOpenReading}
           onOpenMath={onOpenMath}
         />
@@ -8815,36 +8832,10 @@ function ProgressAnalytics({
   mathAvgSec = null,
   readingAvgSec = null,
   showStudyCharts = true,
-  showCharge = true,
-  charge: chargeProp,
-  chargeCorrect: chargeCorrectProp,
-  blazeActive = false,
-  blazeEnabled = true,
-  onBlazeEnabledChange,
   onOpenReading,
   onOpenMath,
 }) {
   const a = analytics || {}
-  const questionsCorrect = isValidStatNumber(chargeCorrectProp)
-    ? chargeCorrectProp
-    : (a.correct || 0)
-  const charge = isValidStatNumber(chargeProp)
-    ? chargeProp
-    : athenaChargeFromCorrect(questionsCorrect)
-  const displayCharge = blazeActive ? 100 : charge
-  const mood = !blazeEnabled
-    ? 'Athena charge effects are off'
-    : blazeActive || charge >= 100
-      ? 'Full blaze · locked in until midnight'
-      : questionsCorrect >= 80
-        ? 'Blazing'
-        : questionsCorrect >= 40
-          ? 'On fire'
-          : questionsCorrect >= 15
-            ? 'Warming up'
-            : questionsCorrect >= 1
-              ? 'Spark lit'
-              : 'Get questions right today to stoke the fire'
   const mathPct = a.subject?.math?.total
     ? Math.round((a.subject.math.correct / a.subject.math.total) * 100)
     : null
@@ -8944,40 +8935,7 @@ function ProgressAnalytics({
         )}
       </div>
 
-      {showCharge ? (
-      <div
-        className={`card progress-analytics-card progress-analytics-fun ${blazeEnabled ? '' : 'charge-off'}`.trim()}
-        style={{
-          '--charge': displayCharge,
-          '--fire-intensity': (displayCharge / 100).toFixed(3),
-        }}
-      >
-        <div className="progress-charge-head">
-          <div className="progress-analytics-label">
-            <Flame size={15} strokeWidth={2.2} />
-            Athena charge
-            <AthenaChargeInfo />
-          </div>
-          <button
-            type="button"
-            className={`math-toggle progress-charge-toggle ${blazeEnabled ? 'on' : ''}`}
-            aria-pressed={blazeEnabled}
-            aria-label={blazeEnabled ? 'Turn off Athena charge effects' : 'Turn on Athena charge effects'}
-            title={blazeEnabled ? 'Effects on' : 'Effects off'}
-            onClick={() => onBlazeEnabledChange?.(!blazeEnabled)}
-          >
-            <span />
-          </button>
-        </div>
-        <MomentumMeter
-          charge={displayCharge}
-          questions={questionsCorrect}
-          mood={mood}
-        />
-      </div>
-      ) : (
-        <ProgressAccuracyBreakdown analytics={a} />
-      )}
+      <ProgressAccuracyBreakdown analytics={a} />
 
       <div className="card progress-analytics-card progress-analytics-trend">
         <div className="progress-analytics-label">
@@ -10268,19 +10226,20 @@ function ScoreTrendChart({ points }) {
   )
 }
 
-function MomentumMeter({ charge, questions = 0, mood }) {
+function MomentumMeter({ charge, questions = 0, mood, compact = false }) {
   const clamped = Math.max(0, Math.min(100, charge || 0))
-  const size = 132
-  const stroke = 12
+  const size = compact ? 78 : 132
+  const stroke = compact ? 8 : 12
   const r = (size - stroke) / 2
   const c = 2 * Math.PI * r
   const len = (clamped / 100) * c * 0.75 // 270° arc
   const fireScale = 0.28 + (clamped / 100) * 1.45
   const fireOpacity = 0.12 + (clamped / 100) * 0.88
+  const gradId = compact ? 'athenaChargeGradMini' : 'athenaChargeGrad'
 
   return (
     <div
-      className="progress-momentum"
+      className={`progress-momentum ${compact ? 'compact' : ''}`}
       style={{
         '--fire-scale': fireScale,
         '--fire-opacity': fireOpacity,
@@ -10311,7 +10270,7 @@ function MomentumMeter({ charge, questions = 0, mood }) {
               cy={size / 2}
               r={r}
               fill="none"
-              stroke="url(#athenaChargeGrad)"
+              stroke={`url(#${gradId})`}
               strokeWidth={stroke}
               strokeDasharray={`${len} ${c}`}
               strokeLinecap="round"
@@ -10321,7 +10280,7 @@ function MomentumMeter({ charge, questions = 0, mood }) {
               transition={{ duration: 1, ease: 'easeOut' }}
             />
             <defs>
-              <linearGradient id="athenaChargeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#f0a35a" />
                 <stop offset="100%" stopColor="#e07020" />
               </linearGradient>
