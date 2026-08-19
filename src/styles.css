@@ -53,6 +53,18 @@ button { cursor: pointer; }
   border-bottom: 1px solid #edf0f6;
   background: rgba(255,255,255,.96);
 }
+.welcome-trademark {
+  position: relative;
+  z-index: 3;
+  max-width: 42ch;
+  margin: 0 auto;
+  padding: 0 20px 16px;
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #8a95a8;
+  text-align: center;
+}
 .welcome-main {
   position: relative; z-index: 2;
   height: calc(100vh - 92px);
@@ -376,6 +388,14 @@ button { cursor: pointer; }
 }
 .legal-footer-links a:hover {
   color: #2f62d6;
+}
+.legal-trademark {
+  max-width: 42ch;
+  margin: 8px auto 0;
+  font-size: 11px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: #8a95a8;
 }
 .auth-confirm-backdrop {
   z-index: 120;
@@ -1082,6 +1102,14 @@ button { cursor: pointer; }
 }
 .sidebar-profile-chevron.open {
   transform: rotate(180deg);
+}
+.sidebar-trademark {
+  flex-shrink: 0;
+  margin: 0 4px 10px;
+  font-size: 9px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: #8a95a8;
 }
 .sidebar-profile-menu {
   left: 0;

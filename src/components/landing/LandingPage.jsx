@@ -7,6 +7,7 @@ import mathQuestions from '../../data/mathQuestions.json'
 import readingQuestions from '../../data/readingQuestions.json'
 import AuthModal from './AuthModal'
 import Cloud, { DriftCloud } from './Cloud'
+import { SatDisclaimer, SatMark } from '../SatTrademark'
 import './landing.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -23,7 +24,7 @@ function Brand() {
       />
       <span className="ascent-brand-text">
         <em>ATHENA</em>
-        <span>SAT</span>
+        <span>PREP</span>
       </span>
     </span>
   )
@@ -332,7 +333,7 @@ export default function LandingPage({
 
       <header className={`ascent-nav ${scrolled ? 'is-stuck' : ''}`}>
         <div className="ascent-nav-inner">
-          <a href="#top" className="ascent-nav-brand" aria-label="Athena SAT home">
+          <a href="#top" className="ascent-nav-brand" aria-label="Athena Prep home">
             <Brand />
           </a>
           <nav className="ascent-nav-links" aria-label="Primary">
@@ -379,7 +380,7 @@ export default function LandingPage({
         {/* HERO — cloud centered; Athena starts tucked behind it */}
         <section className="ascent-hero">
           <Cloud ref={heroCloudRef} className="ascent-hero-cloud" variant="island" tone="ivory">
-            <p className="ascent-kicker">Digital SAT · guided by wisdom</p>
+            <p className="ascent-kicker">Digital <SatMark /> · guided by wisdom</p>
             <h1>Rise to your highest score.</h1>
             <p className="ascent-hero-sub">
               Smart practice. Real progress. Unstoppable you.
@@ -401,8 +402,8 @@ export default function LandingPage({
           <section className="ascent-chapter" id="story">
             <Cloud className="ascent-reveal ascent-story-cloud" variant="island" tone="ivory">
               <div className="ascent-cloud-copy">
-                <p className="ascent-chapter-label">What is Athena SAT</p>
-                <h2>Your SAT journey, guided by Athena.</h2>
+                <p className="ascent-chapter-label">What is Athena Prep</p>
+                <h2>Your <SatMark /> journey, guided by Athena.</h2>
                 <p>
                   Practice smarter, understand every miss, and climb toward your target score —
                   one deliberate question at a time.
@@ -422,7 +423,7 @@ export default function LandingPage({
               <p>Choose the domain, skill, and difficulty you actually need.</p>
             </Cloud>
             <Cloud className="ascent-reveal feat feat-2" variant="island" tone="blue">
-              <h3>Real digital SAT–style questions</h3>
+              <h3>Real digital <SatMark />–style questions</h3>
               <p>{counts.total.toLocaleString()}+ items that mirror Bluebook mechanics.</p>
             </Cloud>
             <Cloud className="ascent-reveal feat feat-3" variant="island">
@@ -512,7 +513,7 @@ export default function LandingPage({
           <div className="ascent-olympus-spacer" aria-hidden="true" />
           <div className="ascent-olympus-copy" ref={olympusCopyRef}>
             <p className="ascent-chapter-label ascent-satorini">
-              <span className="ascent-sat-mark">SAT</span>HENS
+              <span className="ascent-sat-mark">SAT®</span>HENS
             </p>
             <h2>Your journey starts here.</h2>
             <p>
@@ -533,9 +534,12 @@ export default function LandingPage({
       <footer className="ascent-footer">
         <div className="ascent-footer-inner">
           <Brand />
-          <p className="ascent-disclaimer">
-            © {new Date().getFullYear()} Athena SAT. Not affiliated with the College Board.
-          </p>
+          <div className="ascent-footer-legal">
+            <p className="ascent-disclaimer">
+              © {new Date().getFullYear()} Athena Prep
+            </p>
+            <SatDisclaimer className="ascent-disclaimer ascent-trademark" />
+          </div>
           <div className="ascent-footer-links">
             <button type="button" onClick={() => openAuth('signin')}>Log in</button>
             <button type="button" onClick={() => openAuth('signup')}>Sign up</button>

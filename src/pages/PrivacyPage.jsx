@@ -5,9 +5,9 @@ export default function PrivacyPage() {
   return (
     <LegalLayout title="Privacy Policy" updated="August 12, 2026">
       <p>
-        Athena SAT (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) operates at{' '}
+        Athena Prep (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) operates at{' '}
         <a href="https://athenasat.app">athenasat.app</a>. This policy explains what we collect,
-        why we collect it, and how we handle your information when you use our SAT practice platform.
+        why we collect it, and how we handle your information when you use our SAT® practice platform.
       </p>
 
       <h2>Information we collect</h2>
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
       <p>We do not sell your personal information.</p>
 
       <h2>Third-party services</h2>
-      <p>We rely on trusted providers to operate Athena SAT, including:</p>
+      <p>We rely on trusted providers to operate Athena Prep, including:</p>
       <ul>
         <li>
           <strong>Supabase</strong> — authentication, account storage, and database hosting
@@ -70,7 +70,7 @@ export default function PrivacyPage() {
 
       <h2>Children</h2>
       <p>
-        Athena SAT is intended for students preparing for the SAT. If you are under 13, please use
+        Athena Prep is intended for students preparing for the SAT®. If you are under 13, please use
         the service with a parent or guardian&apos;s permission. If you believe we have collected
         information from a child without appropriate consent, contact us and we will remove it.
       </p>

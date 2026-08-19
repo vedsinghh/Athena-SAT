@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { SatDisclaimer } from './SatTrademark'
 
 export default function LegalLayout({ title, updated, children }) {
   return (
@@ -8,7 +9,7 @@ export default function LegalLayout({ title, updated, children }) {
         <Link to="/" className="legal-brand">
           <img src="/favicon.png" alt="" width="32" height="32" className="legal-brand-icon" />
           <span>
-            <span className="legal-brand-name">ATHENA SAT</span>
+            <span className="legal-brand-name">ATHENA PREP</span>
           </span>
         </Link>
         <Link to="/" className="legal-back">← Back to app</Link>
@@ -23,7 +24,8 @@ export default function LegalLayout({ title, updated, children }) {
       </main>
 
       <footer className="legal-footer">
-        <p>© {new Date().getFullYear()} Athena SAT</p>
+        <p>© {new Date().getFullYear()} Athena Prep</p>
+        <SatDisclaimer className="legal-trademark" />
         <div className="legal-footer-links">
           <Link to="/privacy">Privacy</Link>
           <span aria-hidden="true">·</span>

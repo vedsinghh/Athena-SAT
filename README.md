@@ -1,6 +1,6 @@
-# ATHENA SAT
+# ATHENA PREP
 
-React + Vite prototype for the ATHENA SAT profile flow and dashboard.
+React + Vite prototype for the ATHENA PREP profile flow and dashboard.
 
 ## Run locally
 

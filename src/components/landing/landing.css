@@ -721,6 +721,16 @@
 }
 .ascent-footer-links a:hover,
 .ascent-footer-links button:hover { color: var(--blue); }
+.ascent-footer-legal {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.ascent-trademark {
+  max-width: 42ch;
+  margin-inline: auto;
+}
 .ascent-disclaimer {
   margin: 0;
   padding: 0;
@@ -734,9 +744,11 @@
   .ascent-footer-inner {
     grid-template-columns: 1fr auto;
   }
-  .ascent-disclaimer {
+  .ascent-footer-legal {
     grid-column: 1 / -1;
     order: 3;
+  }
+  .ascent-disclaimer {
     text-align: left;
   }
 }
@@ -1002,6 +1014,14 @@
   font-size: 12px;
   font-weight: 600;
   color: #97a2b6;
+}
+.lp-auth-trademark {
+  margin: 10px 0 0;
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #97a2b6;
+  text-align: center;
 }
 .lp-auth-sent { text-align: center; padding: 8px 0; }
 .lp-auth-sent-icon {

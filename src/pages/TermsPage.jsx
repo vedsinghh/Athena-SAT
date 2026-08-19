@@ -5,16 +5,16 @@ export default function TermsPage() {
   return (
     <LegalLayout title="Terms of Service" updated="August 12, 2026">
       <p>
-        These Terms of Service (&quot;Terms&quot;) govern your use of Athena SAT at{' '}
+        These Terms of Service (&quot;Terms&quot;) govern your use of Athena Prep at{' '}
         <a href="https://athenasat.app">athenasat.app</a>. By creating an account or using the
         service, you agree to these Terms.
       </p>
 
-      <h2>About Athena SAT</h2>
+      <h2>About Athena Prep</h2>
       <p>
-        Athena SAT is an independent SAT practice platform. We are not affiliated with, endorsed by,
-        or sponsored by the College Board or the SAT exam. Practice content is designed to resemble
-        digital SAT-style questions for study purposes only.
+        Athena Prep is an independent SAT® practice platform. We are not affiliated with, endorsed by,
+        or sponsored by the College Board or the SAT® exam. Practice content is designed to resemble
+        digital SAT®-style questions for study purposes only.
       </p>
 
       <h2>Accounts</h2>
@@ -43,7 +43,7 @@ export default function TermsPage() {
 
       <h2>Free service</h2>
       <p>
-        Athena SAT is free to start. Features, availability, and limits may change over time. We may
+        Athena Prep is free to start. Features, availability, and limits may change over time. We may
         introduce paid features in the future; if we do, we will describe them clearly before you
         are charged.
       </p>
@@ -52,20 +52,20 @@ export default function TermsPage() {
       <p>
         THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE.&quot; WE DO NOT GUARANTEE
         ANY PARTICULAR SCORE IMPROVEMENT, EXAM RESULT, OR UNINTERRUPTED ACCESS. STUDY TOOLS ARE FOR
-        PRACTICE ONLY AND ARE NOT A SUBSTITUTE FOR OFFICIAL SAT PREPARATION ADVICE FROM QUALIFIED
+        PRACTICE ONLY AND ARE NOT A SUBSTITUTE FOR OFFICIAL SAT® PREPARATION ADVICE FROM QUALIFIED
         EDUCATORS.
       </p>
 
       <h2>Limitation of liability</h2>
       <p>
-        TO THE FULLEST EXTENT PERMITTED BY LAW, ATHENA SAT AND ITS OPERATORS WILL NOT BE LIABLE FOR
+        TO THE FULLEST EXTENT PERMITTED BY LAW, ATHENA PREP AND ITS OPERATORS WILL NOT BE LIABLE FOR
         ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA,
         PROFITS, OR GOODWILL, ARISING FROM YOUR USE OF THE SERVICE.
       </p>
 
       <h2>Termination</h2>
       <p>
-        You may stop using Athena SAT at any time. We may suspend or terminate access if you violate
+        You may stop using Athena Prep at any time. We may suspend or terminate access if you violate
         these Terms or if we discontinue the service. Sections that reasonably should survive
         termination (such as disclaimers and limitations of liability) will remain in effect.
       </p>

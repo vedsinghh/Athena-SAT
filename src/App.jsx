@@ -15,6 +15,7 @@ import mathSkillCounts from './data/mathSkillCounts.json'
 import readingSkillCounts from './data/readingSkillCounts.json'
 import katex from 'katex'
 import LandingPage from './components/landing/LandingPage'
+import { SatDisclaimer } from './components/SatTrademark'
 import PasswordRequirements from './components/PasswordRequirements'
 import QuestionReportModal from './components/QuestionReportModal'
 import { useAuth, userHasPasswordLogin } from './hooks/useAuth'
@@ -385,7 +386,7 @@ const DAILY_TIPS = [
   'Underline the ask in the stem (“which…”, “except”, “most nearly”) so you don’t solve the wrong problem.',
   'For geometry, sketch even when a figure is given — marking known lengths unlocks the next step.',
   'On paired Reading questions, lock the first answer with evidence before you look at the second.',
-  'Keep an eye on absolute words like “always” and “never” — they’re often too strong for SAT passages.',
+  'Keep an eye on absolute words like “always” and “never” — they’re often too strong for SAT® passages.',
   'Build Athena charge with accuracy first; rushing for volume usually costs more points than it gains.',
   'When stuck between two Math forms, convert both to the same format (decimals, fractions, or simplified).',
   'For Standard English Conventions, check agreement and punctuation across the whole underlined span.',
@@ -1657,7 +1658,7 @@ function Brand() {
       <div className="leading-none">
         <div className="brand-serif text-[27px] font-bold tracking-[.18em] text-[#315bb7]">ATHENA</div>
         <div className="mt-1 flex items-center justify-center gap-2 text-[13px] font-bold tracking-[.32em] text-athena-gold">
-          <span className="h-[2px] w-8 bg-athena-gold" /> SAT <span className="h-[2px] w-8 bg-athena-gold" />
+          <span className="h-[2px] w-8 bg-athena-gold" /> PREP <span className="h-[2px] w-8 bg-athena-gold" />
         </div>
       </div>
     </div>
@@ -1680,13 +1681,13 @@ function WelcomePage({ onCreate, onSignOut, accountEmail }) {
     if (!school.trim()) return setError('Enter your school.')
     if (!testDate) return setError('Enter your next test date.')
     if (!isValidSatScore(bestScore, { allowEmpty: false })) {
-      return setError('Best SAT score must be 400–1600 in increments of 10.')
+      return setError('Best SAT® score must be 400–1600 in increments of 10.')
     }
     if (!isValidSatScore(goalScore, { allowEmpty: false })) {
       return setError('Goal score must be 400–1600 in increments of 10.')
     }
     if (Number(goalScore) < Number(bestScore)) {
-      return setError('Goal score should be at least your best SAT score.')
+      return setError('Goal score should be at least your best SAT® score.')
     }
     setError('')
     onCreate(makeStarterProfile({
@@ -1721,7 +1722,7 @@ function WelcomePage({ onCreate, onSignOut, accountEmail }) {
           <div className="laurel laurel-right">❧</div>
           <img src="/athena.png" alt="Athena mascot" className="welcome-athena" />
           <div className="speech-bubble">
-            <span>Let’s start<br />your SAT<br />journey!</span>
+            <span>Let’s start<br />your SAT®<br />journey!</span>
           </div>
         </section>
 
@@ -1751,7 +1752,7 @@ function WelcomePage({ onCreate, onSignOut, accountEmail }) {
               <Field label="Next test date">
                 <input type="date" value={testDate} onChange={e => setTestDate(e.target.value)} />
               </Field>
-              <Field label="Best SAT score">
+              <Field label="Best SAT® score">
                 <input
                   value={bestScore}
                   onChange={e => setBestScore(e.target.value)}
@@ -1759,7 +1760,7 @@ function WelcomePage({ onCreate, onSignOut, accountEmail }) {
                   placeholder="e.g. 1420"
                 />
               </Field>
-              <Field label="SAT goal">
+              <Field label="SAT® goal">
                 <input
                   value={goalScore}
                   onChange={e => setGoalScore(e.target.value)}
@@ -1782,6 +1783,7 @@ function WelcomePage({ onCreate, onSignOut, accountEmail }) {
         </section>
       </main>
       <div className="greek-key" />
+      <SatDisclaimer className="welcome-trademark" />
     </div>
   )
 }
@@ -2265,10 +2267,10 @@ function ProfileEditModal({ open, profile, onClose, onSave }) {
       return setError('Goal score must be 400–1600 in increments of 10.')
     }
     if (!isValidSatScore(bestScore, { allowEmpty: false })) {
-      return setError('Best SAT score must be 400–1600 in increments of 10.')
+      return setError('Best SAT® score must be 400–1600 in increments of 10.')
     }
     if (Number(goalScore) < Number(bestScore)) {
-      return setError('Goal score should be at least your best SAT score.')
+      return setError('Goal score should be at least your best SAT® score.')
     }
     setError('')
     onSave({
@@ -2316,7 +2318,7 @@ function ProfileEditModal({ open, profile, onClose, onSave }) {
           <Field label="Next test date">
             <input type="date" value={testDate} onChange={(e) => setTestDate(e.target.value)} />
           </Field>
-          <Field label="Best SAT score">
+          <Field label="Best SAT® score">
             <input
               value={bestScore}
               onChange={(e) => setBestScore(e.target.value)}
@@ -2324,7 +2326,7 @@ function ProfileEditModal({ open, profile, onClose, onSave }) {
               placeholder="e.g. 1420"
             />
           </Field>
-          <Field label="SAT goal">
+          <Field label="SAT® goal">
             <input
               value={goalScore}
               onChange={(e) => setGoalScore(e.target.value)}
@@ -2646,7 +2648,7 @@ function QuestionBankPage({ profile, onOpenMath, onOpenReading, onViewAnalytics 
         </div>
         <div>
           <h1>Question Bank</h1>
-          <p>Practice {readingTotal + mathTotal} official-style SAT questions and track your progress.</p>
+          <p>Practice {readingTotal + mathTotal} official-style SAT® questions and track your progress.</p>
         </div>
       </header>
 
@@ -3559,7 +3561,7 @@ function ReadingPage({
                 <p>
                   Athena is the Greek goddess of wisdom, courage, and inspiration. She watches over
                   learners who seek knowledge and push themselves to do their best — just like you
-                  on the SAT.
+                  on the SAT®.
                 </p>
                 <p className="athena-fact-aside">
                   Her symbols are the owl and the olive tree. In this app, she’s your study guide.
@@ -3852,7 +3854,7 @@ function MathPage({
                 </div>
                 <div>
                   <h1>Math</h1>
-                  <p>Build skills. Solve problems. Master the SAT.</p>
+                  <p>Build skills. Solve problems. Master the SAT®.</p>
                 </div>
               </div>
             </div>
@@ -5349,7 +5351,7 @@ function MathReferenceModal({ open, onClose }) {
       <div className="math-reference-panel-body">
         <img
           src="/math-reference.png"
-          alt="SAT Math reference sheet with geometry formulas and volume formulas"
+          alt="SAT® Math reference sheet with geometry formulas and volume formulas"
           className="math-reference-img"
           draggable={false}
         />
@@ -10394,6 +10396,8 @@ function Sidebar({
         ))}
       </nav>
 
+      <SatDisclaimer className="sidebar-trademark" />
+
       <div className="sidebar-profile" ref={menuRef}>
         <button
           type="button"
@@ -11048,7 +11052,7 @@ function QuickPracticeCard({ onQuickMath, onQuickReading, onPracticeTest, onBrow
     {
       key: 'test',
       title: 'Practice Test',
-      sub: 'Full-length SAT simulation',
+      sub: 'Full-length SAT® simulation',
       type: 'test',
       onClick: onPracticeTest,
     },

@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Eye, EyeOff, Mail, ShieldCheck, UserRound, X } from 'lucide-react'
 import PasswordRequirements from '../PasswordRequirements'
 import { isPasswordValid, passwordValidationMessage } from '../../lib/passwordRules'
+import { SatDisclaimer } from '../SatTrademark'
 
 function GoogleMark() {
   return (
@@ -178,7 +179,7 @@ export default function AuthModal({
                 <div className="lp-auth-sent-icon"><UserRound size={26} strokeWidth={1.9} /></div>
                 <h2>Account already exists</h2>
                 <p>
-                  That email is already associated with an Athena SAT account. Sign in to continue.
+                  That email is already associated with an Athena Prep account. Sign in to continue.
                 </p>
                 <button
                   type="button"
@@ -277,7 +278,7 @@ export default function AuthModal({
                   <h2>{isSignup ? 'Start practicing free' : 'Welcome back'}</h2>
                   <p>
                     {isSignup
-                      ? 'Build a study streak with real digital SAT–style questions.'
+                      ? 'Build a study streak with real digital SAT®–style questions.'
                       : 'Pick up your practice exactly where you left off.'}
                   </p>
                 </div>
@@ -376,6 +377,7 @@ export default function AuthModal({
                   <ShieldCheck size={14} />
                   Free forever. No card required.
                 </p>
+                <SatDisclaimer className="lp-auth-trademark" />
               </>
             )}
           </motion.div>
