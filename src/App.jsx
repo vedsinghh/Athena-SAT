@@ -1114,13 +1114,21 @@ const VED_LAPTOP_GLITCH_FIXES = [
   {
     questionId: '053e5e9f',
     answer: 3,
+    subject: 'math',
     domain: 'Geometry and Trigonometry',
     skill: 'Right triangles and trigonometry',
+  },
+  {
+    questionId: 'e35aa99b',
+    answer: 0,
+    subject: 'reading',
+    domain: 'Information and Ideas',
+    skill: 'Command of Evidence',
   },
 ]
 
 function repairVedLaptopGlitches(profile) {
-  if (!profile || profile.vedLaptopGlitchesRepairedV4) return profile
+  if (!profile || profile.vedLaptopGlitchesRepairedV5) return profile
   if (String(profile.name || '').trim().toLowerCase() !== 'ved') return profile
 
   const byId = new Map(VED_LAPTOP_GLITCH_FIXES.map((fix) => [fix.questionId, fix]))
@@ -1163,7 +1171,7 @@ function repairVedLaptopGlitches(profile) {
     if (row?.correct === true) return
     changed = true
     nextProgress[fix.questionId] = {
-      subject: 'math',
+      subject: row?.subject || fix.subject || 'math',
       correct: true,
       domain: row?.domain || fix.domain,
       skill: row?.skill || fix.skill,
@@ -1177,6 +1185,7 @@ function repairVedLaptopGlitches(profile) {
       vedLaptopGlitchesRepairedV2: true,
       vedLaptopGlitchesRepairedV3: true,
       vedLaptopGlitchesRepairedV4: true,
+      vedLaptopGlitchesRepairedV5: true,
     }
   }
 
@@ -1186,6 +1195,7 @@ function repairVedLaptopGlitches(profile) {
     vedLaptopGlitchesRepairedV2: true,
     vedLaptopGlitchesRepairedV3: true,
     vedLaptopGlitchesRepairedV4: true,
+    vedLaptopGlitchesRepairedV5: true,
     progressHistory: nextHistory,
     activity: nextHistory.map(historyToActivityItem).slice(0, 40),
     qbankProgress: nextProgress,
@@ -1395,7 +1405,7 @@ export default function App() {
     const needsRepair = profiles.some(
       (p) => !p.bankHistoryFirstAttemptV1
         || (!p.bankRetryScoresRepairedV1 && String(p.name || '').trim().toLowerCase() === 'ved')
-        || (!p.vedLaptopGlitchesRepairedV4 && String(p.name || '').trim().toLowerCase() === 'ved'),
+        || (!p.vedLaptopGlitchesRepairedV5 && String(p.name || '').trim().toLowerCase() === 'ved'),
     )
     if (!needsRepair) return undefined
     persistProfiles((prev) => prev.map((p) => dedupeBankHistoryKeepFirst(repairVedLaptopGlitches(repairFrozenBankRetries(p)))))
