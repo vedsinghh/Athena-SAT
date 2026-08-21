@@ -215,28 +215,45 @@ function formatAvgTime(seconds) {
 }
 
 /**
- * Walk graded attempts oldest-first; each questionId is counted once (first attempt wins).
+ * Walk graded attempts and count each questionId once.
+ * Correct beats incorrect; among ties, the newest attempt wins.
  * History is stored newest-first. Legacy set rows without items are passed through as bulk.
  * Pass { byDay: true } to dedupe per calendar day instead of globally.
  */
 function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
-  const seen = new Set()
+  const best = new Map()
+  const bulk = []
   const list = Array.isArray(history) ? history : []
-  for (let i = list.length - 1; i >= 0; i -= 1) {
-    const entry = list[i]
-    if (!entry) continue
+
+  const consider = (key, row) => {
+    const prev = best.get(key)
+    if (!prev) {
+      best.set(key, row)
+      return
+    }
+    if (row.correct && !prev.correct) {
+      best.set(key, row)
+      return
+    }
+    if (Boolean(row.correct) === Boolean(prev.correct)) {
+      const tNew = Date.parse(row.createdAt || '') || 0
+      const tOld = Date.parse(prev.createdAt || '') || 0
+      if (tNew >= tOld) best.set(key, row)
+    }
+  }
+
+  list.forEach((entry) => {
+    if (!entry) return
     const subject = entry.subject === 'math' ? 'math' : entry.subject === 'reading' ? 'reading' : null
-    if (!subject) continue
+    if (!subject) return
 
     if (entry.type === 'bank') {
-      if (entry.correct == null || entry.questionId == null || entry.questionId === '') continue
+      if (entry.correct == null || entry.questionId == null || entry.questionId === '') return
       const day = localDayKey(entry.createdAt) || ''
       const key = byDay
         ? `${day}:${subject}:${String(entry.questionId)}`
         : `${subject}:${String(entry.questionId)}`
-      if (seen.has(key)) continue
-      seen.add(key)
-      visit({
+      consider(key, {
         subject,
         questionId: String(entry.questionId),
         correct: Boolean(entry.correct),
@@ -248,10 +265,10 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
         entry,
         difficulty: entry.difficulty || lookupQuestion(entry.questionId, subject)?.difficulty || null,
       })
-      continue
+      return
     }
 
-    if (entry.type !== 'set') continue
+    if (entry.type !== 'set') return
     const items = Array.isArray(entry.items)
       ? entry.items.filter((item) => item && item.correct != null)
       : []
@@ -277,9 +294,7 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
         const key = byDay
           ? `${day}:${subject}:${String(item.questionId)}`
           : `${subject}:${String(item.questionId)}`
-        if (seen.has(key)) return
-        seen.add(key)
-        visit({
+        consider(key, {
           subject,
           questionId: String(item.questionId),
           correct: Boolean(item.correct),
@@ -293,11 +308,11 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
           difficulty: item.difficulty || lookupQuestion(item.questionId, subject)?.difficulty || null,
         })
       })
-      continue
+      return
     }
 
     // Legacy set summary without per-question items — no id-level dedupe possible.
-    visit({
+    bulk.push({
       subject,
       questionId: null,
       correct: null,
@@ -309,7 +324,10 @@ function forEachUniqueGradedAttempt(history, visit, { byDay = false } = {}) {
       bulkCorrect: Number(entry.correct) || 0,
       bulkTotal: Number(entry.total) || Number(entry.answered) || 0,
     })
-  }
+  })
+
+  best.forEach((row) => visit(row))
+  bulk.forEach((row) => visit(row))
 }
 
 /** Aggregate accuracy / answered / avg time from progress history for a subject. */
@@ -601,19 +619,148 @@ function appendProgressHistory(profile, entry) {
   }))
 }
 
+function recalculateSetHistoryEntry(entry) {
+  const items = Array.isArray(entry.items) ? entry.items : []
+  const graded = items.filter((item) => item && item.correct != null)
+  const correctCount = graded.filter((item) => item.correct).length
+  const answered = graded.length
+  const accuracy = answered ? Math.round((correctCount / answered) * 100) : entry.accuracy
+  return {
+    ...entry,
+    items,
+    correct: correctCount,
+    answered: answered || entry.answered,
+    accuracy,
+    meta: accuracy != null ? `Score: ${accuracy}%` : entry.meta,
+  }
+}
+
+/**
+ * After a correct retry: drop incorrect bank rows for this question, upgrade matching
+ * set items, and mark qbankProgress correct. Optionally append a fresh correct bank line.
+ */
+function promoteQuestionCorrectAcrossHistory(profile, questionId, subject, {
+  answer = null,
+  domain = '',
+  skill = '',
+  difficulty = null,
+  elapsed = null,
+  sessionId = null,
+  appendBankIfMissing = false,
+  title = null,
+  sub = null,
+} = {}) {
+  const qid = String(questionId)
+  const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
+  let changed = false
+  const nextHistory = []
+
+  history.forEach((entry) => {
+    if (
+      entry?.type === 'bank'
+      && entry?.subject === subject
+      && String(entry.questionId) === qid
+      && entry.correct === false
+    ) {
+      changed = true
+      return
+    }
+    if (entry?.type === 'set' && entry?.subject === subject && Array.isArray(entry.items)) {
+      let setChanged = false
+      const nextItems = entry.items.map((item) => {
+        if (String(item?.questionId) !== qid || item.correct !== false) return item
+        setChanged = true
+        return { ...item, correct: true, answer: answer ?? item.answer }
+      })
+      if (setChanged) {
+        changed = true
+        nextHistory.push(recalculateSetHistoryEntry({ ...entry, items: nextItems }))
+        return
+      }
+    }
+    nextHistory.push(entry)
+  })
+
+  const progress = { ...(profile.qbankProgress || {}) }
+  const row = progress[qid]
+  if (!row || row.correct !== true) {
+    changed = true
+    progress[qid] = {
+      subject,
+      correct: true,
+      domain: row?.domain || domain || '',
+      skill: row?.skill || skill || '',
+    }
+  }
+
+  const hasCorrectBank = nextHistory.some(
+    (entry) => entry?.type === 'bank'
+      && entry?.subject === subject
+      && String(entry.questionId) === qid
+      && entry.correct === true,
+  )
+
+  const base = {
+    ...profile,
+    progressHistory: nextHistory,
+    qbankProgress: progress,
+    activity: changed
+      ? nextHistory.map(historyToActivityItem).slice(0, 40)
+      : (profile.activity || []),
+  }
+
+  if (appendBankIfMissing && !hasCorrectBank) {
+    const isMath = subject === 'math'
+    return appendProgressHistory(base, {
+      id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`,
+      type: 'bank',
+      subject,
+      title: title || (isMath ? 'Question Bank · Math' : 'Question Bank · Reading'),
+      sub: sub || [domain, skill].filter(Boolean).join(' · ') || 'Practice question',
+      correct: true,
+      questionId: qid,
+      answer: answer ?? null,
+      difficulty: difficulty || null,
+      elapsed,
+      sessionId: sessionId || null,
+      createdAt: new Date().toISOString(),
+    })
+  }
+
+  if (!changed) return profile
+  return applyAccuracyFromHistory(applyStreakFromHistory(base))
+}
+
 function applyBankHistoryLine(profile, question, answer, subject, { elapsed = null, sessionId = null } = {}) {
   const correct = isAnswerCorrect(question, answer)
   if (correct == null) return profile
   const isMath = subject === 'math'
   const timeSpent = isValidStatNumber(elapsed) && elapsed > 0 ? Math.round(elapsed) : null
   const qid = String(question.id)
+  const sub = [question.domain, question.skill || question.topic].filter(Boolean).join(' · ')
+    || 'Practice question'
+
+  // Correct retries replace frozen incorrect bank/set history instead of keeping the first miss.
+  if (correct) {
+    return promoteQuestionCorrectAcrossHistory(profile, qid, subject, {
+      answer,
+      domain: question.domain || '',
+      skill: question.skill || question.topic || '',
+      difficulty: question.difficulty || null,
+      elapsed: timeSpent,
+      sessionId,
+      appendBankIfMissing: true,
+      title: isMath ? 'Question Bank · Math' : 'Question Bank · Reading',
+      sub,
+    })
+  }
+
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
   const alreadyLogged = history.some(
     (entry) => entry?.type === 'bank'
       && entry?.subject === subject
       && String(entry.questionId) === qid,
   )
-  // First attempt is the history row. Retries do not add or replace it.
   if (alreadyLogged) return profile
 
   return appendProgressHistory(profile, {
@@ -621,9 +768,8 @@ function applyBankHistoryLine(profile, question, answer, subject, { elapsed = nu
     type: 'bank',
     subject,
     title: isMath ? 'Question Bank · Math' : 'Question Bank · Reading',
-    sub: [question.domain, question.skill || question.topic].filter(Boolean).join(' · ')
-      || 'Practice question',
-    correct: Boolean(correct),
+    sub,
+    correct: false,
     questionId: qid,
     answer: answer ?? null,
     difficulty: question.difficulty || null,
@@ -793,8 +939,17 @@ function applyPracticeSetReport(profile, {
     : (config.difficulty || null)
 
   let next = profile
-  answeredPairs.forEach(({ q, answer }) => {
+  answeredPairs.forEach(({ q, answer, correct: isCorrect }) => {
     next = applyQuestionCompletion(next, q, answer, subject)
+    if (isCorrect) {
+      next = promoteQuestionCorrectAcrossHistory(next, String(q.id), subject, {
+        answer,
+        domain: q.domain || '',
+        skill: q.skill || q.topic || '',
+        difficulty: q.difficulty || null,
+        appendBankIfMissing: false,
+      })
+    }
   })
 
   // Don't create empty practice-set tiles (e.g. Strict Mode remount / End with nothing answered).
@@ -1033,14 +1188,14 @@ function reconcileBankHistoryWithProgress(profile) {
   const progress = profile.qbankProgress || {}
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
   let changed = false
-  // Sync bank lines toward progress, but never promote Incorrect → Correct
-  // (that would undo a first-miss after a later retry).
+  // Sync bank lines toward progress. Correct always wins over incorrect.
   const nextHistory = history.map((entry) => {
     if (entry?.type !== 'bank' || entry.questionId == null) return entry
-    if (entry.correct === false) return entry
     const row = progress[String(entry.questionId)]
     if (!row || row.subject !== entry.subject || typeof row.correct !== 'boolean') return entry
     if (Boolean(entry.correct) === row.correct) return entry
+    // Never demote a correct history row back to incorrect.
+    if (entry.correct === true && row.correct === false) return entry
     changed = true
     return { ...entry, correct: row.correct }
   })
@@ -1125,24 +1280,42 @@ const VED_LAPTOP_GLITCH_FIXES = [
     domain: 'Information and Ideas',
     skill: 'Command of Evidence',
   },
+  {
+    questionId: '411739db',
+    answer: 1,
+    subject: 'reading',
+    domain: 'Information and Ideas',
+    skill: 'Central Ideas and Details',
+  },
 ]
 
 function repairVedLaptopGlitches(profile) {
-  if (!profile || profile.vedLaptopGlitchesRepairedV5) return profile
+  if (!profile || profile.vedLaptopGlitchesRepairedV6) return profile
   if (String(profile.name || '').trim().toLowerCase() !== 'ved') return profile
 
   const byId = new Map(VED_LAPTOP_GLITCH_FIXES.map((fix) => [fix.questionId, fix]))
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
   let changed = false
-  const nextHistory = history.map((entry) => {
+  const nextHistory = []
+  history.forEach((entry) => {
     if (entry?.type === 'bank') {
       const fix = byId.get(String(entry.questionId))
-      if (!fix) return entry
-      if (entry.correct === true && entry.answer === fix.answer) return entry
-      changed = true
-      return { ...entry, correct: true, answer: fix.answer }
+      if (fix && entry.correct === false) {
+        changed = true
+        return
+      }
+      if (fix && entry.correct === true && entry.answer !== fix.answer) {
+        changed = true
+        nextHistory.push({ ...entry, answer: fix.answer })
+        return
+      }
+      nextHistory.push(entry)
+      return
     }
-    if (entry?.type !== 'set' || !Array.isArray(entry.items)) return entry
+    if (entry?.type !== 'set' || !Array.isArray(entry.items)) {
+      nextHistory.push(entry)
+      return
+    }
     let setChanged = false
     const nextItems = entry.items.map((item) => {
       const fix = byId.get(String(item?.questionId))
@@ -1151,18 +1324,21 @@ function repairVedLaptopGlitches(profile) {
       setChanged = true
       return { ...item, correct: true, answer: fix.answer }
     })
-    if (!setChanged) return entry
+    if (!setChanged) {
+      nextHistory.push(entry)
+      return
+    }
     changed = true
     const graded = nextItems.filter((item) => item && item.correct != null)
     const correctCount = graded.filter((item) => item.correct).length
     const accuracy = graded.length ? Math.round((correctCount / graded.length) * 100) : entry.accuracy
-    return {
+    nextHistory.push({
       ...entry,
       items: nextItems,
       correct: correctCount,
       accuracy,
       meta: accuracy != null ? `Score: ${accuracy}%` : entry.meta,
-    }
+    })
   })
 
   const nextProgress = { ...(profile.qbankProgress || {}) }
@@ -1186,6 +1362,7 @@ function repairVedLaptopGlitches(profile) {
       vedLaptopGlitchesRepairedV3: true,
       vedLaptopGlitchesRepairedV4: true,
       vedLaptopGlitchesRepairedV5: true,
+      vedLaptopGlitchesRepairedV6: true,
     }
   }
 
@@ -1196,13 +1373,69 @@ function repairVedLaptopGlitches(profile) {
     vedLaptopGlitchesRepairedV3: true,
     vedLaptopGlitchesRepairedV4: true,
     vedLaptopGlitchesRepairedV5: true,
+    vedLaptopGlitchesRepairedV6: true,
     progressHistory: nextHistory,
     activity: nextHistory.map(historyToActivityItem).slice(0, 40),
     qbankProgress: nextProgress,
   }))
 }
 
-/** Keep the oldest bank row per question and drop later retries from history. */
+/** One-time: if any attempt is correct, drop older incorrect bank rows / upgrade set items. */
+function repairCorrectRetryPromotions(profile) {
+  if (!profile || profile.correctRetryPromotionsV1) return profile
+  const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
+  const correctKeys = new Map()
+
+  history.forEach((entry) => {
+    const subject = entry?.subject === 'math' ? 'math' : entry?.subject === 'reading' ? 'reading' : null
+    if (!subject) return
+    if (entry.type === 'bank' && entry.correct === true && entry.questionId != null && entry.questionId !== '') {
+      correctKeys.set(`${subject}:${String(entry.questionId)}`, {
+        subject,
+        questionId: String(entry.questionId),
+        answer: entry.answer ?? null,
+      })
+    }
+    if (entry.type === 'set' && Array.isArray(entry.items)) {
+      entry.items.forEach((item) => {
+        if (item?.correct !== true || item.questionId == null || item.questionId === '') return
+        const key = `${subject}:${String(item.questionId)}`
+        if (!correctKeys.has(key)) {
+          correctKeys.set(key, {
+            subject,
+            questionId: String(item.questionId),
+            answer: item.answer ?? null,
+          })
+        }
+      })
+    }
+  })
+
+  Object.entries(profile.qbankProgress || {}).forEach(([id, row]) => {
+    if (row?.correct !== true) return
+    const subject = row.subject === 'math' ? 'math' : row.subject === 'reading' ? 'reading' : null
+    if (!subject) return
+    const key = `${subject}:${id}`
+    if (!correctKeys.has(key)) {
+      correctKeys.set(key, { subject, questionId: id, answer: null })
+    }
+  })
+
+  let next = profile
+  correctKeys.forEach(({ subject, questionId, answer }) => {
+    next = promoteQuestionCorrectAcrossHistory(next, questionId, subject, {
+      answer,
+      appendBankIfMissing: false,
+    })
+  })
+
+  return {
+    ...next,
+    correctRetryPromotionsV1: true,
+  }
+}
+
+/** Keep one bank row per question: correct beats incorrect; otherwise oldest. */
 function dedupeBankHistoryKeepFirst(profile) {
   if (!profile || profile.bankHistoryFirstAttemptV1) return profile
   const history = Array.isArray(profile.progressHistory) ? profile.progressHistory : []
@@ -1213,7 +1446,7 @@ function dedupeBankHistoryKeepFirst(profile) {
     if (ta !== tb) return ta - tb
     return b.index - a.index
   })
-  const seen = new Set()
+  const chosen = new Map()
   const keepIndex = new Set()
   indexed.forEach(({ entry, index }) => {
     if (entry?.type !== 'bank' || entry.questionId == null || entry.questionId === '') {
@@ -1222,9 +1455,17 @@ function dedupeBankHistoryKeepFirst(profile) {
     }
     const subject = entry.subject === 'math' ? 'math' : entry.subject === 'reading' ? 'reading' : 'other'
     const key = `${subject}:${String(entry.questionId)}`
-    if (seen.has(key)) return
-    seen.add(key)
-    keepIndex.add(index)
+    const prev = chosen.get(key)
+    if (!prev) {
+      chosen.set(key, { index, correct: entry.correct === true })
+      keepIndex.add(index)
+      return
+    }
+    if (entry.correct === true && !prev.correct) {
+      keepIndex.delete(prev.index)
+      chosen.set(key, { index, correct: true })
+      keepIndex.add(index)
+    }
   })
   const nextHistory = history.filter((_, i) => keepIndex.has(i))
   const nextProgress = { ...(profile.qbankProgress || {}) }
@@ -1233,6 +1474,7 @@ function dedupeBankHistoryKeepFirst(profile) {
     if (entry?.type !== 'bank' || entry.questionId == null || typeof entry.correct !== 'boolean') return
     const id = String(entry.questionId)
     const row = nextProgress[id]
+    if (row && row.correct === true) return
     if (row && row.correct === entry.correct) return
     progressChanged = true
     nextProgress[id] = {
@@ -1273,10 +1515,10 @@ function scrubEmptyPracticeSets(profile) {
 
 function normalizeProfilesList(profiles) {
   const list = Array.isArray(profiles) ? profiles : []
-  const normalized = list.map((p) => applyAccuracyFromHistory(dedupeBankHistoryKeepFirst(repairVedLaptopGlitches(repairFrozenBankRetries(scrubEmptyPracticeSets(applyStreakFromHistory({
+  const normalized = list.map((p) => applyAccuracyFromHistory(repairCorrectRetryPromotions(dedupeBankHistoryKeepFirst(repairVedLaptopGlitches(repairFrozenBankRetries(scrubEmptyPracticeSets(applyStreakFromHistory({
     ...p,
     progressHistory: Array.isArray(p.progressHistory) ? p.progressHistory : [],
-  })))))))
+  }))))))))
   try {
     const before = JSON.stringify(list.map((p) => ({
       history: p.progressHistory || [],
@@ -1404,11 +1646,12 @@ export default function App() {
     if (!user || profilesLoading || !profiles.length) return undefined
     const needsRepair = profiles.some(
       (p) => !p.bankHistoryFirstAttemptV1
+        || !p.correctRetryPromotionsV1
         || (!p.bankRetryScoresRepairedV1 && String(p.name || '').trim().toLowerCase() === 'ved')
-        || (!p.vedLaptopGlitchesRepairedV5 && String(p.name || '').trim().toLowerCase() === 'ved'),
+        || (!p.vedLaptopGlitchesRepairedV6 && String(p.name || '').trim().toLowerCase() === 'ved'),
     )
     if (!needsRepair) return undefined
-    persistProfiles((prev) => prev.map((p) => dedupeBankHistoryKeepFirst(repairVedLaptopGlitches(repairFrozenBankRetries(p)))))
+    persistProfiles((prev) => prev.map((p) => repairCorrectRetryPromotions(dedupeBankHistoryKeepFirst(repairVedLaptopGlitches(repairFrozenBankRetries(p))))))
     return undefined
   }, [user, profilesLoading, profiles, persistProfiles])
 
@@ -4294,8 +4537,11 @@ function applyQuestionCompletion(profile, question, answer, subject) {
 
   const qid = String(question.id)
   const existing = (profile.qbankProgress || {})[qid]
-  // First graded result sticks; later retries do not overwrite accuracy.
-  if (existing && typeof existing.correct === 'boolean') return profile
+  // Correct sticks; incorrect can be upgraded by a later correct retry.
+  if (existing && typeof existing.correct === 'boolean') {
+    if (existing.correct === true) return profile
+    if (!correct) return profile
+  }
   const nextProgress = {
     ...(profile.qbankProgress || {}),
     [qid]: {
@@ -8575,7 +8821,7 @@ function deriveProgressAnalytics(history, qbankProgress, options = {}) {
     if (key) dayCounts.set(key, (dayCounts.get(key) || 0) + 1)
   }, { byDay: true })
 
-  // First attempt wins → accuracy totals and topic/domain breakdown (retries ignored).
+  // Correct attempt wins → accuracy totals and topic/domain breakdown.
   forEachUniqueGradedAttempt(list, (row) => {
     const sub = row.subject
     if (row.source === 'set-bulk') {
